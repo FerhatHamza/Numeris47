@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Numeris47 - منصة الرقمنة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Tajawal',sans-serif; }
+        body { background:#f0f2f5; color:#333; min-height:100vh; }
+        .container { max-width:1200px; margin:0 auto; padding:20px; }
+        .hidden { display:none !important; }
+
+        /* Login */
+        #login-screen { display:flex; align-items:center; justify-content:center; height:100vh; background:linear-gradient(135deg,#1e3c72,#2a5298); }
+        .login-box { background:#fff; padding:40px; border-radius:15px; box-shadow:0 10px 30px rgba(0,0,0,0.2); width:100%; max-width:400px; }
+        .login-box h2 { text-align:center; margin-bottom:30px; color:#1e3c72; }
+        .form-group { margin-bottom:20px; }
+        .form-group label { display:block; margin-bottom:5px; font-weight:500; }
+        .form-group input, .form-group select, .form-group textarea { width:100%; padding:12px; border:1px solid #ddd; border-radius:8px; font-size:16px; }
+        .btn { display:inline-block; padding:12px 24px; background:#1e3c72; color:#fff; border:none; border-radius:8px; cursor:pointer; font-size:16px; transition:background 0.3s; }
+        .btn:hover { background:#2a5298; }
+        .btn-secondary { background:#6c757d; }
+        .btn-success { background:#28a745; }
+        .btn-warning { background:#ffc107; color:#333; }
+        .btn-danger { background:#dc3545; }
+
+        /* Dashboard */
+        #app { display:flex; flex-direction:column; min-height:100vh; }
+        header { background:#1e3c72; color:#fff; padding:15px 20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; }
+        header h1 { font-size:1.5rem; }
+        .user-info { display:flex; align-items:center; gap:15px; }
+        .user-info span { font-weight:500; }
+        .logout-btn { background:#dc3545; color:#fff; border:none; padding:8px 15px; border-radius:5px; cursor:pointer; }
+        nav { background:#fff; padding:10px 20px; box-shadow:0 2px 4px rgba(0,0,0,0.1); display:flex; gap:10px; flex-wrap:wrap; }
+        nav button { background:none; border:none; padding:10px 15px; cursor:pointer; font-size:16px; border-radius:5px; transition:background 0.3s; }
+        nav button.active { background:#e0e7ff; color:#1e3c72; font-weight:700; }
+        main { flex:1; padding:20px; }
+        .card { background:#fff; border-radius:10px; padding:20px; margin-bottom:20px; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+        .card h3 { margin-bottom:15px; color:#1e3c72; }
+        table { width:100%; border-collapse:collapse; margin-top:15px; }
+        th, td { padding:12px; text-align:right; border-bottom:1px solid #eee; }
+        th { background:#f8f9fa; }
+        .status-badge { padding:5px 10px; border-radius:20px; font-size:0.85rem; }
+        .status-pending { background:#ffeeba; color:#856404; }
+        .status-provided { background:#b8daff; color:#004085; }
+        .status-configured { background:#c3e6cb; color:#155724; }
+        .status-completed { background:#c3e6cb; color:#155724; }
+        .grid-2 { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:20px; }
+        .form-inline { display:flex; gap:10px; flex-wrap:wrap; align-items:end; }
+        .form-inline .form-group { flex:1; min-width:150px; }
+        .photo-thumb { width:80px; height:80px; object-fit:cover; border-radius:5px; cursor:pointer; }
+
+        /* Responsive */
+        @media (max-width:768px) {
+            header h1 { font-size:1.2rem; }
+            nav { justify-content:center; }
+            .form-inline { flex-direction:column; }
+            .form-inline .form-group { min-width:100%; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="login-screen">
+        <div class="login-box">
+            <h2>تسجيل الدخول</h2>
+            <div class="form-group">
+                <label>البريد الإلكتروني</label>
+                <input type="email" id="login-email" placeholder="example@domain.com">
+            </div>
+            <div class="form-group">
+                <label>كلمة المرور</label>
+                <input type="password" id="login-password" placeholder="********">
+            </div>
+            <button class="btn" style="width:100%" onclick="login()">دخول</button>
+            <p id="login-error" style="color:red;margin-top:10px;text-align:center;"></p>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="app" class="hidden">
+        <header>
+            <h1>Numeris47</h1>
+            <div class="user-info">
+                <span id="user-name"></span>
+                <span id="user-role"></span>
+                <button class="logout-btn" onclick="logout()">خروج</button>
+            </div>
+        </header>
+        <nav id="main-nav">
+            <!-- Dynamic buttons based on role -->
+        </nav>
+        <main id="main-content">
+            <!-- Content injected by JS -->
+        </main>
+    </div>
+
+    <script>
+        // ===================== PROTECTION =====================
+        // Disable right-click
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        // Disable common devtools shortcuts
+        document.addEventListener('keydown', e => {
+            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) || (e.ctrlKey && e.key === 'U')) {
+                e.preventDefault();
+                return false;
+            }
+        });
+        // Detect devtools (simple)
+        setInterval(() => {
+            const threshold = 160;
+            const widthThreshold = window.outerWidth - window.innerWidth > threshold;
+            const heightThreshold = window.outerHeight - window.innerHeight > threshold;
+            if (widthThreshold || heightThreshold) {
+                document.body.innerHTML = '<h1 style="text-align:center;margin-top:50px;">Access Denied</h1>';
+            }
+        }, 1000);
+
+        // ===================== GLOBALS =====================
+        let currentUser = null;
+        const API_BASE = ''; // Same origin, Worker handles /api/*
+
+        // Helper: fetch wrapper
+        async function apiFetch(url, method='GET', body=null, auth=true) {
+            const headers = { 'Content-Type': 'application/json' };
+            if (auth && localStorage.getItem('token')) {
+                headers['Authorization'] = 'Bearer ' + localStorage.getItem('token');
+            }
+            const options = { method, headers };
+            if (body) options.body = JSON.stringify(body);
+            const res = await fetch(API_BASE + url, options);
+            if (!res.ok) {
+                const err = await res.json().catch(() => ({message:'خطأ غير معروف'}));
+                throw new Error(err.message || 'فشل الطلب');
+            }
+            return res.json();
+        }
+
+        // ===================== AUTH =====================
+        async function login() {
+            const email = document.getElementById('login-email').value.trim();
+            const password = document.getElementById('login-password').value;
+            const errorEl = document.getElementById('login-error');
+            errorEl.textContent = '';
+            try {
+                const data = await apiFetch('/api/login', 'POST', { email, password }, false);
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('user', JSON.stringify(data.user));
+                currentUser = data.user;
+                showApp();
+            } catch (err) {
+                errorEl.textContent = err.message;
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            currentUser = null;
+            document.getElementById('login-screen').classList.remove('hidden');
+            document.getElementById('app').classList.add('hidden');
+        }
+
+        // ===================== UI =====================
+        function showApp() {
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('app').classList.remove('hidden');
+            document.getElementById('user-name').textContent = currentUser.name;
+            document.getElementById('user-role').textContent = currentUser.role;
+            buildNav();
+            navigate('dashboard');
+        }
+
+        function buildNav() {
+            const nav = document.getElementById('main-nav');
+            nav.innerHTML = '';
+            const buttons = [];
+            // Common
+            buttons.push({ id:'dashboard', label:'لوحة التحكم' });
+            // Role-specific
+            if (currentUser.role === 'admin') {
+                buttons.push({ id:'stats', label:'الإحصائيات' });
+                buttons.push({ id:'users', label:'المستخدمون' });
+                buttons.push({ id:'etablissements', label:'المؤسسات' });
+            }
+            if (['admin', 'it', 'director', 'nume'].includes(currentUser.role)) {
+                buttons.push({ id:'needs', label:'الاحتياجات' });
+            }
+            if (currentUser.role === 'it' || currentUser.role === 'admin') {
+                buttons.push({ id:'letters', label:'الرسائل' });
+                buttons.push({ id:'config', label:'التجهيز' });
+            }
+            if (['director', 'admin'].includes(currentUser.role)) {
+                buttons.push({ id:'provisions', label:'توفير الاحتياجات' });
+            }
+            if (['nume', 'admin'].includes(currentUser.role)) {
+                buttons.push({ id:'trainings', label:'التدريب' });
+            }
+            buttons.forEach(b => {
+                const btn = document.createElement('button');
+                btn.textContent = b.label;
+                btn.id = 'nav-' + b.id;
+                btn.onclick = () => navigate(b.id);
+                nav.appendChild(btn);
+            });
+        }
+
+        function navigate(view) {
+            // Remove active class from all nav buttons
+            document.querySelectorAll('#main-nav button').forEach(b => b.classList.remove('active'));
+            const activeBtn = document.getElementById('nav-' + view);
+            if (activeBtn) activeBtn.classList.add('active');
+            const content = document.getElementById('main-content');
+            switch(view) {
+                case 'dashboard': renderDashboard(content); break;
+                case 'stats': renderStats(content); break;
+                case 'users': renderUsers(content); break;
+                case 'etablissements': renderEtablissements(content); break;
+                case 'needs': renderNeeds(content); break;
+                case 'letters': renderLetters(content); break;
+                case 'config': renderConfig(content); break;
+                case 'provisions': renderProvisions(content); break;
+                case 'trainings': renderTrainings(content); break;
+                default: content.innerHTML = '<h2>غير موجود</h2>';
+            }
+        }
+
+        // ===================== DASHBOARD =====================
+        async function renderDashboard(container) {
+            container.innerHTML = '<h2>لوحة التحكم</h2><p>مرحباً '+currentUser.name+'</p>';
+            // Fetch summary based on role
+            try {
+                const summary = await apiFetch('/api/dashboard');
+                const statsHtml = `
+                <div class="grid-2">
+                    <div class="card"><h3>الإحصائيات</h3>
+                        <p>المؤسسات: ${summary.etablissements}</p>
+                        <p>الاحتياجات المعلقة: ${summary.pending_needs}</p>
+                        <p>التدريبات المكتملة: ${summary.completed_trainings}</p>
+                    </div>
+                </div>`;
+                container.innerHTML += statsHtml;
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        // ===================== ADMIN: STATS =====================
+        async function renderStats(container) {
+            container.innerHTML = '<h2>الإحصائيات العامة</h2><div id="stats-content">جاري التحميل...</div>';
+            try {
+                const data = await apiFetch('/api/stats');
+                // Render charts/tables
+                let html = '<div class="card"><h3>حالة الاحتياجات</h3><table><tr><th>المؤسسة</th><th>معلق</th><th>مُوفر</th><th>مُجهز</th></tr>';
+                data.needs_by_etab.forEach(row => {
+                    html += `<tr><td>${row.etablissement_name}</td><td>${row.pending}</td><td>${row.provided}</td><td>${row.configured}</td></tr>`;
+                });
+                html += '</table></div>';
+                html += '<div class="card"><h3>التدريبات</h3><table><tr><th>الفريق</th><th>عدد الجلسات</th><th>مكتملة</th></tr>';
+                data.trainings_by_team.forEach(row => {
+                    html += `<tr><td>${row.team}</td><td>${row.total}</td><td>${row.completed}</td></tr>`;
+                });
+                html += '</table></div>';
+                document.getElementById('stats-content').innerHTML = html;
+            } catch (err) {
+                container.innerHTML = '<p class="error">'+err.message+'</p>';
+            }
+        }
+
+        // ===================== USERS MANAGEMENT =====================
+        async function renderUsers(container) {
+            container.innerHTML = '<h2>إدارة المستخدمين</h2>';
+            const users = await apiFetch('/api/users');
+            let html = '<div class="card"><table><tr><th>الاسم</th><th>البريد</th><th>الدور</th><th>الفريق</th><th>المؤسسة</th></tr>';
+            users.forEach(u => {
+                html += `<tr><td>${u.name}</td><td>${u.email}</td><td>${u.role}</td><td>${u.team || '-'}</td><td>${u.etablissement_name || '-'}</td></tr>`;
+            });
+            html += '</table></div>';
+            // Add user form (simplified)
+            html += `
+            <div class="card"><h3>إضافة مستخدم</h3>
+                <div class="form-inline">
+                    <div class="form-group"><label>الاسم</label><input id="new-user-name"></div>
+                    <div class="form-group"><label>البريد</label><input id="new-user-email"></div>
+                    <div class="form-group"><label>كلمة المرور</label><input id="new-user-password" type="password"></div>
+                    <div class="form-group"><label>الدور</label><select id="new-user-role">
+                        <option value="admin">مدير</option>
+                        <option value="it">فريق IT</option>
+                        <option value="director">مدير مؤسسة</option>
+                        <option value="nume">فريق Numé</option>
+                    </select></div>
+                    <div class="form-group"><label>الفريق (إن وجد)</label><select id="new-user-team">
+                        <option value="">--</option>
+                        <option>LabIT</option><option>RadioIT</option><option>ConfigIT</option>
+                        <option>NuméMed</option><option>NuméParaMed</option><option>NuméAdm</option>
+                    </select></div>
+                    <button class="btn" onclick="addUser()">إضافة</button>
+                </div>
+            </div>`;
+            container.innerHTML = html;
+        }
+
+        async function addUser() {
+            const name = document.getElementById('new-user-name').value;
+            const email = document.getElementById('new-user-email').value;
+            const password = document.getElementById('new-user-password').value;
+            const role = document.getElementById('new-user-role').value;
+            const team = document.getElementById('new-user-team').value || null;
+            try {
+                await apiFetch('/api/users', 'POST', { name, email, password, role, team });
+                alert('تمت الإضافة');
+                navigate('users');
+            } catch (err) { alert(err.message); }
+        }
+
+        // ===================== ETABLISSEMENTS =====================
+        async function renderEtablissements(container) {
+            container.innerHTML = '<h2>المؤسسات</h2><div id="etab-list">جاري التحميل...</div>';
+            try {
+                const etabs = await apiFetch('/api/etablissements');
+                let html = '<div class="card"><table><tr><th>الاسم</th><th>النوع</th><th>البلدية</th></tr>';
+                etabs.forEach(e => {
+                    html += `<tr><td>${e.name}</td><td>${e.type}</td><td>${e.commune}</td></tr>`;
+                });
+                html += '</table></div>';
+                document.getElementById('etab-list').innerHTML = html;
+            } catch (err) { container.innerHTML = '<p>'+err.message+'</p>'; }
+        }
+
+        // ===================== NEEDS (IT & Admin) =====================
+        async function renderNeeds(container) {
+            container.innerHTML = '<h2>الاحتياجات</h2><div id="needs-content">جاري التحميل...</div>';
+            try {
+                const needs = await apiFetch('/api/needs');
+                const etabs = await apiFetch('/api/etablissements');
+                let html = '<div class="card"><h3>إضافة حاجة</h3><div class="form-inline">';
+                html += `<div class="form-group"><label>المؤسسة</label><select id="need-etab">${etabs.map(e => `<option value="${e.id}">${e.name}</option>`).join('')}</select></div>`;
+                html += `<div class="form-group"><label>الفريق</label><select id="need-team"><option>LabIT</option><option>RadioIT</option><option>ConfigIT</option></select></div>`;
+                html += `<div class="form-group"><label>الصنف</label><input id="need-item"></div>`;
+                html += `<div class="form-group"><label>الكمية</label><input id="need-qty" type="number" min="1"></div>`;
+                html += `<div class="form-group"><label>المواصفات</label><input id="need-specs"></div>`;
+                html += `<button class="btn" onclick="addNeed()">إضافة</button></div></div>`;
+                // List needs
+                html += '<div class="card"><h3>قائمة الاحتياجات</h3><table><tr><th>المؤسسة</th><th>الفريق</th><th>الصنف</th><th>الكمية</th><th>الحالة</th></tr>';
+                needs.forEach(n => {
+                    const statusClass = n.status === 'pending' ? 'status-pending' : n.status === 'provided' ? 'status-provided' : 'status-configured';
+                    html += `<tr><td>${n.etablissement_name}</td><td>${n.team}</td><td>${n.item_name}</td><td>${n.quantity}</td><td><span class="status-badge ${statusClass}">${n.status}</span></td></tr>`;
+                });
+                html += '</table></div>';
+                document.getElementById('needs-content').innerHTML = html;
+            } catch (err) { container.innerHTML = '<p>'+err.message+'</p>'; }
+        }
+
+        async function addNeed() {
+            const etablissement_id = document.getElementById('need-etab').value;
+            const team = document.getElementById('need-team').value;
+            const item_name = document.getElementById('need-item').value;
+            const quantity = document.getElementById('need-qty').value;
+            const specs = document.getElementById('need-specs').value;
+            try {
+                await apiFetch('/api/needs', 'POST', { etablissement_id, team, item_name, quantity, specs });
+                alert('تمت الإضافة');
+                navigate('needs');
+            } catch (err) { alert(err.message); }
+        }
+
+        // ===================== LETTERS =====================
+        async function renderLetters(container) {
+            container.innerHTML = '<h2>إنشاء الرسائل</h2><div class="card"><h3>اختر المؤسسة</h3><select id="letter-etab"></select> <button class="btn" onclick="generateLetter()">إنشاء رسالة</button></div>';
+            const etabs = await apiFetch('/api/etablissements');
+            document.getElementById('letter-etab').innerHTML = etabs.map(e => `<option value="${e.id}">${e.name}</option>`).join('');
+        }
+
+        async function generateLetter() {
+            const etabId = document.getElementById('letter-etab').value;
+            // Open letter in new window
+            window.open('/api/letter/' + etabId, '_blank');
+        }
+
+        // ===================== CONFIGURATION =====================
+        async function renderConfig(container) {
+            container.innerHTML = '<h2>تحديث حالة التجهيز</h2><div id="config-content">جاري التحميل...</div>';
+            try {
+                const needs = await apiFetch('/api/needs?status=provided');
+                let html = '<div class="card"><table><tr><th>المؤسسة</th><th>الصنف</th><th>الكمية</th><th>إجراء</th></tr>';
+                needs.forEach(n => {
+                    html += `<tr><td>${n.etablissement_name}</td><td>${n.item_name}</td><td>${n.quantity}</td><td><button class="btn btn-success" onclick="markConfigured(${n.id})">تم التجهيز</button></td></tr>`;
+                });
+                html += '</table></div>';
+                document.getElementById('config-content').innerHTML = html;
+            } catch (err) { container.innerHTML = '<p>'+err.message+'</p>'; }
+        }
+
+        async function markConfigured(needId) {
+            try {
+                await apiFetch('/api/needs/'+needId+'/configure', 'PUT');
+                alert('تم التحديث');
+                navigate('config');
+            } catch (err) { alert(err.message); }
+        }
+
+        // ===================== PROVISIONS (Director) =====================
+        async function renderProvisions(container) {
+            container.innerHTML = '<h2>توفير الاحتياجات</h2><div id="prov-content">جاري التحميل...</div>';
+            try {
+                const needs = await apiFetch('/api/needs?status=pending');
+                let html = '<div class="card"><table><tr><th>المؤسسة</th><th>الصنف</th><th>الكمية</th><th>إجراء</th></tr>';
+                needs.forEach(n => {
+                    html += `<tr><td>${n.etablissement_name}</td><td>${n.item_name}</td><td>${n.quantity}</td><td><button class="btn btn-primary" onclick="markProvided(${n.id})">تم التوفير</button></td></tr>`;
+                });
+                html += '</table></div>';
+                document.getElementById('prov-content').innerHTML = html;
+            } catch (err) { container.innerHTML = '<p>'+err.message+'</p>'; }
+        }
+
+        async function markProvided(needId) {
+            try {
+                await apiFetch('/api/needs/'+needId+'/provide', 'PUT');
+                alert('تم التحديث');
+                navigate('provisions');
+            } catch (err) { alert(err.message); }
+        }
+
+        // ===================== TRAININGS =====================
+        async function renderTrainings(container) {
+            container.innerHTML = '<h2>التدريب</h2><div id="train-content">جاري التحميل...</div>';
+            try {
+                const trainings = await apiFetch('/api/trainings');
+                const etabs = await apiFetch('/api/etablissements');
+                let html = '<div class="card"><h3>تسجيل جلسة تدريب</h3><div class="form-inline">';
+                html += `<div class="form-group"><label>المؤسسة</label><select id="train-etab">${etabs.map(e => `<option value="${e.id}">${e.name}</option>`).join('')}</select></div>`;
+                html += `<div class="form-group"><label>الفريق المدرب</label><select id="train-team"><option>NuméMed</option><option>NuméParaMed</option><option>NuméAdm</option><option>Central</option></select></div>`;
+                html += `<div class="form-group"><label>الفئة المستهدفة</label><select id="train-trainee"><option>أطباء</option><option>شبه طبي</option><option>إداريون</option><option>فريق محلي</option></select></div>`;
+                html += `<div class="form-group"><label>التاريخ</label><input type="date" id="train-date"></div>`;
+                html += `<div class="form-group"><label>ملاحظات</label><input id="train-notes"></div>`;
+                html += `<div class="form-group"><label>صورة (Base64)</label><input type="file" id="train-photo" accept="image/*"></div>`;
+                html += `<button class="btn" onclick="addTraining()">إضافة</button></div></div>`;
+                // List trainings
+                html += '<div class="card"><h3>الجلسات المسجلة</h3><table><tr><th>المؤسسة</th><th>الفريق</th><th>الفئة</th><th>التاريخ</th><th>الحالة</th><th>صور</th></tr>';
+                trainings.forEach(t => {
+                    const statusClass = t.status === 'completed' ? 'status-completed' : 'status-pending';
+                    html += `<tr><td>${t.etablissement_name}</td><td>${t.trainer_team}</td><td>${t.trainee_type}</td><td>${t.session_date}</td><td><span class="status-badge ${statusClass}">${t.status}</span></td><td>`;
+                    if (t.photos && t.photos.length > 0) {
+                        t.photos.forEach(p => {
+                            html += `<img src="${p}" class="photo-thumb" onclick="window.open('${p}','_blank')">`;
+                        });
+                    } else { html += '-'; }
+                    html += `</td></tr>`;
+                });
+                html += '</table></div>';
+                document.getElementById('train-content').innerHTML = html;
+            } catch (err) { container.innerHTML = '<p>'+err.message+'</p>'; }
+        }
+
+        async function addTraining() {
+            const etablissement_id = document.getElementById('train-etab').value;
+            const trainer_team = document.getElementById('train-team').value;
+            const trainee_type = document.getElementById('train-trainee').value;
+            const session_date = document.getElementById('train-date').value;
+            const notes = document.getElementById('train-notes').value;
+            const photoInput = document.getElementById('train-photo');
+            let photoBase64 = null;
+            if (photoInput.files.length > 0) {
+                const file = photoInput.files[0];
+                const reader = new FileReader();
+                reader.onload = async (e) => {
+                    photoBase64 = e.target.result;
+                    await submitTraining({ etablissement_id, trainer_team, trainee_type, session_date, notes, photo: photoBase64 });
+                };
+                reader.readAsDataURL(file);
+            } else {
+                await submitTraining({ etablissement_id, trainer_team, trainee_type, session_date, notes });
+            }
+        }
+
+        async function submitTraining(data) {
+            try {
+                await apiFetch('/api/trainings', 'POST', data);
+                alert('تم التسجيل');
+                navigate('trainings');
+            } catch (err) { alert(err.message); }
+        }
+
+        // ===================== INIT =====================
+        window.onload = function() {
+            const token = localStorage.getItem('token');
+            const user = JSON.parse(localStorage.getItem('user') || 'null');
+            if (token && user) {
+                currentUser = user;
+                showApp();
+            }
+        };
+    </script>
+</body>
+</html>
