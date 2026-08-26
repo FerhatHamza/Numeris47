@@ -178,10 +178,11 @@
     </div>
 
     <script>
-        // ===================== PROTECTION (Enhanced) =====================
+        // ===================== PROTECTION (Mobile-Safe) =====================
         (function() {
             // Disable right-click
             document.addEventListener('contextmenu', e => e.preventDefault());
+
             // Disable common devtools shortcuts
             document.addEventListener('keydown', e => {
                 if (e.key === 'F12' ||
@@ -191,22 +192,24 @@
                     return false;
                 }
             });
-            // Detect devtools using debugger timing
-            let devtoolsOpen = false;
-            const threshold = 160;
-            setInterval(() => {
-                const widthThreshold = window.outerWidth - window.innerWidth > threshold;
-                const heightThreshold = window.outerHeight - window.innerHeight > threshold;
-                if (widthThreshold || heightThreshold) {
-                    devtoolsOpen = true;
-                } else {
-                    devtoolsOpen = false;
-                }
-                if (devtoolsOpen) {
-                    document.body.innerHTML = '<h1 style="text-align:center;margin-top:50px;">Access Denied</h1>';
-                    clearInterval(this);
-                }
-            }, 1000);
+
+            // Detect devtools only on non-touch (desktop) devices
+            // Mobile keyboards change viewport size, causing false positives
+            const isTouchDevice = window.matchMedia('(pointer: coarse)').matches || 
+                                  'ontouchstart' in window || 
+                                  navigator.maxTouchPoints > 0;
+
+            if (!isTouchDevice) {
+                const threshold = 160;
+                setInterval(() => {
+                    const widthThreshold = window.outerWidth - window.innerWidth > threshold;
+                    const heightThreshold = window.outerHeight - window.innerHeight > threshold;
+                    if (widthThreshold || heightThreshold) {
+                        document.body.innerHTML = '<h1 style="text-align:center;margin-top:50px;">Access Denied</h1>';
+                        clearInterval(this);
+                    }
+                }, 1000);
+            }
         })();
 
         // ===================== GLOBALS =====================
@@ -253,7 +256,6 @@
                         const errorData = await res.json();
                         errorMessage = errorData.message || errorMessage;
                     } catch (e) {
-                        // If response is not JSON, use status text
                         errorMessage = res.statusText || errorMessage;
                     }
                     throw new Error(errorMessage);
@@ -273,7 +275,6 @@
             const loginBtn = document.getElementById('login-btn');
             errorEl.textContent = '';
 
-            // Basic validation
             if (!email || !password) {
                 errorEl.textContent = 'يرجى ملء جميع الحقول';
                 return;
@@ -299,11 +300,7 @@
 
         function togglePasswordVisibility() {
             const pwdInput = document.getElementById('login-password');
-            if (pwdInput.type === 'password') {
-                pwdInput.type = 'text';
-            } else {
-                pwdInput.type = 'password';
-            }
+            pwdInput.type = pwdInput.type === 'password' ? 'text' : 'password';
         }
 
         function logout() {
@@ -336,9 +333,7 @@
             const nav = document.getElementById('main-nav');
             nav.innerHTML = '';
             const buttons = [];
-            // Common
             buttons.push({ id: 'dashboard', label: 'لوحة التحكم' });
-            // Role-specific
             if (currentUser.role === 'admin') {
                 buttons.push({ id: 'stats', label: 'الإحصائيات' });
                 buttons.push({ id: 'users', label: 'المستخدمون' });
@@ -365,7 +360,6 @@
                 btn.setAttribute('aria-label', b.label);
                 btn.onclick = () => {
                     navigate(b.id);
-                    // Close mobile nav after selection
                     document.getElementById('main-nav').classList.remove('open');
                 };
                 nav.appendChild(btn);
@@ -377,7 +371,6 @@
             const activeBtn = document.getElementById('nav-' + view);
             if (activeBtn) activeBtn.classList.add('active');
             const content = document.getElementById('main-content');
-            // Show loading indicator
             content.innerHTML = '<div style="text-align:center;padding:40px;">جاري التحميل...</div>';
 
             switch(view) {
@@ -444,7 +437,6 @@
                     html += `<tr><td>${escapeHtml(u.name)}</td><td>${escapeHtml(u.email)}</td><td>${escapeHtml(u.role)}</td><td>${escapeHtml(u.team || '-')}</td><td>${escapeHtml(u.etablissement_name || '-')}</td></tr>`;
                 });
                 html += '</table></div>';
-                // Add user form
                 html += `
                 <div class="card"><h3>إضافة مستخدم</h3>
                     <div class="form-inline">
@@ -529,7 +521,6 @@
                 html += `<div class="form-group"><label for="need-qty">الكمية</label><input id="need-qty" type="number" min="1" required></div>`;
                 html += `<div class="form-group"><label for="need-specs">المواصفات</label><input id="need-specs"></div>`;
                 html += `<button class="btn" id="add-need-btn" onclick="addNeed()">إضافة</button></div></div>`;
-                // List needs
                 html += '<div class="card"><h3>قائمة الاحتياجات</h3><table><tr><th>المؤسسة</th><th>الفريق</th><th>الصنف</th><th>الكمية</th><th>الحالة</th></tr>';
                 needs.forEach(n => {
                     const statusClass = n.status === 'pending' ? 'status-pending' : n.status === 'provided' ? 'status-provided' : 'status-configured';
@@ -586,7 +577,6 @@
                 showToast('يرجى اختيار مؤسسة', 'error');
                 return;
             }
-            // Open letter in new window (correct API_BASE)
             window.open(API_BASE + '/api/letter/' + etabId, '_blank');
         }
 
@@ -660,7 +650,6 @@
                 html += `<div class="form-group"><label for="train-notes">ملاحظات</label><input id="train-notes"></div>`;
                 html += `<div class="form-group"><label for="train-photo">صورة (Base64)</label><input type="file" id="train-photo" accept="image/*"></div>`;
                 html += `<button class="btn" id="add-training-btn" onclick="addTraining()">إضافة</button></div></div>`;
-                // List trainings
                 html += '<div class="card"><h3>الجلسات المسجلة</h3><table><tr><th>المؤسسة</th><th>الفريق</th><th>الفئة</th><th>التاريخ</th><th>الحالة</th><th>صور</th></tr>';
                 trainings.forEach(t => {
                     const statusClass = t.status === 'completed' ? 'status-completed' : 'status-pending';
