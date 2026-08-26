@@ -181,7 +181,6 @@
 <div id="auth-screen">
     <div class="auth-box">
         <h2 id="auth-title">تسجيل الدخول</h2>
-        <!-- Tabs will be shown only if setup needed -->
         <div class="auth-tabs hidden" id="auth-tabs">
             <button id="tab-login" class="active" onclick="switchAuthTab('login')">دخول</button>
             <button id="tab-setup" onclick="switchAuthTab('setup')">إنشاء حساب مدير</button>
@@ -281,8 +280,8 @@
 
     // ================= GLOBALS =================
     let currentUser = null;
-    const API_BASE = 'https://empty-grass-e190.05juillet-ballouh-info-8e2.workers.dev'; // No trailing slash
-    let authMode = 'setup'; // 'login' or 'setup'
+    const API_BASE = 'https://empty-grass-e190.05juillet-ballouh-info-8e2.workers.dev'; // <-- replace with your Worker URL (no trailing slash)
+    let authMode = 'login'; // 'login' or 'setup'
 
     // ================= HELPERS =================
     function escapeHtml(str) {
@@ -325,7 +324,6 @@
         try {
             const data = await apiFetch('/api/setup-status', 'GET', null, false);
             if (data.needsSetup) {
-                // Show tabs, default to setup
                 document.getElementById('auth-tabs').classList.remove('hidden');
                 document.getElementById('auth-title').textContent = 'إعداد النظام';
                 switchAuthTab('setup');
@@ -336,7 +334,6 @@
             }
         } catch(err) {
             console.error('Setup check failed:', err);
-            // Default to login
             document.getElementById('auth-tabs').classList.add('hidden');
             switchAuthTab('login');
         }
@@ -501,6 +498,7 @@
             </div>`;
         } catch(e) { container.innerHTML += `<p class="error-text">${escapeHtml(e.message)}</p>`; }
     }
+
     async function renderStats(container) {
         container.innerHTML = '<div id="stats-content">جاري التحميل...</div>';
         try {
@@ -518,9 +516,325 @@
             document.getElementById('stats-content').innerHTML = html;
         } catch(e) { container.innerHTML = `<p class="error-text">${escapeHtml(e.message)}</p>`; }
     }
-    // ... (other render functions remain similar, just updated CSS classes)
-    // For brevity I will include them all here but you can reuse previous functions with minor adjustments.
-    // I'll add them in the full code below.
+
+    async function renderUsers(container) {
+        container.innerHTML = '<h2>إدارة المستخدمين</h2>';
+        try {
+            const [users, etabs] = await Promise.all([
+                apiFetch('/api/users'),
+                apiFetch('/api/etablissements')
+            ]);
+
+            let html = '<div class="card"><table><tr><th>الاسم</th><th>البريد</th><th>الدور</th><th>الفريق</th><th>المؤسسة</th></tr>';
+            users.forEach(u => {
+                html += `<tr>
+                    <td>${escapeHtml(u.name)}</td>
+                    <td>${escapeHtml(u.email)}</td>
+                    <td>${escapeHtml(u.role)}</td>
+                    <td>${escapeHtml(u.team || '-')}</td>
+                    <td>${escapeHtml(u.etablissement_name || '-')}</td>
+                </tr>`;
+            });
+            html += '</table></div>';
+
+            html += `
+            <div class="card"><h3>إضافة مستخدم</h3>
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label for="new-user-name">الاسم</label>
+                        <input id="new-user-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-user-email">البريد</label>
+                        <input id="new-user-email" type="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-user-password">كلمة المرور</label>
+                        <input id="new-user-password" type="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-user-role">الدور</label>
+                        <select id="new-user-role">
+                            <option value="admin">مدير</option>
+                            <option value="it">فريق IT</option>
+                            <option value="director">مدير مؤسسة</option>
+                            <option value="nume">فريق Numé</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-user-team">الفريق (إن وجد)</label>
+                        <select id="new-user-team">
+                            <option value="">--</option>
+                            <option>LabIT</option>
+                            <option>RadioIT</option>
+                            <option>ConfigIT</option>
+                            <option>NuméMed</option>
+                            <option>NuméParaMed</option>
+                            <option>NuméAdm</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-user-etab">المؤسسة</label>
+                        <select id="new-user-etab">
+                            <option value="">-- بدون مؤسسة --</option>
+                            ${etabs.map(e => `<option value="${e.id}">${escapeHtml(e.name)}</option>`).join('')}
+                        </select>
+                    </div>
+                    <button class="btn" id="add-user-btn" onclick="addUser()">إضافة</button>
+                </div>
+            </div>`;
+
+            container.innerHTML = html;
+        } catch (err) {
+            container.innerHTML = `<p class="error-text">${escapeHtml(err.message)}</p>`;
+        }
+    }
+
+    async function addUser() {
+        const name = document.getElementById('new-user-name').value.trim();
+        const email = document.getElementById('new-user-email').value.trim();
+        const password = document.getElementById('new-user-password').value;
+        const role = document.getElementById('new-user-role').value;
+        const team = document.getElementById('new-user-team').value || null;
+        const etablissement_id = document.getElementById('new-user-etab').value || null;
+        const btn = document.getElementById('add-user-btn');
+
+        if (!name || !email || !password) {
+            showToast('يرجى ملء جميع الحقول المطلوبة', 'error');
+            return;
+        }
+
+        btn.disabled = true;
+        btn.textContent = 'جاري الإضافة...';
+        try {
+            await apiFetch('/api/users', 'POST', { 
+                name, email, password, role, team, etablissement_id 
+            });
+            showToast('تمت الإضافة بنجاح', 'success');
+            navigate('users');
+        } catch (err) {
+            showToast(err.message, 'error');
+        } finally {
+            btn.disabled = false;
+            btn.textContent = 'إضافة';
+        }
+    }
+
+    async function renderEtablissements(container) {
+        container.innerHTML = '<h2>المؤسسات</h2><div id="etab-list">جاري التحميل...</div>';
+        try {
+            const etabs = await apiFetch('/api/etablissements');
+            let html = '<div class="card"><table><tr><th>الاسم</th><th>النوع</th><th>البلدية</th></tr>';
+            etabs.forEach(e => {
+                html += `<tr><td>${escapeHtml(e.name)}</td><td>${escapeHtml(e.type)}</td><td>${escapeHtml(e.commune)}</td></tr>`;
+            });
+            html += '</table></div>';
+            document.getElementById('etab-list').innerHTML = html;
+        } catch (err) {
+            container.innerHTML = `<p class="error-text">${escapeHtml(err.message)}</p>`;
+        }
+    }
+
+    async function renderNeeds(container) {
+        container.innerHTML = '<h2>الاحتياجات</h2><div id="needs-content">جاري التحميل...</div>';
+        try {
+            const [needs, etabs] = await Promise.all([
+                apiFetch('/api/needs'),
+                apiFetch('/api/etablissements')
+            ]);
+            let html = '<div class="card"><h3>إضافة حاجة</h3><div class="form-inline">';
+            html += `<div class="form-group"><label for="need-etab">المؤسسة</label><select id="need-etab">${etabs.map(e => `<option value="${e.id}">${escapeHtml(e.name)}</option>`).join('')}</select></div>`;
+            html += `<div class="form-group"><label for="need-team">الفريق</label><select id="need-team"><option>LabIT</option><option>RadioIT</option><option>ConfigIT</option></select></div>`;
+            html += `<div class="form-group"><label for="need-item">الصنف</label><input id="need-item" required></div>`;
+            html += `<div class="form-group"><label for="need-qty">الكمية</label><input id="need-qty" type="number" min="1" required></div>`;
+            html += `<div class="form-group"><label for="need-specs">المواصفات</label><input id="need-specs"></div>`;
+            html += `<button class="btn" id="add-need-btn" onclick="addNeed()">إضافة</button></div></div>`;
+            html += '<div class="card"><h3>قائمة الاحتياجات</h3><table><tr><th>المؤسسة</th><th>الفريق</th><th>الصنف</th><th>الكمية</th><th>الحالة</th></tr>';
+            needs.forEach(n => {
+                const statusClass = n.status === 'pending' ? 'status-pending' : n.status === 'provided' ? 'status-provided' : 'status-configured';
+                html += `<tr><td>${escapeHtml(n.etablissement_name)}</td><td>${escapeHtml(n.team)}</td><td>${escapeHtml(n.item_name)}</td><td>${n.quantity}</td><td><span class="status-badge ${statusClass}">${escapeHtml(n.status)}</span></td></tr>`;
+            });
+            html += '</table></div>';
+            document.getElementById('needs-content').innerHTML = html;
+        } catch (err) {
+            container.innerHTML = `<p class="error-text">${escapeHtml(err.message)}</p>`;
+        }
+    }
+
+    async function addNeed() {
+        const etablissement_id = document.getElementById('need-etab').value;
+        const team = document.getElementById('need-team').value;
+        const item_name = document.getElementById('need-item').value.trim();
+        const quantity = document.getElementById('need-qty').value;
+        const specs = document.getElementById('need-specs').value.trim();
+        const btn = document.getElementById('add-need-btn');
+
+        if (!etablissement_id || !team || !item_name || !quantity) {
+            showToast('يرجى ملء الحقول المطلوبة', 'error');
+            return;
+        }
+
+        btn.disabled = true;
+        btn.textContent = 'جاري الإضافة...';
+        try {
+            await apiFetch('/api/needs', 'POST', { etablissement_id, team, item_name, quantity, specs });
+            showToast('تمت الإضافة بنجاح', 'success');
+            navigate('needs');
+        } catch (err) {
+            showToast(err.message, 'error');
+        } finally {
+            btn.disabled = false;
+            btn.textContent = 'إضافة';
+        }
+    }
+
+    async function renderLetters(container) {
+        container.innerHTML = '<h2>إنشاء الرسائل</h2><div class="card"><h3>اختر المؤسسة</h3><select id="letter-etab"></select> <button class="btn" onclick="generateLetter()">إنشاء رسالة</button></div>';
+        try {
+            const etabs = await apiFetch('/api/etablissements');
+            document.getElementById('letter-etab').innerHTML = etabs.map(e => `<option value="${e.id}">${escapeHtml(e.name)}</option>`).join('');
+        } catch (err) {
+            container.innerHTML = `<p class="error-text">${escapeHtml(err.message)}</p>`;
+        }
+    }
+
+    async function generateLetter() {
+        const etabId = document.getElementById('letter-etab').value;
+        if (!etabId) {
+            showToast('يرجى اختيار مؤسسة', 'error');
+            return;
+        }
+        window.open(API_BASE + '/api/letter/' + etabId, '_blank');
+    }
+
+    async function renderConfig(container) {
+        container.innerHTML = '<h2>تحديث حالة التجهيز</h2><div id="config-content">جاري التحميل...</div>';
+        try {
+            const needs = await apiFetch('/api/needs?status=provided');
+            let html = '<div class="card"><table><tr><th>المؤسسة</th><th>الصنف</th><th>الكمية</th><th>إجراء</th></tr>';
+            needs.forEach(n => {
+                html += `<tr><td>${escapeHtml(n.etablissement_name)}</td><td>${escapeHtml(n.item_name)}</td><td>${n.quantity}</td><td><button class="btn btn-success" onclick="markConfigured(${n.id})">تم التجهيز</button></td></tr>`;
+            });
+            html += '</table></div>';
+            document.getElementById('config-content').innerHTML = html;
+        } catch (err) {
+            container.innerHTML = `<p class="error-text">${escapeHtml(err.message)}</p>`;
+        }
+    }
+
+    async function markConfigured(needId) {
+        if (!confirm('هل أنت متأكد من تحديد هذا العنصر كمُجهز؟')) return;
+        try {
+            await apiFetch('/api/needs/' + needId + '/configure', 'PUT');
+            showToast('تم التحديث بنجاح', 'success');
+            navigate('config');
+        } catch (err) {
+            showToast(err.message, 'error');
+        }
+    }
+
+    async function renderProvisions(container) {
+        container.innerHTML = '<h2>توفير الاحتياجات</h2><div id="prov-content">جاري التحميل...</div>';
+        try {
+            const needs = await apiFetch('/api/needs?status=pending');
+            let html = '<div class="card"><table><tr><th>المؤسسة</th><th>الصنف</th><th>الكمية</th><th>إجراء</th></tr>';
+            needs.forEach(n => {
+                html += `<tr><td>${escapeHtml(n.etablissement_name)}</td><td>${escapeHtml(n.item_name)}</td><td>${n.quantity}</td><td><button class="btn btn-primary" onclick="markProvided(${n.id})">تم التوفير</button></td></tr>`;
+            });
+            html += '</table></div>';
+            document.getElementById('prov-content').innerHTML = html;
+        } catch (err) {
+            container.innerHTML = `<p class="error-text">${escapeHtml(err.message)}</p>`;
+        }
+    }
+
+    async function markProvided(needId) {
+        if (!confirm('هل أنت متأكد من تحديد هذا العنصر كمُوفر؟')) return;
+        try {
+            await apiFetch('/api/needs/' + needId + '/provide', 'PUT');
+            showToast('تم التحديث بنجاح', 'success');
+            navigate('provisions');
+        } catch (err) {
+            showToast(err.message, 'error');
+        }
+    }
+
+    async function renderTrainings(container) {
+        container.innerHTML = '<h2>التدريب</h2><div id="train-content">جاري التحميل...</div>';
+        try {
+            const [trainings, etabs] = await Promise.all([
+                apiFetch('/api/trainings'),
+                apiFetch('/api/etablissements')
+            ]);
+            let html = '<div class="card"><h3>تسجيل جلسة تدريب</h3><div class="form-inline">';
+            html += `<div class="form-group"><label for="train-etab">المؤسسة</label><select id="train-etab">${etabs.map(e => `<option value="${e.id}">${escapeHtml(e.name)}</option>`).join('')}</select></div>`;
+            html += `<div class="form-group"><label for="train-team">الفريق المدرب</label><select id="train-team"><option>NuméMed</option><option>NuméParaMed</option><option>NuméAdm</option><option>Central</option></select></div>`;
+            html += `<div class="form-group"><label for="train-trainee">الفئة المستهدفة</label><select id="train-trainee"><option>أطباء</option><option>شبه طبي</option><option>إداريون</option><option>فريق محلي</option></select></div>`;
+            html += `<div class="form-group"><label for="train-date">التاريخ</label><input type="date" id="train-date" required></div>`;
+            html += `<div class="form-group"><label for="train-notes">ملاحظات</label><input id="train-notes"></div>`;
+            html += `<div class="form-group"><label for="train-photo">صورة (Base64)</label><input type="file" id="train-photo" accept="image/*"></div>`;
+            html += `<button class="btn" id="add-training-btn" onclick="addTraining()">إضافة</button></div></div>`;
+            html += '<div class="card"><h3>الجلسات المسجلة</h3><table><tr><th>المؤسسة</th><th>الفريق</th><th>الفئة</th><th>التاريخ</th><th>الحالة</th><th>صور</th></tr>';
+            trainings.forEach(t => {
+                const statusClass = t.status === 'completed' ? 'status-completed' : 'status-pending';
+                html += `<tr><td>${escapeHtml(t.etablissement_name)}</td><td>${escapeHtml(t.trainer_team)}</td><td>${escapeHtml(t.trainee_type)}</td><td>${escapeHtml(t.session_date)}</td><td><span class="status-badge ${statusClass}">${escapeHtml(t.status)}</span></td><td>`;
+                if (t.photos && t.photos.length > 0) {
+                    t.photos.forEach(p => {
+                        html += `<img src="${escapeHtml(p)}" class="photo-thumb" onclick="window.open('${escapeHtml(p)}','_blank')">`;
+                    });
+                } else { html += '-'; }
+                html += `</td></tr>`;
+            });
+            html += '</table></div>';
+            document.getElementById('train-content').innerHTML = html;
+        } catch (err) {
+            container.innerHTML = `<p class="error-text">${escapeHtml(err.message)}</p>`;
+        }
+    }
+
+    async function addTraining() {
+        const etablissement_id = document.getElementById('train-etab').value;
+        const trainer_team = document.getElementById('train-team').value;
+        const trainee_type = document.getElementById('train-trainee').value;
+        const session_date = document.getElementById('train-date').value;
+        const notes = document.getElementById('train-notes').value.trim();
+        const photoInput = document.getElementById('train-photo');
+        const btn = document.getElementById('add-training-btn');
+
+        if (!etablissement_id || !trainer_team || !trainee_type || !session_date) {
+            showToast('يرجى ملء الحقول المطلوبة', 'error');
+            return;
+        }
+
+        btn.disabled = true;
+        btn.textContent = 'جاري الإضافة...';
+
+        let photoBase64 = null;
+        if (photoInput.files.length > 0) {
+            const file = photoInput.files[0];
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                photoBase64 = e.target.result;
+                await submitTraining({ etablissement_id, trainer_team, trainee_type, session_date, notes, photo: photoBase64 }, btn);
+            };
+            reader.readAsDataURL(file);
+        } else {
+            await submitTraining({ etablissement_id, trainer_team, trainee_type, session_date, notes }, btn);
+        }
+    }
+
+    async function submitTraining(data, btn) {
+        try {
+            await apiFetch('/api/trainings', 'POST', data);
+            showToast('تم التسجيل بنجاح', 'success');
+            navigate('trainings');
+        } catch (err) {
+            showToast(err.message, 'error');
+        } finally {
+            btn.disabled = false;
+            btn.textContent = 'إضافة';
+        }
+    }
 
     // ================= INIT =================
     window.onload = function() {
