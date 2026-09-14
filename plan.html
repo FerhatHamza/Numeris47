@@ -5,6 +5,149 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>DME Ghardaïa · Généralisation &amp; Formation</title>
 <script src="https://cdn.tailwindcss.com"></script>
+
+<!-- ============================= PROTECTION LAYER ============================= -->
+<script>
+(function () {
+  'use strict';
+
+  const CONFIG = {
+    THRESHOLD: 160,
+    INTERVAL: 700,
+    AUTO_LOCK: true,
+    FREEZE_PAGE: true
+  };
+
+  function ensureOverlay() {
+    let el = document.getElementById('__access_denied__');
+    if (el) return el;
+    el = document.createElement('div');
+    el.id = '__access_denied__';
+    el.setAttribute('role', 'alertdialog');
+    el.style.cssText = [
+      'position:fixed','inset:0','z-index:2147483647',
+      'background:#0f172a','color:#f8fafc',
+      'display:none','align-items:center','justify-content:center',
+      'font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif',
+      'text-align:center','padding:24px','user-select:none'
+    ].join(';');
+    el.innerHTML = `
+      <div style="max-width:520px">
+        <div style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#f87171;font-weight:700;margin-bottom:14px">
+          Accès refusé
+        </div>
+        <h1 style="font-size:28px;font-weight:700;margin:0 0 12px 0;line-height:1.2">
+          Outils de développement détectés
+        </h1>
+        <p style="font-size:14px;color:#94a3b8;line-height:1.6;margin:0 0 22px 0">
+          L'inspection du code source et l'utilisation des outils de développement sont
+          désactivées sur cette application.
+        </p>
+        <div style="display:inline-block;background:#1e293b;border:1px solid #334155;border-radius:10px;
+                    padding:10px 16px;font-size:12px;color:#cbd5e1;font-family:ui-monospace,monospace">
+          Veuillez fermer les outils de développement pour continuer.
+        </div>
+        <div style="margin-top:22px;font-size:11px;color:#64748b">
+          DME Ghardaïa — Accès protégé
+        </div>
+      </div>`;
+    document.body.appendChild(el);
+    return el;
+  }
+
+  let locked = false;
+
+  function swallow(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    return false;
+  }
+
+  function lock() {
+    if (locked) return;
+    locked = true;
+    if (!CONFIG.AUTO_LOCK) return;
+    const el = ensureOverlay();
+    el.style.display = 'flex';
+    document.documentElement.style.overflow = 'hidden';
+    if (CONFIG.FREEZE_PAGE) {
+      document.addEventListener('keydown', swallow, true);
+      document.addEventListener('mousedown', swallow, true);
+      document.addEventListener('wheel', swallow, { capture: true, passive: false });
+    }
+  }
+
+  function unlock() {
+    if (!locked) return;
+    locked = false;
+    const el = document.getElementById('__access_denied__');
+    if (el) el.style.display = 'none';
+    document.documentElement.style.overflow = '';
+    document.removeEventListener('keydown', swallow, true);
+    document.removeEventListener('mousedown', swallow, true);
+    document.removeEventListener('wheel', swallow, true);
+  }
+
+  document.addEventListener('contextmenu', e => { e.preventDefault(); return false; }, true);
+
+  document.addEventListener('keydown', e => {
+    const k = e.key ? e.key.toLowerCase() : '';
+    const ctrl = e.ctrlKey || e.metaKey;
+    const shift = e.shiftKey;
+    if (k === 'f12') { e.preventDefault(); e.stopPropagation(); lock(); return false; }
+    if (ctrl && shift && (k === 'i' || k === 'j' || k === 'c' || k === 'k')) {
+      e.preventDefault(); e.stopPropagation(); lock(); return false;
+    }
+    if (ctrl && k === 'u') { e.preventDefault(); e.stopPropagation(); lock(); return false; }
+    if (ctrl && k === 's') { e.preventDefault(); e.stopPropagation(); return false; }
+    if (ctrl && shift && k === 'e') { e.preventDefault(); e.stopPropagation(); return false; }
+  }, true);
+
+  function detectBySize() {
+    const wDiff = window.outerWidth - window.innerWidth;
+    const hDiff = window.outerHeight - window.innerHeight;
+    return wDiff > CONFIG.THRESHOLD || hDiff > CONFIG.THRESHOLD;
+  }
+
+  let debuggerFired = false;
+  function detectByDebugger() {
+    const start = performance.now();
+    // eslint-disable-next-line no-debugger
+    debugger;
+    const elapsed = performance.now() - start;
+    if (elapsed > 100) debuggerFired = true;
+    return debuggerFired;
+  }
+
+  let consoleTrapped = false;
+  function detectByConsole() {
+    const el = document.createElement('div');
+    Object.defineProperty(el, 'id', { get() { consoleTrapped = true; return 'trapped'; } });
+    try { console.log(el); } catch (e) {}
+    try { console.clear && console.clear(); } catch (e) {}
+    return consoleTrapped;
+  }
+
+  function check() {
+    if (locked) {
+      const stillOpen = detectBySize() || consoleTrapped || debuggerFired;
+      if (!stillOpen) { consoleTrapped = false; debuggerFired = false; unlock(); }
+      return;
+    }
+    const sizeOpen = detectBySize();
+    const debugOpen = detectByDebugger();
+    const consoleOpen = detectByConsole();
+    if (sizeOpen || debugOpen || consoleOpen) lock();
+  }
+
+  window.addEventListener('load', () => {
+    ensureOverlay();
+    setTimeout(check, 900);
+    setInterval(check, CONFIG.INTERVAL);
+  });
+})();
+</script>
+
 <style>
   html{scroll-behavior:smooth}
   body{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
@@ -115,7 +258,7 @@
     <div class="max-w-7xl mx-auto px-5 sm:px-8 py-20 lg:py-28">
       <div class="max-w-2xl">
         <p class="text-sm font-semibold text-indigo-600 uppercase tracking-wider">Déroulé standard</p>
-        <h2 class="mt-3 text-3xl sm:text-4xl font-bold tracking-tight">Les 6 phases du projet</h2>
+        <h2 class="mt-3 text-3xl sm:text-4xl font-bold tracking-tight">Les phases du projet</h2>
         <p class="mt-4 text-slate-500">Chaque phase contient des tâches dont la durée est ajustable (jours ou semaines) par l'administrateur.</p>
       </div>
       <div class="mt-14 grid md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -300,7 +443,7 @@ const PHASE_DOT = {
   pcs:'bg-sky-500', users:'bg-violet-500', formation:'bg-fuchsia-500', golive:'bg-emerald-500'
 };
 
-/* ============= YOUR EXACT DATA ============= */
+/* ============= DEFAULT DATA ============= */
 const DEFAULT_DATA = {
   "etabs": [
     { "id": "10npz5f", "name": "Polyclinique Bailich Mazouz", "services": [
@@ -386,7 +529,7 @@ const DEFAULT_DATA = {
   ]
 };
 
-/* ============= NORMALIZE TASK (support legacy weeks) ============= */
+/* ============= NORMALIZE ============= */
 function normalizeTask(t) {
   const nt = { ...t };
   if (nt.duration == null) {
@@ -398,8 +541,10 @@ function normalizeTask(t) {
   return nt;
 }
 function normalizeState(s) {
-  const out = { etabs: Array.isArray(s.etabs) ? s.etabs : [], tasks: Array.isArray(s.tasks) ? s.tasks.map(normalizeTask) : [] };
-  return out;
+  return {
+    etabs: Array.isArray(s.etabs) ? s.etabs : [],
+    tasks: Array.isArray(s.tasks) ? s.tasks.map(normalizeTask) : []
+  };
 }
 
 /* ============= DURATION HELPERS ============= */
@@ -555,14 +700,14 @@ function tasksView() {
 }
 
 function taskCard(t) {
-  const p = phaseOf(t.phase);
-  const pr = PRIORITIES[t.priority] || PRIORITIES.moyenne;
+ px const p = phaseOf(t.phase);
+  const pr = PRIORITIES[t] font.priority] || PRIORITIES-medium.moyenne;
   const durLabel = durationLabel(t);
 
-  const adminBtns = adminMode ? `
+ text  const adminBtns = adminMode ?-s `
     <div class="flex items-center gap-1 shrink-0">
       <button data-edit="${t.id}" class="text-[11px] font-medium text-slate-500 hover:text-slate-800 px-2 py-1.5 rounded-lg hover:bg-slate-100">Modifier</button>
-      <button data-del="${t.id}" class="text-[11px] font-medium text-slate-400 hover:text-rose-600 px-2 py-1.5 rounded-lg hover:bg-rose-50">Suppr</button>
+      <button data-del="${t.id}" class="text-[11late-400 hover:text-rose-600 px-2 py-1.5 rounded-lg hover:bg-rose-50">Suppr</button>
     </div>` : '';
 
   return `
