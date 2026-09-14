@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PlanningMS — Pilotage des Projets & Deadlines</title>
+<style>
+  :root{
+    --bg:#f4f7fb;
+    --card:#ffffff;
+    --text:#0f172a;
+    --muted:#64748b;
+    --line:#e2e8f0;
+    --primary:#1d4ed8;
+    --primary-dark:#1e3a8a;
+    --teal:#0d9488;
+    --amber:#d97706;
+    --red:#dc2626;
+    --green:#16a34a;
+    --violet:#7c3aed;
+    --shadow:0 1px 2px rgba(15,23,42,.06),0 8px 24px rgba(15,23,42,.06);
+    --radius:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Segoe UI',system-ui,-apple-system,'Helvetica Neue',sans-serif;
+    background:var(--bg);color:var(--text);line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none}
+  button{font-family:inherit;cursor:pointer;border:none;background:none}
+  input,select,textarea{font-family:inherit;font-size:.92rem}
+
+  /* ---------- NAV ---------- */
+  .nav{
+    position:sticky;top:0;z-index:100;
+    background:rgba(255,255,255,.85);backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    max-width:1240px;margin:0 auto;padding:0 20px;
+    display:flex;align-items:center;gap:8px;height:64px;
+  }
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.05rem;margin-right:auto}
+  .brand .logo{
+    width:34px;height:34px;border-radius:10px;
+    background:linear-gradient(135deg,var(--primary),var(--teal));
+    display:grid;place-items:center;color:#fff;font-size:1rem;font-weight:800;
+  }
+  .brand small{display:block;font-weight:500;font-size:.7rem;color:var(--muted);letter-spacing:.02em}
+  .nav a.navlink{
+    padding:8px 14px;border-radius:9px;font-size:.9rem;font-weight:600;
+    color:var(--muted);transition:.18s;
+  }
+  .nav a.navlink:hover{background:#eef2ff;color:var(--primary)}
+  .nav a.navlink.active{background:var(--primary);color:#fff}
+  .burger{display:none;font-size:1.4rem;color:var(--muted)}
+
+  /* ---------- LAYOUT ---------- */
+  .wrap{max-width:1240px;margin:0 auto;padding:0 20px}
+  .page{display:none;animation:fade .35s ease}
+  .page.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background:
+      radial-gradient(900px 400px at 85% -10%,rgba(13,148,136,.22),transparent),
+      radial-gradient(800px 400px at 10% 0%,rgba(29,78,216,.18),transparent),
+      #fff;
+    border-bottom:1px solid var(--line);
+    padding:64px 0 72px;
+  }
+  .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center}
+  .pill{
+    display:inline-flex;align-items:center;gap:8px;
+    background:#eef2ff;color:var(--primary);font-weight:700;font-size:.78rem;
+    padding:6px 14px;border-radius:999px;margin-bottom:18px;letter-spacing:.03em;
+  }
+  .pill .dot{width:7px;height:7px;border-radius:50%;background:var(--teal);animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+  .hero h1{font-size:clamp(1.9rem,4vw,2.9rem);line-height:1.15;letter-spacing:-.02em;margin-bottom:16px}
+  .hero h1 span{background:linear-gradient(120deg,var(--primary),var(--teal));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero p.lead{color:var(--muted);font-size:1.03rem;max-width:640px;margin-bottom:26px}
+  .cta{display:flex;gap:12px;flex-wrap:wrap}
+  .btn{
+    padding:12px 22px;border-radius:11px;font-weight:700;font-size:.92rem;
+    display:inline-flex;align-items:center;gap:9px;transition:.18s;
+  }
+  .btn-primary{background:var(--primary);color:#fff;box-shadow:0 6px 18px rgba(29,78,216,.28)}
+  .btn-primary:hover{background:var(--primary-dark);transform:translateY(-1px)}
+  .btn-ghost{background:#fff;color:var(--text);border:1px solid var(--line)}
+  .btn-ghost:hover{border-color:var(--primary);color:var(--primary)}
+  .btn-sm{padding:7px 14px;font-size:.82rem;border-radius:9px}
+
+  .hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .stat-card{
+    background:#fff;border:1px solid var(--line);border-radius:var(--radius);
+    padding:20px;box-shadow:var(--shadow);
+  }
+  .stat-card .num{font-size:1.85rem;font-weight:800;letter-spacing:-.02em}
+  .stat-card .lbl{font-size:.78rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+  .stat-card:nth-child(1) .num{color:var(--primary)}
+  .stat-card:nth-child(2) .num{color:var(--teal)}
+  .stat-card:nth-child(3) .num{color:var(--violet)}
+  .stat-card:nth-child(4) .num{color:var(--amber)}
+
+  /* ---------- SECTIONS ---------- */
+  section.block{padding:60px 0}
+  .sec-head{margin-bottom:34px}
+  .sec-head h2{font-size:1.6rem;letter-spacing:-.02em;margin-bottom:8px}
+  .sec-head p{color:var(--muted);max-width:680px}
+
+  /* ---------- ARCHITECTURE ---------- */
+  .arch{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+  .arch-node{
+    background:#fff;border:1px solid var(--line);border-radius:var(--radius);
+    padding:22px;box-shadow:var(--shadow);position:relative;overflow:hidden;
+  }
+  .arch-node::before{
+    content:'';position:absolute;left:0;top:0;bottom:0;width:4px;
+    background:var(--primary);
+  }
+  .arch-node.lvl2::before{background:var(--teal)}
+  .arch-node.lvl3::before{background:var(--violet)}
+  .arch-node h3{font-size:1rem;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+  .arch-node .tag{
+    font-size:.68rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+    background:#eef2ff;color:var(--primary);padding:3px 9px;border-radius:999px;
+  }
+  .arch-node.lvl2 .tag{background:#ccfbf1;color:#0f766e}
+  .arch-node.lvl3 .tag{background:#f3e8ff;color:#6d28d9}
+  .arch-node p{font-size:.86rem;color:var(--muted)}
+  .arch-node ul{list-style:none;margin-top:12px;display:flex;flex-direction:column;gap:6px}
+  .arch-node li{font-size:.84rem;color:var(--muted);display:flex;gap:8px;align-items:flex-start}
+  .arch-node li::before{content:'▸';color:var(--primary);font-weight:800}
+  .arch-node.lvl2 li::before{color:var(--teal)}
+  .arch-node.lvl3 li::before{color:var(--violet)}
+
+  /* ---------- TEAM TABLE ---------- */
+  .team-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px}
+  .team-card{
+    background:#fff;border:1px solid var(--line);border-radius:var(--radius);
+    padding:18px;text-align:center;box-shadow:var(--shadow);transition:.2s;
+  }
+  .team-card:hover{transform:translateY(-3px);border-color:#c7d2fe}
+  .team-card .ic{font-size:1.5rem;margin-bottom:8px}
+  .team-card .n{font-size:1.5rem;font-weight:800;color:var(--primary)}
+  .team-card .t{font-size:.82rem;color:var(--muted);font-weight:600}
+
+  /* ---------- DASHBOARD ---------- */
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px;margin-bottom:28px}
+  .kpi{
+    background:#fff;border:1px solid var(--line);border-radius:var(--radius);
+    padding:20px;box-shadow:var(--shadow);
+  }
+  .kpi .k-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+  .kpi .k-lbl{font-size:.76rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+  .kpi .k-ic{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;font-size:.95rem}
+  .kpi .k-val{font-size:2rem;font-weight:800;letter-spacing:-.03em;line-height:1}
+  .kpi .k-sub{font-size:.78rem;color:var(--muted);margin-top:6px}
+  .bg-blue{background:#eef2ff;color:var(--primary)}
+  .bg-green{background:#dcfce7;color:var(--green)}
+  .bg-amber{background:#fef3c7;color:var(--amber)}
+  .bg-red{background:#fee2e2;color:var(--red)}
+  .bg-teal{background:#ccfbf1;color:var(--teal)}
+
+  .panel{
+    background:#fff;border:1px solid var(--line);border-radius:var(--radius);
+    padding:24px;box-shadow:var(--shadow);margin-bottom:22px;
+  }
+  .panel h3{font-size:1.02rem;margin-bottom:18px;display:flex;align-items:center;gap:9px}
+
+  .bar-row{margin-bottom:16px}
+  .bar-row .bar-head{display:flex;justify-content:space-between;font-size:.85rem;margin-bottom:7px;font-weight:600}
+  .bar-row .bar-head span:last-child{color:var(--muted);font-weight:700}
+  .bar{height:9px;background:#eef2f7;border-radius:999px;overflow:hidden}
+  .bar > i{display:block;height:100%;border-radius:999px;transition:width .6s cubic-bezier(.4,0,.2,1)}
+
+  /* ---------- TASKS ---------- */
+  .toolbar{
+    display:flex;gap:12px;flex-wrap:wrap;align-items:center;
+    background:#fff;border:1px solid var(--line);border-radius:var(--radius);
+    padding:14px 16px;box-shadow:var(--shadow);margin-bottom:22px;
+  }
+  .toolbar input[type=search],.toolbar select{
+    padding:9px 13px;border:1px solid var(--line);border-radius:9px;background:#f8fafc;outline:none;
+  }
+  .toolbar input[type=search]{flex:1;min-width:180px}
+  .toolbar input:focus,.toolbar select:focus{border-color:var(--primary);background:#fff}
+  .toolbar .spacer{flex:1}
+
+  .tasks{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:18px}
+
+  .task{
+    background:#fff;border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:hidden;
+    transition:.2s;position:relative;
+  }
+  .task:hover{box-shadow:0 12px 32px rgba(15,23,42,.10);transform:translateY(-2px)}
+  .task.late{border-color:#fecaca}
+  .task.done{opacity:.72}
+  .task-top{padding:18px 18px 0;display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+  .task h4{font-size:.98rem;line-height:1.35;flex:1}
+  .task .desc{font-size:.83rem;color:var(--muted);padding:8px 18px 0}
+  .chips{display:flex;flex-wrap:wrap;gap:7px;padding:12px 18px 0}
+  .chip{
+    font-size:.71rem;font-weight:800;letter-spacing:.03em;padding:4px 10px;border-radius:999px;
+    text-transform:uppercase;
+  }
+  .chip.resp{background:#eef2ff;color:var(--primary)}
+  .chip.p-haute{background:#fee2e2;color:var(--red)}
+  .chip.p-moyenne{background:#fef3c7;color:var(--amber)}
+  .chip.p-basse{background:#e2e8f0;color:#475569}
+  .chip.dead{background:#fee2e2;color:var(--red)}
+  .chip.soon{background:#fef3c7;color:var(--amber)}
+  .chip.ok{background:#dcfce7;color:var(--green)}
+
+  .steps{padding:14px 18px 0;display:flex;flex-direction:column;gap:8px}
+  .step{display:flex;gap:10px;align-items:flex-start;font-size:.85rem;cursor:pointer;user-select:none}
+  .step input{
+    appearance:none;width:17px;height:17px;min-width:17px;border:2px solid #cbd5e1;border-radius:5px;
+    margin-top:2px;cursor:pointer;transition:.15s;position:relative;
+  }
+  .step input:checked{background:var(--teal);border-color:var(--teal)}
+  .step input:checked::after{
+    content:'✓';position:absolute;inset:0;color:#fff;font-size:.72rem;font-weight:900;
+    display:grid;place-items:center;line-height:1;
+  }
+  .step span{color:#334155}
+  .step input:checked + span{text-decoration:line-through;color:#94a3b8}
+
+  .progress-wrap{padding:16px 18px 0}
+  .progress-wrap .pl{display:flex;justify-content:space-between;font-size:.75rem;color:var(--muted);font-weight:700;margin-bottom:6px}
+  .task-foot{
+    margin-top:16px;padding:13px 18px;border-top:1px solid var(--line);background:#fafbfd;
+    display:flex;align-items:center;gap:10px;
+  }
+  .task-foot select{
+    padding:6px 10px;border-radius:8px;border:1px solid var(--line);background:#fff;
+    font-size:.8rem;font-weight:700;cursor:pointer;outline:none;
+  }
+  .task-foot .del{
+    margin-left:auto;color:#94a3b8;font-size:1rem;padding:6px 9px;border-radius:8px;transition:.15s;
+  }
+  .task-foot .del:hover{background:#fee2e2;color:var(--red)}
+
+  .empty{
+    grid-column:1/-1;text-align:center;padding:64px 20px;color:var(--muted);
+    background:#fff;border:2px dashed var(--line);border-radius:var(--radius);
+  }
+  .empty .ic{font-size:2.4rem;margin-bottom:10px}
+
+  /* ---------- MODAL ---------- */
+  .overlay{
+    position:fixed;inset:0;background:rgba(15,23,42,.55);backdrop-filter:blur(4px);
+    display:none;align-items:center;justify-content:center;padding:20px;z-index:200;
+  }
+  .overlay.open{display:flex;animation:fade .2s}
+  .modal{
+    background:#fff;border-radius:18px;width:100%;max-width:580px;max-height:90vh;overflow-y:auto;
+    padding:28px;box-shadow:0 30px 70px rgba(0,0,0,.3);
+  }
+  .modal h3{font-size:1.2rem;margin-bottom:20px}
+  .field{margin-bottom:16px}
+  .field label{display:block;font-size:.8rem;font-weight:700;color:#334155;margin-bottom:6px}
+  .field input,.field select,.field textarea{
+    width:100%;padding:10px 13px;border:1px solid var(--line);border-radius:10px;
+    background:#f8fafc;outline:none;transition:.15s;
+  }
+  .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--primary);background:#fff;box-shadow:0 0 0 3px rgba(29,78,216,.1)}
+  .field textarea{resize:vertical;min-height:96px;line-height:1.5}
+  .field .hint{font-size:.74rem;color:var(--muted);margin-top:5px}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .modal-foot{display:flex;gap:10px;justify-content:flex-end;margin-top:22px}
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    background:#0f172a;color:#94a3b8;padding:40px 0;margin-top:40px;font-size:.85rem;
+  }
+  footer .fg{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
+  footer strong{color:#fff}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media(max-width:900px){
+    .hero-grid{grid-template-columns:1fr;gap:34px}
+    .nav a.navlink{display:none}
+    .nav a.navlink.mobile-show{display:block}
+    .burger{display:block}
+    .nav-inner.open{flex-wrap:wrap;height:auto;padding:12px 20px}
+    .nav-inner.open a.navlink{display:block;width:100%}
+  }
+  @media(max-width:560px){
+    .row2{grid-template-columns:1fr}
+    .hero{padding:40px 0 48px}
+    .tasks{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= NAV ================= -->
+<header class="nav">
+  <div class="nav-inner" id="navInner">
+    <div class="brand">
+      <div class="logo">MS</div>
+      <div>PlanningMS<small>Pilotage des projets & deadlines</small></div>
+    </div>
+    <a class="navlink active" data-nav="accueil">Accueil</a>
+    <a class="navlink" data-nav="dashboard">Tableau de bord</a>
+    <a class="navlink" data-nav="taches">Tâches & Délais</a>
+    <a class="navlink" data-nav="equipe">Équipe</a>
+    <button class="burger" id="burger">☰</button>
+  </div>
+</header>
+
+<main>
+
+<!-- ================= PAGE : ACCUEIL ================= -->
+<section class="page active" id="page-accueil">
+
+  <div class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="pill"><span class="dot"></span> Système de planification hiérarchisé</div>
+        <h1>Pilotez vos projets, <span>respectez chaque deadline</span>, étape par étape.</h1>
+        <p class="lead">
+          Une plateforme unique pour le Ministère de la Santé, les DSP de wilaya et les établissements :
+          suivi des étapes, échéances, statistiques détaillées et coordination des équipes
+          Support &amp; Développement.
+        </p>
+        <div class="cta">
+          <button class="btn btn-primary" data-nav="taches">📋 Voir la liste des tâches</button>
+          <button class="btn btn-ghost" data-nav="dashboard">📊 Tableau de bord</button>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-card"><div class="num" id="hTotal">0</div><div class="lbl">Tâches suivies</div></div>
+        <div class="stat-card"><div class="num" id="hDone">0</div><div class="lbl">Étapes terminées</div></div>
+        <div class="stat-card"><div class="num" id="hLate">0</div><div class="lbl">En retard</div></div>
+        <div class="stat-card"><div class="num" id="hProg">0%</div><div class="lbl">Avancement global</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Architecture -->
+  <section class="block wrap">
+    <div class="sec-head">
+      <h2>🏛️ Architecture du système</h2>
+      <p>Trois niveaux hiérarchisés avec des droits d'administration et de visibilité distincts.</p>
+    </div>
+    <div class="arch">
+      <div class="arch-node">
+        <h3>Ministère de la Santé <span class="tag">Niveau 1</span></h3>
+        <p>Serveur central. Super administrateur — vision complète et globale.</p>
+        <ul>
+          <li>Super Admin (accès total)</li>
+          <li>Statistiques &amp; données profondes nationales</li>
+          <li>Équipe Support (groupe 1)</li>
+          <li>Équipe Développement (groupe 2)</li>
+        </ul>
+      </div>
+      <div class="arch-node lvl2">
+        <h3>DSP — Wilaya <span class="tag">Niveau 2</span></h3>
+        <p>Direction de la Santé Publique. Un administrateur par DSP.</p>
+        <ul>
+          <li>Admin DSP</li>
+          <li>Statistiques de la wilaya</li>
+          <li>Suivi des établissements rattachés</li>
+          <li>Même structure d'équipe qu'un établissement</li>
+        </ul>
+      </div>
+      <div class="arch-node lvl3">
+        <h3>Établissement <span class="tag">Niveau 3</span></h3>
+        <p>10 établissements régionaux + établissements de wilaya. Un admin par établissement.</p>
+        <ul>
+          <li>Admin Établissement</li>
+          <li>Gestion des tâches locales</li>
+          <li>Remontée des données vers la DSP</li>
+          <li>2 ingénieurs · 4 TS · 2 médecins · 2 paramédicaux · 2 administration</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Équipe type -->
+  <section class="block wrap" style="padding-top:0">
+    <div class="sec-head">
+      <h2>👥 Structure d'équipe type</h2>
+      <p>La même composition est répliquée au niveau de chaque établissement, de chaque wilaya et des 10 établissements régionaux — soit 12 membres par entité.</p>
+    </div>
+    <div class="team-grid">
+      <div class="team-card"><div class="ic">⚙️</div><div class="n">2</div><div class="t">Ingénieurs</div></div>
+      <div class="team-card"><div class="ic">🛠️</div><div class="n">4</div><div class="t">Techniciens Supérieurs</div></div>
+      <div class="team-card"><div class="ic">🩺</div><div class="n">2</div><div class="t">Médecins</div></div>
+      <div class="team-card"><div class="ic">💉</div><div class="n">2</div><div class="t">Paramédicaux</div></div>
+      <div class="team-card"><div class="ic">🗂️</div><div class="n">2</div><div class="t">Administration</div></div>
+      <div class="team-card"><div class="ic">📊</div><div class="n">12</div><div class="t">Total par entité</div></div>
+    </div>
+  </section>
+
+  <!-- Rôles -->
+  <section class="block wrap" style="padding-top:0">
+    <div class="sec-head">
+      <h2>🎯 Rôles des sous-directeurs</h2>
+      <p>Répartition des cahiers de charge et des échéances prioritaires.</p>
+    </div>
+    <div class="arch">
+      <div class="arch-node">
+        <h3>DFM <span class="tag">3 cahiers de charge</span></h3>
+        <ul>
+          <li>5 serveurs</li>
+          <li>Matériel informatique</li>
+          <li>Réseaux LAN &amp; électriques sur 3 sites</li>
+          <li>Préparation des salles Datacenter + accélération des travaux Algérie Télécom — <strong>deadline fin octobre</strong></li>
+        </ul>
+      </div>
+      <div class="arch-node lvl2">
+        <h3>DMM <span class="tag">Urgent</span></h3>
+        <ul>
+          <li>Fiches techniques des équipements</li>
+          <li>Demande des mots de passe des équipements Radio</li>
+          <li>Deadline : le plus tôt possible</li>
+        </ul>
+      </div>
+      <div class="arch-node lvl3">
+        <h3>DRH &amp; DSS <span class="tag">RH Santé</span></h3>
+        <ul>
+          <li>Remplir toutes les informations RH Santé</li>
+          <li>Focus : NIN, email, téléphone</li>
+          <li>Liste de tous les employés en Excel</li>
+          <li>Liste des affectations (NIN, email, phone)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</section>
+
+<!-- ================= PAGE : DASHBOARD ================= -->
+<section class="page" id="page-dashboard">
+  <div class="wrap" style="padding-top:36px;padding-bottom:60px">
+
+    <div class="sec-head">
+      <h2>📊 Tableau de bord</h2>
+      <p>Statistiques et informations détaillées — visibles par le MS et les DSP.</p>
+    </div>
+
+    <div class="kpis">
+      <div class="kpi">
+        <div class="k-top"><span class="k-lbl">Tâches totales</span><span class="k-ic bg-blue">📋</span></div>
+        <div class="k-val" id="kTotal">0</div>
+        <div class="k-sub">Toutes directions confondues</div>
+      </div>
+      <div class="kpi">
+        <div class="k-top"><span class="k-lbl">Terminées</span><span class="k-ic bg-green">✓</span></div>
+        <div class="k-val" id="kDone">0</div>
+        <div class="k-sub" id="kDoneSub">0 % du total</div>
+      </div>
+      <div class="kpi">
+        <div class="k-top"><span class="k-lbl">En cours</span><span class="k-ic bg-teal">⏳</span></div>
+        <div class="k-val" id="kProg">0</div>
+        <div class="k-sub">Travaux démarrés</div>
+      </div>
+      <div class="kpi">
+        <div class="k-top"><span class="k-lbl">En retard</span><span class="k-ic bg-red">!</span></div>
+        <div class="k-val" id="kLate">0</div>
+        <div class="k-sub">Deadline dépassée</div>
+      </div>
+      <div class="kpi">
+        <div class="k-top"><span class="k-lbl">Échéances ≤ 7 j</span><span class="k-ic bg-amber">⏰</span></div>
+        <div class="k-val" id="kSoon">0</div>
+        <div class="k-sub">À traiter en priorité</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>📈 Avancement global par direction</h3>
+      <div id="respBars"></div>
+    </div>
+
+    <div class="panel">
+      <h3>⏱️ Prochaines échéances</h3>
+      <div id="upcoming"></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= PAGE : TÂCHES ================= -->
+<section class="page" id="page-taches">
+  <div class="wrap" style="padding-top:36px;padding-bottom:60px">
+
+    <div class="sec-head">
+      <h2>📋 Liste des tâches &amp; étapes</h2>
+      <p>Cochez les étapes réalisées, suivez l'avancement et respectez les deadlines.</p>
+    </div>
+
+    <div class="toolbar">
+      <input type="search" id="search" placeholder="🔎 Rechercher une tâche, une étape…">
+      <select id="filterResp">
+        <option value="all">Toutes les directions</option>
+      </select>
+      <select id="filterStatut">
+        <option value="all">Tous les statuts</option>
+        <option value="todo">À faire</option>
+        <option value="doing">En cours</option>
+        <option value="done">Terminé</option>
+        <option value="blocked">Bloqué</option>
+      </select>
+      <div class="spacer"></div>
+      <button class="btn btn-primary btn-sm" id="btnNew">+ Nouvelle tâche</button>
+    </div>
+
+    <div class="tasks" id="taskList"></div>
+
+  </div>
+</section>
+
+<!-- ================= PAGE : ÉQUIPE ================= -->
+<section class="page" id="page-equipe">
+  <div class="wrap" style="padding-top:36px;padding-bottom:60px">
+
+    <div class="sec-head">
+      <h2>👥 Équipe de l'établissement</h2>
+      <p>Composition standard répliquée dans chaque établissement, wilaya et établissement régional.</p>
+    </div>
+
+    <div class="team-grid" style="margin-bottom:30px">
+      <div class="team-card"><div class="ic">⚙️</div><div class="n">2</div><div class="t">Ingénieurs</div></div>
+      <div class="team-card"><div class="ic">🛠️</div><div class="n">4</div><div class="t">Techniciens Supérieurs</div></div>
+      <div class="team-card"><div class="ic">🩺</div><div class="n">2</div><div class="t">Médecins</div></div>
+      <div class="team-card"><div class="ic">💉</div><div class="n">2</div><div class="t">Paramédicaux</div></div>
+      <div class="team-card"><div class="ic">🗂️</div><div class="n">2</div><div class="t">Administration</div></div>
+    </div>
+
+    <div class="panel">
+      <h3>🏢 Déploiement de la structure</h3>
+      <div class="bar-row">
+        <div class="bar-head"><span>10 établissements régionaux</span><span>120 agents</span></div>
+        <div class="bar"><i style="width:100%;background:var(--primary)"></i></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-head"><span>Établissements de wilaya</span><span>12 agents / wilaya</span></div>
+        <div class="bar"><i style="width:100%;background:var(--teal)"></i></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-head"><span>Ministère de la Santé — Support &amp; Développement</span><span>2 groupes</span></div>
+        <div class="bar"><i style="width:100%;background:var(--violet)"></i></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>📌 Répartition des responsabilités</h3>
+      <div class="arch">
+        <div class="arch-node">
+          <h3>DFM</h3>
+          <ul>
+            <li>5 serveurs</li>
+            <li>Matériel informatique</li>
+            <li>Réseaux LAN &amp; électriques (3 sites)</li>
+            <li>Datacenter + Algérie Télécom — fin octobre</li>
+          </ul>
+        </div>
+        <div class="arch-node lvl2">
+          <h3>DMM</h3>
+          <ul>
+            <li>Fiches techniques des équipements</li>
+            <li>Mots de passe équipements Radio</li>
+            <li>Deadline : le plus tôt possible</li>
+          </ul>
+        </div>
+        <div class="arch-node lvl3">
+          <h3>DRH &amp; DSS</h3>
+          <ul>
+            <li>Informations RH Santé (NIN, email, phone)</li>
+            <li>Liste des employés en Excel</li>
+            <li>Liste des affectations</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap fg">
+    <div><strong>PlanningMS</strong> — Système de planification &amp; suivi des deadlines</div>
+    <div>Ministère de la Santé · DSP · Établissements</div>
+  </div>
+</footer>
+
+<!-- ================= MODAL ================= -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <h3>➕ Nouvelle tâche</h3>
+    <div class="field">
+      <label>Titre de la tâche *</label>
+      <input type="text" id="fTitre" placeholder="Ex : Préparation de la salle Datacenter">
+    </div>
+    <div class="field">
+      <label>Description</label>
+      <input type="text" id="fDesc" placeholder="Brève description (optionnel)">
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label>Responsable</label>
+        <select id="fResp">
+          <option>DFM</option>
+          <option>DMM</option>
+          <option>DRH/DSS</option>
+          <option>Support</option>
+          <option>Développement</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Priorité</label>
+        <select id="fPrio">
+          <option value="haute">Haute</option>
+          <option value="moyenne" selected>Moyenne</option>
+          <option value="basse">Basse</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label>Deadline</label>
+      <input type="date" id="fDate">
+    </div>
+    <div class="field">
+      <label>Étapes (une par ligne)</label>
+      <textarea id="fSteps" placeholder="Inventaire des besoins&#10;Rédaction du cahier des charges&#10;Validation"></textarea>
+      <div class="hint">Chaque ligne deviendra une étape cochable.</div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost btn-sm" id="btnCancel">Annuler</button>
+      <button class="btn btn-primary btn-sm" id="btnSave">Créer la tâche</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   ÉTAT & PERSISTANCE
+   ========================================================= */
+const KEY = 'planning_ms_v1';
+const $  = s => document.querySelector(s);
+
+const RESP_COLORS = {
+  'DFM':           '#1d4ed8',
+  'DMM':           '#7c3aed',
+  'DRH/DSS':       '#0d9488',
+  'Support':       '#d97706',
+  'Développement': '#db2777'
+};
+
+const STATUTS = {
+  todo:    { label:'À faire',  color:'#64748b' },
+  doing:   { label:'En cours', color:'#d97706' },
+  done:    { label:'Terminé',  color:'#16a34a' },
+  blocked: { label:'Bloqué',   color:'#dc2626' }
+};
+
+/* --- dates par défaut --- */
+function fmtISO(d){
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+function endOfOctober(){
+  const now = new Date();
+  let d = new Date(now.getFullYear(), 9, 31);
+  if (d < now) d = new Date(now.getFullYear()+1, 9, 31);
+  return fmtISO(d);
+}
+function inDays(n){
+  const d = new Date();
+  d.setDate(d.getDate() + n);
+  return fmtISO(d);
+}
+
+/* --- données initiales --- */
+function seed(){
+  return [
+    {
+      id: uid(),
+      titre: 'Préparation des salles Datacenter & accélération des travaux Algérie Télécom',
+      desc: 'Coordination avec Algérie Télécom sur les 3 sites — deadline fin octobre.',
+      resp: 'DFM', prio: 'haute', date: endOfOctober(), statut: 'doing',
+      etapes: [
+        { t:'Inventaire des 3 sites',                              f:true  },
+        { t:'Définition des besoins (surface, climatisation, énergie)', f:true  },
+        { t:'Rédaction du cahier des charges Datacenter',          f:false },
+        { t:'Contact & planification avec Algérie Télécom',        f:false },
+        { t:'Lancement et accélération des travaux',               f:false },
+        { t:'Réception et mise en service',                        f:false }
+      ]
+    },
+    {
+      id: uid(),
+      titre: 'Serveurs — acquisition et configuration (5 serveurs)',
+      desc: 'Cahier de charge n°1 du DFM.',
+      resp: 'DFM', prio: 'haute', date: inDays(30), statut: 'doing',
+      etapes: [
+        { t:'Étude des besoins (CPU, RAM, stockage)', f:true  },
+        { t:'Rédaction des spécifications techniques', f:true  },
+        { t:'Lancement de la consultation',            f:false },
+        { t:'Réception du matériel',                   f:false },
+        { t:'Installation & configuration',            f:false }
+      ]
+    },
+    {
+      id: uid(),
+      titre: 'Matériel informatique',
+      desc: 'Cahier de charge n°2 du DFM — postes, périphériques, consommables.',
+      resp: 'DFM', prio: 'moyenne', date: inDays(45), statut: 'todo',
+      etapes: [
+        { t:'Recensement des besoins par service', f:false },
+        { t:'Établissement du cahier des charges', f:false },
+        { t:'Validation hiérarchique',             f:false },
+        { t:'Passation de la commande',            f:false }
+      ]
+    },
+    {
+      id: uid(),
+      titre: 'Réseaux LAN et électriques — 3 sites',
+      desc: 'Cahier de charge n°3 du DFM.',
+      resp: 'DFM', prio: 'haute', date: inDays(40), statut: 'doing',
+      etapes: [
+        { t:'Audit réseau des 3 sites',            f:true  },
+        { t:'Schéma d\'architecture LAN',          f:true  },
+        { t:'Étude électrique & onduleurs',        f:false },
+        { t:'Travaux de câblage',                  f:false },
+        { t:'Tests et recette',                    f:false }
+      ]
+    },
+    {
+      id: uid(),
+      titre: 'Fiches techniques des équipements',
+      desc: 'DMM — collecte et rédaction des fiches techniques.',
+      resp: 'DMM', prio: 'haute', date: inDays(10), statut: 'doing',
+      etapes: [
+        { t:'Recensement des équipements',      f:true  },
+        { t:'Collecte des documentations',      f:true  },
+        { t:'Rédaction des fiches techniques',  f:false },
+        { t:'Validation et archivage',          f:false }
+      ]
+    },
+    {
+      id: uid(),
+      titre: 'Demande des mots de passe des équipements Radio',
+      desc: 'DMM — deadline : le plus tôt possible.',
+      resp: 'DMM', prio: 'haute', date: inDays(5), statut: 'doing',
+      etapes: [
+        { t:'Inventaire des équipements Radio',       f:true  },
+        { t:'Rédaction de la demande officielle',     f:false },
+        { t:'Transmission aux fournisseurs',          f:false },
+        { t:'Réception & sécurisation des mots de passe', f:false }
+      ]
+    },
+    {
+      id: uid(),
+      titre: 'Informations RH Santé — NIN, email, téléphone',
+      desc: 'DRH & DSS — remplir toutes les informations avec focus sur NIN, email et téléphone.',
+      resp: 'DRH/DSS', prio: 'haute', date: inDays(21), statut: 'doing',
+      etapes: [
+        { t:'Diffusion du modèle de collecte',        f:true  },
+        { t:'Collecte des NIN',                       f:false },
+        { t:'Collecte des emails professionnels',     f:false },
+        { t:'Collecte des numéros de téléphone',      f:false },
+        { t:'Contrôle qualité & dédoublonnage',       f:false }
+      ]
+    },
+    {
+      id: uid(),
+      titre: 'Liste de tous les employés en Excel',
+      desc: 'DRH & DSS — export consolidé de l\'ensemble des employés.',
+      resp: 'DRH/DSS', prio: 'moyenne', date: inDays(25), statut: 'todo',
+      etapes: [
+        { t:'Consolidation des listes par structure', f:false },
+        { t:'Mise au format Excel normalisé',         f:false },
+        { t:'Vérification des doublons',              f:false },
+        { t:'Transmission à la hiérarchie',           f:false }
+      ]
+    },
+    {
+      id: uid(),
+      titre: 'Liste des affectations (NIN, email, phone)',
+      desc: 'DRH & DSS — selon l\'Excel déjà envoyé.',
+      resp: 'DRH/DSS', prio: 'moyenne', date: inDays(28), statut: 'todo',
+      etapes: [
+        { t:'Récupération du fichier de référence', f:false },
+        { t:'Rapprochement NIN / affectation',      f:false },
+        { t:'Complétion email & téléphone',         f:false },
+        { t:'Validation finale',                    f:false }
+      ]
+    }
+  ];
+}
+
+function uid(){ return Math.random().toString(36).slice(2,10); }
+
+function load(){
+  try{
+    const raw = localStorage.getItem(KEY);
+    if(raw) return JSON.parse(raw);
+  }catch(e){}
+  return seed();
+}
+function save(){
+  try{ localStorage.setItem(KEY, JSON.stringify(state.tasks)); }catch(e){}
+}
+
+const state = {
+  tasks: load(),
+  filter: { q:'', resp:'all', statut:'all' }
+};
+
+/* =========================================================
+   UTILITAIRES
+   ========================================================= */
+function esc(s){
+  return String(s ?? '').replace(/[&<>"']/g, c => (
+    {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]
+  ));
+}
+function todayISO(){
+  const d = new Date(); d.setHours(0,0,0,0);
+  return d;
+}
+function daysLeft(iso){
+  if(!iso) return null;
+  const d = new Date(iso + 'T00:00:00');
+  return Math.round((d - todayISO()) / 86400000);
+}
+function progress(t){
+  if(!t.etapes || !t.etapes.length) return t.statut === 'done' ? 100 : 0;
+  return Math.round(t.etapes.filter(e => e.f).length / t.etapes.length * 100);
+}
+function deadlineInfo(t){
+  const n = daysLeft(t.date);
+  if(n === null) return { cls:'', txt:'Pas de deadline' };
+  if(t.statut === 'done') return { cls:'ok', txt:'Terminé' };
+  if(n < 0)  return { cls:'dead', txt:`En retard de ${Math.abs(n)} j` };
+  if(n === 0) return { cls:'soon', txt:"Aujourd'hui" };
+  if(n === 1) return { cls:'soon', txt:'Demain' };
+  if(n <= 7)  return { cls:'soon', txt:`Dans ${n} jours` };
+  return { cls:'ok', txt:`Dans ${n} jours` };
+}
+function fmtDate(iso){
+  if(!iso) return '—';
+  const d = new Date(iso + 'T00:00:00');
+  return d.toLocaleDateString('fr-FR', { day:'2-digit', month:'short', year:'numeric' });
+}
+
+/* =========================================================
+   RENDU — TÂCHES
+   ========================================================= */
+function visibleTasks(){
+  const { q, resp, statut } = state.filter;
+  const needle = q.trim().toLowerCase();
+  return state.tasks.filter(t => {
+    if(resp !== 'all' && t.resp !== resp) return false;
+    if(statut !== 'all' && t.statut !== statut) return false;
+    if(needle){
+      const hay = (t.titre + ' ' + (t.desc||'') + ' ' + (t.etapes||[]).map(e=>e.t).join(' ')).toLowerCase();
+      if(!hay.includes(needle)) return false;
+    }
+    return true;
+  }).sort((a,b) => {
+    // terminés à la fin, puis par date
+    if(a.statut === 'done' && b.statut !== 'done') return 1;
+    if(b.statut === 'done' && a.statut !== 'done') return -1;
+    return (a.date || '9999').localeCompare(b.date || '9999');
+  });
+}
+
+function renderTasks(){
+  const list = visibleTasks();
+  const box = $('#taskList');
+
+  if(!list.length){
+    box.innerHTML = `<div class="empty"><div class="ic">🗒️</div>
+      <strong>Aucune tâche trouvée</strong>
+      <p style="margin-top:6px;font-size:.88rem">Modifiez les filtres ou créez une nouvelle tâche.</p></div>`;
+    return;
+  }
+
+  box.innerHTML = list.map(t => {
+    const p = progress(t);
+    const dl = deadlineInfo(t);
+    const isLate = dl.cls === 'dead';
+    const steps = (t.etapes || []).map((e,i) => `
+      <label class="step">
+        <input type="checkbox" data-task="${t.id}" data-step="${i}" ${e.f ? 'checked' : ''}>
+        <span>${esc(e.t)}</span>
+      </label>`).join('');
+
+    return `
+    <article class="task ${isLate ? 'late' : ''} ${t.statut === 'done' ? 'done' : ''}">
+      <div class="task-top">
+        <h4>${esc(t.titre)}</h4>
+      </div>
+      ${t.desc ? `<div class="desc">${esc(t.desc)}</div>` : ''}
+
+      <div class="chips">
+        <span class="chip resp">${esc(t.resp)}</span>
+        <span class="chip p-${t.prio}">${t.prio}</span>
+        <span class="chip ${dl.cls}">⏰ ${esc(dl.txt)} · ${fmtDate(t.date)}</span>
+      </div>
+
+      ${steps ? `<div class="steps">${steps}</div>` : ''}
+
+      <div class="progress-wrap">
+        <div class="pl"><span>Avancement</span><span>${p}%</span></div>
+        <div class="bar"><i style="width:${p}%;background:${RESP_COLORS[t.resp] || '#1d4ed8'}"></i></div>
+      </div>
+
+      <div class="task-foot">
+        <select data-status="${t.id}">
+          ${Object.entries(STATUTS).map(([k,v]) =>
+            `<option value="${k}" ${t.statut === k ? 'selected' : ''}>${v.label}</option>`).join('')}
+        </select>
+        <button class="del" data-del="${t.id}" title="Supprimer">🗑</button>
+      </div>
+    </article>`;
+  }).join('');
+}
+
+/* =========================================================
+   RENDU — DASHBOARD
+   ========================================================= */
+function renderDashboard(){
+  const tasks = state.tasks;
+  const total = tasks.length;
+  const done  = tasks.filter(t => t.statut === 'done').length;
+  const doing = tasks.filter(t => t.statut === 'doing').length;
+  const late  = tasks.filter(t => t.statut !== 'done' && daysLeft(t.date) !== null && daysLeft(t.date) < 0).length;
+  const soon  = tasks.filter(t => {
+    const n = daysLeft(t.date);
+    return t.statut !== 'done' && n !== null && n >= 0 && n <= 7;
+  }).length;
+
+  const allSteps = tasks.flatMap(t => t.etapes || []);
+  const doneSteps = allSteps.filter(e => e.f).length;
+  const globalProg = allSteps.length ? Math.round(doneSteps / allSteps.length * 100) : 0;
+
+  // KPIs
+  $('#kTotal').textContent = total;
+  $('#kDone').textContent  = done;
+  $('#kDoneSub').textContent = (total ? Math.round(done/total*100) : 0) + ' % du total';
+  $('#kProg').textContent  = doing;
+  $('#kLate').textContent  = late;
+  $('#kSoon').textContent  = soon;
+
+  // Hero stats
+  $('#hTotal').textContent = total;
+  $('#hDone').textContent  = doneSteps;
+  $('#hLate').textContent  = late;
+  $('#hProg').textContent  = globalProg + '%';
+
+  // Barres par responsable
+  const groups = {};
+  tasks.forEach(t => {
+    if(!groups[t.resp]) groups[t.resp] = { total:0, steps:0, done:0 };
+    groups[t.resp].total++;
+    groups[t.resp].steps += (t.etapes || []).length;
+    groups[t.resp].done  += (t.etapes || []).filter(e => e.f).length;
+  });
+
+  const barsBox = $('#respBars');
+  const entries = Object.entries(groups);
+  if(!entries.length){
+    barsBox.innerHTML = '<p style="color:var(--muted);font-size:.9rem">Aucune donnée.</p>';
+  } else {
+    barsBox.innerHTML = entries.map(([name, g]) => {
+      const pct = g.steps ? Math.round(g.done / g.steps * 100) : 0;
+      const color = RESP_COLORS[name] || '#1d4ed8';
+      return `
+        <div class="bar-row">
+          <div class="bar-head">
+            <span>${esc(name)} <span style="color:var(--muted);font-weight:500">· ${g.total} tâche(s)</span></span>
+            <span>${pct}%</span>
+          </div>
+          <div class="bar"><i style="width:${pct}%;background:${color}"></i></div>
+        </div>`;
+    }).join('');
+  }
+
+  // Prochaines échéances
+  const up = tasks
+    .filter(t => t.statut !== 'done' && t.date)
+    .sort((a,b) => a.date.localeCompare(b.date))
+    .slice(0, 6);
+
+  const upBox = $('#upcoming');
+  if(!up.length){
+    upBox.innerHTML = '<p style="color:var(--muted);font-size:.9rem">Aucune échéance à venir 🎉</p>';
+  } else {
+    upBox.innerHTML = up.map(t => {
+      const dl = deadlineInfo(t);
+      const n = daysLeft(t.date);
+      const color = n < 0 ? 'var(--red)' : n <= 7 ? 'var(--amber)' : 'var(--green)';
+      return `
+        <div style="display:flex;align-items:center;gap:14px;padding:11px 0;border-bottom:1px solid var(--line)">
+          <div style="width:8px;height:8px;border-radius:50%;background:${color};flex:0 0 auto"></div>
+          <div style="flex:1;min-width:0">
+            <div style="font-weight:600;font-size:.9rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(t.titre)}</div>
+            <div style="font-size:.78rem;color:var(--muted)">${esc(t.resp)} · ${fmtDate(t.date)}</div>
+          </div>
+          <div style="font-size:.78rem;font-weight:800;color:${color};white-space:nowrap">${esc(dl.txt)}</div>
+        </div>`;
+    }).join('');
+  }
+}
+
+/* =========================================================
+   RENDU GLOBAL
+   ========================================================= */
+function renderAll(){
+  renderTasks();
+  renderDashboard();
+  save();
+}
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const page = document.getElementById('page-' + id);
+  if(page) page.classList.add('active');
+
+  document.querySelectorAll('.navlink').forEach(a => {
+    a.classList.toggle('active', a.dataset.nav === id);
+  });
+  window.scrollTo({ top:0, behavior:'smooth' });
+
+  if(id === 'dashboard') renderDashboard();
+  if(id === 'taches')    renderTasks();
+
+  $('#navInner').classList.remove('open');
+}
+
+document.addEventListener('click', e => {
+  const nav = e.target.closest('[data-nav]');
+  if(nav){ e.preventDefault(); showPage(nav.dataset.nav); }
+});
+
+$('#burger').addEventListener('click', () => {
+  $('#navInner').classList.toggle('open');
+});
+
+/* =========================================================
+   INTERACTIONS TÂCHES
+   ========================================================= */
+$('#taskList').addEventListener('change', e => {
+  const cb = e.target.closest('input[type=checkbox][data-task]');
+  if(cb){
+    const t = state.tasks.find(x => x.id === cb.dataset.task);
+    if(!t) return;
+    const idx = +cb.dataset.step;
+    t.etapes[idx].f = cb.checked;
+
+    // auto-statut
+    const p = progress(t);
+    if(p === 100) t.statut = 'done';
+    else if(p > 0 && t.statut === 'todo') t.statut = 'doing';
+    else if(p < 100 && t.statut === 'done') t.statut = 'doing';
+
+    renderAll();
+    return;
+  }
+
+  const sel = e.target.closest('select[data-status]');
+  if(sel){
+    const t = state.tasks.find(x => x.id === sel.dataset.status);
+    if(!t) return;
+    t.statut = sel.value;
+    if(sel.value === 'done'){
+      t.etapes = (t.etapes || []).map(s => ({ ...s, f:true }));
+    }
+    renderAll();
+  }
+});
+
+$('#taskList').addEventListener('click', e => {
+  const del = e.target.closest('[data-del]');
+  if(del){
+    const t = state.tasks.find(x => x.id === del.dataset.del);
+    if(t && confirm('Supprimer la tâche :\n« ' + t.titre + ' » ?')){
+      state.tasks = state.tasks.filter(x => x.id !== del.dataset.del);
+      renderAll();
+    }
+  }
+});
+
+/* =========================================================
+   FILTRES
+   ========================================================= */
+$('#search').addEventListener('input', e => {
+  state.filter.q = e.target.value;
+  renderTasks();
+});
+$('#filterStatut').addEventListener('change', e => {
+  state.filter.statut = e.target.value;
+  renderTasks();
+});
+
+/* =========================================================
+   MODAL — NOUVELLE TÂCHE
+   ========================================================= */
+function openModal(){
+  $('#fTitre').value = '';
+  $('#fDesc').value  = '';
+  $('#fSteps').value = '';
+  $('#fResp').value  = 'DFM';
+  $('#fPrio').value  = 'moyenne';
+  $('#fDate').value  = inDays(14);
+  $('#overlay').classList.add('open');
+  setTimeout(() => $('#fTitre').focus(), 60);
+}
+function closeModal(){ $('#overlay').classList.remove('open'); }
+
+$('#btnNew').addEventListener('click', openModal);
+$('#btnCancel').addEventListener('click', closeModal);
+$('#overlay').addEventListener('click', e => {
+  if(e.target === $('#overlay')) closeModal();
+});
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape') closeModal();
+});
+
+$('#btnSave').addEventListener('click', () => {
+  const titre = $('#fTitre').value.trim();
+  if(!titre){ $('#fTitre').focus(); return; }
+
+  const steps = $('#fSteps').value
+    .split('\n')
+    .map(s => s.trim())
+    .filter(Boolean)
+    .map(t => ({ t, f:false }));
+
+  state.tasks.push({
+    id: uid(),
+    titre,
+    desc: $('#fDesc').value.trim(),
+    resp: $('#fResp').value,
+    prio: $('#fPrio').value,
+    date: $('#fDate').value || '',
+    statut: 'todo',
+    etapes: steps
+  });
+
+  closeModal();
+  renderAll();
+  showPage('taches');
+});
+
+/* =========================================================
+   INIT
+   ========================================================= */
+(function init(){
+  // peupler le filtre responsable
+  const resps = [...new Set(state.tasks.map(t => t.resp))].sort();
+  const sel = $('#filterResp');
+  resps.forEach(r => {
+    const o = document.createElement('option');
+    o.value = r; o.textContent = r;
+    sel.appendChild(o);
+  });
+  sel.addEventListener('change', e => {
+    state.filter.resp = e.target.value;
+    renderTasks();
+  });
+
+  renderAll();
+})();
+</script>
+</body>
+</html>
