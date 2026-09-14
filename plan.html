@@ -124,6 +124,18 @@
     #printView { display: block !important; background: #fff; }
     @page { margin: 14mm; }
   }
+  .logo-badge {
+    background: #ffffff;
+    border-radius: 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .logo-badge img { display: block; width: 100%; height: 100%; object-fit: contain; }
+  /* Logo on dark backgrounds */
+  .logo-badge.on-dark { background: #ffffff; }
 </style>
 </head>
 <body class="bg-slate-50 text-slate-800">
@@ -134,7 +146,9 @@
     <div class="max-w-7xl mx-auto px-5 sm:px-8">
       <div class="h-16 flex items-center justify-between">
         <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-lg bg-indigo-500 grid place-items-center font-bold text-white">D</div>
+          <div class="logo-badge w-10 h-10 on-dark">
+            <img src="DSPLOGO.png" alt="DSP Logo" />
+          </div>
           <span class="font-semibold text-white tracking-tight">DME Ghardaïa</span>
         </div>
         <button data-go="app" class="text-sm font-medium px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-white border border-white/20 transition">
@@ -151,6 +165,16 @@
     </div>
     <div class="relative max-w-7xl mx-auto px-5 sm:px-8 pt-32 pb-24 lg:pt-40 lg:pb-32">
       <div class="max-w-3xl">
+        <div class="flex items-center gap-3 mb-8">
+          <div class="logo-badge w-14 h-14 on-dark">
+            <img src="DSPLOGO.png" alt="DSP Logo" />
+          </div>
+          <div class="text-xs text-slate-400 leading-tight">
+            <div class="font-semibold text-slate-200">Direction de la Santé Publique</div>
+            <div>Wilaya de Ghardaïa</div>
+          </div>
+        </div>
+
         <span class="inline-flex items-center gap-2 text-xs font-medium px-3 py-1.5 rounded-full bg-white/10 border border-white/20 text-indigo-200 mb-6">
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
           Wilaya de Ghardaïa · Projet de généralisation DME
@@ -212,6 +236,11 @@
 
   <section class="bg-slate-900 text-white">
     <div class="max-w-4xl mx-auto px-5 sm:px-8 py-20 lg:py-24 text-center">
+      <div class="flex justify-center mb-8">
+        <div class="logo-badge w-16 h-16 on-dark">
+          <img src="DSPLOGO.png" alt="DSP Logo" />
+        </div>
+      </div>
       <h2 class="text-3xl sm:text-4xl font-bold tracking-tight">Prêt à piloter le déploiement ?</h2>
       <p class="mt-4 text-slate-300 max-w-xl mx-auto">Ouvrez l'espace de travail pour cocher les tâches, ajouter des services et activer le mode administrateur.</p>
       <button data-go="app" class="mt-8 text-sm font-semibold px-8 py-4 rounded-xl bg-indigo-500 hover:bg-indigo-400 transition">Ouvrir l'espace de travail</button>
@@ -220,7 +249,12 @@
 
   <footer class="border-t border-slate-200 bg-white">
     <div class="max-w-7xl mx-auto px-5 sm:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400">
-      <span>© 2025 DME Ghardaïa · Projet de généralisation &amp; formation</span>
+      <div class="flex items-center gap-2">
+        <div class="logo-badge w-7 h-7 border border-slate-200">
+          <img src="DSPLOGO.png" alt="DSP Logo" />
+        </div>
+        <span>© 2025 DME Ghardaïa · Projet de généralisation &amp; formation</span>
+      </div>
       <span>Données stockées localement dans le navigateur.</span>
     </div>
   </footer>
@@ -233,7 +267,9 @@
       <div class="h-16 flex items-center justify-between gap-3">
         <div class="flex items-center gap-3 min-w-0">
           <button data-go="landing" class="text-slate-500 hover:text-slate-800 px-2.5 py-1.5 rounded-lg hover:bg-slate-100 transition text-xs font-medium">Accueil</button>
-          <div class="w-8 h-8 rounded-lg bg-indigo-500 grid place-items-center text-white font-bold text-sm shrink-0">D</div>
+          <div class="logo-badge w-9 h-9 border border-slate-200">
+            <img src="DSPLOGO.png" alt="DSP Logo" />
+          </div>
           <div class="min-w-0">
             <h1 class="font-semibold text-slate-900 leading-tight truncate">DME Ghardaïa</h1>
             <p id="globalSub" class="text-[11px] text-slate-500 leading-tight">0 tâche · 0 terminée</p>
@@ -272,7 +308,12 @@
   </main>
 
   <footer class="max-w-5xl mx-auto px-4 sm:px-6 py-10 text-center text-[11px] text-slate-400">
-    Données enregistrées localement dans votre navigateur.
+    <div class="flex items-center justify-center gap-2">
+      <div class="logo-badge w-6 h-6 border border-slate-200">
+        <img src="DSPLOGO.png" alt="DSP Logo" />
+      </div>
+      <span>Données enregistrées localement dans votre navigateur.</span>
+    </div>
   </footer>
 </div>
 
@@ -325,9 +366,14 @@
 <div id="mindmapOverlay" class="hidden fixed inset-0 z-50 bg-slate-900/70 p-3 sm:p-6 overflow-auto">
   <div class="bg-white rounded-2xl max-w-[1400px] mx-auto shadow-2xl">
     <div class="flex flex-wrap items-center justify-between gap-3 p-4 border-b border-slate-200 sticky top-0 bg-white rounded-t-2xl z-10">
-      <div>
-        <h3 class="font-semibold text-slate-900">Mindmap du projet DME Ghardaïa</h3>
-        <p class="text-[11px] text-slate-500">Établissements, services et tâches par phase</p>
+      <div class="flex items-center gap-3">
+        <div class="logo-badge w-9 h-9 border border-slate-200">
+          <img src="DSPLOGO.png" alt="DSP Logo" />
+        </div>
+        <div>
+          <h3 class="font-semibold text-slate-900">Mindmap du projet DME Ghardaïa</h3>
+          <p class="text-[11px] text-slate-500">Établissements, services et tâches par phase</p>
+        </div>
       </div>
       <div class="flex flex-wrap gap-2">
         <button data-act="download-svg" class="text-xs font-medium px-3 py-2 rounded-lg bg-slate-900 text-white hover:bg-slate-800">SVG</button>
@@ -843,8 +889,13 @@ function printMindmap() {
   const pv = document.getElementById('printView');
   pv.innerHTML = `
     <div style="font-family:system-ui,-apple-system,sans-serif">
-      <h1 style="font-size:18px; margin:0 0 6px 0">DME Ghardaïa — Mindmap du projet</h1>
-      <p style="font-size:11px; color:#64748b; margin:0 0 14px 0">Généré le ${new Date().toLocaleDateString('fr-FR')}</p>
+      <div style="display:flex; align-items:center; gap:12px; margin-bottom:14px">
+        <img src="DSPLOGO.png" alt="DSP Logo" style="height:44px; width:auto; object-fit:contain" />
+        <div>
+          <h1 style="font-size:18px; margin:0">DME Ghardaïa — Mindmap du projet</h1>
+          <p style="font-size:11px; color:#64748b; margin:4px 0 0 0">Généré le ${new Date().toLocaleDateString('fr-FR')}</p>
+        </div>
+      </div>
       <div style="overflow:hidden">${new XMLSerializer().serializeToString(svg)}</div>
     </div>`;
   setTimeout(() => window.print(), 150);
@@ -895,9 +946,12 @@ function exportPDF() {
   const pv = document.getElementById('printView');
   pv.innerHTML = `
     <div style="max-width:820px; margin:0 auto; padding:10px; font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif; color:#1e293b">
-      <div style="border-bottom:3px solid #6366f1; padding-bottom:14px; margin-bottom:20px">
-        <h1 style="margin:0; font-size:22px">DME Ghardaïa — Rapport de déploiement</h1>
-        <p style="margin:6px 0 0 0; color:#64748b; font-size:11px">Généré le ${now} · Wilaya de Ghardaïa</p>
+      <div style="display:flex; align-items:center; gap:14px; border-bottom:3px solid #6366f1; padding-bottom:14px; margin-bottom:20px">
+        <img src="DSPLOGO.png" alt="DSP Logo" style="height:54px; width:auto; object-fit:contain" />
+        <div style="flex:1">
+          <h1 style="margin:0; font-size:22px">DME Ghardaïa — Rapport de déploiement</h1>
+          <p style="margin:6px 0 0 0; color:#64748b; font-size:11px">Généré le ${now} · Wilaya de Ghardaïa · Direction de la Santé Publique</p>
+        </div>
       </div>
       <div style="display:flex; gap:10px; margin-bottom:22px">
         <div style="flex:1; border:1px solid #e2e8f0; border-radius:8px; padding:10px 12px"><div style="font-size:10px; color:#64748b; text-transform:uppercase; font-weight:600; letter-spacing:.5px">Établissements</div><div style="font-size:20px; font-weight:700; margin-top:3px">${state.etabs.length}</div></div>
@@ -912,7 +966,10 @@ function exportPDF() {
       ${etabsHtml}
       <h2 style="font-size:15px; margin:22px 0 10px 0">2. Plan de tâches par phase</h2>
       ${tasksHtml}
-      <div style="margin-top:26px; padding-top:12px; border-top:1px solid #e2e8f0; font-size:10px; color:#94a3b8; text-align:center">DME Ghardaïa · Rapport généré automatiquement</div>
+      <div style="margin-top:26px; padding-top:12px; border-top:1px solid #e2e8f0; font-size:10px; color:#94a3b8; text-align:center; display:flex; align-items:center; justify-content:center; gap:8px">
+        <img src="DSPLOGO.png" alt="DSP Logo" style="height:18px; width:auto; object-fit:contain" />
+        <span>DME Ghardaïa · Rapport généré automatiquement</span>
+      </div>
     </div>`;
   setTimeout(() => window.print(), 200);
 }
