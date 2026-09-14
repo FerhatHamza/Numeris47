@@ -8,11 +8,10 @@
 <style>
   html{scroll-behavior:smooth}
   body{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-  input:focus,select:focus,textarea:focus{outline:none;border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,.15)}
-  .fade-in{animation:fade .35s ease both}
-  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-  .check-line{transition:all .2s}
-  input[type=checkbox]:checked + div .title{text-decoration:line-through;color:#94a3b8}
+  input:focus,select:focus{outline:none;border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,.15)}
+  .fade-in{animation:fade .3s ease both}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  input[type="checkbox"]{accent-color:#10b981;width:1rem;height:1rem;cursor:pointer}
 </style>
 </head>
 <body class="bg-slate-50 text-slate-800">
@@ -20,32 +19,29 @@
 <!-- ============================= LANDING PAGE ============================= -->
 <div id="landing">
 
-  <!-- NAV -->
   <header class="absolute top-0 inset-x-0 z-30">
     <div class="max-w-7xl mx-auto px-5 sm:px-8">
       <div class="h-16 flex items-center justify-between">
         <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-lg bg-indigo-500 grid place-items-center font-bold text-white shadow-lg shadow-indigo-500/30">D</div>
+          <div class="w-9 h-9 rounded-lg bg-indigo-500 grid place-items-center font-bold text-white">D</div>
           <span class="font-semibold text-white tracking-tight">DME Pilot</span>
         </div>
-        <button data-go="app" class="text-sm font-medium px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-white backdrop-blur border border-white/20 transition">
-          Ouvrir la liste →
+        <button data-go="app" class="text-sm font-medium px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-white border border-white/20 transition">
+          Ouvrir la liste
         </button>
       </div>
     </div>
   </header>
 
-  <!-- HERO -->
   <section class="relative bg-slate-900 text-white overflow-hidden">
     <div class="absolute inset-0">
       <div class="absolute -top-40 -right-40 w-[500px] h-[500px] bg-indigo-600/30 rounded-full blur-3xl"></div>
       <div class="absolute -bottom-40 -left-40 w-[500px] h-[500px] bg-fuchsia-600/20 rounded-full blur-3xl"></div>
-      <div class="absolute inset-0 opacity-[0.04]" style="background-image:radial-gradient(#fff 1px,transparent 1px);background-size:28px 28px"></div>
     </div>
     <div class="relative max-w-7xl mx-auto px-5 sm:px-8 pt-32 pb-24 lg:pt-40 lg:pb-32">
       <div class="max-w-3xl">
         <span class="inline-flex items-center gap-2 text-xs font-medium px-3 py-1.5 rounded-full bg-white/10 border border-white/20 text-indigo-200 mb-6">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
           Projet en cours · Généralisation DME
         </span>
         <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.08] tracking-tight">
@@ -56,15 +52,14 @@
           la configuration des serveurs et le plan de formation — dans une seule liste de tâches claire.
         </p>
         <div class="mt-9 flex flex-wrap gap-3">
-          <button data-go="app" class="text-sm font-semibold px-6 py-3.5 rounded-xl bg-indigo-500 hover:bg-indigo-400 shadow-lg shadow-indigo-500/30 transition">
+          <button data-go="app" class="text-sm font-semibold px-6 py-3.5 rounded-xl bg-indigo-500 hover:bg-indigo-400 transition">
             Démarrer la liste de tâches
           </button>
-          <a href="#phases" class="text-sm font-semibold px-6 py-3.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/20 backdrop-blur transition">
+          <a href="#phases" class="text-sm font-semibold px-6 py-3.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/20 transition">
             Voir les phases
           </a>
         </div>
 
-        <!-- mini stats -->
         <div class="mt-14 grid grid-cols-2 sm:grid-cols-4 gap-6 max-w-2xl">
           <div><div class="text-3xl font-bold text-white">4</div><div class="text-xs text-slate-400 mt-1">Établissements</div></div>
           <div><div class="text-3xl font-bold text-white">14</div><div class="text-xs text-slate-400 mt-1">Services</div></div>
@@ -75,7 +70,6 @@
     </div>
   </section>
 
-  <!-- FEATURES -->
   <section class="max-w-7xl mx-auto px-5 sm:px-8 py-20 lg:py-28">
     <div class="text-center max-w-2xl mx-auto">
       <p class="text-sm font-semibold text-indigo-600 uppercase tracking-wider">Ce que couvre la liste</p>
@@ -85,39 +79,38 @@
 
     <div class="mt-14 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
       <div class="bg-white rounded-2xl border border-slate-200 p-6 hover:shadow-lg hover:-translate-y-0.5 transition">
-        <div class="w-11 h-11 rounded-xl bg-indigo-50 text-indigo-600 grid place-items-center text-xl">⚙️</div>
+        <div class="w-11 h-11 rounded-xl bg-indigo-50 text-indigo-600 grid place-items-center text-sm font-bold">01</div>
         <h3 class="mt-4 font-semibold text-slate-900">Paramétrage</h3>
         <p class="mt-2 text-sm text-slate-500 leading-relaxed">Créer les établissements, services, unités et salles de chaque structure.</p>
       </div>
       <div class="bg-white rounded-2xl border border-slate-200 p-6 hover:shadow-lg hover:-translate-y-0.5 transition">
-        <div class="w-11 h-11 rounded-xl bg-sky-50 text-sky-600 grid place-items-center text-xl">💻</div>
+        <div class="w-11 h-11 rounded-xl bg-sky-50 text-sky-600 grid place-items-center text-sm font-bold">02</div>
         <h3 class="mt-4 font-semibold text-slate-900">PCs &amp; Licences</h3>
         <p class="mt-2 text-sm text-slate-500 leading-relaxed">Installer le client DME, demander la licence, valider en admin, activer la clé.</p>
       </div>
       <div class="bg-white rounded-2xl border border-slate-200 p-6 hover:shadow-lg hover:-translate-y-0.5 transition">
-        <div class="w-11 h-11 rounded-xl bg-violet-50 text-violet-600 grid place-items-center text-xl">👥</div>
+        <div class="w-11 h-11 rounded-xl bg-violet-50 text-violet-600 grid place-items-center text-sm font-bold">03</div>
         <h3 class="mt-4 font-semibold text-slate-900">Utilisateurs</h3>
         <p class="mt-2 text-sm text-slate-500 leading-relaxed">Créer les comptes et les affecter à leur service, unité, salle et poste.</p>
       </div>
       <div class="bg-white rounded-2xl border border-slate-200 p-6 hover:shadow-lg hover:-translate-y-0.5 transition">
-        <div class="w-11 h-11 rounded-xl bg-amber-50 text-amber-600 grid place-items-center text-xl">🖧</div>
+        <div class="w-11 h-11 rounded-xl bg-amber-50 text-amber-600 grid place-items-center text-sm font-bold">04</div>
         <h3 class="mt-4 font-semibold text-slate-900">Infrastructure</h3>
         <p class="mt-2 text-sm text-slate-500 leading-relaxed">Configurer serveurs applicatifs, base de données, sauvegarde et stockage.</p>
       </div>
       <div class="bg-white rounded-2xl border border-slate-200 p-6 hover:shadow-lg hover:-translate-y-0.5 transition">
-        <div class="w-11 h-11 rounded-xl bg-fuchsia-50 text-fuchsia-600 grid place-items-center text-xl">🎓</div>
+        <div class="w-11 h-11 rounded-xl bg-fuchsia-50 text-fuchsia-600 grid place-items-center text-sm font-bold">05</div>
         <h3 class="mt-4 font-semibold text-slate-900">Formation</h3>
         <p class="mt-2 text-sm text-slate-500 leading-relaxed">Monter l'environnement de simulation, former les admins puis les référents.</p>
       </div>
       <div class="bg-white rounded-2xl border border-slate-200 p-6 hover:shadow-lg hover:-translate-y-0.5 transition">
-        <div class="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-600 grid place-items-center text-xl">📅</div>
+        <div class="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-600 grid place-items-center text-sm font-bold">06</div>
         <h3 class="mt-4 font-semibold text-slate-900">Planning</h3>
         <p class="mt-2 text-sm text-slate-500 leading-relaxed">Suivre les échéances, les retards et la progression globale en temps réel.</p>
       </div>
     </div>
   </section>
 
-  <!-- PHASES -->
   <section id="phases" class="bg-white border-y border-slate-200">
     <div class="max-w-7xl mx-auto px-5 sm:px-8 py-20 lg:py-28">
       <div class="max-w-2xl">
@@ -157,7 +150,7 @@
           <h3 class="mt-2 font-semibold text-slate-900">Formation</h3>
           <p class="mt-2 text-xs text-slate-500 leading-relaxed">Simulation, admins, référents, évaluations.</p>
         </div>
-        <div class="rounded-2xl border border-slate-200 p-5 bg-slate-50/50 md:col-span-2 lg:col-span-2">
+        <div class="rounded-2xl border border-slate-200 p-5 bg-slate-50/50 md:col-span-2">
           <div class="text-xs font-bold text-slate-400">PHASE 6</div>
           <h3 class="mt-2 font-semibold text-slate-900">Go-live</h3>
           <p class="mt-2 text-xs text-slate-500 leading-relaxed">Bascule, support post-déploiement, PV de réception.</p>
@@ -166,7 +159,6 @@
     </div>
   </section>
 
-  <!-- WORKFLOW LICENCES -->
   <section class="max-w-7xl mx-auto px-5 sm:px-8 py-20 lg:py-28">
     <div class="grid lg:grid-cols-2 gap-14 items-center">
       <div>
@@ -188,7 +180,7 @@
         </ul>
       </div>
 
-      <div class="rounded-3xl bg-slate-900 p-8 text-white shadow-2xl shadow-slate-900/20">
+      <div class="rounded-3xl bg-slate-900 p-8 text-white">
         <div class="text-xs uppercase tracking-wider text-slate-400 mb-4">Cycle de vie d'un poste</div>
         <div class="space-y-3">
           <div class="flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl px-4 py-3">
@@ -216,13 +208,12 @@
     </div>
   </section>
 
-  <!-- CTA -->
   <section class="bg-slate-900 text-white">
     <div class="max-w-4xl mx-auto px-5 sm:px-8 py-20 lg:py-24 text-center">
       <h2 class="text-3xl sm:text-4xl font-bold tracking-tight">Prêt à cocher la première tâche ?</h2>
       <p class="mt-4 text-slate-300 max-w-xl mx-auto">La liste est prête : 4 établissements, 14 services et tout le déroulé du projet vous attendent.</p>
-      <button data-go="app" class="mt-8 text-sm font-semibold px-8 py-4 rounded-xl bg-indigo-500 hover:bg-indigo-400 shadow-lg shadow-indigo-500/30 transition">
-        Ouvrir la liste de tâches →
+      <button data-go="app" class="mt-8 text-sm font-semibold px-8 py-4 rounded-xl bg-indigo-500 hover:bg-indigo-400 transition">
+        Ouvrir la liste de tâches
       </button>
     </div>
   </section>
@@ -238,12 +229,11 @@
 <!-- ============================= TODO APP ============================= -->
 <div id="app" class="hidden min-h-screen bg-slate-50">
 
-  <!-- TOP BAR -->
-  <header class="bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-30">
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-30">
     <div class="max-w-5xl mx-auto px-4 sm:px-6">
       <div class="h-16 flex items-center justify-between gap-3">
         <div class="flex items-center gap-3 min-w-0">
-          <button data-go="landing" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition" title="Retour à l'accueil">←</button>
+          <button data-go="landing" class="text-slate-400 hover:text-slate-700 px-2 py-1 rounded-lg hover:bg-slate-100 transition text-sm" title="Retour à l'accueil">Retour</button>
           <div class="w-8 h-8 rounded-lg bg-indigo-500 grid place-items-center text-white font-bold text-sm shrink-0">D</div>
           <div class="min-w-0">
             <h1 class="font-semibold text-slate-900 leading-tight truncate">Liste de tâches — DME</h1>
@@ -256,7 +246,6 @@
         </div>
       </div>
     </div>
-    <!-- global progress -->
     <div class="h-1 bg-slate-100">
       <div id="globalBar" class="h-full bg-gradient-to-r from-indigo-500 to-fuchsia-500 transition-all duration-500" style="width:0%"></div>
     </div>
@@ -264,11 +253,9 @@
 
   <main class="max-w-5xl mx-auto px-4 sm:px-6 py-6">
 
-    <!-- STATS -->
     <div id="stats" class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6"></div>
 
-    <!-- ADD TASK -->
-    <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm mb-5">
+    <div class="bg-white rounded-2xl border border-slate-200 p-4 mb-5">
       <div class="flex flex-col sm:flex-row gap-2">
         <input id="newTitle" placeholder="Ajouter une tâche… (ex: Valider le périmètre)"
           class="flex-1 text-sm border border-slate-200 rounded-xl px-4 py-3 bg-slate-50 focus:bg-white transition">
@@ -278,7 +265,6 @@
       </div>
     </div>
 
-    <!-- FILTERS -->
     <div class="flex flex-wrap items-center gap-2 mb-5">
       <div id="filterChips" class="flex flex-wrap gap-1.5"></div>
       <div class="flex-1"></div>
@@ -290,11 +276,9 @@
       </select>
     </div>
 
-    <!-- LIST -->
     <div id="taskList" class="space-y-3"></div>
 
     <div id="emptyState" class="hidden text-center py-16">
-      <div class="text-5xl mb-3">🎉</div>
       <p class="font-semibold text-slate-700">Rien à afficher</p>
       <p class="text-sm text-slate-400 mt-1">Ajoutez une tâche ou changez de filtre.</p>
     </div>
@@ -307,21 +291,20 @@
 
 <script>
 /* ============================ HELPERS ============================ */
-const LS = 'dme_todo_v2';
+const LS = 'dme_todo_v4';
 const uid = () => Math.random().toString(36).slice(2, 9);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const todayISO = () => new Date().toISOString().slice(0, 10);
-const daysBetween = (a,b) => Math.round((new Date(b) - new Date(a)) / 86400000);
 const fmtDate = d => d ? new Date(d).toLocaleDateString('fr-FR', { day:'2-digit', month:'short' }) : '';
 
 const PHASES = [
-  { id:'cadrage',       label:'Cadrage',        icon:'🎯', color:'slate' },
-  { id:'parametrage',   label:'Paramétrage',    icon:'⚙️', color:'indigo' },
-  { id:'infra',         label:'Infrastructure', icon:'🖧', color:'amber' },
-  { id:'pcs',           label:'PCs & Licences', icon:'💻', color:'sky' },
-  { id:'users',         label:'Utilisateurs',   icon:'👥', color:'violet' },
-  { id:'formation',     label:'Formation',      icon:'🎓', color:'fuchsia' },
-  { id:'golive',        label:'Go-live',        icon:'🚀', color:'emerald' }
+  { id:'cadrage',     label:'Cadrage',        color:'slate' },
+  { id:'parametrage', label:'Paramétrage',    color:'indigo' },
+  { id:'infra',       label:'Infrastructure', color:'amber' },
+  { id:'pcs',         label:'PCs & Licences', color:'sky' },
+  { id:'users',       label:'Utilisateurs',   color:'violet' },
+  { id:'formation',   label:'Formation',      color:'fuchsia' },
+  { id:'golive',      label:'Go-live',        color:'emerald' }
 ];
 const phaseOf = id => PHASES.find(p => p.id === id) || PHASES[0];
 
@@ -356,13 +339,11 @@ function seed() {
   });
 
   return [
-    /* --- CADRAGE --- */
     t('cadrage', 'Valider le périmètre du projet', dt(3), 'haute', true, []),
     t('cadrage', 'Réaliser l\'inventaire (services, salles, postes)', dt(5), 'haute', false, []),
     t('cadrage', 'Désigner les référents par service', dt(6), 'moyenne', false, []),
     t('cadrage', 'Définir le calendrier global et les deadlines', dt(7), 'moyenne', false, []),
 
-    /* --- PARAMÉTRAGE --- */
     t('parametrage', 'Créer les 4 établissements', dt(10), 'haute', false, [
       'Polyclinique Bailich Mazouz',
       'Polyclinique Vieux Ksar',
@@ -383,7 +364,6 @@ function seed() {
     t('parametrage', 'Créer les salles rattachées aux unités', dt(16), 'moyenne', false, []),
     t('parametrage', 'Vérifier la cohérence de l\'arborescence', dt(17), 'basse', false, []),
 
-    /* --- INFRASTRUCTURE --- */
     t('infra', 'Configurer le serveur applicatif DME', dt(14), 'haute', false, []),
     t('infra', 'Installer et configurer la base de données', dt(17), 'haute', false, []),
     t('infra', 'Mettre en place le stockage (SAN/NAS)', dt(20), 'moyenne', false, []),
@@ -391,7 +371,6 @@ function seed() {
     t('infra', 'Sécuriser le réseau et les accès', dt(24), 'moyenne', false, []),
     t('infra', 'Tests techniques & recette infrastructure', dt(28), 'haute', false, []),
 
-    /* --- PCs & LICENCES --- */
     t('pcs', 'Inventorier tous les PCs à équiper', dt(18), 'haute', false, [
       'Relever hostname, MAC et service',
       'Identifier le PC de chaque utilisateur'
@@ -407,7 +386,6 @@ function seed() {
     t('pcs', 'Saisir et activer les clés sur les postes', dt(32), 'haute', false, []),
     t('pcs', 'Vérifier que tous les postes sont activés', dt(34), 'moyenne', false, []),
 
-    /* --- UTILISATEURS --- */
     t('users', 'Créer les comptes utilisateurs', dt(34), 'haute', false, [
       'Définir les rôles (médecin, technicien, infirmier…)',
       'Générer les identifiants'
@@ -416,7 +394,6 @@ function seed() {
     t('users', 'Lier chaque utilisateur à son PC', dt(37), 'moyenne', false, []),
     t('users', 'Former les utilisateurs à leur compte', dt(38), 'basse', false, []),
 
-    /* --- FORMATION --- */
     t('formation', 'Installer l\'environnement de simulation', dt(20), 'haute', false, [
       'Cloner la base avec des données fictives',
       'Déployer le serveur de simulation isolé',
@@ -439,7 +416,6 @@ function seed() {
     t('formation', 'Organiser les sessions par service', dt(44), 'moyenne', false, []),
     t('formation', 'Évaluations & certification', dt(48), 'moyenne', false, []),
 
-    /* --- GO-LIVE --- */
     t('golive', 'Bascule finale vers le DME', dt(52), 'haute', false, []),
     t('golive', 'Support post-déploiement', dt(58), 'moyenne', false, []),
     t('golive', 'PV de réception & clôture du projet', dt(60), 'moyenne', false, [])
@@ -484,7 +460,6 @@ function render() {
 
   const tasks = state.tasks;
 
-  /* --- progress + stats --- */
   const total = tasks.length;
   const done = tasks.filter(t => t.done).length;
   const pct = total ? Math.round(done / total * 100) : 0;
@@ -524,13 +499,11 @@ function render() {
     </div>
   `;
 
-  /* --- add-form phase select --- */
   const sel = document.getElementById('newPhase');
   if (sel.options.length !== PHASES.length) {
-    sel.innerHTML = PHASES.map(p => `<option value="${p.id}">${p.icon} ${p.label}</option>`).join('');
+    sel.innerHTML = PHASES.map(p => `<option value="${p.id}">${p.label}</option>`).join('');
   }
 
-  /* --- filter chips --- */
   const counts = { all: tasks.length };
   PHASES.forEach(p => counts[p.id] = tasks.filter(t => t.phase === p.id).length);
   document.getElementById('filterChips').innerHTML = `
@@ -541,26 +514,21 @@ function render() {
     PHASES.map(p => `
       <button data-filter="${p.id}" class="text-xs font-medium px-3 py-1.5 rounded-full border transition
         ${filter === p.id ? 'bg-slate-900 text-white border-slate-900' : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300'}">
-        ${p.icon} ${esc(p.label)} <span class="opacity-60">${counts[p.id]}</span>
+        ${p.label} <span class="opacity-60">${counts[p.id]}</span>
       </button>`).join('');
 
-  /* --- sort --- */
   document.getElementById('sortSel').value = sortBy;
 
-  /* --- list --- */
   let list = tasks.slice();
   if (filter !== 'all') list = list.filter(t => t.phase === filter);
 
   if (sortBy === 'due') list.sort((a,b) => (a.due || '9999').localeCompare(b.due || '9999'));
-  else if (sortBy === 'progress') {
-    list.sort((a,b) => subPct(a) - subPct(b));
-  }
+  else if (sortBy === 'progress') list.sort((a,b) => subPct(a) - subPct(b));
   else if (sortBy === 'priority') {
     const order = { haute:0, moyenne:1, basse:2 };
     list.sort((a,b) => order[a.priority] - order[b.priority]);
   }
 
-  /* --- grouped by phase (only in "Toutes" + manual) --- */
   const grouped = (filter === 'all' && sortBy === 'manual');
 
   const listEl = document.getElementById('taskList');
@@ -578,7 +546,7 @@ function render() {
         <section class="fade-in">
           <div class="flex items-center gap-2 mb-2 px-1">
             <span class="w-2 h-2 rounded-full ${PHASE_DOT[p.color]}"></span>
-            <h3 class="text-xs font-bold uppercase tracking-wide text-slate-500">${p.icon} ${esc(p.label)}</h3>
+            <h3 class="text-xs font-bold uppercase tracking-wide text-slate-500">${esc(p.label)}</h3>
             <span class="text-[11px] text-slate-400">${pDone}/${items.length}</span>
             <div class="flex-1 h-px bg-slate-200"></div>
           </div>
@@ -610,24 +578,19 @@ function taskCard(t) {
   <div class="task-card bg-white rounded-xl border ${t.done ? 'border-slate-100' : overdue ? 'border-rose-200' : 'border-slate-200'} hover:shadow-sm transition fade-in">
     <div class="flex items-start gap-3 p-3.5">
 
-      <label class="pt-0.5 shrink-0 cursor-pointer">
-        <input type="checkbox" class="peer sr-only" data-toggle="${t.id}" ${t.done ? 'checked' : ''}>
-        <div class="w-5 h-5 rounded-md border-2 ${t.done ? 'bg-emerald-500 border-emerald-500' : 'border-slate-300'} grid place-items-center transition
-             peer-checked:bg-emerald-500 peer-checked:border-emerald-500">
-          <svg class="w-3 h-3 text-white ${t.done ? '' : 'hidden'}" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6l3 3 5-6"/></svg>
-        </div>
-      </label>
+      <input type="checkbox" data-toggle="${t.id}" ${t.done ? 'checked' : ''}
+        class="mt-0.5 shrink-0 rounded border-slate-300">
 
       <div class="flex-1 min-w-0">
-        <div class="title text-sm font-medium ${t.done ? 'line-through text-slate-400' : 'text-slate-800'}">
+        <div class="text-sm font-medium ${t.done ? 'line-through text-slate-400' : 'text-slate-800'}">
           ${esc(t.title)}
         </div>
 
         <div class="mt-1.5 flex flex-wrap items-center gap-1.5">
-          <span class="text-[10px] font-medium px-2 py-0.5 rounded-full ${PHASE_TINT[p.color]}">${p.icon} ${esc(p.label)}</span>
+          <span class="text-[10px] font-medium px-2 py-0.5 rounded-full ${PHASE_TINT[p.color]}">${esc(p.label)}</span>
           <span class="text-[10px] font-medium px-2 py-0.5 rounded-full border ${pr.cls}">${pr.label}</span>
           ${t.due ? `<span class="text-[10px] font-medium px-2 py-0.5 rounded-full border ${overdue ? 'bg-rose-50 text-rose-700 border-rose-200' : dueToday ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-slate-50 text-slate-500 border-slate-200'}">
-            ${overdue ? '⚠ ' : dueToday ? '⏰ ' : '📅 '}${fmtDate(t.due)}${overdue ? ' · en retard' : dueToday ? ' · aujourd\'hui' : ''}
+            ${overdue ? 'En retard · ' : dueToday ? 'Aujourd\'hui · ' : ''}${fmtDate(t.due)}
           </span>` : ''}
           ${subT ? `<span class="text-[10px] text-slate-400">${subD}/${subT} sous-étapes</span>` : ''}
         </div>
@@ -641,19 +604,19 @@ function taskCard(t) {
         <div class="mt-3 pl-3 border-l-2 border-slate-100 space-y-1.5">
           ${t.subtasks.map(s => `
             <label class="flex items-center gap-2 cursor-pointer group">
-              <input type="checkbox" class="w-3.5 h-3.5 rounded border-slate-300 text-emerald-500 focus:ring-emerald-400 focus:ring-offset-0"
-                     data-sub="${t.id}:${s.id}" ${s.done ? 'checked' : ''}>
+              <input type="checkbox" data-sub="${t.id}:${s.id}" ${s.done ? 'checked' : ''}
+                class="rounded border-slate-300">
               <span class="text-xs ${s.done ? 'line-through text-slate-400' : 'text-slate-600'} group-hover:text-slate-800 transition">${esc(s.title)}</span>
             </label>`).join('')}
         </div>` : ''}
       </div>
 
       <div class="flex items-center gap-0.5 shrink-0">
-        <button data-prio="${t.id}" class="text-slate-300 hover:text-slate-600 p-1.5 rounded-lg hover:bg-slate-100 transition" title="Changer priorité">
-          <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path d="M10 2l3 6h6l-5 4 2 6-6-4-6 4 2-6-5-4h6z"/></svg>
+        <button data-prio="${t.id}" class="text-[10px] font-medium text-slate-400 hover:text-slate-700 px-2 py-1.5 rounded-lg hover:bg-slate-100 transition" title="Changer priorité">
+          Priorité
         </button>
-        <button data-del="${t.id}" class="text-slate-300 hover:text-rose-600 p-1.5 rounded-lg hover:bg-rose-50 transition" title="Supprimer">
-          <svg class="w-4 h-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 6h12M8 6V4h4v2M6 6l1 10h6l1-10"/></svg>
+        <button data-del="${t.id}" class="text-[10px] font-medium text-slate-400 hover:text-rose-600 px-2 py-1.5 rounded-lg hover:bg-rose-50 transition" title="Supprimer">
+          Suppr
         </button>
       </div>
     </div>
@@ -737,7 +700,6 @@ document.addEventListener('click', e => {
   }
 });
 
-/* Enter to add task */
 document.addEventListener('keydown', e => {
   if (e.key === 'Enter' && e.target.id === 'newTitle') {
     document.querySelector('[data-act="add"]').click();
