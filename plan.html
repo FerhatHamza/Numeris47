@@ -6,145 +6,111 @@
 <title>DME Ghardaïa · Généralisation &amp; Formation</title>
 <script src="https://cdn.tailwindcss.com"></script>
 
-<!-- ============================= PROTECTION LAYER ============================= -->
+<!-- ============================= PROTECTION LAYER (FIXED) ============================= -->
 <script>
 (function () {
   'use strict';
+  try {
+    const OVERLAY_ID = '__blocked_overlay__';
+    let locked = false;
 
-  const CONFIG = {
-    THRESHOLD: 160,
-    INTERVAL: 700,
-    AUTO_LOCK: true,
-    FREEZE_PAGE: true
-  };
-
-  function ensureOverlay() {
-    let el = document.getElementById('__access_denied__');
-    if (el) return el;
-    el = document.createElement('div');
-    el.id = '__access_denied__';
-    el.setAttribute('role', 'alertdialog');
-    el.style.cssText = [
-      'position:fixed','inset:0','z-index:2147483647',
-      'background:#0f172a','color:#f8fafc',
-      'display:none','align-items:center','justify-content:center',
-      'font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif',
-      'text-align:center','padding:24px','user-select:none'
-    ].join(';');
-    el.innerHTML = `
-      <div style="max-width:520px">
-        <div style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#f87171;font-weight:700;margin-bottom:14px">
-          Accès refusé
-        </div>
-        <h1 style="font-size:28px;font-weight:700;margin:0 0 12px 0;line-height:1.2">
-          Outils de développement détectés
-        </h1>
-        <p style="font-size:14px;color:#94a3b8;line-height:1.6;margin:0 0 22px 0">
-          L'inspection du code source et l'utilisation des outils de développement sont
-          désactivées sur cette application.
-        </p>
-        <div style="display:inline-block;background:#1e293b;border:1px solid #334155;border-radius:10px;
-                    padding:10px 16px;font-size:12px;color:#cbd5e1;font-family:ui-monospace,monospace">
-          Veuillez fermer les outils de développement pour continuer.
-        </div>
-        <div style="margin-top:22px;font-size:11px;color:#64748b">
-          DME Ghardaïa — Accès protégé
-        </div>
-      </div>`;
-    document.body.appendChild(el);
-    return el;
-  }
-
-  let locked = false;
-
-  function swallow(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    return false;
-  }
-
-  function lock() {
-    if (locked) return;
-    locked = true;
-    if (!CONFIG.AUTO_LOCK) return;
-    const el = ensureOverlay();
-    el.style.display = 'flex';
-    document.documentElement.style.overflow = 'hidden';
-    if (CONFIG.FREEZE_PAGE) {
-      document.addEventListener('keydown', swallow, true);
-      document.addEventListener('mousedown', swallow, true);
-      document.addEventListener('wheel', swallow, { capture: true, passive: false });
+    function ensureOverlay() {
+      let el = document.getElementById(OVERLAY_ID);
+      if (el) return el;
+      el = document.createElement('div');
+      el.id = OVERLAY_ID;
+      el.style.cssText =
+        'position:fixed;inset:0;z-index:2147483647;' +
+        'background:#0f172a;color:#f8fafc;' +
+        'display:none;align-items:center;justify-content:center;' +
+        'font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;' +
+        'text-align:center;padding:24px;user-select:none;';
+      el.innerHTML =
+        '<div style="max-width:520px">' +
+          '<div style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#f87171;font-weight:700;margin-bottom:14px">Accès refusé</div>' +
+          '<h1 style="font-size:28px;font-weight:700;margin:0 0 12px 0;line-height:1.2">Outils de développement détectés</h1>' +
+          '<p style="font-size:14px;color:#94a3b8;line-height:1.6;margin:0 0 22px 0">L\'inspection du code source et l\'utilisation des outils de développement sont désactivées sur cette application.</p>' +
+          '<div style="display:inline-block;background:#1e293b;border:1px solid #334155;border-radius:10px;padding:10px 16px;font-size:12px;color:#cbd5e1;font-family:ui-monospace,monospace">Veuillez fermer les outils de développement pour continuer.</div>' +
+          '<div style="margin-top:22px;font-size:11px;color:#64748b">DME Ghardaïa — Accès protégé</div>' +
+        '</div>';
+      if (document.body) document.body.appendChild(el);
+      else document.addEventListener('DOMContentLoaded', function () { document.body.appendChild(el); });
+      return el;
     }
-  }
 
-  function unlock() {
-    if (!locked) return;
-    locked = false;
-    const el = document.getElementById('__access_denied__');
-    if (el) el.style.display = 'none';
-    document.documentElement.style.overflow = '';
-    document.removeEventListener('keydown', swallow, true);
-    document.removeEventListener('mousedown', swallow, true);
-    document.removeEventListener('wheel', swallow, true);
-  }
-
-  document.addEventListener('contextmenu', e => { e.preventDefault(); return false; }, true);
-
-  document.addEventListener('keydown', e => {
-    const k = e.key ? e.key.toLowerCase() : '';
-    const ctrl = e.ctrlKey || e.metaKey;
-    const shift = e.shiftKey;
-    if (k === 'f12') { e.preventDefault(); e.stopPropagation(); lock(); return false; }
-    if (ctrl && shift && (k === 'i' || k === 'j' || k === 'c' || k === 'k')) {
-      e.preventDefault(); e.stopPropagation(); lock(); return false;
+    function showOverlay() {
+      if (locked) return;
+      locked = true;
+      const el = ensureOverlay();
+      if (el) el.style.display = 'flex';
+      document.documentElement.style.overflow = 'hidden';
     }
-    if (ctrl && k === 'u') { e.preventDefault(); e.stopPropagation(); lock(); return false; }
-    if (ctrl && k === 's') { e.preventDefault(); e.stopPropagation(); return false; }
-    if (ctrl && shift && k === 'e') { e.preventDefault(); e.stopPropagation(); return false; }
-  }, true);
 
-  function detectBySize() {
-    const wDiff = window.outerWidth - window.innerWidth;
-    const hDiff = window.outerHeight - window.innerHeight;
-    return wDiff > CONFIG.THRESHOLD || hDiff > CONFIG.THRESHOLD;
-  }
-
-  let debuggerFired = false;
-  function detectByDebugger() {
-    const start = performance.now();
-    // eslint-disable-next-line no-debugger
-    debugger;
-    const elapsed = performance.now() - start;
-    if (elapsed > 100) debuggerFired = true;
-    return debuggerFired;
-  }
-
-  let consoleTrapped = false;
-  function detectByConsole() {
-    const el = document.createElement('div');
-    Object.defineProperty(el, 'id', { get() { consoleTrapped = true; return 'trapped'; } });
-    try { console.log(el); } catch (e) {}
-    try { console.clear && console.clear(); } catch (e) {}
-    return consoleTrapped;
-  }
-
-  function check() {
-    if (locked) {
-      const stillOpen = detectBySize() || consoleTrapped || debuggerFired;
-      if (!stillOpen) { consoleTrapped = false; debuggerFired = false; unlock(); }
-      return;
+    function hideOverlay() {
+      if (!locked) return;
+      locked = false;
+      const el = document.getElementById(OVERLAY_ID);
+      if (el) el.style.display = 'none';
+      document.documentElement.style.overflow = '';
     }
-    const sizeOpen = detectBySize();
-    const debugOpen = detectByDebugger();
-    const consoleOpen = detectByConsole();
-    if (sizeOpen || debugOpen || consoleOpen) lock();
-  }
 
-  window.addEventListener('load', () => {
-    ensureOverlay();
-    setTimeout(check, 900);
-    setInterval(check, CONFIG.INTERVAL);
-  });
+    /* ---- 1. Block right-click ---- */
+    document.addEventListener('contextmenu', function (e) {
+      e.preventDefault(); e.stopPropagation(); return false;
+    }, true);
+
+    /* ---- 2. Block keyboard shortcuts ---- */
+    function onKeyDown(e) {
+      const k = (e.key || '').toLowerCase();
+      const ctrl = e.ctrlKey || e.metaKey;
+      const shift = e.shiftKey;
+      let blocked = false;
+
+      if (k === 'f12') blocked = true;
+      if (ctrl && shift && (k === 'i' || k === 'j' || k === 'c' || k === 'k')) blocked = true;
+      if (ctrl && !shift && k === 'u') blocked = true;
+      if (ctrl && shift && k === 'e') blocked = true;
+      if (ctrl && !shift && k === 's') blocked = true;
+
+      if (blocked) {
+        e.preventDefault(); e.stopPropagation();
+        showOverlay();
+        return false;
+      }
+    }
+    document.addEventListener('keydown', onKeyDown, true);
+    window.addEventListener('keydown', onKeyDown, true);
+
+    /* ---- 3. Detect open devtools by size difference ---- */
+    function isOpenBySize() {
+      const wDiff = window.outerWidth - window.innerWidth;
+      const hDiff = window.outerHeight - window.innerHeight;
+      return wDiff > 160 || hDiff > 160;
+    }
+
+    /* ---- 4. Poll every 400 ms ---- */
+    function poll() {
+      if (isOpenBySize()) {
+        showOverlay();
+      } else if (locked) {
+        hideOverlay();
+      }
+    }
+
+    function start() {
+      ensureOverlay();
+      poll();
+      setInterval(poll, 400);
+    }
+
+    if (document.readyState === 'complete') start();
+    else window.addEventListener('load', start);
+
+    document.addEventListener('DOMContentLoaded', ensureOverlay);
+  } catch (err) {
+    // Never let the protection break the app
+    console.error('Protection layer error:', err);
+  }
 })();
 </script>
 
@@ -198,7 +164,7 @@
         </h1>
         <p class="mt-6 text-lg text-slate-300 leading-relaxed max-w-2xl">
           Un modèle standard appliqué à chaque établissement : paramétrage, PCs et licences,
-          utilisateurs, serveurs, formation. Chaque tâche peut durer <b class="text-white">quelques jours ou semaines</b> selon les besoins.
+          utilisateurs, serveurs, formation. Chaque tâche peut durer <b class="text-white">quelques jours ou semaines</b>.
         </p>
         <div class="mt-9 flex flex-wrap gap-3">
           <button data-go="app" class="text-sm font-semibold px-6 py-3.5 rounded-xl bg-indigo-500 hover:bg-indigo-400 transition">Démarrer</button>
@@ -221,36 +187,12 @@
       <p class="mt-4 text-slate-500">Chaque établissement de la wilaya de Ghardaïa applique le même modèle de services et le même déroulé de tâches.</p>
     </div>
     <div class="mt-14 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      <div class="bg-white rounded-2xl border border-slate-200 p-6">
-        <div class="w-11 h-11 rounded-xl bg-indigo-50 text-indigo-600 grid place-items-center text-sm font-bold">01</div>
-        <h3 class="mt-4 font-semibold text-slate-900">Établissements &amp; Services</h3>
-        <p class="mt-2 text-sm text-slate-500 leading-relaxed">Modèle standard appliqué à chaque structure, personnalisable par l'administrateur.</p>
-      </div>
-      <div class="bg-white rounded-2xl border border-slate-200 p-6">
-        <div class="w-11 h-11 rounded-xl bg-sky-50 text-sky-600 grid place-items-center text-sm font-bold">02</div>
-        <h3 class="mt-4 font-semibold text-slate-900">Durées flexibles</h3>
-        <p class="mt-2 text-sm text-slate-500 leading-relaxed">Chaque tâche peut être calibrée en jours ou en semaines selon les besoins.</p>
-      </div>
-      <div class="bg-white rounded-2xl border border-slate-200 p-6">
-        <div class="w-11 h-11 rounded-xl bg-violet-50 text-violet-600 grid place-items-center text-sm font-bold">03</div>
-        <h3 class="mt-4 font-semibold text-slate-900">Licences DME</h3>
-        <p class="mt-2 text-sm text-slate-500 leading-relaxed">Installation client, demande, validation Admin, génération de clé et activation.</p>
-      </div>
-      <div class="bg-white rounded-2xl border border-slate-200 p-6">
-        <div class="w-11 h-11 rounded-xl bg-amber-50 text-amber-600 grid place-items-center text-sm font-bold">04</div>
-        <h3 class="mt-4 font-semibold text-slate-900">Infrastructure</h3>
-        <p class="mt-2 text-sm text-slate-500 leading-relaxed">Serveurs applicatifs, base de données, stockage, Fortigate et sécurité.</p>
-      </div>
-      <div class="bg-white rounded-2xl border border-slate-200 p-6">
-        <div class="w-11 h-11 rounded-xl bg-fuchsia-50 text-fuchsia-600 grid place-items-center text-sm font-bold">05</div>
-        <h3 class="mt-4 font-semibold text-slate-900">Formation</h3>
-        <p class="mt-2 text-sm text-slate-500 leading-relaxed">Environnement de simulation, formation admins et référents, évaluations.</p>
-      </div>
-      <div class="bg-white rounded-2xl border border-slate-200 p-6">
-        <div class="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-600 grid place-items-center text-sm font-bold">06</div>
-        <h3 class="mt-4 font-semibold text-slate-900">Exports</h3>
-        <p class="mt-2 text-sm text-slate-500 leading-relaxed">Export JSON, mindmap visuel du projet et rapport PDF prêt à imprimer.</p>
-      </div>
+      <div class="bg-white rounded-2xl border border-slate-200 p-6"><div class="w-11 h-11 rounded-xl bg-indigo-50 text-indigo-600 grid place-items-center text-sm font-bold">01</div><h3 class="mt-4 font-semibold text-slate-900">Établissements &amp; Services</h3><p class="mt-2 text-sm text-slate-500 leading-relaxed">Modèle standard appliqué à chaque structure, personnalisable par l'administrateur.</p></div>
+      <div class="bg-white rounded-2xl border border-slate-200 p-6"><div class="w-11 h-11 rounded-xl bg-sky-50 text-sky-600 grid place-items-center text-sm font-bold">02</div><h3 class="mt-4 font-semibold text-slate-900">Durées flexibles</h3><p class="mt-2 text-sm text-slate-500 leading-relaxed">Chaque tâche peut être calibrée en jours ou en semaines selon les besoins.</p></div>
+      <div class="bg-white rounded-2xl border border-slate-200 p-6"><div class="w-11 h-11 rounded-xl bg-violet-50 text-violet-600 grid place-items-center text-sm font-bold">03</div><h3 class="mt-4 font-semibold text-slate-900">Licences DME</h3><p class="mt-2 text-sm text-slate-500 leading-relaxed">Installation client, demande, validation Admin, génération de clé et activation.</p></div>
+      <div class="bg-white rounded-2xl border border-slate-200 p-6"><div class="w-11 h-11 rounded-xl bg-amber-50 text-amber-600 grid place-items-center text-sm font-bold">04</div><h3 class="mt-4 font-semibold text-slate-900">Infrastructure</h3><p class="mt-2 text-sm text-slate-500 leading-relaxed">Serveurs applicatifs, base de données, stockage, Fortigate et sécurité.</p></div>
+      <div class="bg-white rounded-2xl border border-slate-200 p-6"><div class="w-11 h-11 rounded-xl bg-fuchsia-50 text-fuchsia-600 grid place-items-center text-sm font-bold">05</div><h3 class="mt-4 font-semibold text-slate-900">Formation</h3><p class="mt-2 text-sm text-slate-500 leading-relaxed">Environnement de simulation, formation admins et référents, évaluations.</p></div>
+      <div class="bg-white rounded-2xl border border-slate-200 p-6"><div class="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-600 grid place-items-center text-sm font-bold">06</div><h3 class="mt-4 font-semibold text-slate-900">Exports</h3><p class="mt-2 text-sm text-slate-500 leading-relaxed">Export JSON, mindmap visuel du projet et rapport PDF prêt à imprimer.</p></div>
     </div>
   </section>
 
@@ -259,7 +201,7 @@
       <div class="max-w-2xl">
         <p class="text-sm font-semibold text-indigo-600 uppercase tracking-wider">Déroulé standard</p>
         <h2 class="mt-3 text-3xl sm:text-4xl font-bold tracking-tight">Les phases du projet</h2>
-        <p class="mt-4 text-slate-500">Chaque phase contient des tâches dont la durée est ajustable (jours ou semaines) par l'administrateur.</p>
+        <p class="mt-4 text-slate-500">Chaque phase contient des tâches dont la durée est ajustable (jours ou semaines).</p>
       </div>
       <div class="mt-14 grid md:grid-cols-2 lg:grid-cols-3 gap-5">
         <div class="rounded-2xl border border-slate-200 p-5 bg-slate-50/50"><div class="text-xs font-bold text-slate-400">PHASE 0</div><h3 class="mt-2 font-semibold text-slate-900">Cadrage</h3><p class="mt-2 text-xs text-slate-500 leading-relaxed">Périmètre, inventaire, référents.</p></div>
@@ -402,10 +344,7 @@
   </div>
 </div>
 
-<!-- Hidden import input -->
 <input type="file" id="importFile" accept=".json,application/json" class="hidden">
-
-<!-- ============================= PRINT VIEW ============================= -->
 <div id="printView"></div>
 
 <script>
@@ -443,59 +382,38 @@ const PHASE_DOT = {
   pcs:'bg-sky-500', users:'bg-violet-500', formation:'bg-fuchsia-500', golive:'bg-emerald-500'
 };
 
-/* ============= DEFAULT DATA ============= */
 const DEFAULT_DATA = {
   "etabs": [
     { "id": "10npz5f", "name": "Polyclinique Bailich Mazouz", "services": [
-      { "id": "vdunw69", "name": "Consultation Générale" },
-      { "id": "w4jssxw", "name": "Urgences Médicales" },
-      { "id": "8kckbhr", "name": "Laboratoire" },
-      { "id": "afhnj2b", "name": "Radiologie / Imagerie" },
-      { "id": "nv14m1p", "name": "Pharmacie" },
-      { "id": "kd02v98", "name": "Maternité" },
-      { "id": "ob7db2t", "name": "Pédiatrie" },
-      { "id": "0gbuwc8", "name": "Stomatologie" },
-      { "id": "bfirvdn", "name": "Hémodialyse" },
-      { "id": "ihavxvp", "name": "Épidémiologie et Médecine Préventive" },
+      { "id": "vdunw69", "name": "Consultation Générale" },{ "id": "w4jssxw", "name": "Urgences Médicales" },
+      { "id": "8kckbhr", "name": "Laboratoire" },{ "id": "afhnj2b", "name": "Radiologie / Imagerie" },
+      { "id": "nv14m1p", "name": "Pharmacie" },{ "id": "kd02v98", "name": "Maternité" },
+      { "id": "ob7db2t", "name": "Pédiatrie" },{ "id": "0gbuwc8", "name": "Stomatologie" },
+      { "id": "bfirvdn", "name": "Hémodialyse" },{ "id": "ihavxvp", "name": "Épidémiologie et Médecine Préventive" },
       { "id": "gwutn4w", "name": "Hospitalisation" }
     ]},
     { "id": "phm1qj8", "name": "Polyclinique Vieux Ksar", "services": [
-      { "id": "ithi5s9", "name": "Consultation Générale" },
-      { "id": "mp9cfq0", "name": "Urgences Médicales" },
-      { "id": "shukikz", "name": "Laboratoire" },
-      { "id": "abqp4pz", "name": "Radiologie / Imagerie" },
-      { "id": "isj2rog", "name": "Pharmacie" },
-      { "id": "i7abk4m", "name": "Maternité" },
-      { "id": "nij77c0", "name": "Pédiatrie" },
-      { "id": "k8qaoq2", "name": "Stomatologie" },
-      { "id": "10d4sco", "name": "Hémodialyse" },
-      { "id": "0aq5dk6", "name": "Épidémiologie et Médecine Préventive" },
+      { "id": "ithi5s9", "name": "Consultation Générale" },{ "id": "mp9cfq0", "name": "Urgences Médicales" },
+      { "id": "shukikz", "name": "Laboratoire" },{ "id": "abqp4pz", "name": "Radiologie / Imagerie" },
+      { "id": "isj2rog", "name": "Pharmacie" },{ "id": "i7abk4m", "name": "Maternité" },
+      { "id": "nij77c0", "name": "Pédiatrie" },{ "id": "k8qaoq2", "name": "Stomatologie" },
+      { "id": "10d4sco", "name": "Hémodialyse" },{ "id": "0aq5dk6", "name": "Épidémiologie et Médecine Préventive" },
       { "id": "tjnyj71", "name": "Hospitalisation" }
     ]},
     { "id": "bobihlm", "name": "Polyclinique du martyr officier Ahmed Taleb", "services": [
-      { "id": "o58eel7", "name": "Consultation Générale" },
-      { "id": "u875abr", "name": "Urgences Médicales" },
-      { "id": "a87zxlw", "name": "Laboratoire" },
-      { "id": "rbwctuc", "name": "Radiologie / Imagerie" },
-      { "id": "2q4ajqp", "name": "Pharmacie" },
-      { "id": "zw6q8v3", "name": "Maternité" },
-      { "id": "ailq91q", "name": "Pédiatrie" },
-      { "id": "n7k0jr6", "name": "Stomatologie" },
-      { "id": "yds5nrg", "name": "Hémodialyse" },
-      { "id": "gyiwjhr", "name": "Épidémiologie et Médecine Préventive" },
+      { "id": "o58eel7", "name": "Consultation Générale" },{ "id": "u875abr", "name": "Urgences Médicales" },
+      { "id": "a87zxlw", "name": "Laboratoire" },{ "id": "rbwctuc", "name": "Radiologie / Imagerie" },
+      { "id": "2q4ajqp", "name": "Pharmacie" },{ "id": "zw6q8v3", "name": "Maternité" },
+      { "id": "ailq91q", "name": "Pédiatrie" },{ "id": "n7k0jr6", "name": "Stomatologie" },
+      { "id": "yds5nrg", "name": "Hémodialyse" },{ "id": "gyiwjhr", "name": "Épidémiologie et Médecine Préventive" },
       { "id": "pyy823v", "name": "Hospitalisation" }
     ]},
     { "id": "kywphva", "name": "Services centraux — Direction de la Santé de Ghardaïa", "services": [
-      { "id": "23q1npg", "name": "Consultation Générale" },
-      { "id": "cm4vgf8", "name": "Urgences Médicales" },
-      { "id": "v756w2k", "name": "Laboratoire" },
-      { "id": "d2xzg63", "name": "Radiologie / Imagerie" },
-      { "id": "gzqnkmp", "name": "Pharmacie" },
-      { "id": "e5oymcw", "name": "Maternité" },
-      { "id": "smatalf", "name": "Pédiatrie" },
-      { "id": "cb0bxyb", "name": "Stomatologie" },
-      { "id": "x6wmgae", "name": "Hémodialyse" },
-      { "id": "fw5di0i", "name": "Épidémiologie et Médecine Préventive" },
+      { "id": "23q1npg", "name": "Consultation Générale" },{ "id": "cm4vgf8", "name": "Urgences Médicales" },
+      { "id": "v756w2k", "name": "Laboratoire" },{ "id": "d2xzg63", "name": "Radiologie / Imagerie" },
+      { "id": "gzqnkmp", "name": "Pharmacie" },{ "id": "e5oymcw", "name": "Maternité" },
+      { "id": "smatalf", "name": "Pédiatrie" },{ "id": "cb0bxyb", "name": "Stomatologie" },
+      { "id": "x6wmgae", "name": "Hémodialyse" },{ "id": "fw5di0i", "name": "Épidémiologie et Médecine Préventive" },
       { "id": "52u20xl", "name": "Hospitalisation" }
     ]}
   ],
@@ -529,7 +447,6 @@ const DEFAULT_DATA = {
   ]
 };
 
-/* ============= NORMALIZE ============= */
 function normalizeTask(t) {
   const nt = { ...t };
   if (nt.duration == null) {
@@ -546,8 +463,6 @@ function normalizeState(s) {
     tasks: Array.isArray(s.tasks) ? s.tasks.map(normalizeTask) : []
   };
 }
-
-/* ============= DURATION HELPERS ============= */
 function durationInDays(t) {
   const d = t.duration || 1;
   return t.unit === 'jours' ? d : d * 7;
@@ -559,7 +474,6 @@ function durationLabel(t) {
   return d + ' semaine' + (d > 1 ? 's' : '');
 }
 
-/* ============================ STATE ============================ */
 let state = load();
 let adminMode = false;
 let tab = 'tasks';
@@ -576,21 +490,17 @@ function load() {
 }
 function save() { localStorage.setItem(LS, JSON.stringify(state)); }
 
-/* ============================ NAV ============================ */
 function updateLandingStats() {
-  const etabCount = state.etabs.length;
-  const svcCount = state.etabs.reduce((a, e) => a + e.services.length, 0);
-  const taskCount = state.tasks.length;
   const se = document.getElementById('statEtab');
   const ss = document.getElementById('statSvc');
-  const st = document.getElementById('statTaches');
-  if (se) se.textContent = etabCount;
-  if (ss) ss.textContent = svcCount;
-  if (st) st.textContent = taskCount;
+  const st="${ = document.getElementById('statTaches');
+  if (sew) se.textContent = state.et}"abs.length;
+  if (ss) ss.textContent height = state.etabs.reduce((a, e)=" => a + e.services.length, 0);
+  if (st) st.textContent = state.tasks.length;
 }
 function showApp() {
   appVisible = true;
-  document.getElementById('landing').classList.add('hidden');
+20  document.getElementById('landing').classList.add('hidden');
   document.getElementById('app').classList.remove('hidden');
   window.scrollTo({ top: 0 });
   render();
@@ -609,7 +519,6 @@ document.addEventListener('click', e => {
   if (tbtn) { tab = tbtn.dataset.tab; render(); return; }
 });
 
-/* ============================ RENDER ============================ */
 function render() {
   if (!appVisible) return;
   renderTabs();
@@ -636,7 +545,6 @@ function renderGlobalProgress() {
     `${total} tâche${total>1?'s':''} · ${done} terminée${done>1?'s':''} · ${pct}%`;
 }
 
-/* ============================ TASKS VIEW ============================ */
 function tasksView() {
   const tasks = state.tasks;
   const total = tasks.length;
@@ -700,16 +608,14 @@ function tasksView() {
 }
 
 function taskCard(t) {
- px const p = phaseOf(t.phase);
-  const pr = PRIORITIES[t] font.priority] || PRIORITIES-medium.moyenne;
+  const p = phaseOf(t.phase);
+  const pr = PRIORITIES[t.priority] || PRIORITIES.moyenne;
   const durLabel = durationLabel(t);
-
- text  const adminBtns = adminMode ?-s `
+  const adminBtns = adminMode ? `
     <div class="flex items-center gap-1 shrink-0">
       <button data-edit="${t.id}" class="text-[11px] font-medium text-slate-500 hover:text-slate-800 px-2 py-1.5 rounded-lg hover:bg-slate-100">Modifier</button>
-      <button data-del="${t.id}" class="text-[11late-400 hover:text-rose-600 px-2 py-1.5 rounded-lg hover:bg-rose-50">Suppr</button>
+      <button data-del="${t.id}" class="text-[11px] font-medium text-slate-400 hover:text-rose-600 px-2 py-1.5 rounded-lg hover:bg-rose-50">Suppr</button>
     </div>` : '';
-
   return `
   <div class="bg-white rounded-xl border ${t.done ? 'border-slate-100' : 'border-slate-200'} hover:shadow-sm transition fade-in">
     <div class="flex items-start gap-3 p-3.5">
@@ -727,10 +633,8 @@ function taskCard(t) {
   </div>`;
 }
 
-/* ============================ ETABS VIEW ============================ */
 function etabsView() {
   const totalServices = state.etabs.reduce((a, e) => a + e.services.length, 0);
-
   const header = `
     <div class="grid grid-cols-3 gap-3 mb-6">
       <div class="bg-white rounded-2xl border border-slate-200 p-4">
@@ -749,7 +653,6 @@ function etabsView() {
         <div class="text-[11px] text-slate-400 mt-1">services / étab.</div>
       </div>
     </div>`;
-
   const adminBar = adminMode ? `
     <div class="flex items-center justify-between gap-3 bg-indigo-50 border border-indigo-100 rounded-2xl px-4 py-3 mb-5">
       <div>
@@ -758,7 +661,6 @@ function etabsView() {
       </div>
       <button data-act="new-etab" class="text-xs font-semibold px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 whitespace-nowrap">+ Établissement</button>
     </div>` : '';
-
   const cards = state.etabs.map(e => `
     <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden fade-in">
       <div class="flex items-center justify-between gap-3 px-5 py-4 bg-slate-50 border-b border-slate-200">
@@ -786,26 +688,21 @@ function etabsView() {
       </div>
     </div>
   `).join('');
-
   return header + adminBar + `<div class="space-y-4">${cards}</div>`;
 }
 
-/* ============================ MODAL TÂCHE ============================ */
 function openTaskModal(id) {
   editingTaskId = id;
   editingIsNew = (id === null);
   document.getElementById('modalTitle').textContent = editingIsNew ? 'Nouvelle tâche' : 'Modifier la tâche';
-
   const titleEl = document.getElementById('mTitle');
   const phaseEl = document.getElementById('mPhase');
   const priorityEl = document.getElementById('mPriority');
   const durationEl = document.getElementById('mDuration');
   const unitEl = document.getElementById('mUnit');
-
   if (phaseEl.options.length === 0) {
     phaseEl.innerHTML = PHASES.map(p => `<option value="${p.id}">${p.label}</option>`).join('');
   }
-
   if (editingIsNew) {
     titleEl.value = ''; phaseEl.value = PHASES[0].id; priorityEl.value = 'moyenne';
     durationEl.value = 1; unitEl.value = 'semaines';
@@ -815,7 +712,6 @@ function openTaskModal(id) {
     titleEl.value = t.title; phaseEl.value = t.phase; priorityEl.value = t.priority;
     durationEl.value = t.duration || 1; unitEl.value = t.unit || 'semaines';
   }
-
   document.getElementById('modal').classList.remove('hidden');
   setTimeout(() => titleEl.focus(), 50);
 }
@@ -830,7 +726,6 @@ function saveTaskFromModal() {
   const duration = Math.max(1, Math.min(365, parseInt(document.getElementById('mDuration').value, 10) || 1));
   const unit = document.getElementById('mUnit').value;
   if (!title) { alert('Le titre est obligatoire.'); return; }
-
   if (editingIsNew) {
     state.tasks.push({ id: uid(), phase, title, priority, duration, unit, done: false });
   } else {
@@ -840,58 +735,35 @@ function saveTaskFromModal() {
   save(); closeModal(); render();
 }
 
-/* ============================ MINDMAP ============================ */
 function buildMindmapSVG() {
   const tree = {
     label: 'DME Ghardaïa',
     children: [
-      {
-        label: 'Établissements (' + state.etabs.length + ')',
-        children: state.etabs.map(e => ({
-          label: e.name,
-          children: e.services.map(s => ({ label: s.name }))
-        }))
-      },
-      {
-        label: 'Tâches par phase (' + state.tasks.length + ')',
+      { label: 'Établissements (' + state.etabs.length + ')',
+        children: state.etabs.map(e => ({ label: e.name, children: e.services.map(s => ({ label: s.name })) })) },
+      { label: 'Tâches par phase (' + state.tasks.length + ')',
         children: PHASES.map(p => {
           const ts = state.tasks.filter(t => t.phase === p.id);
           if (!ts.length) return null;
-          return {
-            label: p.label + ' (' + ts.length + ')',
-            children: ts.map(t => ({
-              label: t.title,
-              meta: durationLabel(t) + (t.done ? ' · terminée' : '')
-            }))
-          };
-        }).filter(Boolean)
-      }
+          return { label: p.label + ' (' + ts.length + ')',
+            children: ts.map(t => ({ label: t.title, meta: durationLabel(t) + (t.done ? ' · terminée' : '') })) };
+        }).filter(Boolean) }
     ]
   };
-
   let rowCount = 0;
   (function assign(n, d) {
     n.depth = d;
     if (!n.children || !n.children.length) { n.y = rowCount++; }
-    else {
-      n.children.forEach(c => assign(c, d + 1));
-      n.y = (n.children[0].y + n.children[n.children.length - 1].y) / 2;
-    }
+    else { n.children.forEach(c => assign(c, d + 1)); n.y = (n.children[0].y + n.children[n.children.length - 1].y) / 2; }
   })(tree, 0);
-
-  const ROW_H = 26;
-  const COL_W = [240, 280, 380, 460];
-  const PAD = 30;
+  const ROW_H = 26, COL_W = [240, 280, 380, 460], PAD = 30;
   const X = [PAD];
   for (let i = 0; i < COL_W.length; i++) X.push(X[i] + COL_W[i]);
-
   const width = X[COL_W.length] + PAD;
   const height = rowCount * ROW_H + PAD * 2;
   const fits = [26, 34, 46, 68];
-
   let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">`;
   svg += `<rect width="${width}" height="${height}" fill="#f8fafc"/>`;
-
   (function links(n) {
     if (!n.children) return;
     n.children.forEach(c => {
@@ -904,13 +776,9 @@ function buildMindmapSVG() {
       links(c);
     });
   })(tree);
-
   (function nodes(n) {
-    const x = X[n.depth];
-    const y = PAD + n.y * ROW_H + ROW_H / 2;
-    const w = COL_W[n.depth] - 20;
+    const x = X[n.depth], y = PAD + n.y * ROW_H + ROW_H / 2, w = COL_W[n.depth] - 20;
     const text = trunc(n.label, fits[n.depth]);
-
     if (n.depth === 0) {
       svg += `<rect x="${x}" y="${y - 12}" width="${w}" height="24" rx="12" fill="#0f172a"/>`;
       svg += `<text x="${x + 12}" y="${y + 4}" fill="#ffffff" font-size="13" font-weight="600">${escXml(text)}</text>`;
@@ -918,21 +786,17 @@ function buildMindmapSVG() {
       svg += `<rect x="${x}" y="${y - 11}" width="${w}" height="22" rx="11" fill="#6366f1"/>`;
       svg += `<text x="${x + 12}" y="${y + 4}" fill="#ffffff" font-size="12" font-weight="600">${escXml(text)}</text>`;
     } else if (n.depth === 2) {
-      svg += `<rect x="${x}" y="${y - 10}" width="${w}" height="20" rx="10" fill="#e0e7ff"/>`;
+      svg += `<rect x="${x}" y="${y - 10}" width" rx="10" fill="#e0e7ff"/>`;
       svg += `<text x="${x + 10}" y="${y + 4}" fill="#3730a3" font-size="12" font-weight="500">${escXml(text)}</text>`;
     } else {
       svg += `<text x="${x + 4}" y="${y + 4}" fill="#334155" font-size="11">${escXml(text)}</text>`;
-      if (n.meta) {
-        svg += `<text x="${x + w}" y="${y + 4}" fill="#94a3b8" font-size="10" text-anchor="end">${escXml(n.meta)}</text>`;
-      }
+      if (n.meta) svg += `<text x="${x + w}" y="${y + 4}" fill="#94a3b8" font-size="10" text-anchor="end">${escXml(n.meta)}</text>`;
     }
     if (n.children) n.children.forEach(nodes);
   })(tree);
-
   svg += '</svg>';
   return svg;
 }
-
 function openMindmap() {
   document.getElementById('mindmapBody').innerHTML = buildMindmapSVG();
   document.getElementById('mindmapOverlay').classList.remove('hidden');
@@ -948,14 +812,12 @@ function downloadSVG() {
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
   a.download = 'dme-ghardaia-mindmap-' + new Date().toISOString().slice(0, 10) + '.svg';
-  a.click();
-  URL.revokeObjectURL(a.href);
+  a.click(); URL.revokeObjectURL(a.href);
 }
 function downloadPNG() {
   const svg = document.getElementById('mindmapBody').querySelector('svg');
   if (!svg) return;
-  const w = parseFloat(svg.getAttribute('width'));
-  const h = parseFloat(svg.getAttribute('height'));
+  const w = parseFloat(svg.getAttribute('width')), h = parseFloat(svg.getAttribute('height'));
   const scale = 2;
   const svgData = new XMLSerializer().serializeToString(svg);
   const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
@@ -963,8 +825,7 @@ function downloadPNG() {
   const img = new Image();
   img.onload = () => {
     const canvas = document.createElement('canvas');
-    canvas.width = w * scale;
-    canvas.height = h * scale;
+    canvas.width = w * scale; canvas.height = h * scale;
     const ctx = canvas.getContext('2d');
     ctx.fillStyle = '#f8fafc';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -974,8 +835,7 @@ function downloadPNG() {
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
       a.download = 'dme-ghardaia-mindmap-' + new Date().toISOString().slice(0, 10) + '.png';
-      a.click();
-      URL.revokeObjectURL(a.href);
+      a.click(); URL.revokeObjectURL(a.href);
     });
     URL.revokeObjectURL(url);
   };
@@ -994,7 +854,6 @@ function printMindmap() {
   setTimeout(() => window.print(), 150);
 }
 
-/* ============================ PDF ============================ */
 function exportPDF() {
   closeModal();
   const now = new Date().toLocaleDateString('fr-FR', { day:'2-digit', month:'long', year:'numeric' });
@@ -1004,18 +863,15 @@ function exportPDF() {
   const svcCount = state.etabs.reduce((a, e) => a + e.services.length, 0);
   const totalDays = state.tasks.reduce((a, t) => a + durationInDays(t), 0);
   const daysDone = state.tasks.filter(t => t.done).reduce((a, t) => a + durationInDays(t), 0);
-
   const etabsHtml = state.etabs.map(e => `
     <div style="margin-bottom:14px; border:1px solid #e2e8f0; border-radius:8px; overflow:hidden; page-break-inside:avoid">
       <div style="background:#f1f5f9; padding:9px 14px; font-weight:600; font-size:13px; color:#1e293b">
-        ${esc(e.name)}
-        <span style="font-weight:400; color:#64748b; font-size:11px; margin-left:6px">${e.services.length} service(s)</span>
+        ${esc(e.name)} <span style="font-weight:400; color:#64748b; font-size:11px; margin-left:6px">${e.services.length} service(s)</span>
       </div>
       <div style="padding:10px 14px; font-size:12px">
         ${e.services.map(s => `<span style="display:inline-block; background:#e0e7ff; color:#3730a3; padding:3px 10px; border-radius:99px; margin:2px 2px 2px 0; font-size:11px">${esc(s.name)}</span>`).join('')}
       </div>
     </div>`).join('');
-
   const tasksHtml = PHASES.map(p => {
     const ts = state.tasks.filter(t => t.phase === p.id);
     if (!ts.length) return '';
@@ -1025,29 +881,21 @@ function exportPDF() {
           ${esc(p.label)} <span style="color:#94a3b8; font-weight:400; font-size:11px">(${ts.filter(t=>t.done).length}/${ts.length})</span>
         </h3>
         <table style="width:100%; border-collapse:collapse; font-size:11px">
-          <thead>
-            <tr style="background:#f8fafc; text-align:left">
-              <th style="padding:6px 8px; border-bottom:1px solid #e2e8f0; font-weight:600; color:#475569">Tâche</th>
-              <th style="padding:6px 8px; border-bottom:1px solid #e2e8f0; font-weight:600; color:#475569; width:70px">Priorité</th>
-              <th style="padding:6px 8px; border-bottom:1px solid #e2e8f0; font-weight:600; color:#475569; width:90px">Durée</th>
-              <th style="padding:6px 8px; border-bottom:1px solid #e2e8f0; font-weight:600; color:#475569; width:80px">Statut</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${ts.map(t => `
-              <tr>
-                <td style="padding:5px 8px; border-bottom:1px solid #f1f5f9; color:#1e293b">${esc(t.title)}</td>
-                <td style="padding:5px 8px; border-bottom:1px solid #f1f5f9; color:#475569">${(PRIORITIES[t.priority]||PRIORITIES.moyenne).label}</td>
-                <td style="padding:5px 8px; border-bottom:1px solid #f1f5f9; color:#475569">${esc(durationLabel(t))}</td>
-                <td style="padding:5px 8px; border-bottom:1px solid #f1f5f9; color:${t.done ? '#059669' : '#64748b'}; font-weight:${t.done ? 600 : 400}">
-                  ${t.done ? 'Terminée' : 'En cours'}
-                </td>
-              </tr>`).join('')}
-          </tbody>
+          <thead><tr style="background:#f8fafc; text-align:left">
+            <th style="padding:6px 8px; border-bottom:1px solid #e2e8f0; font-weight:600; color:#475569">Tâche</th>
+            <th style="padding:6px 8px; border-bottom:1px solid #e2e8f0; font-weight:600; color:#475569; width:70px">Priorité</th>
+            <th style="padding:6px 8px; border-bottom:1px solid #e2e8f0; font-weight:600; color:#475569; width:90px">Durée</th>
+            <th style="padding:6px 8px; border-bottom:1px solid #e2e8f0; font-weight:600; color:#475569; width:80px">Statut</th>
+          </tr></thead>
+          <tbody>${ts.map(t => `<tr>
+            <td style="padding:5px 8px; border-bottom:1px solid #f1f5f9; color:#1e293b">${esc(t.title)}</td>
+            <td style="padding:5px 8px; border-bottom:1px solid #f1f5f9; color:#475569">${(PRIORITIES[t.priority]||PRIORITIES.moyenne).label}</td>
+            <td style="padding:5px 8px; border-bottom:1px solid #f1f5f9; color:#475569">${esc(durationLabel(t))}</td>
+            <td style="padding:5px 8px; border-bottom:1px solid #f1f5f9; color:${t.done ? '#059669' : '#64748b'}; font-weight:${t.done ? 600 : 400}">${t.done ? 'Terminée' : 'En cours'}</td>
+          </tr>`).join('')}</tbody>
         </table>
       </div>`;
   }).join('');
-
   const pv = document.getElementById('printView');
   pv.innerHTML = `
     <div style="max-width:820px; margin:0 auto; padding:10px; font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif; color:#1e293b">
@@ -1056,22 +904,10 @@ function exportPDF() {
         <p style="margin:6px 0 0 0; color:#64748b; font-size:11px">Généré le ${now} · Wilaya de Ghardaïa</p>
       </div>
       <div style="display:flex; gap:10px; margin-bottom:22px">
-        <div style="flex:1; border:1px solid #e2e8f0; border-radius:8px; padding:10px 12px">
-          <div style="font-size:10px; color:#64748b; text-transform:uppercase; font-weight:600; letter-spacing:.5px">Établissements</div>
-          <div style="font-size:20px; font-weight:700; margin-top:3px">${state.etabs.length}</div>
-        </div>
-        <div style="flex:1; border:1px solid #e2e8f0; border-radius:8px; padding:10px 12px">
-          <div style="font-size:10px; color:#64748b; text-transform:uppercase; font-weight:600; letter-spacing:.5px">Services</div>
-          <div style="font-size:20px; font-weight:700; margin-top:3px">${svcCount}</div>
-        </div>
-        <div style="flex:1; border:1px solid #e2e8f0; border-radius:8px; padding:10px 12px">
-          <div style="font-size:10px; color:#64748b; text-transform:uppercase; font-weight:600; letter-spacing:.5px">Tâches</div>
-          <div style="font-size:20px; font-weight:700; margin-top:3px">${done}/${total}</div>
-        </div>
-        <div style="flex:1; border:1px solid #e2e8f0; border-radius:8px; padding:10px 12px">
-          <div style="font-size:10px; color:#64748b; text-transform:uppercase; font-weight:600; letter-spacing:.5px">Progression</div>
-          <div style="font-size:20px; font-weight:700; margin-top:3px">${pct}%</div>
-        </div>
+        <div style="flex:1; border:1px solid #e2e8f0; border-radius:8px; padding:10px 12px"><div style="font-size:10px; color:#64748b; text-transform:uppercase; font-weight:600; letter-spacing:.5px">Établissements</div><div style="font-size:20px; font-weight:700; margin-top:3px">${state.etabs.length}</div></div>
+        <div style="flex:1; border:1px solid #e2e8f0; border-radius:8px; padding:10px 12px"><div style="font-size:10px; color:#64748b; text-transform:uppercase; font-weight:600; letter-spacing:.5px">Services</div><div style="font-size:20px; font-weight:700; margin-top:3px">${svcCount}</div></div>
+        <div style="flex:1; border:1px solid #e2e8f0; border-radius:8px; padding:10px 12px"><div style="font-size:10px; color:#64748b; text-transform:uppercase; font-weight:600; letter-spacing:.5px">Tâches</div><div style="font-size:20px; font-weight:700; margin-top:3px">${done}/${total}</div></div>
+        <div style="flex:1; border:1px solid #e2e8f0; border-radius:8px; padding:10px 12px"><div style="font-size:10px; color:#64748b; text-transform:uppercase; font-weight:600; letter-spacing:.5px">Progression</div><div style="font-size:20px; font-weight:700; margin-top:3px">${pct}%</div></div>
       </div>
       <div style="margin-bottom:20px; padding:10px 14px; background:#f1f5f9; border-radius:8px; font-size:11px; color:#475569">
         <b>Jours planifiés :</b> ${daysDone}/${totalDays} jours · <b>Durées ajustables :</b> jours ou semaines
@@ -1080,14 +916,11 @@ function exportPDF() {
       ${etabsHtml}
       <h2 style="font-size:15px; margin:22px 0 10px 0">2. Plan de tâches par phase</h2>
       ${tasksHtml}
-      <div style="margin-top:26px; padding-top:12px; border-top:1px solid #e2e8f0; font-size:10px; color:#94a3b8; text-align:center">
-        DME Ghardaïa · Rapport généré automatiquement
-      </div>
+      <div style="margin-top:26px; padding-top:12px; border-top:1px solid #e2e8f0; font-size:10px; color:#94a3b8; text-align:center">DME Ghardaïa · Rapport généré automatiquement</div>
     </div>`;
   setTimeout(() => window.print(), 200);
 }
 
-/* ============================ IMPORT ============================ */
 function importJSON() {
   const input = document.getElementById('importFile');
   input.value = '';
@@ -1111,7 +944,6 @@ document.getElementById('importFile').addEventListener('change', e => {
   reader.readAsText(file);
 });
 
-/* ============================ EVENTS ============================ */
 document.addEventListener('change', e => {
   if (e.target.id === 'adminToggle') { adminMode = e.target.checked; render(); return; }
   const toggle = e.target.closest('[data-toggle]');
@@ -1132,12 +964,10 @@ document.addEventListener('click', e => {
   if (e.target.closest('[data-act="close-modal"]')) { closeModal(); return; }
   if (e.target.closest('[data-act="save-task"]')) { saveTaskFromModal(); return; }
   if (e.target.closest('[data-act="new-task"]')) { openTaskModal(null); return; }
-
   if (e.target.closest('[data-act="close-mindmap"]')) { closeMindmap(); return; }
   if (e.target.closest('[data-act="download-svg"]')) { downloadSVG(); return; }
   if (e.target.closest('[data-act="download-png"]')) { downloadPNG(); return; }
   if (e.target.closest('[data-act="print-mindmap"]')) { printMindmap(); return; }
-
   const ed = e.target.closest('[data-edit]');
   if (ed) { openTaskModal(ed.dataset.edit); return; }
   const del = e.target.closest('[data-del]');
@@ -1149,15 +979,11 @@ document.addEventListener('click', e => {
     }
     return;
   }
-
   if (e.target.closest('[data-act="new-etab"]')) {
     const name = prompt("Nom du nouvel établissement (Wilaya de Ghardaïa) :");
     if (name && name.trim()) {
       const STD = state.etabs[0] ? state.etabs[0].services.map(s => s.name) : [];
-      state.etabs.push({
-        id: uid(), name: name.trim(),
-        services: STD.map(s => ({ id: uid(), name: s }))
-      });
+      state.etabs.push({ id: uid(), name: name.trim(), services: STD.map(s => ({ id: uid(), name: s })) });
       save(); render();
     }
     return;
@@ -1188,7 +1014,6 @@ document.addEventListener('click', e => {
     if (et) { et.services.push({ id: uid(), name }); save(); render(); }
     return;
   }
-
   const act = e.target.closest('[data-act]');
   if (!act) return;
   if (act.dataset.act === 'reset') {
@@ -1203,8 +1028,7 @@ document.addEventListener('click', e => {
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
     a.download = 'dme-ghardaia-' + new Date().toISOString().slice(0,10) + '.json';
-    a.click();
-    URL.revokeObjectURL(a.href);
+    a.click(); URL.revokeObjectURL(a.href);
     return;
   }
   if (act.dataset.act === 'export-mindmap') { openMindmap(); return; }
@@ -1220,7 +1044,6 @@ document.addEventListener('keydown', e => {
   }
 });
 
-/* ============================ BOOT ============================ */
 updateLandingStats();
 render();
 </script>
