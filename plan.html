@@ -3,1095 +3,745 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>DME — Généralisation &amp; Formation</title>
+<title>DME · Généralisation &amp; Formation</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
+  html{scroll-behavior:smooth}
   body{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-  .scroll-x{overflow-x:auto}
-  .scroll-x::-webkit-scrollbar{height:8px}
-  .scroll-x::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:4px}
-  input,select{outline:none}
-  input:focus,select:focus{border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,.15)}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,.15)}
+  .fade-in{animation:fade .35s ease both}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .check-line{transition:all .2s}
+  input[type=checkbox]:checked + div .title{text-decoration:line-through;color:#94a3b8}
 </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen">
+<body class="bg-slate-50 text-slate-800">
 
-<header class="bg-slate-900 text-white sticky top-0 z-30 shadow-lg">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6">
-    <div class="flex items-center justify-between h-16 gap-4">
-      <div class="flex items-center gap-3 min-w-0">
-        <div class="w-9 h-9 rounded-lg bg-indigo-500 grid place-items-center font-bold shrink-0">D</div>
-        <div class="min-w-0">
-          <h1 class="font-semibold leading-tight truncate">DME — Généralisation &amp; Formation</h1>
-          <p class="text-[11px] text-slate-400 leading-tight">Pilotage du déploiement · Paramétrage · Licences · Formation</p>
+<!-- ============================= LANDING PAGE ============================= -->
+<div id="landing">
+
+  <!-- NAV -->
+  <header class="absolute top-0 inset-x-0 z-30">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8">
+      <div class="h-16 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-lg bg-indigo-500 grid place-items-center font-bold text-white shadow-lg shadow-indigo-500/30">D</div>
+          <span class="font-semibold text-white tracking-tight">DME Pilot</span>
         </div>
-      </div>
-      <div class="flex items-center gap-2 shrink-0">
-        <button data-act="export" class="hidden sm:inline-flex text-xs px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700">Exporter JSON</button>
-        <button data-act="reset-all" class="text-xs px-3 py-2 rounded-lg bg-rose-600/90 hover:bg-rose-600">Réinitialiser</button>
+        <button data-go="app" class="text-sm font-medium px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-white backdrop-blur border border-white/20 transition">
+          Ouvrir la liste →
+        </button>
       </div>
     </div>
-    <nav id="nav" class="flex gap-1 overflow-x-auto pb-2 -mb-px"></nav>
-  </div>
-</header>
+  </header>
 
-<main id="view" class="max-w-7xl mx-auto p-4 sm:p-6"></main>
+  <!-- HERO -->
+  <section class="relative bg-slate-900 text-white overflow-hidden">
+    <div class="absolute inset-0">
+      <div class="absolute -top-40 -right-40 w-[500px] h-[500px] bg-indigo-600/30 rounded-full blur-3xl"></div>
+      <div class="absolute -bottom-40 -left-40 w-[500px] h-[500px] bg-fuchsia-600/20 rounded-full blur-3xl"></div>
+      <div class="absolute inset-0 opacity-[0.04]" style="background-image:radial-gradient(#fff 1px,transparent 1px);background-size:28px 28px"></div>
+    </div>
+    <div class="relative max-w-7xl mx-auto px-5 sm:px-8 pt-32 pb-24 lg:pt-40 lg:pb-32">
+      <div class="max-w-3xl">
+        <span class="inline-flex items-center gap-2 text-xs font-medium px-3 py-1.5 rounded-full bg-white/10 border border-white/20 text-indigo-200 mb-6">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          Projet en cours · Généralisation DME
+        </span>
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.08] tracking-tight">
+          Déployer le <span class="bg-gradient-to-r from-indigo-400 to-fuchsia-400 bg-clip-text text-transparent">DME</span>, phase par phase, sans rien oublier.
+        </h1>
+        <p class="mt-6 text-lg text-slate-300 leading-relaxed max-w-2xl">
+          Pilotez le paramétrage, l'installation des PC, les licences, la création des utilisateurs,
+          la configuration des serveurs et le plan de formation — dans une seule liste de tâches claire.
+        </p>
+        <div class="mt-9 flex flex-wrap gap-3">
+          <button data-go="app" class="text-sm font-semibold px-6 py-3.5 rounded-xl bg-indigo-500 hover:bg-indigo-400 shadow-lg shadow-indigo-500/30 transition">
+            Démarrer la liste de tâches
+          </button>
+          <a href="#phases" class="text-sm font-semibold px-6 py-3.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/20 backdrop-blur transition">
+            Voir les phases
+          </a>
+        </div>
+
+        <!-- mini stats -->
+        <div class="mt-14 grid grid-cols-2 sm:grid-cols-4 gap-6 max-w-2xl">
+          <div><div class="text-3xl font-bold text-white">4</div><div class="text-xs text-slate-400 mt-1">Établissements</div></div>
+          <div><div class="text-3xl font-bold text-white">14</div><div class="text-xs text-slate-400 mt-1">Services</div></div>
+          <div><div class="text-3xl font-bold text-white">7</div><div class="text-xs text-slate-400 mt-1">Phases projet</div></div>
+          <div><div class="text-3xl font-bold text-white">2</div><div class="text-xs text-slate-400 mt-1">Étapes licences</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="max-w-7xl mx-auto px-5 sm:px-8 py-20 lg:py-28">
+    <div class="text-center max-w-2xl mx-auto">
+      <p class="text-sm font-semibold text-indigo-600 uppercase tracking-wider">Ce que couvre la liste</p>
+      <h2 class="mt-3 text-3xl sm:text-4xl font-bold tracking-tight">Un seul endroit pour tout le déploiement</h2>
+      <p class="mt-4 text-slate-500">Chaque phase devient une checklist concrète, avec responsables, échéances et progression.</p>
+    </div>
+
+    <div class="mt-14 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="bg-white rounded-2xl border border-slate-200 p-6 hover:shadow-lg hover:-translate-y-0.5 transition">
+        <div class="w-11 h-11 rounded-xl bg-indigo-50 text-indigo-600 grid place-items-center text-xl">⚙️</div>
+        <h3 class="mt-4 font-semibold text-slate-900">Paramétrage</h3>
+        <p class="mt-2 text-sm text-slate-500 leading-relaxed">Créer les établissements, services, unités et salles de chaque structure.</p>
+      </div>
+      <div class="bg-white rounded-2xl border border-slate-200 p-6 hover:shadow-lg hover:-translate-y-0.5 transition">
+        <div class="w-11 h-11 rounded-xl bg-sky-50 text-sky-600 grid place-items-center text-xl">💻</div>
+        <h3 class="mt-4 font-semibold text-slate-900">PCs &amp; Licences</h3>
+        <p class="mt-2 text-sm text-slate-500 leading-relaxed">Installer le client DME, demander la licence, valider en admin, activer la clé.</p>
+      </div>
+      <div class="bg-white rounded-2xl border border-slate-200 p-6 hover:shadow-lg hover:-translate-y-0.5 transition">
+        <div class="w-11 h-11 rounded-xl bg-violet-50 text-violet-600 grid place-items-center text-xl">👥</div>
+        <h3 class="mt-4 font-semibold text-slate-900">Utilisateurs</h3>
+        <p class="mt-2 text-sm text-slate-500 leading-relaxed">Créer les comptes et les affecter à leur service, unité, salle et poste.</p>
+      </div>
+      <div class="bg-white rounded-2xl border border-slate-200 p-6 hover:shadow-lg hover:-translate-y-0.5 transition">
+        <div class="w-11 h-11 rounded-xl bg-amber-50 text-amber-600 grid place-items-center text-xl">🖧</div>
+        <h3 class="mt-4 font-semibold text-slate-900">Infrastructure</h3>
+        <p class="mt-2 text-sm text-slate-500 leading-relaxed">Configurer serveurs applicatifs, base de données, sauvegarde et stockage.</p>
+      </div>
+      <div class="bg-white rounded-2xl border border-slate-200 p-6 hover:shadow-lg hover:-translate-y-0.5 transition">
+        <div class="w-11 h-11 rounded-xl bg-fuchsia-50 text-fuchsia-600 grid place-items-center text-xl">🎓</div>
+        <h3 class="mt-4 font-semibold text-slate-900">Formation</h3>
+        <p class="mt-2 text-sm text-slate-500 leading-relaxed">Monter l'environnement de simulation, former les admins puis les référents.</p>
+      </div>
+      <div class="bg-white rounded-2xl border border-slate-200 p-6 hover:shadow-lg hover:-translate-y-0.5 transition">
+        <div class="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-600 grid place-items-center text-xl">📅</div>
+        <h3 class="mt-4 font-semibold text-slate-900">Planning</h3>
+        <p class="mt-2 text-sm text-slate-500 leading-relaxed">Suivre les échéances, les retards et la progression globale en temps réel.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PHASES -->
+  <section id="phases" class="bg-white border-y border-slate-200">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 py-20 lg:py-28">
+      <div class="max-w-2xl">
+        <p class="text-sm font-semibold text-indigo-600 uppercase tracking-wider">Déroulé</p>
+        <h2 class="mt-3 text-3xl sm:text-4xl font-bold tracking-tight">Les 7 phases du projet</h2>
+        <p class="mt-4 text-slate-500">Chaque phase est décomposée en tâches actionnables que vous pouvez cocher au fur et à mesure.</p>
+      </div>
+
+      <div class="mt-14 grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div class="rounded-2xl border border-slate-200 p-5 bg-slate-50/50">
+          <div class="text-xs font-bold text-slate-400">PHASE 0</div>
+          <h3 class="mt-2 font-semibold text-slate-900">Cadrage</h3>
+          <p class="mt-2 text-xs text-slate-500 leading-relaxed">Périmètre, inventaire, désignation des référents.</p>
+        </div>
+        <div class="rounded-2xl border border-slate-200 p-5 bg-slate-50/50">
+          <div class="text-xs font-bold text-slate-400">PHASE 1</div>
+          <h3 class="mt-2 font-semibold text-slate-900">Paramétrage</h3>
+          <p class="mt-2 text-xs text-slate-500 leading-relaxed">Établissements, services, unités et salles.</p>
+        </div>
+        <div class="rounded-2xl border border-slate-200 p-5 bg-slate-50/50">
+          <div class="text-xs font-bold text-slate-400">PHASE 2</div>
+          <h3 class="mt-2 font-semibold text-slate-900">Infrastructure</h3>
+          <p class="mt-2 text-xs text-slate-500 leading-relaxed">Serveurs, base de données, stockage, sauvegarde, sécurité.</p>
+        </div>
+        <div class="rounded-2xl border border-slate-200 p-5 bg-slate-50/50">
+          <div class="text-xs font-bold text-slate-400">PHASE 3</div>
+          <h3 class="mt-2 font-semibold text-slate-900">PCs &amp; Licences</h3>
+          <p class="mt-2 text-xs text-slate-500 leading-relaxed">Installation client, demandes, validations, activation.</p>
+        </div>
+        <div class="rounded-2xl border border-slate-200 p-5 bg-slate-50/50">
+          <div class="text-xs font-bold text-slate-400">PHASE 4</div>
+          <h3 class="mt-2 font-semibold text-slate-900">Utilisateurs</h3>
+          <p class="mt-2 text-xs text-slate-500 leading-relaxed">Comptes, rôles et affectation aux services.</p>
+        </div>
+        <div class="rounded-2xl border border-slate-200 p-5 bg-slate-50/50">
+          <div class="text-xs font-bold text-slate-400">PHASE 5</div>
+          <h3 class="mt-2 font-semibold text-slate-900">Formation</h3>
+          <p class="mt-2 text-xs text-slate-500 leading-relaxed">Simulation, admins, référents, évaluations.</p>
+        </div>
+        <div class="rounded-2xl border border-slate-200 p-5 bg-slate-50/50 md:col-span-2 lg:col-span-2">
+          <div class="text-xs font-bold text-slate-400">PHASE 6</div>
+          <h3 class="mt-2 font-semibold text-slate-900">Go-live</h3>
+          <p class="mt-2 text-xs text-slate-500 leading-relaxed">Bascule, support post-déploiement, PV de réception.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORKFLOW LICENCES -->
+  <section class="max-w-7xl mx-auto px-5 sm:px-8 py-20 lg:py-28">
+    <div class="grid lg:grid-cols-2 gap-14 items-center">
+      <div>
+        <p class="text-sm font-semibold text-indigo-600 uppercase tracking-wider">Workflow licences</p>
+        <h2 class="mt-3 text-3xl sm:text-4xl font-bold tracking-tight">2 étapes, zéro licence perdue</h2>
+        <p class="mt-5 text-slate-500 leading-relaxed">
+          Chaque poste suit un cycle de vie clair, de l'installation du client DME jusqu'à l'activation de la clé.
+          La liste vous rappelle où chaque PC en est.
+        </p>
+        <ul class="mt-8 space-y-4">
+          <li class="flex gap-3">
+            <span class="w-7 h-7 shrink-0 rounded-full bg-indigo-100 text-indigo-700 text-xs font-bold grid place-items-center">1</span>
+            <div><b class="text-slate-800 text-sm">Sur le PC utilisateur</b><p class="text-sm text-slate-500 mt-0.5">Installation du client DME → génération de la demande de licence.</p></div>
+          </li>
+          <li class="flex gap-3">
+            <span class="w-7 h-7 shrink-0 rounded-full bg-indigo-100 text-indigo-700 text-xs font-bold grid place-items-center">2</span>
+            <div><b class="text-slate-800 text-sm">Sur l'Admin DME</b><p class="text-sm text-slate-500 mt-0.5">Validation de la demande → génération de la clé → saisie sur le PC → activation.</p></div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="rounded-3xl bg-slate-900 p-8 text-white shadow-2xl shadow-slate-900/20">
+        <div class="text-xs uppercase tracking-wider text-slate-400 mb-4">Cycle de vie d'un poste</div>
+        <div class="space-y-3">
+          <div class="flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl px-4 py-3">
+            <span class="w-2 h-2 rounded-full bg-slate-400"></span>
+            <span class="text-sm">Non installé</span>
+          </div>
+          <div class="flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl px-4 py-3">
+            <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+            <span class="text-sm">Demande en attente</span>
+          </div>
+          <div class="flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl px-4 py-3">
+            <span class="w-2 h-2 rounded-full bg-blue-400"></span>
+            <span class="text-sm">Demande validée (Admin)</span>
+          </div>
+          <div class="flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl px-4 py-3">
+            <span class="w-2 h-2 rounded-full bg-indigo-400"></span>
+            <span class="text-sm">Clé générée</span>
+          </div>
+          <div class="flex items-center gap-3 bg-emerald-500/10 border border-emerald-400/30 rounded-xl px-4 py-3">
+            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+            <span class="text-sm font-medium text-emerald-300">Activée</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="bg-slate-900 text-white">
+    <div class="max-w-4xl mx-auto px-5 sm:px-8 py-20 lg:py-24 text-center">
+      <h2 class="text-3xl sm:text-4xl font-bold tracking-tight">Prêt à cocher la première tâche ?</h2>
+      <p class="mt-4 text-slate-300 max-w-xl mx-auto">La liste est prête : 4 établissements, 14 services et tout le déroulé du projet vous attendent.</p>
+      <button data-go="app" class="mt-8 text-sm font-semibold px-8 py-4 rounded-xl bg-indigo-500 hover:bg-indigo-400 shadow-lg shadow-indigo-500/30 transition">
+        Ouvrir la liste de tâches →
+      </button>
+    </div>
+  </section>
+
+  <footer class="border-t border-slate-200 bg-white">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400">
+      <span>© 2025 DME Pilot · Projet de généralisation &amp; formation</span>
+      <span>Toutes les données restent stockées localement dans votre navigateur.</span>
+    </div>
+  </footer>
+</div>
+
+<!-- ============================= TODO APP ============================= -->
+<div id="app" class="hidden min-h-screen bg-slate-50">
+
+  <!-- TOP BAR -->
+  <header class="bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-30">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6">
+      <div class="h-16 flex items-center justify-between gap-3">
+        <div class="flex items-center gap-3 min-w-0">
+          <button data-go="landing" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition" title="Retour à l'accueil">←</button>
+          <div class="w-8 h-8 rounded-lg bg-indigo-500 grid place-items-center text-white font-bold text-sm shrink-0">D</div>
+          <div class="min-w-0">
+            <h1 class="font-semibold text-slate-900 leading-tight truncate">Liste de tâches — DME</h1>
+            <p id="globalSub" class="text-[11px] text-slate-500 leading-tight">0 tâche · 0 terminée</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 shrink-0">
+          <button data-act="export" class="hidden sm:inline-flex text-xs font-medium px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50">Exporter</button>
+          <button data-act="reset" class="text-xs font-medium px-3 py-2 rounded-lg text-rose-600 hover:bg-rose-50">Réinitialiser</button>
+        </div>
+      </div>
+    </div>
+    <!-- global progress -->
+    <div class="h-1 bg-slate-100">
+      <div id="globalBar" class="h-full bg-gradient-to-r from-indigo-500 to-fuchsia-500 transition-all duration-500" style="width:0%"></div>
+    </div>
+  </header>
+
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 py-6">
+
+    <!-- STATS -->
+    <div id="stats" class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6"></div>
+
+    <!-- ADD TASK -->
+    <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm mb-5">
+      <div class="flex flex-col sm:flex-row gap-2">
+        <input id="newTitle" placeholder="Ajouter une tâche… (ex: Valider le périmètre)"
+          class="flex-1 text-sm border border-slate-200 rounded-xl px-4 py-3 bg-slate-50 focus:bg-white transition">
+        <select id="newPhase" class="text-sm border border-slate-200 rounded-xl px-3 py-3 bg-slate-50 focus:bg-white"></select>
+        <input id="newDue" type="date" class="text-sm border border-slate-200 rounded-xl px-3 py-3 bg-slate-50 focus:bg-white">
+        <button data-act="add" class="text-sm font-semibold px-5 py-3 rounded-xl bg-slate-900 text-white hover:bg-slate-800 transition whitespace-nowrap">Ajouter</button>
+      </div>
+    </div>
+
+    <!-- FILTERS -->
+    <div class="flex flex-wrap items-center gap-2 mb-5">
+      <div id="filterChips" class="flex flex-wrap gap-1.5"></div>
+      <div class="flex-1"></div>
+      <select id="sortSel" class="text-xs border border-slate-200 rounded-lg px-2.5 py-2 bg-white">
+        <option value="manual">Ordre manuel</option>
+        <option value="due">Échéance</option>
+        <option value="progress">Progression</option>
+        <option value="priority">Priorité</option>
+      </select>
+    </div>
+
+    <!-- LIST -->
+    <div id="taskList" class="space-y-3"></div>
+
+    <div id="emptyState" class="hidden text-center py-16">
+      <div class="text-5xl mb-3">🎉</div>
+      <p class="font-semibold text-slate-700">Rien à afficher</p>
+      <p class="text-sm text-slate-400 mt-1">Ajoutez une tâche ou changez de filtre.</p>
+    </div>
+  </main>
+
+  <footer class="max-w-5xl mx-auto px-4 sm:px-6 py-10 text-center text-[11px] text-slate-400">
+    Les données sont enregistrées localement dans votre navigateur.
+  </footer>
+</div>
 
 <script>
 /* ============================ HELPERS ============================ */
-const LS_KEY = 'dme_plan_v1';
+const LS = 'dme_todo_v2';
 const uid = () => Math.random().toString(36).slice(2, 9);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const todayISO = () => new Date().toISOString().slice(0, 10);
-const fmt = d => d ? new Date(d).toLocaleDateString('fr-FR', { day:'2-digit', month:'short', year:'2-digit' }) : '—';
 const daysBetween = (a,b) => Math.round((new Date(b) - new Date(a)) / 86400000);
+const fmtDate = d => d ? new Date(d).toLocaleDateString('fr-FR', { day:'2-digit', month:'short' }) : '';
 
-const PHASES = ['Cadrage','Paramétrage','Infrastructure','PCs & Licences','Utilisateurs','Formation','Go-live'];
+const PHASES = [
+  { id:'cadrage',       label:'Cadrage',        icon:'🎯', color:'slate' },
+  { id:'parametrage',   label:'Paramétrage',    icon:'⚙️', color:'indigo' },
+  { id:'infra',         label:'Infrastructure', icon:'🖧', color:'amber' },
+  { id:'pcs',           label:'PCs & Licences', icon:'💻', color:'sky' },
+  { id:'users',         label:'Utilisateurs',   icon:'👥', color:'violet' },
+  { id:'formation',     label:'Formation',      icon:'🎓', color:'fuchsia' },
+  { id:'golive',        label:'Go-live',        icon:'🚀', color:'emerald' }
+];
+const phaseOf = id => PHASES.find(p => p.id === id) || PHASES[0];
 
-const PC_STATUTS = {
-  NON_INSTALLE:      { l:'Non installé',        c:'bg-slate-100 text-slate-600 ring-slate-200' },
-  DEMANDE_EN_ATTENTE:{ l:'Demande en attente',  c:'bg-amber-100 text-amber-700 ring-amber-200' },
-  VALIDEE:           { l:'Demande validée',     c:'bg-blue-100 text-blue-700 ring-blue-200' },
-  CLE_GENEREE:       { l:'Clé générée',         c:'bg-indigo-100 text-indigo-700 ring-indigo-200' },
-  ACTIVE:            { l:'Activée',             c:'bg-emerald-100 text-emerald-700 ring-emerald-200' }
-};
-const TACHE_STATUTS = {
-  A_FAIRE:  { l:'À faire',  c:'bg-slate-100 text-slate-600 ring-slate-200' },
-  EN_COURS: { l:'En cours', c:'bg-blue-100 text-blue-700 ring-blue-200' },
-  TERMINE:  { l:'Terminé',  c:'bg-emerald-100 text-emerald-700 ring-emerald-200' },
-  BLOQUE:   { l:'Bloqué',   c:'bg-rose-100 text-rose-700 ring-rose-200' }
-};
-const FORM_STATUTS = {
-  PLANIFIEE:{ l:'Planifiée', c:'bg-slate-100 text-slate-600 ring-slate-200' },
-  EN_COURS: { l:'En cours',  c:'bg-blue-100 text-blue-700 ring-blue-200' },
-  TERMINEE: { l:'Terminée',  c:'bg-emerald-100 text-emerald-700 ring-emerald-200' }
+const PRIORITIES = {
+  haute:  { label:'Haute',  cls:'bg-rose-50 text-rose-700 border-rose-200' },
+  moyenne:{ label:'Moyenne',cls:'bg-amber-50 text-amber-700 border-amber-200' },
+  basse:  { label:'Basse',  cls:'bg-slate-50 text-slate-600 border-slate-200' }
 };
 
-const badge = (map, key) => {
-  const s = map[key] || { l:key, c:'bg-slate-100 text-slate-600 ring-slate-200' };
-  return `<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium ring-1 ${s.c} whitespace-nowrap">${esc(s.l)}</span>`;
+const PHASE_TINT = {
+  slate:'bg-slate-100 text-slate-700',
+  indigo:'bg-indigo-100 text-indigo-700',
+  amber:'bg-amber-100 text-amber-700',
+  sky:'bg-sky-100 text-sky-700',
+  violet:'bg-violet-100 text-violet-700',
+  fuchsia:'bg-fuchsia-100 text-fuchsia-700',
+  emerald:'bg-emerald-100 text-emerald-700'
 };
-
-const genKey = () => {
-  const c = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  const blk = () => Array.from({length:4}, () => c[Math.floor(Math.random()*c.length)]).join('');
-  return [blk(),blk(),blk(),blk()].join('-');
+const PHASE_DOT = {
+  slate:'bg-slate-400', indigo:'bg-indigo-500', amber:'bg-amber-500',
+  sky:'bg-sky-500', violet:'bg-violet-500', fuchsia:'bg-fuchsia-500', emerald:'bg-emerald-500'
 };
 
 /* ============================ SEED ============================ */
 function seed() {
   const today = new Date();
   const dt = off => { const x = new Date(today); x.setDate(x.getDate() + off); return x.toISOString().slice(0,10); };
-
-  const etablissements = [], services = [], unites = [], salles = [];
-  const addE = nom => { const id = uid(); etablissements.push({ id, nom }); return id; };
-  const addS = (etabId, nom) => { const id = uid(); services.push({ id, etabId, nom }); return id; };
-
-  const e1 = addE('Polyclinique Bailich Mazouz');
-  addS(e1, 'Polyclinique Bailich Mazouz');
-  addS(e1, 'Laboratoire Poly. Bailich Mazouz');
-  addS(e1, 'Radiologie Poly. Bailich Mazouz');
-
-  const e2 = addE('Polyclinique Vieux Ksar');
-  addS(e2, 'Polyclinique Vieux Ksar');
-  addS(e2, 'Laboratoire Poly. Vieux Ksar');
-  addS(e2, 'Radiologie Poly. Vieux Ksar');
-
-  const e3 = addE('Polyclinique du martyr officier Ahmed Taleb');
-  addS(e3, 'Polyclinique du martyr officier Ahmed Taleb');
-  addS(e3, 'Urgences Médicales');
-  addS(e3, 'Laboratoire Poly. martyr officier Ahmed Taleb');
-  addS(e3, 'Radiologie Poly. martyr officier Ahmed Taleb');
-
-  const e4 = addE('Services centraux');
-  addS(e4, 'Stomatologie');
-  addS(e4, 'Pharmacie Centrale');
-  addS(e4, "Service d'hémodialyse");
-  addS(e4, "Service d'Épidémiologie et de Médecine Préventive");
-  addS(e4, 'Service Imagerie Médical et Radiologie');
-
-  // Unités + salles pour les 6 premiers services (démo)
-  services.slice(0, 6).forEach((s, i) => {
-    const u = { id: uid(), serviceId: s.id, nom: 'Unité principale' };
-    unites.push(u);
-    salles.push({ id: uid(), uniteId: u.id, nom: 'Salle ' + (i + 1) });
+  const t = (phase, title, due, priority, done, subtasks) => ({
+    id: uid(), phase, title, due, priority: priority || 'moyenne',
+    done: !!done, subtasks: (subtasks || []).map(s => ({ id: uid(), title: s, done: false })),
+    createdAt: Date.now()
   });
 
-  const pcs = [];
-  const addPc = (code, host, sIdx, statut) => {
-    const s = services[sIdx];
-    const salle = salles.find(x => {
-      const u = unites.find(u => u.id === x.uniteId);
-      return u && u.serviceId === s.id;
-    });
-    pcs.push({
-      id: uid(), code, hostname: host, serviceId: s.id,
-      salleId: salle ? salle.id : null, userId: null, statut,
-      cle: statut === 'CLE_GENEREE' || statut === 'ACTIVE' ? genKey() : null,
-      dateDemande: statut !== 'NON_INSTALLE' ? dt(-3) : null,
-      dateValidation: ['VALIDEE','CLE_GENEREE','ACTIVE'].includes(statut) ? dt(-2) : null,
-      dateActivation: statut === 'ACTIVE' ? dt(-1) : null
-    });
-  };
-  addPc('PC-001','PC-ACCUEIL-01', 0, 'ACTIVE');
-  addPc('PC-002','PC-LABO-01',    1, 'CLE_GENEREE');
-  addPc('PC-003','PC-RADIO-01',   2, 'DEMANDE_EN_ATTENTE');
-  addPc('PC-004','PC-URG-01',     7, 'VALIDEE');
-  addPc('PC-005','PC-PHAR-01',   12, 'NON_INSTALLE');
-  addPc('PC-006','PC-HEMO-01',   13, 'NON_INSTALLE');
+  return [
+    /* --- CADRAGE --- */
+    t('cadrage', 'Valider le périmètre du projet', dt(3), 'haute', true, []),
+    t('cadrage', 'Réaliser l\'inventaire (services, salles, postes)', dt(5), 'haute', false, []),
+    t('cadrage', 'Désigner les référents par service', dt(6), 'moyenne', false, []),
+    t('cadrage', 'Définir le calendrier global et les deadlines', dt(7), 'moyenne', false, []),
 
-  const users = [
-    { id: uid(), nom:'Benali', prenom:'Amina', role:'Médecin', serviceId: services[0].id, pcId: pcs[0].id, actif:true },
-    { id: uid(), nom:'Khelifi', prenom:'Yacine', role:'Technicien Labo', serviceId: services[1].id, pcId: pcs[1].id, actif:true },
-    { id: uid(), nom:'Mansouri', prenom:'Nadia', role:'Manipulatrice Radio', serviceId: services[2].id, pcId: pcs[2].id, actif:true },
-    { id: uid(), nom:'Bouzid', prenom:'Karim', role:'Infirmier', serviceId: services[7].id, pcId: pcs[3].id, actif:true }
+    /* --- PARAMÉTRAGE --- */
+    t('parametrage', 'Créer les 4 établissements', dt(10), 'haute', false, [
+      'Polyclinique Bailich Mazouz',
+      'Polyclinique Vieux Ksar',
+      'Polyclinique du martyr officier Ahmed Taleb',
+      'Services centraux'
+    ]),
+    t('parametrage', 'Créer les services par établissement', dt(12), 'haute', false, [
+      'Laboratoires (Bailich, Vieux Ksar, Ahmed Taleb)',
+      'Radiologies (Bailich, Vieux Ksar, Ahmed Taleb)',
+      'Urgences Médicales',
+      'Stomatologie',
+      'Pharmacie Centrale',
+      'Service d\'hémodialyse',
+      'Service d\'Épidémiologie et de Médecine Préventive',
+      'Service Imagerie Médical et Radiologie'
+    ]),
+    t('parametrage', 'Créer les unités de chaque service', dt(14), 'moyenne', false, []),
+    t('parametrage', 'Créer les salles rattachées aux unités', dt(16), 'moyenne', false, []),
+    t('parametrage', 'Vérifier la cohérence de l\'arborescence', dt(17), 'basse', false, []),
+
+    /* --- INFRASTRUCTURE --- */
+    t('infra', 'Configurer le serveur applicatif DME', dt(14), 'haute', false, []),
+    t('infra', 'Installer et configurer la base de données', dt(17), 'haute', false, []),
+    t('infra', 'Mettre en place le stockage (SAN/NAS)', dt(20), 'moyenne', false, []),
+    t('infra', 'Configurer la sauvegarde et la restauration', dt(22), 'moyenne', false, []),
+    t('infra', 'Sécuriser le réseau et les accès', dt(24), 'moyenne', false, []),
+    t('infra', 'Tests techniques & recette infrastructure', dt(28), 'haute', false, []),
+
+    /* --- PCs & LICENCES --- */
+    t('pcs', 'Inventorier tous les PCs à équiper', dt(18), 'haute', false, [
+      'Relever hostname, MAC et service',
+      'Identifier le PC de chaque utilisateur'
+    ]),
+    t('pcs', 'Installer le client DME sur les postes', dt(24), 'haute', false, [
+      'Étape 1 : installation du client',
+      'Générer la demande de licence sur chaque PC'
+    ]),
+    t('pcs', 'Traiter les demandes de licence (Admin DME)', dt(28), 'haute', false, [
+      'Étape 2 : valider la demande',
+      'Générer la clé de licence'
+    ]),
+    t('pcs', 'Saisir et activer les clés sur les postes', dt(32), 'haute', false, []),
+    t('pcs', 'Vérifier que tous les postes sont activés', dt(34), 'moyenne', false, []),
+
+    /* --- UTILISATEURS --- */
+    t('users', 'Créer les comptes utilisateurs', dt(34), 'haute', false, [
+      'Définir les rôles (médecin, technicien, infirmier…)',
+      'Générer les identifiants'
+    ]),
+    t('users', 'Affecter chaque utilisateur à son service', dt(36), 'haute', false, []),
+    t('users', 'Lier chaque utilisateur à son PC', dt(37), 'moyenne', false, []),
+    t('users', 'Former les utilisateurs à leur compte', dt(38), 'basse', false, []),
+
+    /* --- FORMATION --- */
+    t('formation', 'Installer l\'environnement de simulation', dt(20), 'haute', false, [
+      'Cloner la base avec des données fictives',
+      'Déployer le serveur de simulation isolé',
+      'Préparer les scénarios métier'
+    ]),
+    t('formation', 'Préparer les supports de formation', dt(26), 'moyenne', false, []),
+    t('formation', 'Former les administrateurs DME', dt(30), 'haute', false, [
+      'Gestion des licences',
+      'Gestion des utilisateurs',
+      'Paramétrage'
+    ]),
+    t('formation', 'Former les référents de services', dt(38), 'haute', false, [
+      'Laboratoire',
+      'Radiologie & Imagerie',
+      'Urgences',
+      'Hémodialyse',
+      'Épidémiologie',
+      'Pharmacie & Stomatologie'
+    ]),
+    t('formation', 'Organiser les sessions par service', dt(44), 'moyenne', false, []),
+    t('formation', 'Évaluations & certification', dt(48), 'moyenne', false, []),
+
+    /* --- GO-LIVE --- */
+    t('golive', 'Bascule finale vers le DME', dt(52), 'haute', false, []),
+    t('golive', 'Support post-déploiement', dt(58), 'moyenne', false, []),
+    t('golive', 'PV de réception & clôture du projet', dt(60), 'moyenne', false, [])
   ];
-
-  const serveurs = [
-    { id: uid(), nom:'SRV-DME-APP', type:'Application', ip:'192.168.10.10', role:'Serveur DME + API', statut:'EN_COURS', dateConfig: dt(7) },
-    { id: uid(), nom:'SRV-DME-DB',  type:'Base de données', ip:'192.168.10.11', role:'PostgreSQL', statut:'A_FAIRE', dateConfig: dt(10) },
-    { id: uid(), nom:'SRV-DME-BKP', type:'Sauvegarde', ip:'192.168.10.12', role:'Backup nocturne', statut:'A_FAIRE', dateConfig: dt(14) }
-  ];
-
-  const stockages = [
-    { id: uid(), nom:'SAN-DME-01', type:'SAN', capacite:'8 To', serveurId: serveurs[0].id, statut:'EN_COURS' },
-    { id: uid(), nom:'NAS-ARCHIVES', type:'NAS', capacite:'16 To', serveurId: serveurs[2].id, statut:'A_FAIRE' }
-  ];
-
-  const formations = [
-    { id: uid(), module:'Environnement de simulation DME', public:'Équipe projet', formateur:'IT DME', date: dt(21), salle:'Salle informatique', statut:'PLANIFIEE' },
-    { id: uid(), module:'Administration DME (licences, users)', public:'Admins DME', formateur:'IT DME', date: dt(28), salle:'Salle informatique', statut:'PLANIFIEE' },
-    { id: uid(), module:'DME Laboratoire', public:'Techniciens Labo', formateur:'Référent Labo', date: dt(38), salle:'Salle de réunion A', statut:'PLANIFIEE' },
-    { id: uid(), module:'DME Radiologie & Imagerie', public:'Manipulateurs Radio', formateur:'Référent Radio', date: dt(42), salle:'Salle de réunion B', statut:'PLANIFIEE' },
-    { id: uid(), module:'DME Urgences', public:'Personnel Urgences', formateur:'Référent Urgences', date: dt(46), salle:'Salle de réunion A', statut:'PLANIFIEE' }
-  ];
-
-  const T = (phase, nom, responsable, d1, d2, statut, prog) => ({
-    id: uid(), phase, nom, responsable, debut: dt(d1), fin: dt(d2), statut, progress: prog
-  });
-  const taches = [
-    T('Cadrage','Validation du périmètre & inventaire','Chef de projet', 0, 7, 'EN_COURS', 60),
-    T('Cadrage','Désignation des référents par service','Direction', 2, 7, 'A_FAIRE', 0),
-
-    T('Paramétrage','Création des établissements & services','Admin DME', 7, 14, 'A_FAIRE', 0),
-    T('Paramétrage','Création des unités & salles','Admin DME', 14, 21, 'A_FAIRE', 0),
-
-    T('Infrastructure','Configuration serveur application','Ingénieur Système', 7, 21, 'EN_COURS', 45),
-    T('Infrastructure','Configuration base de données','Ingénieur Système', 10, 24, 'A_FAIRE', 0),
-    T('Infrastructure','Configuration stockage & sauvegarde','Ingénieur Système', 14, 28, 'A_FAIRE', 0),
-    T('Infrastructure','Tests, sécurité & recette technique','Équipe IT', 28, 35, 'A_FAIRE', 0),
-
-    T('PCs & Licences','Inventaire du parc PC','Technicien', 21, 28, 'A_FAIRE', 0),
-    T('PCs & Licences','Installation du client DME','Technicien', 28, 35, 'A_FAIRE', 0),
-    T('PCs & Licences','Demandes, validation & activation des licences','Admin DME', 35, 42, 'A_FAIRE', 0),
-
-    T('Utilisateurs','Création des comptes & affectation aux services','Admin DME', 42, 49, 'A_FAIRE', 0),
-
-    T('Formation','Installation de l\u2019environnement de simulation','Équipe IT', 21, 28, 'A_FAIRE', 0),
-    T('Formation','Formation des administrateurs DME','IT DME', 28, 35, 'A_FAIRE', 0),
-    T('Formation','Formation des référents de services','Formateurs', 35, 49, 'A_FAIRE', 0),
-    T('Formation','Évaluations & certification','Formateurs', 49, 56, 'A_FAIRE', 0),
-
-    T('Go-live','Bascule & support post-déploiement','Équipe projet', 56, 63, 'A_FAIRE', 0),
-    T('Go-live','PV de réception & clôture','Chef de projet', 63, 70, 'A_FAIRE', 0)
-  ];
-
-  return { etablissements, services, unites, salles, pcs, users, serveurs, stockages, formations, taches };
 }
 
 /* ============================ STATE ============================ */
 let state = load();
-let tab = 'dashboard';
+let filter = 'all';
+let sortBy = 'manual';
+let appVisible = false;
 
 function load() {
-  try {
-    const raw = localStorage.getItem(LS_KEY);
-    if (raw) return JSON.parse(raw);
-  } catch (e) {}
-  return seed();
+  try { const raw = localStorage.getItem(LS); if (raw) return JSON.parse(raw); } catch (e) {}
+  return { tasks: seed() };
 }
-function save() { localStorage.setItem(LS_KEY, JSON.stringify(state)); }
+function save() { localStorage.setItem(LS, JSON.stringify(state)); }
 
-/* ============================ LOOKUPS ============================ */
-const svc = id => state.services.find(s => s.id === id);
-const etabOf = id => { const s = svc(id); return s ? state.etablissements.find(e => e.id === s.etabId) : null; };
-const svcName = id => svc(id)?.nom || '—';
-const userOf = id => state.users.find(u => u.id === id);
-const pcOf = id => state.pcs.find(p => p.id === id);
-const salleName = id => state.salles.find(s => s.id === id)?.nom || '—';
-
-const serviceOptions = (sel) => state.services
-  .map(s => `<option value="${s.id}" ${s.id === sel ? 'selected' : ''}>${esc(s.nom)}</option>`).join('');
-
-const salleOptions = (sel) => {
-  const groups = state.unites.map(u => {
-    const ss = state.salles.filter(x => x.uniteId === u.id);
-    if (!ss.length) return '';
-    return `<optgroup label="${esc(svcName(u.serviceId))} — ${esc(u.nom)}">` +
-      ss.map(x => `<option value="${x.id}" ${x.id === sel ? 'selected' : ''}>${esc(x.nom)}</option>`).join('') +
-      `</optgroup>`;
-  }).join('');
-  return `<option value="">— Aucune —</option>` + groups;
-};
-
-/* ============================ VIEWS ============================ */
-function kpiCard(label, value, sub, pct, color) {
-  return `<div class="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
-    <div class="text-[11px] font-semibold uppercase tracking-wide text-slate-500">${esc(label)}</div>
-    <div class="mt-1 text-2xl font-bold text-slate-900">${value}</div>
-    <div class="text-[11px] text-slate-500 mt-0.5">${esc(sub || '')}</div>
-    ${pct != null ? `<div class="mt-3 h-1.5 rounded-full bg-slate-100 overflow-hidden">
-        <div class="h-full rounded-full ${color}" style="width:${Math.min(100, Math.max(0, pct))}%"></div>
-      </div>` : ''}
-  </div>`;
+/* ============================ NAVIGATION ============================ */
+function showApp() {
+  appVisible = true;
+  document.getElementById('landing').classList.add('hidden');
+  document.getElementById('app').classList.remove('hidden');
+  window.scrollTo({ top: 0 });
+  render();
+}
+function showLanding() {
+  appVisible = false;
+  document.getElementById('app').classList.add('hidden');
+  document.getElementById('landing').classList.remove('hidden');
+  window.scrollTo({ top: 0 });
 }
 
-function viewDashboard() {
-  const totalSvc = state.services.length;
-  const svcParam = state.services.filter(s => state.unites.some(u => u.serviceId === s.id)).length;
-  const totalPc = state.pcs.length;
-  const pcInstalled = state.pcs.filter(p => p.statut !== 'NON_INSTALLE').length;
-  const licActive = state.pcs.filter(p => p.statut === 'ACTIVE').length;
-  const pending = state.pcs.filter(p => p.statut === 'DEMANDE_EN_ATTENTE').length;
-  const totalUsers = state.users.length;
-  const usersOk = state.users.filter(u => u.serviceId && u.pcId).length;
-  const totalSrv = state.serveurs.length;
-  const srvOk = state.serveurs.filter(s => s.statut === 'TERMINE').length;
-  const totalForm = state.formations.length;
-  const formDone = state.formations.filter(f => f.statut === 'TERMINEE').length;
-  const totalT = state.taches.length;
-  const doneT = state.taches.filter(t => t.statut === 'TERMINE').length;
-  const lateT = state.taches.filter(t => t.statut !== 'TERMINE' && new Date(t.fin) < new Date());
-
-  const pct = (a, b) => b ? Math.round(a / b * 100) : 0;
-
-  const globalPct = Math.round(state.taches.reduce((a, t) => a + (t.statut === 'TERMINE' ? 100 : t.progress || 0), 0) / (totalT || 1));
-
-  // alerts
-  const alerts = [];
-  if (pending) alerts.push({ t:'warning', msg:`${pending} demande(s) de licence en attente de validation Admin DME.` });
-  lateT.forEach(t => alerts.push({ t:'danger', msg:`Tâche en retard : « ${t.nom} » (échéance ${fmt(t.fin)}) — ${t.responsable}` }));
-  state.pcs.filter(p => p.statut === 'NON_INSTALLE').forEach(p => alerts.push({ t:'info', msg:`Client DME non installé sur ${p.hostname} (${p.code}).` }));
-  state.formations.filter(f => f.statut === 'PLANIFIEE' && daysBetween(todayISO(), f.date) <= 7 && daysBetween(todayISO(), f.date) >= 0)
-    .forEach(f => alerts.push({ t:'info', msg:`Formation dans ${daysBetween(todayISO(), f.date)} j : « ${f.module} »` }));
-
-  const alertStyle = { danger:'bg-rose-50 border-rose-200 text-rose-800', warning:'bg-amber-50 border-amber-200 text-amber-800', info:'bg-slate-50 border-slate-200 text-slate-700' };
-
-  // phases
-  const phaseRows = PHASES.map(p => {
-    const ts = state.taches.filter(t => t.phase === p);
-    if (!ts.length) return '';
-    const p2 = Math.round(ts.reduce((a, t) => a + (t.statut === 'TERMINE' ? 100 : t.progress || 0), 0) / ts.length);
-    const late = ts.filter(t => t.statut !== 'TERMINE' && new Date(t.fin) < new Date()).length;
-    return `<div class="flex items-center gap-3">
-      <div class="w-40 shrink-0 text-sm font-medium text-slate-700">${esc(p)}</div>
-      <div class="flex-1 h-2.5 rounded-full bg-slate-100 overflow-hidden">
-        <div class="h-full rounded-full ${p2 === 100 ? 'bg-emerald-500' : 'bg-indigo-500'}" style="width:${p2}%"></div>
-      </div>
-      <div class="w-12 text-right text-xs font-semibold text-slate-600">${p2}%</div>
-      <div class="w-20 text-right text-[11px] ${late ? 'text-rose-600 font-semibold' : 'text-slate-400'}">${late ? late + ' retard' : ts.length + ' tâches'}</div>
-    </div>`;
-  }).join('');
-
-  return `
-  <div class="space-y-6">
-    <div class="flex items-end justify-between flex-wrap gap-3">
-      <div>
-        <h2 class="text-xl font-bold text-slate-900">Tableau de bord</h2>
-        <p class="text-sm text-slate-500">Avancement global du projet de généralisation du DME</p>
-      </div>
-      <div class="flex items-center gap-3 bg-white border border-slate-200 rounded-xl px-4 py-2 shadow-sm">
-        <span class="text-xs font-semibold uppercase text-slate-500">Avancement global</span>
-        <span class="text-2xl font-bold ${globalPct >= 100 ? 'text-emerald-600' : 'text-indigo-600'}">${globalPct}%</span>
-      </div>
-    </div>
-
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-      ${kpiCard('Paramétrage', `${svcParam}/${totalSvc}`, 'services avec unités', pct(svcParam, totalSvc), 'bg-indigo-500')}
-      ${kpiCard('Parc PC', `${pcInstalled}/${totalPc}`, 'clients DME installés', pct(pcInstalled, totalPc), 'bg-sky-500')}
-      ${kpiCard('Licences actives', `${licActive}/${totalPc}`, `${pending} en attente`, pct(licActive, totalPc), 'bg-emerald-500')}
-      ${kpiCard('Utilisateurs', `${usersOk}/${totalUsers}`, 'comptes affectés (service + PC)', pct(usersOk, totalUsers), 'bg-violet-500')}
-      ${kpiCard('Serveurs prêts', `${srvOk}/${totalSrv}`, 'application / DB / backup', pct(srvOk, totalSrv), 'bg-amber-500')}
-      ${kpiCard('Formations', `${formDone}/${totalForm}`, 'sessions terminées', pct(formDone, totalForm), 'bg-fuchsia-500')}
-      ${kpiCard('Tâches', `${doneT}/${totalT}`, 'tâches terminées', pct(doneT, totalT), 'bg-teal-500')}
-      ${kpiCard('Retards', `${lateT.length}`, lateT.length ? 'action requise' : 'aucun retard', null, '')}
-    </div>
-
-    <div class="grid lg:grid-cols-3 gap-6">
-      <div class="lg:col-span-2 bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
-        <h3 class="font-semibold text-slate-900 mb-4">Avancement par phase</h3>
-        <div class="space-y-3">${phaseRows || '<p class="text-sm text-slate-400">Aucune tâche.</p>'}</div>
-      </div>
-
-      <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
-        <h3 class="font-semibold text-slate-900 mb-3">Alertes &amp; actions</h3>
-        <div class="space-y-2 max-h-80 overflow-y-auto pr-1">
-          ${alerts.length ? alerts.slice(0, 25).map(a => `
-            <div class="text-xs border rounded-lg px-3 py-2 ${alertStyle[a.t]}">${esc(a.msg)}</div>
-          `).join('') : '<p class="text-sm text-slate-400">Aucune alerte. 🎉</p>'}
-        </div>
-      </div>
-    </div>
-  </div>`;
-}
-
-/* ---------------- PARAMÉTRAGE ---------------- */
-function viewParam() {
-  const etabs = state.etablissements.map(e => {
-    const svcs = state.services.filter(s => s.etabId === e.id);
-    return `<div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-      <div class="flex items-center justify-between px-4 py-3 bg-slate-50 border-b border-slate-200">
-        <div class="flex items-center gap-2">
-          <span class="text-lg">🏥</span>
-          <span class="font-semibold text-slate-900">${esc(e.nom)}</span>
-          <span class="text-[11px] text-slate-500">${svcs.length} service(s)</span>
-        </div>
-        <button data-act="del-etab" data-id="${e.id}" class="text-xs text-rose-600 hover:bg-rose-50 px-2 py-1 rounded">Supprimer</button>
-      </div>
-      <div class="p-4 space-y-3">
-        ${svcs.map(s => serviceBlock(s)).join('') || '<p class="text-xs text-slate-400">Aucun service.</p>'}
-        <div class="flex gap-2 pt-1">
-          <input data-in="svc-${e.id}" placeholder="Nom du nouveau service…" class="flex-1 text-sm border border-slate-300 rounded-lg px-3 py-2 bg-white">
-          <button data-act="add-service" data-id="${e.id}" class="text-sm px-3 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 whitespace-nowrap">+ Service</button>
-        </div>
-      </div>
-    </div>`;
-  }).join('');
-
-  return `
-  <div class="space-y-6">
-    <div>
-      <h2 class="text-xl font-bold text-slate-900">Paramétrage</h2>
-      <p class="text-sm text-slate-500">Établissements → Services → Unités → Salles</p>
-    </div>
-
-    <div class="bg-white rounded-xl border border-slate-200 p-4 shadow-sm flex flex-col sm:flex-row gap-2">
-      <input id="new-etab" placeholder="Nom du nouvel établissement…" class="flex-1 text-sm border border-slate-300 rounded-lg px-3 py-2">
-      <button data-act="add-etab" class="text-sm px-4 py-2 rounded-lg bg-slate-900 text-white hover:bg-slate-800">+ Établissement</button>
-    </div>
-
-    <div class="space-y-4">${etabs || '<p class="text-sm text-slate-400">Aucun établissement.</p>'}</div>
-  </div>`;
-}
-
-function serviceBlock(s) {
-  const us = state.unites.filter(u => u.serviceId === s.id);
-  return `<div class="border-l-2 border-indigo-200 pl-3">
-    <div class="flex items-center justify-between">
-      <div class="flex items-center gap-2">
-        <span class="text-sm">🗂</span>
-        <span class="text-sm font-medium text-slate-800">${esc(s.nom)}</span>
-        <span class="text-[11px] text-slate-400">${us.length} unité(s)</span>
-      </div>
-      <button data-act="del-service" data-id="${s.id}" class="text-[11px] text-rose-500 hover:bg-rose-50 px-1.5 rounded">×</button>
-    </div>
-    <div class="mt-2 space-y-2">
-      ${us.map(u => uniteBlock(u)).join('')}
-      <div class="flex gap-2">
-        <input data-in="uni-${s.id}" placeholder="Nouvelle unité…" class="flex-1 text-xs border border-slate-300 rounded-lg px-2.5 py-1.5">
-        <button data-act="add-unite" data-id="${s.id}" class="text-xs px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700">+ Unité</button>
-      </div>
-    </div>
-  </div>`;
-}
-
-function uniteBlock(u) {
-  const ss = state.salles.filter(x => x.uniteId === u.id);
-  return `<div class="border-l-2 border-slate-200 pl-3 ml-2">
-    <div class="flex items-center justify-between">
-      <div class="flex items-center gap-2">
-        <span class="text-xs">📦</span>
-        <span class="text-xs font-medium text-slate-700">${esc(u.nom)}</span>
-      </div>
-      <button data-act="del-unite" data-id="${u.id}" class="text-[11px] text-rose-500 hover:bg-rose-50 px-1.5 rounded">×</button>
-    </div>
-    <div class="mt-1.5 flex flex-wrap gap-1.5 items-center">
-      ${ss.map(x => `<span class="inline-flex items-center gap-1 text-[11px] bg-slate-100 text-slate-700 rounded-full pl-2 pr-1 py-0.5">
-        🚪 ${esc(x.nom)}
-        <button data-act="del-salle" data-id="${x.id}" class="text-rose-500 hover:text-rose-700 px-1">×</button>
-      </span>`).join('')}
-      <input data-in="sal-${u.id}" placeholder="Salle…" class="text-[11px] border border-slate-300 rounded-full px-2.5 py-1 w-28">
-      <button data-act="add-salle" data-id="${u.id}" class="text-[11px] px-2 py-1 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700">+ Salle</button>
-    </div>
-  </div>`;
-}
-
-/* ---------------- PCs & LICENCES ---------------- */
-function viewPcs() {
-  const counts = Object.keys(PC_STATUTS).map(k => ({
-    k, n: state.pcs.filter(p => p.statut === k).length, ...PC_STATUTS[k]
-  }));
-
-  const rows = state.pcs.map(p => {
-    const u = userOf(p.userId);
-    let action = '';
-    switch (p.statut) {
-      case 'NON_INSTALLE':
-        action = `<button data-act="pc-next" data-id="${p.id}" class="text-xs px-3 py-1.5 rounded-lg bg-slate-900 text-white hover:bg-slate-800">① Installer le client</button>`;
-        break;
-      case 'DEMANDE_EN_ATTENTE':
-        action = `<button data-act="pc-next" data-id="${p.id}" class="text-xs px-3 py-1.5 rounded-lg bg-amber-500 text-white hover:bg-amber-600">② Valider la demande (Admin)</button>`;
-        break;
-      case 'VALIDEE':
-        action = `<button data-act="pc-next" data-id="${p.id}" class="text-xs px-3 py-1.5 rounded-lg bg-blue-600 text-white hover:bg-blue-700">③ Générer la clé</button>`;
-        break;
-      case 'CLE_GENEREE':
-        action = `<button data-act="pc-next" data-id="${p.id}" class="text-xs px-3 py-1.5 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700">④ Saisir &amp; activer</button>`;
-        break;
-      case 'ACTIVE':
-        action = `<button data-act="pc-reset" data-id="${p.id}" class="text-xs px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600">Réinitialiser</button>`;
-        break;
-    }
-    return `<tr class="border-b border-slate-100 hover:bg-slate-50/60">
-      <td class="px-3 py-2.5 font-mono text-xs text-slate-700">${esc(p.code)}</td>
-      <td class="px-3 py-2.5 text-sm text-slate-800">${esc(p.hostname)}</td>
-      <td class="px-3 py-2.5 text-xs text-slate-600">${esc(svcName(p.serviceId))}</td>
-      <td class="px-3 py-2.5 text-xs text-slate-500">${esc(salleName(p.salleId))}</td>
-      <td class="px-3 py-2.5 text-xs text-slate-600">${u ? esc(u.prenom + ' ' + u.nom) : '<span class="text-slate-300">—</span>'}</td>
-      <td class="px-3 py-2.5">${badge(PC_STATUTS, p.statut)}</td>
-      <td class="px-3 py-2.5 font-mono text-[11px] text-indigo-700">${p.cle ? esc(p.cle) : '<span class="text-slate-300">—</span>'}</td>
-      <td class="px-3 py-2.5 text-right whitespace-nowrap">
-        <div class="flex items-center justify-end gap-1.5">
-          ${action}
-          <button data-act="del-pc" data-id="${p.id}" class="text-xs text-rose-500 hover:bg-rose-50 px-2 py-1.5 rounded-lg">Suppr</button>
-        </div>
-      </td>
-    </tr>`;
-  }).join('');
-
-  return `
-  <div class="space-y-6">
-    <div>
-      <h2 class="text-xl font-bold text-slate-900">Parc PC &amp; Licences DME</h2>
-      <p class="text-sm text-slate-500">Workflow en 2 étapes : installation client → demande → validation Admin → clé → activation</p>
-    </div>
-
-    <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
-      ${counts.map(c => `<div class="bg-white rounded-xl border border-slate-200 p-3 shadow-sm">
-        <div class="text-[11px] text-slate-500 font-medium">${esc(c.l)}</div>
-        <div class="text-xl font-bold text-slate-900">${c.n}</div>
-      </div>`).join('')}
-    </div>
-
-    <div class="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
-      <h3 class="font-semibold text-sm text-slate-900 mb-3">Ajouter un PC</h3>
-      <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-2">
-        <input id="pc-code" placeholder="Code (PC-007)" class="text-sm border border-slate-300 rounded-lg px-3 py-2">
-        <input id="pc-host" placeholder="Hostname" class="text-sm border border-slate-300 rounded-lg px-3 py-2">
-        <select id="pc-service" class="text-sm border border-slate-300 rounded-lg px-3 py-2 bg-white">${serviceOptions()}</select>
-        <select id="pc-salle" class="text-sm border border-slate-300 rounded-lg px-3 py-2 bg-white">${salleOptions()}</select>
-        <button data-act="add-pc" class="text-sm px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700">+ Ajouter</button>
-      </div>
-    </div>
-
-    <div class="bg-white rounded-xl border border-slate-200 shadow-sm scroll-x">
-      <table class="w-full text-left min-w-[1000px]">
-        <thead class="bg-slate-50 border-b border-slate-200">
-          <tr class="text-[11px] uppercase tracking-wide text-slate-500">
-            <th class="px-3 py-3 font-semibold">Code</th>
-            <th class="px-3 py-3 font-semibold">Hostname</th>
-            <th class="px-3 py-3 font-semibold">Service</th>
-            <th class="px-3 py-3 font-semibold">Salle</th>
-            <th class="px-3 py-3 font-semibold">Utilisateur</th>
-            <th class="px-3 py-3 font-semibold">Statut</th>
-            <th class="px-3 py-3 font-semibold">Clé de licence</th>
-            <th class="px-3 py-3 font-semibold text-right">Actions</th>
-          </tr>
-        </thead>
-        <tbody>${rows || '<tr><td colspan="8" class="px-3 py-8 text-center text-sm text-slate-400">Aucun PC enregistré.</td></tr>'}</tbody>
-      </table>
-    </div>
-  </div>`;
-}
-
-/* ---------------- UTILISATEURS ---------------- */
-function viewUsers() {
-  const rows = state.users.map(u => `
-    <tr class="border-b border-slate-100 hover:bg-slate-50/60">
-      <td class="px-3 py-2.5 text-sm font-medium text-slate-800">${esc(u.nom)}</td>
-      <td class="px-3 py-2.5 text-sm text-slate-700">${esc(u.prenom)}</td>
-      <td class="px-3 py-2.5 text-xs text-slate-600">${esc(u.role)}</td>
-      <td class="px-3 py-2.5">
-        <select data-change="user-svc" data-id="${u.id}" class="text-xs border border-slate-300 rounded-lg px-2 py-1.5 bg-white max-w-[220px]">
-          <option value="">— Non affecté —</option>
-          ${serviceOptions(u.serviceId)}
-        </select>
-      </td>
-      <td class="px-3 py-2.5">
-        <select data-change="user-pc" data-id="${u.id}" class="text-xs border border-slate-300 rounded-lg px-2 py-1.5 bg-white max-w-[160px]">
-          <option value="">— Aucun —</option>
-          ${state.pcs.map(p => `<option value="${p.id}" ${p.id === u.pcId ? 'selected' : ''}>${esc(p.code)} · ${esc(p.hostname)}</option>`).join('')}
-        </select>
-      </td>
-      <td class="px-3 py-2.5">${u.serviceId && u.pcId
-        ? '<span class="text-[11px] text-emerald-700 bg-emerald-50 ring-1 ring-emerald-200 rounded-full px-2 py-0.5">Complet</span>'
-        : '<span class="text-[11px] text-amber-700 bg-amber-50 ring-1 ring-amber-200 rounded-full px-2 py-0.5">Incomplet</span>'}</td>
-      <td class="px-3 py-2.5 text-right">
-        <button data-act="del-user" data-id="${u.id}" class="text-xs text-rose-500 hover:bg-rose-50 px-2 py-1.5 rounded-lg">Suppr</button>
-      </td>
-    </tr>`).join('');
-
-  return `
-  <div class="space-y-6">
-    <div>
-      <h2 class="text-xl font-bold text-slate-900">Utilisateurs</h2>
-      <p class="text-sm text-slate-500">Création des comptes et affectation aux services / unités / salles / PC</p>
-    </div>
-
-    <div class="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
-      <h3 class="font-semibold text-sm text-slate-900 mb-3">Créer un utilisateur</h3>
-      <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-2">
-        <input id="u-nom" placeholder="Nom" class="text-sm border border-slate-300 rounded-lg px-3 py-2">
-        <input id="u-prenom" placeholder="Prénom" class="text-sm border border-slate-300 rounded-lg px-3 py-2">
-        <input id="u-role" placeholder="Rôle (Médecin, Infirmier…)" class="text-sm border border-slate-300 rounded-lg px-3 py-2">
-        <select id="u-service" class="text-sm border border-slate-300 rounded-lg px-3 py-2 bg-white">${serviceOptions()}</select>
-        <button data-act="add-user" class="text-sm px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700">+ Créer</button>
-      </div>
-    </div>
-
-    <div class="bg-white rounded-xl border border-slate-200 shadow-sm scroll-x">
-      <table class="w-full text-left min-w-[900px]">
-        <thead class="bg-slate-50 border-b border-slate-200">
-          <tr class="text-[11px] uppercase tracking-wide text-slate-500">
-            <th class="px-3 py-3 font-semibold">Nom</th>
-            <th class="px-3 py-3 font-semibold">Prénom</th>
-            <th class="px-3 py-3 font-semibold">Rôle</th>
-            <th class="px-3 py-3 font-semibold">Service affecté</th>
-            <th class="px-3 py-3 font-semibold">PC affecté</th>
-            <th class="px-3 py-3 font-semibold">État</th>
-            <th class="px-3 py-3 font-semibold text-right">Actions</th>
-          </tr>
-        </thead>
-        <tbody>${rows || '<tr><td colspan="7" class="px-3 py-8 text-center text-sm text-slate-400">Aucun utilisateur.</td></tr>'}</tbody>
-      </table>
-    </div>
-  </div>`;
-}
-
-/* ---------------- INFRASTRUCTURE ---------------- */
-function viewInfra() {
-  const srvRows = state.serveurs.map(s => `
-    <tr class="border-b border-slate-100 hover:bg-slate-50/60">
-      <td class="px-3 py-2.5 font-mono text-xs text-slate-700">${esc(s.nom)}</td>
-      <td class="px-3 py-2.5 text-xs text-slate-600">${esc(s.type)}</td>
-      <td class="px-3 py-2.5 font-mono text-xs text-slate-600">${esc(s.ip)}</td>
-      <td class="px-3 py-2.5 text-xs text-slate-600">${esc(s.role)}</td>
-      <td class="px-3 py-2.5 text-xs text-slate-500">${fmt(s.dateConfig)}</td>
-      <td class="px-3 py-2.5">
-        <select data-change="srv-statut" data-id="${s.id}" class="text-xs border border-slate-300 rounded-lg px-2 py-1.5 bg-white">
-          ${['A_FAIRE','EN_COURS','TERMINE','BLOQUE'].map(k => `<option value="${k}" ${s.statut === k ? 'selected' : ''}>${TACHE_STATUTS[k].l}</option>`).join('')}
-        </select>
-      </td>
-      <td class="px-3 py-2.5 text-right"><button data-act="del-serveur" data-id="${s.id}" class="text-xs text-rose-500 hover:bg-rose-50 px-2 py-1.5 rounded-lg">Suppr</button></td>
-    </tr>`).join('');
-
-  const stkRows = state.stockages.map(s => `
-    <tr class="border-b border-slate-100 hover:bg-slate-50/60">
-      <td class="px-3 py-2.5 font-mono text-xs text-slate-700">${esc(s.nom)}</td>
-      <td class="px-3 py-2.5 text-xs text-slate-600">${esc(s.type)}</td>
-      <td class="px-3 py-2.5 text-xs text-slate-600">${esc(s.capacite)}</td>
-      <td class="px-3 py-2.5 text-xs text-slate-600">${esc(state.serveurs.find(x => x.id === s.serveurId)?.nom || '—')}</td>
-      <td class="px-3 py-2.5">
-        <select data-change="stk-statut" data-id="${s.id}" class="text-xs border border-slate-300 rounded-lg px-2 py-1.5 bg-white">
-          ${['A_FAIRE','EN_COURS','TERMINE','BLOQUE'].map(k => `<option value="${k}" ${s.statut === k ? 'selected' : ''}>${TACHE_STATUTS[k].l}</option>`).join('')}
-        </select>
-      </td>
-      <td class="px-3 py-2.5 text-right"><button data-act="del-stockage" data-id="${s.id}" class="text-xs text-rose-500 hover:bg-rose-50 px-2 py-1.5 rounded-lg">Suppr</button></td>
-    </tr>`).join('');
-
-  return `
-  <div class="space-y-6">
-    <div>
-      <h2 class="text-xl font-bold text-slate-900">Infrastructure</h2>
-      <p class="text-sm text-slate-500">Serveurs applicatifs, base de données, sauvegarde et stockage</p>
-    </div>
-
-    <div class="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
-      <h3 class="font-semibold text-sm text-slate-900 mb-3">Ajouter un serveur</h3>
-      <div class="grid sm:grid-cols-2 lg:grid-cols-6 gap-2">
-        <input id="s-nom" placeholder="Nom (SRV-DME-…)" class="text-sm border border-slate-300 rounded-lg px-3 py-2">
-        <input id="s-type" placeholder="Type" class="text-sm border border-slate-300 rounded-lg px-3 py-2">
-        <input id="s-ip" placeholder="IP" class="text-sm border border-slate-300 rounded-lg px-3 py-2">
-        <input id="s-role" placeholder="Rôle" class="text-sm border border-slate-300 rounded-lg px-3 py-2">
-        <input id="s-date" type="date" class="text-sm border border-slate-300 rounded-lg px-3 py-2">
-        <button data-act="add-serveur" class="text-sm px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700">+ Serveur</button>
-      </div>
-    </div>
-
-    <div class="bg-white rounded-xl border border-slate-200 shadow-sm scroll-x">
-      <table class="w-full text-left min-w-[900px]">
-        <thead class="bg-slate-50 border-b border-slate-200">
-          <tr class="text-[11px] uppercase tracking-wide text-slate-500">
-            <th class="px-3 py-3 font-semibold">Nom</th><th class="px-3 py-3 font-semibold">Type</th>
-            <th class="px-3 py-3 font-semibold">IP</th><th class="px-3 py-3 font-semibold">Rôle</th>
-            <th class="px-3 py-3 font-semibold">Config prévue</th><th class="px-3 py-3 font-semibold">Statut</th>
-            <th class="px-3 py-3 font-semibold text-right">Actions</th>
-          </tr>
-        </thead>
-        <tbody>${srvRows || '<tr><td colspan="7" class="px-3 py-8 text-center text-sm text-slate-400">Aucun serveur.</td></tr>'}</tbody>
-      </table>
-    </div>
-
-    <div class="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
-      <h3 class="font-semibold text-sm text-slate-900 mb-3">Ajouter un stockage</h3>
-      <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-2">
-        <input id="k-nom" placeholder="Nom (SAN/NAS)" class="text-sm border border-slate-300 rounded-lg px-3 py-2">
-        <input id="k-type" placeholder="Type" class="text-sm border border-slate-300 rounded-lg px-3 py-2">
-        <input id="k-cap" placeholder="Capacité" class="text-sm border border-slate-300 rounded-lg px-3 py-2">
-        <select id="k-srv" class="text-sm border border-slate-300 rounded-lg px-3 py-2 bg-white">
-          <option value="">— Serveur lié —</option>
-          ${state.serveurs.map(s => `<option value="${s.id}">${esc(s.nom)}</option>`).join('')}
-        </select>
-        <button data-act="add-stockage" class="text-sm px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700">+ Stockage</button>
-      </div>
-    </div>
-
-    <div class="bg-white rounded-xl border border-slate-200 shadow-sm scroll-x">
-      <table class="w-full text-left min-w-[800px]">
-        <thead class="bg-slate-50 border-b border-slate-200">
-          <tr class="text-[11px] uppercase tracking-wide text-slate-500">
-            <th class="px-3 py-3 font-semibold">Nom</th><th class="px-3 py-3 font-semibold">Type</th>
-            <th class="px-3 py-3 font-semibold">Capacité</th><th class="px-3 py-3 font-semibold">Serveur lié</th>
-            <th class="px-3 py-3 font-semibold">Statut</th><th class="px-3 py-3 font-semibold text-right">Actions</th>
-          </tr>
-        </thead>
-        <tbody>${stkRows || '<tr><td colspan="6" class="px-3 py-8 text-center text-sm text-slate-400">Aucun stockage.</td></tr>'}</tbody>
-      </table>
-    </div>
-  </div>`;
-}
-
-/* ---------------- FORMATION ---------------- */
-function viewFormation() {
-  const rows = state.formations
-    .slice()
-    .sort((a, b) => new Date(a.date) - new Date(b.date))
-    .map(f => {
-      const d = daysBetween(todayISO(), f.date);
-      const rel = f.statut === 'TERMINEE' ? 'terminée' : (d >= 0 ? `dans ${d} j` : `il y a ${-d} j`);
-      return `<tr class="border-b border-slate-100 hover:bg-slate-50/60">
-        <td class="px-3 py-2.5 text-sm font-medium text-slate-800">${esc(f.module)}</td>
-        <td class="px-3 py-2.5 text-xs text-slate-600">${esc(f.public)}</td>
-        <td class="px-3 py-2.5 text-xs text-slate-600">${esc(f.formateur)}</td>
-        <td class="px-3 py-2.5 text-xs text-slate-600">${esc(f.salle)}</td>
-        <td class="px-3 py-2.5 text-xs text-slate-700 font-medium">${fmt(f.date)}<div class="text-[10px] text-slate-400">${rel}</div></td>
-        <td class="px-3 py-2.5">
-          <select data-change="form-statut" data-id="${f.id}" class="text-xs border border-slate-300 rounded-lg px-2 py-1.5 bg-white">
-            ${Object.keys(FORM_STATUTS).map(k => `<option value="${k}" ${f.statut === k ? 'selected' : ''}>${FORM_STATUTS[k].l}</option>`).join('')}
-          </select>
-        </td>
-        <td class="px-3 py-2.5 text-right"><button data-act="del-formation" data-id="${f.id}" class="text-xs text-rose-500 hover:bg-rose-50 px-2 py-1.5 rounded-lg">Suppr</button></td>
-      </tr>`;
-    }).join('');
-
-  const simEnv = [
-    'Cloner la base DME avec un jeu de données fictives',
-    'Déployer le serveur de simulation sur un réseau isolé',
-    'Créer les comptes « stagiaires » par service',
-    'Préparer les scénarios : admission, labo, radio, urgences, pharmacie',
-    'Installer le client DME en mode simulation sur les postes de formation',
-    'Valider l\u2019environnement avec les référents métier'
-  ];
-
-  return `
-  <div class="space-y-6">
-    <div>
-      <h2 class="text-xl font-bold text-slate-900">Formation</h2>
-      <p class="text-sm text-slate-500">Plan de formation &amp; environnement de simulation DME</p>
-    </div>
-
-    <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
-      <div class="flex items-center gap-2 mb-3">
-        <span class="text-lg">🧪</span>
-        <h3 class="font-semibold text-slate-900">Étape 1 — Environnement de simulation</h3>
-      </div>
-      <ul class="grid sm:grid-cols-2 gap-2">
-        ${simEnv.map((x, i) => `<li class="flex items-start gap-2 text-sm text-slate-700 bg-slate-50 rounded-lg px-3 py-2">
-          <span class="w-5 h-5 shrink-0 rounded-full bg-indigo-100 text-indigo-700 text-[11px] font-bold grid place-items-center">${i + 1}</span>
-          <span>${esc(x)}</span>
-        </li>`).join('')}
-      </ul>
-    </div>
-
-    <div class="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
-      <h3 class="font-semibold text-sm text-slate-900 mb-3">Planifier une session</h3>
-      <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-2">
-        <input id="f-module" placeholder="Module / intitulé" class="text-sm border border-slate-300 rounded-lg px-3 py-2 lg:col-span-2">
-        <input id="f-public" placeholder="Public cible" class="text-sm border border-slate-300 rounded-lg px-3 py-2">
-        <input id="f-formateur" placeholder="Formateur" class="text-sm border border-slate-300 rounded-lg px-3 py-2">
-        <input id="f-salle" placeholder="Salle" class="text-sm border border-slate-300 rounded-lg px-3 py-2">
-        <input id="f-date" type="date" class="text-sm border border-slate-300 rounded-lg px-3 py-2">
-        <button data-act="add-formation" class="text-sm px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 lg:col-span-2">+ Planifier</button>
-      </div>
-    </div>
-
-    <div class="bg-white rounded-xl border border-slate-200 shadow-sm scroll-x">
-      <table class="w-full text-left min-w-[1000px]">
-        <thead class="bg-slate-50 border-b border-slate-200">
-          <tr class="text-[11px] uppercase tracking-wide text-slate-500">
-            <th class="px-3 py-3 font-semibold">Module</th><th class="px-3 py-3 font-semibold">Public</th>
-            <th class="px-3 py-3 font-semibold">Formateur</th><th class="px-3 py-3 font-semibold">Salle</th>
-            <th class="px-3 py-3 font-semibold">Date</th><th class="px-3 py-3 font-semibold">Statut</th>
-            <th class="px-3 py-3 font-semibold text-right">Actions</th>
-          </tr>
-        </thead>
-        <tbody>${rows || '<tr><td colspan="7" class="px-3 py-8 text-center text-sm text-slate-400">Aucune session planifiée.</td></tr>'}</tbody>
-      </table>
-    </div>
-  </div>`;
-}
-
-/* ---------------- PLANNING ---------------- */
-function viewPlanning() {
-  const tasks = state.taches;
-  if (!tasks.length) return '<p class="text-sm text-slate-400">Aucune tâche.</p>';
-
-  const min = Math.min(...tasks.map(t => +new Date(t.debut)));
-  const max = Math.max(...tasks.map(t => +new Date(t.fin)));
-  const span = (max - min) || 1;
-  const todayPct = ((Date.now() - min) / span) * 100;
-
-  const rows = PHASES.map(p => {
-    const ts = tasks.filter(t => t.phase === p);
-    if (!ts.length) return '';
-    const pct = Math.round(ts.reduce((a, t) => a + (t.statut === 'TERMINE' ? 100 : t.progress || 0), 0) / ts.length);
-    return `
-      <tr class="bg-slate-50/80 border-y border-slate-200">
-        <td colspan="7" class="px-3 py-2">
-          <div class="flex items-center gap-3">
-            <span class="text-xs font-bold uppercase tracking-wide text-slate-700">${esc(p)}</span>
-            <div class="flex-1 h-1.5 rounded-full bg-slate-200 overflow-hidden max-w-xs">
-              <div class="h-full rounded-full ${pct === 100 ? 'bg-emerald-500' : 'bg-indigo-500'}" style="width:${pct}%"></div>
-            </div>
-            <span class="text-[11px] font-semibold text-slate-500">${pct}%</span>
-          </div>
-        </td>
-      </tr>` + ts.map(t => {
-        const s = +new Date(t.debut), e = +new Date(t.fin);
-        const left = ((s - min) / span) * 100;
-        const w = Math.max(0.8, ((e - s) / span) * 100);
-        const late = t.statut !== 'TERMINE' && new Date(t.fin) < new Date();
-        const barColor = t.statut === 'TERMINE' ? 'bg-emerald-500'
-          : t.statut === 'BLOQUE' ? 'bg-rose-500'
-          : t.statut === 'EN_COURS' ? 'bg-indigo-500' : 'bg-slate-300';
-        return `<tr class="border-b border-slate-100 hover:bg-slate-50/60">
-          <td class="px-3 py-2 text-sm text-slate-800">${esc(t.nom)}</td>
-          <td class="px-3 py-2 text-xs text-slate-600 whitespace-nowrap">${esc(t.responsable)}</td>
-          <td class="px-3 py-2 text-xs text-slate-500 whitespace-nowrap">${fmt(t.debut)}</td>
-          <td class="px-3 py-2 text-xs ${late ? 'text-rose-600 font-semibold' : 'text-slate-500'} whitespace-nowrap">${fmt(t.fin)}</td>
-          <td class="px-3 py-2">
-            <select data-change="tache-statut" data-id="${t.id}" class="text-[11px] border border-slate-300 rounded-lg px-2 py-1 bg-white">
-              ${Object.keys(TACHE_STATUTS).map(k => `<option value="${k}" ${t.statut === k ? 'selected' : ''}>${TACHE_STATUTS[k].l}</option>`).join('')}
-            </select>
-          </td>
-          <td class="px-3 py-2">
-            <input type="number" min="0" max="100" value="${t.progress || 0}" data-change="tache-progress" data-id="${t.id}"
-              class="w-16 text-[11px] border border-slate-300 rounded-lg px-2 py-1">
-          </td>
-          <td class="px-3 py-2">
-            <div class="relative h-6 bg-slate-100 rounded-md min-w-[240px]">
-              <div class="absolute top-0 bottom-0 rounded-md ${barColor} opacity-90" style="left:${left}%;width:${w}%"></div>
-              ${todayPct >= 0 && todayPct <= 100 ? `<div class="absolute top-0 bottom-0 w-px bg-rose-500" style="left:${todayPct}%"></div>` : ''}
-            </div>
-          </td>
-          <td class="px-3 py-2 text-right">
-            <button data-act="del-tache" data-id="${t.id}" class="text-xs text-rose-500 hover:bg-rose-50 px-2 py-1.5 rounded-lg">Suppr</button>
-          </td>
-        </tr>`;
-      }).join('');
-  }).join('');
-
-  return `
-  <div class="space-y-6">
-    <div class="flex items-end justify-between flex-wrap gap-3">
-      <div>
-        <h2 class="text-xl font-bold text-slate-900">Planning &amp; Deadlines</h2>
-        <p class="text-sm text-slate-500">Diagramme de Gantt — la ligne rouge indique la date du jour</p>
-      </div>
-      <div class="text-xs text-slate-500 bg-white border border-slate-200 rounded-lg px-3 py-2">
-        Période : <b class="text-slate-800">${fmt(new Date(min).toISOString().slice(0,10))}</b> → <b class="text-slate-800">${fmt(new Date(max).toISOString().slice(0,10))}</b>
-      </div>
-    </div>
-
-    <div class="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
-      <h3 class="font-semibold text-sm text-slate-900 mb-3">Ajouter une tâche</h3>
-      <div class="grid sm:grid-cols-2 lg:grid-cols-6 gap-2">
-        <select id="t-phase" class="text-sm border border-slate-300 rounded-lg px-3 py-2 bg-white">${PHASES.map(p => `<option>${p}</option>`).join('')}</select>
-        <input id="t-nom" placeholder="Nom de la tâche" class="text-sm border border-slate-300 rounded-lg px-3 py-2 lg:col-span-2">
-        <input id="t-resp" placeholder="Responsable" class="text-sm border border-slate-300 rounded-lg px-3 py-2">
-        <input id="t-debut" type="date" class="text-sm border border-slate-300 rounded-lg px-3 py-2">
-        <input id="t-fin" type="date" class="text-sm border border-slate-300 rounded-lg px-3 py-2">
-        <button data-act="add-tache" class="text-sm px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 lg:col-span-2">+ Ajouter la tâche</button>
-      </div>
-    </div>
-
-    <div class="bg-white rounded-xl border border-slate-200 shadow-sm scroll-x">
-      <table class="w-full text-left min-w-[1200px]">
-        <thead class="bg-slate-50 border-b border-slate-200">
-          <tr class="text-[11px] uppercase tracking-wide text-slate-500">
-            <th class="px-3 py-3 font-semibold">Tâche</th>
-            <th class="px-3 py-3 font-semibold">Responsable</th>
-            <th class="px-3 py-3 font-semibold">Début</th>
-            <th class="px-3 py-3 font-semibold">Fin (deadline)</th>
-            <th class="px-3 py-3 font-semibold">Statut</th>
-            <th class="px-3 py-3 font-semibold">%</th>
-            <th class="px-3 py-3 font-semibold w-[300px]">Chronologie</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>${rows}</tbody>
-      </table>
-    </div>
-  </div>`;
-}
-
-/* ============================ RENDER ============================ */
-const TABS = [
-  { id:'dashboard', icon:'📊', label:'Tableau de bord' },
-  { id:'param',     icon:'⚙️', label:'Paramétrage' },
-  { id:'pcs',       icon:'💻', label:'PCs & Licences' },
-  { id:'users',     icon:'👥', label:'Utilisateurs' },
-  { id:'infra',     icon:'🖧', label:'Infrastructure' },
-  { id:'formation', icon:'🎓', label:'Formation' },
-  { id:'planning',  icon:'📅', label:'Planning' }
-];
-
-const VIEWS = {
-  dashboard: viewDashboard, param: viewParam, pcs: viewPcs,
-  users: viewUsers, infra: viewInfra, formation: viewFormation, planning: viewPlanning
-};
-
-function render() {
-  document.getElementById('nav').innerHTML = TABS.map(t => {
-    const active = t.id === tab;
-    return `<button data-act="tab" data-id="${t.id}"
-      class="px-3 py-2 rounded-t-lg text-sm font-medium whitespace-nowrap transition
-      ${active ? 'bg-slate-50 text-slate-900' : 'text-slate-300 hover:text-white hover:bg-slate-800'}">
-      <span class="mr-1">${t.icon}</span>${esc(t.label)}</button>`;
-  }).join('');
-
-  document.getElementById('view').innerHTML = VIEWS[tab]();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-/* ============================ INPUT READER ============================ */
-const val = id => (document.getElementById(id)?.value || '').trim();
-
-/* ============================ ACTIONS ============================ */
 document.addEventListener('click', e => {
-  const btn = e.target.closest('[data-act]');
-  if (!btn) return;
-  const act = btn.dataset.act;
-  const id = btn.dataset.id;
-
-  switch (act) {
-    case 'tab':
-      tab = id; render(); return;
-
-    /* ---- Paramétrage ---- */
-    case 'add-etab': {
-      const nom = val('new-etab');
-      if (!nom) return alert('Saisir le nom de l\u2019établissement.');
-      state.etablissements.push({ id: uid(), nom });
-      break;
-    }
-    case 'del-etab':
-      if (!confirm('Supprimer cet établissement et tous ses services ?')) return;
-      state.services.filter(s => s.etabId === id).forEach(s => {
-        state.unites.filter(u => u.serviceId === s.id).forEach(u => {
-          state.salles = state.salles.filter(x => x.uniteId !== u.id);
-        });
-        state.unites = state.unites.filter(u => u.serviceId !== s.id);
-      });
-      state.services = state.services.filter(s => s.etabId !== id);
-      state.etablissements = state.etablissements.filter(x => x.id !== id);
-      break;
-
-    case 'add-service': {
-      const nom = val('svc-' + id);
-      if (!nom) return;
-      state.services.push({ id: uid(), etabId: id, nom });
-      break;
-    }
-    case 'del-service':
-      if (!confirm('Supprimer ce service et ses unités/salles ?')) return;
-      state.unites.filter(u => u.serviceId === id).forEach(u => {
-        state.salles = state.salles.filter(x => x.uniteId !== u.id);
-      });
-      state.unites = state.unites.filter(u => u.serviceId !== id);
-      state.services = state.services.filter(s => s.id !== id);
-      break;
-
-    case 'add-unite': {
-      const nom = val('uni-' + id);
-      if (!nom) return;
-      state.unites.push({ id: uid(), serviceId: id, nom });
-      break;
-    }
-    case 'del-unite':
-      state.salles = state.salles.filter(x => x.uniteId !== id);
-      state.unites = state.unites.filter(u => u.id !== id);
-      break;
-
-    case 'add-salle': {
-      const nom = val('sal-' + id);
-      if (!nom) return;
-      state.salles.push({ id: uid(), uniteId: id, nom });
-      break;
-    }
-    case 'del-salle':
-      state.salles = state.salles.filter(x => x.id !== id);
-      break;
-
-    /* ---- PCs & Licences ---- */
-    case 'add-pc': {
-      const code = val('pc-code'), host = val('pc-host');
-      const serviceId = val('pc-service'), salleId = val('pc-salle') || null;
-      if (!code || !host) return alert('Code et hostname obligatoires.');
-      state.pcs.push({
-        id: uid(), code, hostname: host, serviceId, salleId, userId: null,
-        statut: 'NON_INSTALLE', cle: null,
-        dateDemande: null, dateValidation: null, dateActivation: null
-      });
-      break;
-    }
-    case 'pc-next': {
-      const p = pcOf(id); if (!p) return;
-      if (p.statut === 'NON_INSTALLE') { p.statut = 'DEMANDE_EN_ATTENTE'; p.dateDemande = todayISO(); }
-      else if (p.statut === 'DEMANDE_EN_ATTENTE') { p.statut = 'VALIDEE'; p.dateValidation = todayISO(); }
-      else if (p.statut === 'VALIDEE') { p.statut = 'CLE_GENEREE'; p.cle = genKey(); }
-      else if (p.statut === 'CLE_GENEREE') { p.statut = 'ACTIVE'; p.dateActivation = todayISO(); }
-      break;
-    }
-    case 'pc-reset':
-      if (!confirm('Réinitialiser le cycle de licence de ce PC ?')) return;
-      Object.assign(pcOf(id), { statut:'NON_INSTALLE', cle:null, dateDemande:null, dateValidation:null, dateActivation:null });
-      break;
-    case 'del-pc':
-      if (!confirm('Supprimer ce PC ?')) return;
-      state.pcs = state.pcs.filter(p => p.id !== id);
-      state.users.forEach(u => { if (u.pcId === id) u.pcId = null; });
-      break;
-
-    /* ---- Utilisateurs ---- */
-    case 'add-user': {
-      const nom = val('u-nom'), prenom = val('u-prenom'), role = val('u-role'), serviceId = val('u-service');
-      if (!nom || !prenom) return alert('Nom et prénom obligatoires.');
-      state.users.push({ id: uid(), nom, prenom, role: role || 'Utilisateur', serviceId, pcId: null, actif: true });
-      break;
-    }
-    case 'del-user':
-      state.users = state.users.filter(u => u.id !== id);
-      state.pcs.forEach(p => { if (p.userId === id) p.userId = null; });
-      break;
-
-    /* ---- Infrastructure ---- */
-    case 'add-serveur': {
-      const nom = val('s-nom');
-      if (!nom) return alert('Nom du serveur obligatoire.');
-      state.serveurs.push({
-        id: uid(), nom, type: val('s-type') || '—', ip: val('s-ip') || '—',
-        role: val('s-role') || '—', statut: 'A_FAIRE', dateConfig: val('s-date') || todayISO()
-      });
-      break;
-    }
-    case 'del-serveur':
-      state.serveurs = state.serveurs.filter(s => s.id !== id);
-      state.stockages.forEach(s => { if (s.serveurId === id) s.serveurId = null; });
-      break;
-    case 'add-stockage': {
-      const nom = val('k-nom');
-      if (!nom) return alert('Nom du stockage obligatoire.');
-      state.stockages.push({
-        id: uid(), nom, type: val('k-type') || '—', capacite: val('k-cap') || '—',
-        serveurId: val('k-srv') || null, statut: 'A_FAIRE'
-      });
-      break;
-    }
-    case 'del-stockage':
-      state.stockages = state.stockages.filter(s => s.id !== id);
-      break;
-
-    /* ---- Formation ---- */
-    case 'add-formation': {
-      const module = val('f-module');
-      if (!module) return alert('Intitulé du module obligatoire.');
-      state.formations.push({
-        id: uid(), module, public: val('f-public') || '—', formateur: val('f-formateur') || '—',
-        salle: val('f-salle') || '—', date: val('f-date') || todayISO(), statut: 'PLANIFIEE'
-      });
-      break;
-    }
-    case 'del-formation':
-      state.formations = state.formations.filter(f => f.id !== id);
-      break;
-
-    /* ---- Planning ---- */
-    case 'add-tache': {
-      const nom = val('t-nom');
-      if (!nom) return alert('Nom de la tâche obligatoire.');
-      const debut = val('t-debut') || todayISO();
-      const fin = val('t-fin') || debut;
-      if (new Date(fin) < new Date(debut)) return alert('La date de fin doit être après la date de début.');
-      state.taches.push({
-        id: uid(), phase: val('t-phase'), nom, responsable: val('t-resp') || '—',
-        debut, fin, statut: 'A_FAIRE', progress: 0
-      });
-      break;
-    }
-    case 'del-tache':
-      if (!confirm('Supprimer cette tâche ?')) return;
-      state.taches = state.taches.filter(t => t.id !== id);
-      break;
-
-    /* ---- Global ---- */
-    case 'reset-all':
-      if (!confirm('Réinitialiser toutes les données du projet ? Cette action est irréversible.')) return;
-      state = seed(); break;
-    case 'export': {
-      const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'dme-plan-' + todayISO() + '.json';
-      a.click();
-      URL.revokeObjectURL(a.href);
-      return;
-    }
-    default: return;
-  }
-
-  save(); render();
+  const go = e.target.closest('[data-go]');
+  if (go) { go.dataset.go === 'app' ? showApp() : showLanding(); return; }
 });
 
-/* ============================ CHANGE HANDLER ============================ */
+/* ============================ RENDER TODO ============================ */
+function render() {
+  if (!appVisible) return;
+
+  const tasks = state.tasks;
+
+  /* --- progress + stats --- */
+  const total = tasks.length;
+  const done = tasks.filter(t => t.done).length;
+  const pct = total ? Math.round(done / total * 100) : 0;
+
+  document.getElementById('globalBar').style.width = pct + '%';
+  document.getElementById('globalSub').textContent =
+    `${total} tâche${total > 1 ? 's' : ''} · ${done} terminée${done > 1 ? 's' : ''} · ${pct}%`;
+
+  const late = tasks.filter(t => !t.done && t.due && new Date(t.due) < new Date()).length;
+  const today = tasks.filter(t => !t.done && t.due && t.due === todayISO()).length;
+  const highOpen = tasks.filter(t => !t.done && t.priority === 'haute').length;
+  const subDone = tasks.reduce((a, t) => a + t.subtasks.filter(s => s.done).length, 0);
+  const subTotal = tasks.reduce((a, t) => a + t.subtasks.length, 0);
+
+  document.getElementById('stats').innerHTML = `
+    <div class="bg-white rounded-2xl border border-slate-200 p-4">
+      <div class="text-[11px] font-semibold uppercase tracking-wide text-slate-400">Progression</div>
+      <div class="mt-1 text-2xl font-bold text-slate-900">${pct}%</div>
+      <div class="mt-2 h-1.5 rounded-full bg-slate-100 overflow-hidden">
+        <div class="h-full rounded-full bg-gradient-to-r from-indigo-500 to-fuchsia-500" style="width:${pct}%"></div>
+      </div>
+    </div>
+    <div class="bg-white rounded-2xl border border-slate-200 p-4">
+      <div class="text-[11px] font-semibold uppercase tracking-wide text-slate-400">En retard</div>
+      <div class="mt-1 text-2xl font-bold ${late ? 'text-rose-600' : 'text-slate-900'}">${late}</div>
+      <div class="text-[11px] text-slate-400 mt-1">${today} échéance${today > 1 ? 's' : ''} aujourd'hui</div>
+    </div>
+    <div class="bg-white rounded-2xl border border-slate-200 p-4">
+      <div class="text-[11px] font-semibold uppercase tracking-wide text-slate-400">Priorité haute</div>
+      <div class="mt-1 text-2xl font-bold text-slate-900">${highOpen}</div>
+      <div class="text-[11px] text-slate-400 mt-1">restantes à traiter</div>
+    </div>
+    <div class="bg-white rounded-2xl border border-slate-200 p-4">
+      <div class="text-[11px] font-semibold uppercase tracking-wide text-slate-400">Sous-étapes</div>
+      <div class="mt-1 text-2xl font-bold text-slate-900">${subDone}<span class="text-sm text-slate-400">/${subTotal}</span></div>
+      <div class="text-[11px] text-slate-400 mt-1">complétées</div>
+    </div>
+  `;
+
+  /* --- add-form phase select --- */
+  const sel = document.getElementById('newPhase');
+  if (sel.options.length !== PHASES.length) {
+    sel.innerHTML = PHASES.map(p => `<option value="${p.id}">${p.icon} ${p.label}</option>`).join('');
+  }
+
+  /* --- filter chips --- */
+  const counts = { all: tasks.length };
+  PHASES.forEach(p => counts[p.id] = tasks.filter(t => t.phase === p.id).length);
+  document.getElementById('filterChips').innerHTML = `
+    <button data-filter="all" class="text-xs font-medium px-3 py-1.5 rounded-full border transition
+      ${filter === 'all' ? 'bg-slate-900 text-white border-slate-900' : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300'}">
+      Toutes <span class="opacity-60">${counts.all}</span>
+    </button>` +
+    PHASES.map(p => `
+      <button data-filter="${p.id}" class="text-xs font-medium px-3 py-1.5 rounded-full border transition
+        ${filter === p.id ? 'bg-slate-900 text-white border-slate-900' : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300'}">
+        ${p.icon} ${esc(p.label)} <span class="opacity-60">${counts[p.id]}</span>
+      </button>`).join('');
+
+  /* --- sort --- */
+  document.getElementById('sortSel').value = sortBy;
+
+  /* --- list --- */
+  let list = tasks.slice();
+  if (filter !== 'all') list = list.filter(t => t.phase === filter);
+
+  if (sortBy === 'due') list.sort((a,b) => (a.due || '9999').localeCompare(b.due || '9999'));
+  else if (sortBy === 'progress') {
+    list.sort((a,b) => subPct(a) - subPct(b));
+  }
+  else if (sortBy === 'priority') {
+    const order = { haute:0, moyenne:1, basse:2 };
+    list.sort((a,b) => order[a.priority] - order[b.priority]);
+  }
+
+  /* --- grouped by phase (only in "Toutes" + manual) --- */
+  const grouped = (filter === 'all' && sortBy === 'manual');
+
+  const listEl = document.getElementById('taskList');
+  const emptyEl = document.getElementById('emptyState');
+
+  if (!list.length) { listEl.innerHTML = ''; emptyEl.classList.remove('hidden'); return; }
+  emptyEl.classList.add('hidden');
+
+  if (grouped) {
+    listEl.innerHTML = PHASES.map(p => {
+      const items = list.filter(t => t.phase === p.id);
+      if (!items.length) return '';
+      const pDone = items.filter(t => t.done).length;
+      return `
+        <section class="fade-in">
+          <div class="flex items-center gap-2 mb-2 px-1">
+            <span class="w-2 h-2 rounded-full ${PHASE_DOT[p.color]}"></span>
+            <h3 class="text-xs font-bold uppercase tracking-wide text-slate-500">${p.icon} ${esc(p.label)}</h3>
+            <span class="text-[11px] text-slate-400">${pDone}/${items.length}</span>
+            <div class="flex-1 h-px bg-slate-200"></div>
+          </div>
+          <div class="space-y-2">
+            ${items.map(taskCard).join('')}
+          </div>
+        </section>`;
+    }).join('');
+  } else {
+    listEl.innerHTML = `<div class="space-y-2">${list.map(taskCard).join('')}</div>`;
+  }
+}
+
+function subPct(t) {
+  if (!t.subtasks.length) return t.done ? 100 : 0;
+  return Math.round(t.subtasks.filter(s => s.done).length / t.subtasks.length * 100);
+}
+
+function taskCard(t) {
+  const p = phaseOf(t.phase);
+  const overdue = !t.done && t.due && new Date(t.due) < new Date();
+  const dueToday = !t.done && t.due === todayISO();
+  const subD = t.subtasks.filter(s => s.done).length;
+  const subT = t.subtasks.length;
+  const pr = PRIORITIES[t.priority] || PRIORITIES.moyenne;
+  const pct = subT ? Math.round(subD / subT * 100) : (t.done ? 100 : 0);
+
+  return `
+  <div class="task-card bg-white rounded-xl border ${t.done ? 'border-slate-100' : overdue ? 'border-rose-200' : 'border-slate-200'} hover:shadow-sm transition fade-in">
+    <div class="flex items-start gap-3 p-3.5">
+
+      <label class="pt-0.5 shrink-0 cursor-pointer">
+        <input type="checkbox" class="peer sr-only" data-toggle="${t.id}" ${t.done ? 'checked' : ''}>
+        <div class="w-5 h-5 rounded-md border-2 ${t.done ? 'bg-emerald-500 border-emerald-500' : 'border-slate-300'} grid place-items-center transition
+             peer-checked:bg-emerald-500 peer-checked:border-emerald-500">
+          <svg class="w-3 h-3 text-white ${t.done ? '' : 'hidden'}" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6l3 3 5-6"/></svg>
+        </div>
+      </label>
+
+      <div class="flex-1 min-w-0">
+        <div class="title text-sm font-medium ${t.done ? 'line-through text-slate-400' : 'text-slate-800'}">
+          ${esc(t.title)}
+        </div>
+
+        <div class="mt-1.5 flex flex-wrap items-center gap-1.5">
+          <span class="text-[10px] font-medium px-2 py-0.5 rounded-full ${PHASE_TINT[p.color]}">${p.icon} ${esc(p.label)}</span>
+          <span class="text-[10px] font-medium px-2 py-0.5 rounded-full border ${pr.cls}">${pr.label}</span>
+          ${t.due ? `<span class="text-[10px] font-medium px-2 py-0.5 rounded-full border ${overdue ? 'bg-rose-50 text-rose-700 border-rose-200' : dueToday ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-slate-50 text-slate-500 border-slate-200'}">
+            ${overdue ? '⚠ ' : dueToday ? '⏰ ' : '📅 '}${fmtDate(t.due)}${overdue ? ' · en retard' : dueToday ? ' · aujourd\'hui' : ''}
+          </span>` : ''}
+          ${subT ? `<span class="text-[10px] text-slate-400">${subD}/${subT} sous-étapes</span>` : ''}
+        </div>
+
+        ${subT ? `
+        <div class="mt-2.5 h-1 rounded-full bg-slate-100 overflow-hidden max-w-md">
+          <div class="h-full rounded-full ${pct === 100 ? 'bg-emerald-500' : 'bg-indigo-500'} transition-all" style="width:${pct}%"></div>
+        </div>` : ''}
+
+        ${subT ? `
+        <div class="mt-3 pl-3 border-l-2 border-slate-100 space-y-1.5">
+          ${t.subtasks.map(s => `
+            <label class="flex items-center gap-2 cursor-pointer group">
+              <input type="checkbox" class="w-3.5 h-3.5 rounded border-slate-300 text-emerald-500 focus:ring-emerald-400 focus:ring-offset-0"
+                     data-sub="${t.id}:${s.id}" ${s.done ? 'checked' : ''}>
+              <span class="text-xs ${s.done ? 'line-through text-slate-400' : 'text-slate-600'} group-hover:text-slate-800 transition">${esc(s.title)}</span>
+            </label>`).join('')}
+        </div>` : ''}
+      </div>
+
+      <div class="flex items-center gap-0.5 shrink-0">
+        <button data-prio="${t.id}" class="text-slate-300 hover:text-slate-600 p-1.5 rounded-lg hover:bg-slate-100 transition" title="Changer priorité">
+          <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path d="M10 2l3 6h6l-5 4 2 6-6-4-6 4 2-6-5-4h6z"/></svg>
+        </button>
+        <button data-del="${t.id}" class="text-slate-300 hover:text-rose-600 p-1.5 rounded-lg hover:bg-rose-50 transition" title="Supprimer">
+          <svg class="w-4 h-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 6h12M8 6V4h4v2M6 6l1 10h6l1-10"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ============================ EVENTS (APP) ============================ */
 document.addEventListener('change', e => {
-  const el = e.target.closest('[data-change]');
-  if (!el) return;
-  const kind = el.dataset.change;
-  const id = el.dataset.id;
-  const v = el.value;
+  const toggle = e.target.closest('[data-toggle]');
+  if (toggle) {
+    const t = state.tasks.find(x => x.id === toggle.dataset.toggle);
+    if (t) { t.done = toggle.checked; if (t.done) t.subtasks.forEach(s => s.done = true); }
+    save(); render(); return;
+  }
+  const sub = e.target.closest('[data-sub]');
+  if (sub) {
+    const [tid, sid] = sub.dataset.sub.split(':');
+    const t = state.tasks.find(x => x.id === tid);
+    if (t) {
+      const s = t.subtasks.find(x => x.id === sid);
+      if (s) s.done = sub.checked;
+      t.done = t.subtasks.length > 0 && t.subtasks.every(x => x.done);
+    }
+    save(); render(); return;
+  }
+  if (e.target.id === 'sortSel') { sortBy = e.target.value; render(); return; }
+});
 
-  if (kind === 'user-svc') {
-    const u = state.users.find(x => x.id === id); if (u) u.serviceId = v;
-  } else if (kind === 'user-pc') {
-    const u = state.users.find(x => x.id === id); if (u) u.pcId = v || null;
-    state.pcs.forEach(p => { if (p.userId === id && p.id !== v) p.userId = null; });
-    const pc = pcOf(v); if (pc) pc.userId = id;
-  } else if (kind === 'srv-statut') {
-    const s = state.serveurs.find(x => x.id === id); if (s) s.statut = v;
-  } else if (kind === 'stk-statut') {
-    const s = state.stockages.find(x => x.id === id); if (s) s.statut = v;
-  } else if (kind === 'form-statut') {
-    const f = state.formations.find(x => x.id === id); if (f) f.statut = v;
-  } else if (kind === 'tache-statut') {
-    const t = state.taches.find(x => x.id === id);
-    if (t) { t.statut = v; if (v === 'TERMINE') t.progress = 100; }
-  } else if (kind === 'tache-progress') {
-    const t = state.taches.find(x => x.id === id);
-    if (t) { t.progress = Math.max(0, Math.min(100, parseInt(v, 10) || 0)); if (t.progress === 100 && t.statut !== 'TERMINE') t.statut = 'TERMINE'; }
-  } else return;
+document.addEventListener('click', e => {
+  const f = e.target.closest('[data-filter]');
+  if (f) { filter = f.dataset.filter; render(); return; }
 
-  save(); render();
+  const prio = e.target.closest('[data-prio]');
+  if (prio) {
+    const order = ['basse','moyenne','haute'];
+    const t = state.tasks.find(x => x.id === prio.dataset.prio);
+    if (t) { t.priority = order[(order.indexOf(t.priority) + 1) % order.length]; }
+    save(); render(); return;
+  }
+
+  const del = e.target.closest('[data-del]');
+  if (del) {
+    const t = state.tasks.find(x => x.id === del.dataset.del);
+    if (t && confirm(`Supprimer « ${t.title} » ?`)) {
+      state.tasks = state.tasks.filter(x => x.id !== del.dataset.del);
+      save(); render();
+    }
+    return;
+  }
+
+  const act = e.target.closest('[data-act]');
+  if (!act) return;
+
+  if (act.dataset.act === 'add') {
+    const title = document.getElementById('newTitle').value.trim();
+    if (!title) return;
+    const phase = document.getElementById('newPhase').value;
+    const due = document.getElementById('newDue').value || null;
+    state.tasks.push({
+      id: uid(), phase, title, due, priority: 'moyenne',
+      done: false, subtasks: [], createdAt: Date.now()
+    });
+    document.getElementById('newTitle').value = '';
+    document.getElementById('newDue').value = '';
+    save(); render();
+    return;
+  }
+
+  if (act.dataset.act === 'reset') {
+    if (confirm('Réinitialiser toute la liste de tâches ?')) { state = { tasks: seed() }; save(); render(); }
+    return;
+  }
+
+  if (act.dataset.act === 'export') {
+    const blob = new Blob([JSON.stringify(state, null, 2)], { type:'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'dme-taches-' + todayISO() + '.json';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }
+});
+
+/* Enter to add task */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && e.target.id === 'newTitle') {
+    document.querySelector('[data-act="add"]').click();
+  }
 });
 
 /* ============================ BOOT ============================ */
