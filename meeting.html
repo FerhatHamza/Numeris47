@@ -16,10 +16,7 @@
     line-height: 1.55;
   }
 
-  .app {
-    max-width: 960px;
-    margin: 0 auto;
-  }
+  .app { max-width: 960px; margin: 0 auto; }
 
   /* ===== HEADER + TABS ===== */
   .top {
@@ -31,10 +28,7 @@
   .top h1 { font-size: 1.45rem; font-weight: 700; letter-spacing: -.02em; }
   .top p { font-size: .85rem; opacity: .88; margin-top: 4px; margin-bottom: 18px; }
 
-  .tabs {
-    display: flex;
-    gap: 4px;
-  }
+  .tabs { display: flex; gap: 4px; }
   .tabs button {
     padding: 11px 22px;
     background: rgba(255,255,255,.15);
@@ -55,355 +49,557 @@
   .view.active { display: block; animation: fade .25s ease; }
   @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 
-  /* ===== PRÉSENTATION ===== */
-  .pres {
+  /* ===== BOUTON LANCER LA PRÉSENTATION ===== */
+  .launch-bar {
     background: #fff;
+    padding: 26px 28px;
     border-radius: 0 0 16px 16px;
-    padding: 28px;
+    text-align: center;
   }
-
-  .pres-slide {
-    padding: 22px 0;
-    border-bottom: 1px solid #e2e8f0;
-  }
-  .pres-slide:last-child { border-bottom: none; padding-bottom: 0; }
-  .pres-slide:first-child { padding-top: 0; }
-
-  .slide-num {
-    display: inline-block;
-    font-size: .7rem;
-    font-weight: 800;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    color: #1d4ed8;
-    background: #eef2ff;
-    padding: 4px 12px;
-    border-radius: 999px;
-    margin-bottom: 12px;
-  }
-  .pres-slide h2 {
-    font-size: 1.35rem;
+  .launch-bar h2 {
+    font-size: 1.3rem;
     letter-spacing: -.02em;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
   }
-  .pres-slide .sub {
+  .launch-bar p {
     color: #64748b;
     font-size: .92rem;
-    margin-bottom: 18px;
+    margin-bottom: 22px;
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .btn-launch {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 40px;
+    background: linear-gradient(135deg, #1d4ed8, #0d9488);
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    font-family: inherit;
+    font-size: 1.05rem;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(29,78,216,.3);
+    transition: .2s;
+  }
+  .btn-launch:hover { transform: translateY(-2px); box-shadow: 0 14px 38px rgba(29,78,216,.4); }
+  .btn-launch .ic { font-size: 1.3rem; }
+  .launch-hint {
+    margin-top: 18px;
+    font-size: .82rem;
+    color: #94a3b8;
+  }
+  .launch-hint kbd {
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 2px 8px;
+    font-family: inherit;
+    font-size: .78rem;
+    font-weight: 700;
+    color: #475569;
   }
 
-  /* Architecture cards */
-  .arch3 {
+  /* =========================================================
+     PRÉSENTATION FULLSCREEN
+     ========================================================= */
+  .slideshow {
+    position: fixed;
+    inset: 0;
+    background: #0f172a;
+    z-index: 1000;
+    display: none;
+    overflow: hidden;
+  }
+  .slideshow.open { display: block; }
+
+  /* Slide container */
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 60px 80px 100px;
+    color: #fff;
+    opacity: 0;
+    transform: translateX(40px);
+    pointer-events: none;
+    transition: opacity .4s ease, transform .4s ease;
+    overflow-y: auto;
+  }
+  .slide.active {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+  }
+  .slide.prev { transform: translateX(-40px); }
+
+  .slide-inner {
+    max-width: 1180px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .slide-tag {
+    display: inline-block;
+    font-size: .78rem;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.12);
+    color: #93c5fd;
+    margin-bottom: 20px;
+  }
+
+  .slide h2 {
+    font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+    font-weight: 800;
+    letter-spacing: -.03em;
+    line-height: 1.15;
+    margin-bottom: 14px;
+  }
+  .slide .slide-sub {
+    font-size: clamp(.95rem, 1.4vw, 1.15rem);
+    color: #94a3b8;
+    margin-bottom: 40px;
+    max-width: 820px;
+  }
+
+  /* ---- Slide 1 : Architecture ---- */
+  .s-arch {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
+    gap: 20px;
   }
-  .arch-card {
-    border: 1px solid #e2e8f0;
-    border-radius: 14px;
-    padding: 18px;
+  .s-arch-card {
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 18px;
+    padding: 26px;
     position: relative;
     overflow: hidden;
-    background: #fff;
   }
-  .arch-card::before {
+  .s-arch-card::before {
     content: '';
     position: absolute;
     left: 0; top: 0; bottom: 0;
-    width: 4px;
+    width: 5px;
   }
-  .arch-card.l1::before { background: #1d4ed8; }
-  .arch-card.l2::before { background: #0d9488; }
-  .arch-card.l3::before { background: #7c3aed; }
+  .s-arch-card.l1::before { background: #60a5fa; }
+  .s-arch-card.l2::before { background: #5eead4; }
+  .s-arch-card.l3::before { background: #c4b5fd; }
 
-  .arch-card .lvl {
-    font-size: .68rem;
+  .s-arch-card .lvl {
+    font-size: .72rem;
     font-weight: 800;
-    letter-spacing: .06em;
+    letter-spacing: .08em;
     text-transform: uppercase;
-    padding: 3px 9px;
+    padding: 4px 12px;
     border-radius: 999px;
     display: inline-block;
-    margin-bottom: 10px;
+    margin-bottom: 14px;
   }
-  .arch-card.l1 .lvl { background: #eef2ff; color: #1d4ed8; }
-  .arch-card.l2 .lvl { background: #ccfbf1; color: #0f766e; }
-  .arch-card.l3 .lvl { background: #f3e8ff; color: #6d28d9; }
+  .s-arch-card.l1 .lvl { background: rgba(96,165,250,.2); color: #93c5fd; }
+  .s-arch-card.l2 .lvl { background: rgba(94,234,212,.2); color: #5eead4; }
+  .s-arch-card.l3 .lvl { background: rgba(196,181,253,.2); color: #c4b5fd; }
 
-  .arch-card h3 { font-size: 1rem; margin-bottom: 8px; }
-  .arch-card ul { list-style: none; }
-  .arch-card li {
-    font-size: .83rem;
-    color: #475569;
-    padding: 3px 0 3px 16px;
+  .s-arch-card h3 {
+    font-size: 1.25rem;
+    margin-bottom: 16px;
+    font-weight: 700;
+  }
+  .s-arch-card ul { list-style: none; }
+  .s-arch-card li {
+    font-size: 1rem;
+    color: #cbd5e1;
+    padding: 6px 0 6px 22px;
     position: relative;
   }
-  .arch-card li::before {
+  .s-arch-card li::before {
     content: '▸';
     position: absolute;
     left: 0;
-    color: #94a3b8;
+    color: #64748b;
   }
 
-  /* Team grid */
-  .team-row {
+  /* ---- Slide 2 : Équipe ---- */
+  .s-team {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 12px;
+    gap: 16px;
+    margin-bottom: 26px;
   }
-  .team-box {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 16px;
+  .s-team-box {
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 18px;
+    padding: 26px 16px;
     text-align: center;
   }
-  .team-box .ic { font-size: 1.4rem; margin-bottom: 6px; }
-  .team-box .n {
-    font-size: 1.6rem;
+  .s-team-box .ic { font-size: 2rem; margin-bottom: 10px; }
+  .s-team-box .n {
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
     font-weight: 800;
-    color: #1d4ed8;
+    color: #93c5fd;
     line-height: 1;
+    letter-spacing: -.03em;
   }
-  .team-box .t {
-    font-size: .74rem;
+  .s-team-box .t {
+    font-size: .82rem;
     font-weight: 700;
-    color: #64748b;
+    color: #94a3b8;
     text-transform: uppercase;
-    letter-spacing: .04em;
-    margin-top: 6px;
+    letter-spacing: .05em;
+    margin-top: 10px;
   }
-
-  .team-total {
-    margin-top: 14px;
+  .s-team-total {
     text-align: center;
-    background: #eef2ff;
-    border-radius: 12px;
-    padding: 12px;
-    font-size: .88rem;
-    font-weight: 700;
-    color: #1d4ed8;
-  }
-
-  /* Roles */
-  .roles3 {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
-  }
-  .role-card {
+    background: rgba(96,165,250,.12);
+    border: 1px solid rgba(96,165,250,.25);
     border-radius: 14px;
     padding: 18px;
-    border: 1px solid #e2e8f0;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #93c5fd;
   }
-  .role-card.dfm { background: #f5f8ff; border-color: #c7d2fe; }
-  .role-card.dmm { background: #faf5ff; border-color: #ddd6fe; }
-  .role-card.drh { background: #f0fdfa; border-color: #99f6e4; }
 
-  .role-card h3 {
-    font-size: 1rem;
-    margin-bottom: 4px;
+  /* ---- Slide 3 : Rôles ---- */
+  .s-roles {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .s-role {
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 18px;
+    padding: 26px;
+    display: flex;
+    flex-direction: column;
+  }
+  .s-role h3 {
+    font-size: 1.35rem;
+    margin-bottom: 6px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 8px;
+    gap: 10px;
   }
-  .role-card .rsub {
-    font-size: .75rem;
+  .s-role .rsub {
+    font-size: .8rem;
     font-weight: 700;
-    color: #64748b;
     text-transform: uppercase;
-    letter-spacing: .04em;
-    margin-bottom: 12px;
+    letter-spacing: .05em;
+    color: #94a3b8;
+    margin-bottom: 18px;
   }
-  .role-card ul { list-style: none; }
-  .role-card li {
-    font-size: .85rem;
-    color: #334155;
-    padding: 4px 0 4px 16px;
+  .s-role ul { list-style: none; flex: 1; }
+  .s-role li {
+    font-size: 1rem;
+    color: #cbd5e1;
+    padding: 7px 0 7px 22px;
     position: relative;
   }
-  .role-card li::before {
+  .s-role li::before {
     content: '•';
     position: absolute;
     left: 4px;
-    color: #64748b;
     font-weight: 800;
   }
-  .role-card .deadline {
+  .s-role.dfm li::before { color: #93c5fd; }
+  .s-role.dmm li::before { color: #c4b5fd; }
+  .s-role.drh li::before { color: #5eead4; }
+  .s-role .deadline {
     display: inline-block;
-    margin-top: 10px;
-    font-size: .75rem;
+    margin-top: 18px;
+    font-size: .85rem;
     font-weight: 800;
-    padding: 5px 11px;
+    padding: 8px 16px;
     border-radius: 999px;
-    background: #fef3c7;
-    color: #b45309;
+    background: rgba(251,191,36,.18);
+    color: #fcd34d;
+    align-self: flex-start;
   }
 
-  /* Stats slide */
-  .stat-cards {
+  /* ---- Slide 4 : Stats ---- */
+  .s-stats {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 14px;
-    margin-bottom: 18px;
+    gap: 16px;
+    margin-bottom: 32px;
   }
-  .stat-big {
-    border: 1px solid #e2e8f0;
-    border-radius: 14px;
-    padding: 18px;
+  .s-stat {
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 18px;
+    padding: 26px 18px;
     text-align: center;
   }
-  .stat-big .n {
-    font-size: 2rem;
+  .s-stat .n {
+    font-size: clamp(2.2rem, 4vw, 3.2rem);
     font-weight: 800;
     letter-spacing: -.03em;
     line-height: 1;
   }
-  .stat-big .l {
-    font-size: .74rem;
+  .s-stat .l {
+    font-size: .82rem;
     font-weight: 700;
-    color: #64748b;
+    color: #94a3b8;
     text-transform: uppercase;
-    letter-spacing: .05em;
-    margin-top: 8px;
+    letter-spacing: .06em;
+    margin-top: 12px;
   }
-  .stat-big.t .n { color: #1d4ed8; }
-  .stat-big.d .n { color: #16a34a; }
-  .stat-big.a .n { color: #d97706; }
-  .stat-big.s .n { color: #7c3aed; }
+  .s-stat.t .n { color: #93c5fd; }
+  .s-stat.d .n { color: #86efac; }
+  .s-stat.a .n { color: #fcd34d; }
+  .s-stat.s .n { color: #c4b5fd; }
 
-  .pres-bar {
-    height: 14px;
-    background: #e2e8f0;
-    border-radius: 999px;
-    overflow: hidden;
-    margin-bottom: 8px;
-  }
-  .pres-bar > i {
-    display: block;
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, #1d4ed8, #0d9488);
-    border-radius: 999px;
-    transition: width .5s ease;
-  }
-  .pres-bar-label {
+  .s-global-bar-label {
     display: flex;
     justify-content: space-between;
-    font-size: .85rem;
+    font-size: 1.05rem;
     font-weight: 700;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
   }
-  .pres-bar-label span:last-child { color: #1d4ed8; }
+  .s-global-bar-label span:last-child { color: #93c5fd; }
+  .s-global-bar {
+    height: 22px;
+    background: rgba(255,255,255,.1);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-bottom: 32px;
+  }
+  .s-global-bar > i {
+    display: block;
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #3b82f6, #14b8a6);
+    border-radius: 999px;
+    transition: width .7s ease;
+  }
 
-  /* Progress per section in presentation */
-  .pres-sections {
+  .s-sections {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    margin-top: 16px;
+    gap: 16px;
   }
-  .pres-sec {
+  .s-sec {
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 18px;
   }
-  .pres-sec .name {
-    width: 110px;
-    font-size: .88rem;
+  .s-sec .name {
+    width: 130px;
+    font-size: 1rem;
     font-weight: 700;
-    color: #334155;
+    color: #e2e8f0;
     flex-shrink: 0;
   }
-  .pres-sec .track {
+  .s-sec .track {
     flex: 1;
-    height: 10px;
-    background: #e2e8f0;
+    height: 14px;
+    background: rgba(255,255,255,.1);
     border-radius: 999px;
     overflow: hidden;
   }
-  .pres-sec .track > i {
+  .s-sec .track > i {
     display: block;
     height: 100%;
     width: 0%;
     border-radius: 999px;
+    transition: width .7s ease;
   }
-  .pres-sec .pct {
-    width: 52px;
+  .s-sec .pct {
+    width: 65px;
     text-align: right;
-    font-size: .88rem;
+    font-size: 1rem;
     font-weight: 800;
-    color: #475569;
+    color: #e2e8f0;
   }
 
-  /* Deadlines slide */
-  .deadlines {
+  /* ---- Slide 5 : Deadlines ---- */
+  .s-deadlines {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 14px;
   }
-  .dl-item {
+  .s-dl {
     display: flex;
     align-items: center;
-    gap: 14px;
-    padding: 14px 16px;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
+    gap: 18px;
+    padding: 20px 24px;
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 16px;
   }
-  .dl-item .dot {
-    width: 10px;
-    height: 10px;
+  .s-dl .dot {
+    width: 14px;
+    height: 14px;
     border-radius: 50%;
     flex-shrink: 0;
   }
-  .dl-item .dl-body { flex: 1; min-width: 0; }
-  .dl-item .dl-title {
-    font-size: .92rem;
+  .s-dl .body { flex: 1; min-width: 0; }
+  .s-dl .title {
+    font-size: 1.1rem;
     font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
   }
-  .dl-item .dl-meta {
-    font-size: .78rem;
-    color: #64748b;
-    margin-top: 2px;
+  .s-dl .meta {
+    font-size: .88rem;
+    color: #94a3b8;
   }
-  .dl-item .dl-when {
-    font-size: .78rem;
+  .s-dl .when {
+    font-size: .88rem;
     font-weight: 800;
-    padding: 5px 11px;
+    padding: 8px 16px;
     border-radius: 999px;
-    background: #fef3c7;
-    color: #b45309;
+    background: rgba(251,191,36,.18);
+    color: #fcd34d;
     white-space: nowrap;
   }
 
-  /* ===== TODO VIEW ===== */
-  .summary {
-    background: #fff;
-    padding: 22px 28px;
-    border-bottom: 1px solid #e2e8f0;
+  /* ---- Slide finale ---- */
+  .s-end {
+    text-align: center;
   }
-  .summary .sum-title {
-    font-size: .75rem;
+  .s-end .big {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
     font-weight: 800;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-    color: #64748b;
-    margin-bottom: 16px;
-  }
-  .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
+    letter-spacing: -.04em;
+    line-height: 1.1;
+    background: linear-gradient(120deg, #60a5fa, #5eead4);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
     margin-bottom: 20px;
   }
+  .s-end .msg {
+    font-size: clamp(1rem, 1.6vw, 1.35rem);
+    color: #94a3b8;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  /* ---- Contrôles du slideshow ---- */
+  .ss-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 18px 32px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    background: linear-gradient(to top, rgba(15,23,42,.95), transparent);
+    z-index: 20;
+  }
+  .ss-progress {
+    flex: 1;
+    height: 4px;
+    background: rgba(255,255,255,.15);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .ss-progress > i {
+    display: block;
+    height: 100%;
+    background: linear-gradient(90deg, #60a5fa, #5eead4);
+    border-radius: 999px;
+    transition: width .3s ease;
+  }
+  .ss-counter {
+    font-size: .88rem;
+    font-weight: 700;
+    color: #cbd5e1;
+    white-space: nowrap;
+    letter-spacing: .04em;
+  }
+  .ss-btn {
+    background: rgba(255,255,255,.1);
+    border: 1px solid rgba(255,255,255,.15);
+    color: #fff;
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: .15s;
+    display: grid;
+    place-items: center;
+    font-family: inherit;
+  }
+  .ss-btn:hover { background: rgba(255,255,255,.22); }
+  .ss-btn:disabled { opacity: .35; cursor: not-allowed; }
+  .ss-close {
+    background: rgba(239,68,68,.2);
+    border-color: rgba(239,68,68,.4);
+  }
+  .ss-close:hover { background: rgba(239,68,68,.35); }
+
+  .ss-hint {
+    position: absolute;
+    top: 24px;
+    right: 32px;
+    font-size: .8rem;
+    color: #64748b;
+    background: rgba(15,23,42,.6);
+    padding: 8px 14px;
+    border-radius: 999px;
+    backdrop-filter: blur(8px);
+    z-index: 20;
+    transition: opacity .3s;
+  }
+  .ss-hint.hide { opacity: 0; }
+  .ss-hint kbd {
+    background: rgba(255,255,255,.1);
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-family: inherit;
+    font-size: .75rem;
+    font-weight: 700;
+    color: #cbd5e1;
+  }
+
+  /* Click zone */
+  .ss-clickzone {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    cursor: pointer;
+  }
+  .ss-clickzone::after {
+    content: '▶';
+    position: absolute;
+    right: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2rem;
+    color: rgba(255,255,255,.15);
+    transition: .2s;
+  }
+  .ss-clickzone:hover::after { color: rgba(255,255,255,.4); }
+
+  /* =========================================================
+     TODO VIEW
+     ========================================================= */
+  .summary { background: #fff; padding: 22px 28px; border-bottom: 1px solid #e2e8f0; }
+  .summary .sum-title {
+    font-size: .75rem; font-weight: 800; letter-spacing: .08em;
+    text-transform: uppercase; color: #64748b; margin-bottom: 16px;
+  }
+  .stats-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 12px; margin-bottom: 20px;
+  }
   .stat {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 14px;
-    text-align: center;
+    background: #f8fafc; border: 1px solid #e2e8f0;
+    border-radius: 12px; padding: 14px; text-align: center;
   }
   .stat .n { font-size: 1.5rem; font-weight: 800; letter-spacing: -.02em; line-height: 1; }
   .stat .l { font-size: .7rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: .04em; margin-top: 6px; }
@@ -418,9 +614,7 @@
     font-size: .85rem; font-weight: 700; margin-bottom: 8px;
   }
   .global-bar-wrap .bl span:last-child { color: #1d4ed8; }
-  .bar {
-    height: 12px; background: #e2e8f0; border-radius: 999px; overflow: hidden;
-  }
+  .bar { height: 12px; background: #e2e8f0; border-radius: 999px; overflow: hidden; }
   .bar > i {
     display: block; height: 100%; width: 0%;
     background: linear-gradient(90deg, #1d4ed8, #0d9488);
@@ -439,8 +633,7 @@
 
   .sec-head {
     display: flex; align-items: center; gap: 12px;
-    padding: 18px 28px;
-    background: #f8fafc;
+    padding: 18px 28px; background: #f8fafc;
     border-bottom: 1px solid #e2e8f0;
     cursor: pointer; user-select: none; transition: .15s;
   }
@@ -510,8 +703,7 @@
 
   .foot {
     display: flex; justify-content: space-between; align-items: center;
-    padding: 14px 28px;
-    background: #fff;
+    padding: 14px 28px; background: #fff;
     border-radius: 0 0 16px 16px;
     border-top: 1px solid #e2e8f0;
     font-size: .83rem; color: #64748b; font-weight: 600;
@@ -524,8 +716,12 @@
   .foot .reset:hover { background: #fee2e2; color: #dc2626; }
 
   @media (max-width: 720px) {
-    .arch3, .roles3 { grid-template-columns: 1fr; }
-    .team-row { grid-template-columns: repeat(3, 1fr); }
+    .s-arch, .s-roles { grid-template-columns: 1fr; }
+    .s-team { grid-template-columns: repeat(3, 1fr); }
+    .s-stats { grid-template-columns: repeat(2, 1fr); }
+    .slide { padding: 40px 24px 100px; }
+    .ss-bar { padding: 14px 16px; }
+    .ss-hint { display: none; }
     .stat-cards { grid-template-columns: repeat(2, 1fr); }
   }
   @media (max-width: 620px) {
@@ -533,8 +729,8 @@
   }
   @media (max-width: 520px) {
     body { padding: 0; }
-    .app, .top, .pres { border-radius: 0; }
-    .top, .summary, .sec-head, .task, .foot, .pres { padding-left: 18px; padding-right: 18px; }
+    .app, .top, .summary { border-radius: 0; }
+    .top, .summary, .sec-head, .task, .foot { padding-left: 18px; padding-right: 18px; }
     .steps { margin-left: 0; }
     .tabs button { padding: 10px 14px; font-size: .8rem; }
     .mini .mini-label { width: 70px; font-size: .75rem; }
@@ -553,165 +749,198 @@
     </div>
   </div>
 
-  <!-- ======================== PRÉSENTATION ======================== -->
+  <!-- ===== VUE PRÉSENTATION (page d'accueil) ===== -->
   <div class="view active" id="view-pres">
-    <div class="pres">
-
-      <!-- Slide 1 : Architecture -->
-      <div class="pres-slide">
-        <span class="slide-num">Slide 1 · Architecture</span>
-        <h2>🏛️ Trois niveaux hiérarchisés</h2>
-        <p class="sub">Un système centralisé avec des droits adaptés à chaque niveau.</p>
-        <div class="arch3">
-          <div class="arch-card l1">
-            <span class="lvl">Niveau 1</span>
-            <h3>Ministère de la Santé</h3>
-            <ul>
-              <li>Serveur central</li>
-              <li>Super Admin (accès total)</li>
-              <li>Statistiques nationales</li>
-              <li>Équipe Support</li>
-              <li>Équipe Développement</li>
-            </ul>
-          </div>
-          <div class="arch-card l2">
-            <span class="lvl">Niveau 2</span>
-            <h3>DSP — Wilaya</h3>
-            <ul>
-              <li>1 Admin DSP</li>
-              <li>Statistiques wilaya</li>
-              <li>Suivi des établissements</li>
-              <li>Même structure d'équipe</li>
-            </ul>
-          </div>
-          <div class="arch-card l3">
-            <span class="lvl">Niveau 3</span>
-            <h3>Établissement</h3>
-            <ul>
-              <li>1 Admin Établissement</li>
-              <li>Gestion locale des tâches</li>
-              <li>Remontée vers la DSP</li>
-              <li>10 établissements régionaux</li>
-            </ul>
-          </div>
-        </div>
+    <div class="launch-bar">
+      <h2>Mode Présentation</h2>
+      <p>Lancez la présentation en plein écran pour votre réunion. Naviguez slide par slide en cliquant ou avec les flèches du clavier.</p>
+      <button class="btn-launch" id="btnLaunch">
+        <span class="ic">▶</span> Lancer la présentation
+      </button>
+      <div class="launch-hint">
+        Astuce : <kbd>→</kbd> <kbd>Espace</kbd> pour avancer · <kbd>←</kbd> pour reculer · <kbd>Échap</kbd> pour quitter
       </div>
-
-      <!-- Slide 2 : Équipe -->
-      <div class="pres-slide">
-        <span class="slide-num">Slide 2 · Équipe</span>
-        <h2>👥 Structure d'équipe type</h2>
-        <p class="sub">Composition standard répliquée dans chaque établissement, wilaya et établissement régional.</p>
-        <div class="team-row">
-          <div class="team-box"><div class="ic">⚙️</div><div class="n">2</div><div class="t">Ingénieurs</div></div>
-          <div class="team-box"><div class="ic">🛠️</div><div class="n">4</div><div class="t">Tech. Sup.</div></div>
-          <div class="team-box"><div class="ic">🩺</div><div class="n">2</div><div class="t">Médecins</div></div>
-          <div class="team-box"><div class="ic">💉</div><div class="n">2</div><div class="t">Paramédicaux</div></div>
-          <div class="team-box"><div class="ic">🗂️</div><div class="n">2</div><div class="t">Administration</div></div>
-        </div>
-        <div class="team-total">12 agents par entité — 10 établissements régionaux + wilayas + MS</div>
-      </div>
-
-      <!-- Slide 3 : Rôles -->
-      <div class="pres-slide">
-        <span class="slide-num">Slide 3 · Rôles</span>
-        <h2>🎯 Missions des sous-directeurs</h2>
-        <p class="sub">Répartition des cahiers de charge et des échéances prioritaires.</p>
-        <div class="roles3">
-          <div class="role-card dfm">
-            <h3>⚙️ DFM</h3>
-            <div class="rsub">3 Cahiers de charge</div>
-            <ul>
-              <li>Cahier 1 — 5 serveurs</li>
-              <li>Cahier 2 — Matériel informatique</li>
-              <li>Cahier 3 — Réseaux LAN &amp; électriques (3 sites)</li>
-            </ul>
-            <span class="deadline">⏰ Datacenter · Fin octobre</span>
-          </div>
-          <div class="role-card dmm">
-            <h3>📡 DMM</h3>
-            <div class="rsub">Équipements &amp; Radio</div>
-            <ul>
-              <li>Fiches techniques des équipements</li>
-              <li>Demande des mots de passe Radio</li>
-            </ul>
-            <span class="deadline">⏰ Le plus tôt possible</span>
-          </div>
-          <div class="role-card drh">
-            <h3>🗂️ DRH &amp; DSS</h3>
-            <div class="rsub">Informations RH Santé</div>
-            <ul>
-              <li>Focus : NIN, email, téléphone</li>
-              <li>Liste employés en Excel</li>
-              <li>Liste des affectations</li>
-            </ul>
-            <span class="deadline">⏰ En cours</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Slide 4 : Statistiques -->
-      <div class="pres-slide">
-        <span class="slide-num">Slide 4 · Avancement</span>
-        <h2>📈 Statistiques en temps réel</h2>
-        <p class="sub">Vue consolidée de toutes les directions.</p>
-
-        <div class="stat-cards">
-          <div class="stat-big t"><div class="n" id="pTotal">0</div><div class="l">Tâches</div></div>
-          <div class="stat-big d"><div class="n" id="pDone">0</div><div class="l">Terminées</div></div>
-          <div class="stat-big a"><div class="n" id="pActive">0</div><div class="l">En cours</div></div>
-          <div class="stat-big s"><div class="n" id="pSteps">0</div><div class="l">Étapes faites</div></div>
-        </div>
-
-        <div class="pres-bar-label">
-          <span>Avancement global</span>
-          <span id="pPct">0 %</span>
-        </div>
-        <div class="pres-bar"><i id="pBar"></i></div>
-
-        <div class="pres-sections" id="pSections"></div>
-      </div>
-
-      <!-- Slide 5 : Deadlines -->
-      <div class="pres-slide">
-        <span class="slide-num">Slide 5 · Échéances</span>
-        <h2>⏰ Deadlines critiques</h2>
-        <p class="sub">Les tâches à surveiller en priorité.</p>
-        <div class="deadlines" id="pDeadlines"></div>
-      </div>
-
     </div>
   </div>
 
-  <!-- ======================== TODO ======================== -->
+  <!-- ===== VUE TODO ===== -->
   <div class="view" id="view-todo">
     <div class="summary">
       <div class="sum-title">📊 Résumé global</div>
-
       <div class="stats-grid">
         <div class="stat total"><div class="n" id="sTotal">0</div><div class="l">Tâches</div></div>
         <div class="stat done"><div class="n" id="sDone">0</div><div class="l">Terminées</div></div>
         <div class="stat active"><div class="n" id="sActive">0</div><div class="l">En cours</div></div>
         <div class="stat steps"><div class="n" id="sSteps">0</div><div class="l">Étapes faites</div></div>
       </div>
-
       <div class="global-bar-wrap">
-        <div class="bl">
-          <span>Avancement global</span>
-          <span id="gPct">0 %</span>
-        </div>
+        <div class="bl"><span>Avancement global</span><span id="gPct">0 %</span></div>
         <div class="bar"><i id="gBar"></i></div>
       </div>
-
       <div class="mini-bars" id="miniBars"></div>
     </div>
-
     <div id="sections"></div>
-
     <div class="foot">
       <span id="count">0 tâche</span>
       <button class="reset" id="reset">Réinitialiser</button>
     </div>
+  </div>
+</div>
+
+<!-- ======================== SLIDESHOW FULLSCREEN ======================== -->
+<div class="slideshow" id="slideshow">
+  <div class="ss-hint" id="ssHint">
+    <kbd>→</kbd> avancer · <kbd>←</kbd> reculer · <kbd>Échap</kbd> quitter
+  </div>
+
+  <!-- Zone cliquable (sous les boutons) -->
+  <div class="ss-clickzone" id="clickzone"></div>
+
+  <!-- SLIDE 1 -->
+  <div class="slide active" data-slide="0">
+    <div class="slide-inner">
+      <span class="slide-tag">Slide 1 · Architecture</span>
+      <h2>🏛️ Trois niveaux hiérarchisés</h2>
+      <p class="slide-sub">Un système centralisé avec des droits adaptés à chaque niveau : Ministère, DSP Wilaya et Établissements.</p>
+      <div class="s-arch">
+        <div class="s-arch-card l1">
+          <span class="lvl">Niveau 1</span>
+          <h3>Ministère de la Santé</h3>
+          <ul>
+            <li>Serveur central</li>
+            <li>Super Admin — accès total</li>
+            <li>Statistiques nationales</li>
+            <li>Équipe Support</li>
+            <li>Équipe Développement</li>
+          </ul>
+        </div>
+        <div class="s-arch-card l2">
+          <span class="lvl">Niveau 2</span>
+          <h3>DSP — Wilaya</h3>
+          <ul>
+            <li>1 Admin DSP</li>
+            <li>Statistiques de la wilaya</li>
+            <li>Suivi des établissements</li>
+            <li>Même structure d'équipe</li>
+          </ul>
+        </div>
+        <div class="s-arch-card l3">
+          <span class="lvl">Niveau 3</span>
+          <h3>Établissement</h3>
+          <ul>
+            <li>1 Admin Établissement</li>
+            <li>Gestion locale des tâches</li>
+            <li>Remontée vers la DSP</li>
+            <li>10 établissements régionaux</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 2 -->
+  <div class="slide" data-slide="1">
+    <div class="slide-inner">
+      <span class="slide-tag">Slide 2 · Équipe</span>
+      <h2>👥 Structure d'équipe type</h2>
+      <p class="slide-sub">Composition standard répliquée dans chaque établissement, wilaya et établissement régional.</p>
+      <div class="s-team">
+        <div class="s-team-box"><div class="ic">⚙️</div><div class="n">2</div><div class="t">Ingénieurs</div></div>
+        <div class="s-team-box"><div class="ic">🛠️</div><div class="n">4</div><div class="t">Tech. Sup.</div></div>
+        <div class="s-team-box"><div class="ic">🩺</div><div class="n">2</div><div class="t">Médecins</div></div>
+        <div class="s-team-box"><div class="ic">💉</div><div class="n">2</div><div class="t">Paramédicaux</div></div>
+        <div class="s-team-box"><div class="ic">🗂️</div><div class="n">2</div><div class="t">Administration</div></div>
+      </div>
+      <div class="s-team-total">12 agents par entité — 10 établissements régionaux + wilayas + MS</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3 -->
+  <div class="slide" data-slide="2">
+    <div class="slide-inner">
+      <span class="slide-tag">Slide 3 · Rôles</span>
+      <h2>🎯 Missions des sous-directeurs</h2>
+      <p class="slide-sub">Répartition des cahiers de charge et des échéances prioritaires par sous-direction.</p>
+      <div class="s-roles">
+        <div class="s-role dfm">
+          <h3>⚙️ DFM</h3>
+          <div class="rsub">3 Cahiers de charge</div>
+          <ul>
+            <li>Cahier 1 — 5 serveurs</li>
+            <li>Cahier 2 — Matériel informatique</li>
+            <li>Cahier 3 — Réseaux LAN &amp; électriques (3 sites)</li>
+          </ul>
+          <span class="deadline">⏰ Datacenter · Fin octobre</span>
+        </div>
+        <div class="s-role dmm">
+          <h3>📡 DMM</h3>
+          <div class="rsub">Équipements &amp; Radio</div>
+          <ul>
+            <li>Fiches techniques des équipements</li>
+            <li>Demande des mots de passe Radio</li>
+          </ul>
+          <span class="deadline">⏰ Le plus tôt possible</span>
+        </div>
+        <div class="s-role drh">
+          <h3>🗂️ DRH &amp; DSS</h3>
+          <div class="rsub">Informations RH Santé</div>
+          <ul>
+            <li>Focus : NIN, email, téléphone</li>
+            <li>Liste employés en Excel</li>
+            <li>Liste des affectations</li>
+          </ul>
+          <span class="deadline">⏰ En cours</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4 -->
+  <div class="slide" data-slide="3">
+    <div class="slide-inner">
+      <span class="slide-tag">Slide 4 · Avancement</span>
+      <h2>📈 Statistiques en temps réel</h2>
+      <p class="slide-sub">Vue consolidée de toutes les directions — mise à jour automatique.</p>
+      <div class="s-stats">
+        <div class="s-stat t"><div class="n" id="pTotal">0</div><div class="l">Tâches</div></div>
+        <div class="s-stat d"><div class="n" id="pDone">0</div><div class="l">Terminées</div></div>
+        <div class="s-stat a"><div class="n" id="pActive">0</div><div class="l">En cours</div></div>
+        <div class="s-stat s"><div class="n" id="pSteps">0</div><div class="l">Étapes faites</div></div>
+      </div>
+      <div class="s-global-bar-label">
+        <span>Avancement global</span>
+        <span id="pPct">0 %</span>
+      </div>
+      <div class="s-global-bar"><i id="pBar"></i></div>
+      <div class="s-sections" id="pSections"></div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5 -->
+  <div class="slide" data-slide="4">
+    <div class="slide-inner">
+      <span class="slide-tag">Slide 5 · Échéances</span>
+      <h2>⏰ Deadlines critiques</h2>
+      <p class="slide-sub">Les tâches à surveiller en priorité avec leur avancement actuel.</p>
+      <div class="s-deadlines" id="pDeadlines"></div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6 : Fin -->
+  <div class="slide" data-slide="5">
+    <div class="slide-inner s-end">
+      <div class="big">Merci</div>
+      <p class="msg">Questions, remarques et prochaines étapes — nous pouvons maintenant passer en revue chaque point en détail.</p>
+    </div>
+  </div>
+
+  <!-- Barre de contrôle -->
+  <div class="ss-bar">
+    <button class="ss-btn" id="ssPrev" title="Précédent">‹</button>
+    <button class="ss-btn" id="ssNext" title="Suivant">›</button>
+    <div class="ss-progress"><i id="ssProgress"></i></div>
+    <span class="ss-counter" id="ssCounter">1 / 6</span>
+    <button class="ss-btn ss-close" id="ssClose" title="Quitter (Échap)">✕</button>
   </div>
 </div>
 
@@ -720,6 +949,7 @@ const KEY = 'todo_sectioned_v3';
 const $ = id => document.getElementById(id);
 
 const SECTION_COLORS = { dfm: '#1d4ed8', dmm: '#7c3aed', drh: '#0d9488' };
+const SECTION_COLORS_SS = { dfm: '#60a5fa', dmm: '#c4b5fd', drh: '#5eead4' };
 
 /* =========================================================
    DONNÉES
@@ -728,80 +958,74 @@ function uid() { return Math.random().toString(36).slice(2, 10); }
 
 function seed() {
   return [
-    {
-      id: 'dfm', titre: 'DFM', sous: '3 Cahiers de charge + Datacenter',
-      icon: '⚙️', cls: 'sec-dfm',
-      taches: [
-        { id: uid(), titre: 'Cahier 1 — 5 Serveurs', deadline: '', steps: [
-          { t: 'Étude des besoins (CPU, RAM, stockage)', f: false },
-          { t: 'Rédaction des spécifications techniques', f: false },
-          { t: 'Lancement de la consultation', f: false },
-          { t: 'Réception du matériel', f: false },
-          { t: 'Installation & configuration', f: false }
+    { id:'dfm', titre:'DFM', sous:'3 Cahiers de charge + Datacenter', icon:'⚙️', cls:'sec-dfm',
+      taches:[
+        { id: uid(), titre:'Cahier 1 — 5 Serveurs', deadline:'', steps:[
+          { t:'Étude des besoins (CPU, RAM, stockage)', f:false },
+          { t:'Rédaction des spécifications techniques', f:false },
+          { t:'Lancement de la consultation', f:false },
+          { t:'Réception du matériel', f:false },
+          { t:'Installation & configuration', f:false }
         ]},
-        { id: uid(), titre: 'Cahier 2 — Matériel informatique', deadline: '', steps: [
-          { t: 'Recensement des besoins par service', f: false },
-          { t: 'Établissement du cahier des charges', f: false },
-          { t: 'Validation hiérarchique', f: false },
-          { t: 'Passation de la commande', f: false }
+        { id: uid(), titre:'Cahier 2 — Matériel informatique', deadline:'', steps:[
+          { t:'Recensement des besoins par service', f:false },
+          { t:'Établissement du cahier des charges', f:false },
+          { t:'Validation hiérarchique', f:false },
+          { t:'Passation de la commande', f:false }
         ]},
-        { id: uid(), titre: 'Cahier 3 — Réseaux LAN et électriques (3 sites)', deadline: '', steps: [
-          { t: 'Audit réseau des 3 sites', f: false },
-          { t: 'Schéma d\'architecture LAN', f: false },
-          { t: 'Étude électrique & onduleurs', f: false },
-          { t: 'Travaux de câblage', f: false },
-          { t: 'Tests et recette', f: false }
+        { id: uid(), titre:'Cahier 3 — Réseaux LAN et électriques (3 sites)', deadline:'', steps:[
+          { t:'Audit réseau des 3 sites', f:false },
+          { t:'Schéma d\'architecture LAN', f:false },
+          { t:'Étude électrique & onduleurs', f:false },
+          { t:'Travaux de câblage', f:false },
+          { t:'Tests et recette', f:false }
         ]},
-        { id: uid(), titre: 'Préparation des salles Datacenter & travaux Algérie Télécom', deadline: 'Fin octobre', steps: [
-          { t: 'Inventaire des 3 sites', f: false },
-          { t: 'Définition des besoins (surface, climatisation, énergie)', f: false },
-          { t: 'Rédaction du cahier des charges Datacenter', f: false },
-          { t: 'Contact & planification avec Algérie Télécom', f: false },
-          { t: 'Lancement et accélération des travaux', f: false },
-          { t: 'Réception et mise en service', f: false }
+        { id: uid(), titre:'Préparation des salles Datacenter & travaux Algérie Télécom', deadline:'Fin octobre', steps:[
+          { t:'Inventaire des 3 sites', f:false },
+          { t:'Définition des besoins (surface, climatisation, énergie)', f:false },
+          { t:'Rédaction du cahier des charges Datacenter', f:false },
+          { t:'Contact & planification avec Algérie Télécom', f:false },
+          { t:'Lancement et accélération des travaux', f:false },
+          { t:'Réception et mise en service', f:false }
         ]}
       ]
     },
-    {
-      id: 'dmm', titre: 'DMM', sous: 'Fiches techniques & mots de passe Radio',
-      icon: '📡', cls: 'sec-dmm',
-      taches: [
-        { id: uid(), titre: 'Fiches techniques des équipements', deadline: '', steps: [
-          { t: 'Recensement des équipements', f: false },
-          { t: 'Collecte des documentations', f: false },
-          { t: 'Rédaction des fiches techniques', f: false },
-          { t: 'Validation et archivage', f: false }
+    { id:'dmm', titre:'DMM', sous:'Fiches techniques & mots de passe Radio', icon:'📡', cls:'sec-dmm',
+      taches:[
+        { id: uid(), titre:'Fiches techniques des équipements', deadline:'', steps:[
+          { t:'Recensement des équipements', f:false },
+          { t:'Collecte des documentations', f:false },
+          { t:'Rédaction des fiches techniques', f:false },
+          { t:'Validation et archivage', f:false }
         ]},
-        { id: uid(), titre: 'Demande des mots de passe des équipements Radio', deadline: 'Le plus tôt possible', steps: [
-          { t: 'Inventaire des équipements Radio', f: false },
-          { t: 'Rédaction de la demande officielle', f: false },
-          { t: 'Transmission aux fournisseurs', f: false },
-          { t: 'Réception & sécurisation des mots de passe', f: false }
+        { id: uid(), titre:'Demande des mots de passe des équipements Radio', deadline:'Le plus tôt possible', steps:[
+          { t:'Inventaire des équipements Radio', f:false },
+          { t:'Rédaction de la demande officielle', f:false },
+          { t:'Transmission aux fournisseurs', f:false },
+          { t:'Réception & sécurisation des mots de passe', f:false }
         ]}
       ]
     },
-    {
-      id: 'drh', titre: 'DRH & DSS', sous: 'Informations RH Santé',
-      icon: '🗂️', cls: 'sec-drh',
-      taches: [
-        { id: uid(), titre: 'Informations RH Santé — NIN, email, téléphone', deadline: '', steps: [
-          { t: 'Diffusion du modèle de collecte', f: false },
-          { t: 'Collecte des NIN', f: false },
-          { t: 'Collecte des emails professionnels', f: false },
-          { t: 'Collecte des numéros de téléphone', f: false },
-          { t: 'Contrôle qualité & dédoublonnage', f: false }
+    { id:'drh', titre:'DRH & DSS', sous:'Informations RH Santé', icon:'🗂️', cls:'sec-drh',
+      taches:[
+        { id: uid(), titre:'Informations RH Santé — NIN, email, téléphone', deadline:'', steps:[
+          { t:'Diffusion du modèle de collecte', f:false },
+          { t:'Collecte des NIN', f:false },
+          { t:'Collecte des emails professionnels', f:false },
+          { t:'Collecte des numéros de téléphone', f:false },
+          { t:'Contrôle qualité & dédoublonnage', f:false }
         ]},
-        { id: uid(), titre: 'Liste de tous les employés en Excel', deadline: '', steps: [
-          { t: 'Consolidation des listes par structure', f: false },
-          { t: 'Mise au format Excel normalisé', f: false },
-          { t: 'Vérification des doublons', f: false },
-          { t: 'Transmission à la hiérarchie', f: false }
+        { id: uid(), titre:'Liste de tous les employés en Excel', deadline:'', steps:[
+          { t:'Consolidation des listes par structure', f:false },
+          { t:'Mise au format Excel normalisé', f:false },
+          { t:'Vérification des doublons', f:false },
+          { t:'Transmission à la hiérarchie', f:false }
         ]},
-        { id: uid(), titre: 'Liste des affectations (NIN, email, phone)', deadline: '', steps: [
-          { t: 'Récupération du fichier de référence', f: false },
-          { t: 'Rapprochement NIN / affectation', f: false },
-          { t: 'Complétion email & téléphone', f: false },
-          { t: 'Validation finale', f: false }
+        { id: uid(), titre:'Liste des affectations (NIN, email, phone)', deadline:'', steps:[
+          { t:'Récupération du fichier de référence', f:false },
+          { t:'Rapprochement NIN / affectation', f:false },
+          { t:'Complétion email & téléphone', f:false },
+          { t:'Validation finale', f:false }
         ]}
       ]
     }
@@ -809,12 +1033,8 @@ function seed() {
 }
 
 let sections = load();
-
 function load() {
-  try {
-    const raw = localStorage.getItem(KEY);
-    if (raw) return JSON.parse(raw);
-  } catch (e) {}
+  try { const raw = localStorage.getItem(KEY); if (raw) return JSON.parse(raw); } catch (e) {}
   return seed();
 }
 function save() {
@@ -826,16 +1046,15 @@ function save() {
    ========================================================= */
 function esc(s) {
   return String(s).replace(/[&<>"']/g, c => (
-    { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
+    { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]
   ));
 }
 function taskDone(t) { return t.steps.length && t.steps.every(s => s.f); }
-
 function sectionStats(sec) {
-  const total = sec.taches.reduce((n, t) => n + t.steps.length, 0);
-  const done  = sec.taches.reduce((n, t) => n + t.steps.filter(s => s.f).length, 0);
+  const total = sec.taches.reduce((n,t) => n + t.steps.length, 0);
+  const done  = sec.taches.reduce((n,t) => n + t.steps.filter(s => s.f).length, 0);
   const doneTasks = sec.taches.filter(taskDone).length;
-  return { total, done, doneTasks, pct: total ? Math.round(done / total * 100) : 0 };
+  return { total, done, doneTasks, pct: total ? Math.round(done/total*100) : 0 };
 }
 
 /* =========================================================
@@ -860,9 +1079,8 @@ function render() {
   const doneSteps = allSteps.filter(s => s.f).length;
   const doneTasks = allTasks.filter(taskDone).length;
   const activeTasks = allTasks.length - doneTasks;
-  const globalPct = allSteps.length ? Math.round(doneSteps / allSteps.length * 100) : 0;
+  const globalPct = allSteps.length ? Math.round(doneSteps/allSteps.length*100) : 0;
 
-  /* ---- Résumé todo ---- */
   $('sTotal').textContent  = allTasks.length;
   $('sDone').textContent   = doneTasks;
   $('sActive').textContent = activeTasks;
@@ -873,26 +1091,23 @@ function render() {
   $('miniBars').innerHTML = sections.map(sec => {
     const st = sectionStats(sec);
     const color = SECTION_COLORS[sec.id] || '#1d4ed8';
-    return `
-      <div class="mini">
+    return `<div class="mini">
         <div class="mini-label">${esc(sec.titre)}</div>
         <div class="mini-bar"><i style="width:${st.pct}%;background:${color}"></i></div>
         <div class="mini-pct">${st.pct}%</div>
       </div>`;
   }).join('');
 
-  /* ---- Sections todo ---- */
   $('sections').innerHTML = sections.map(sec => {
     const st = sectionStats(sec);
     const tachesHTML = sec.taches.map(t => {
       const d = taskDone(t);
-      const stepsHTML = t.steps.map((s, i) => `
+      const stepsHTML = t.steps.map((s,i) => `
         <label class="step">
           <input type="checkbox" data-task="${t.id}" data-step="${i}" ${s.f ? 'checked' : ''}>
           <span>${esc(s.t)}</span>
         </label>`).join('');
-      return `
-        <div class="task ${d ? 'done' : ''}">
+      return `<div class="task ${d ? 'done' : ''}">
           <div class="task-head">
             <input type="checkbox" data-toggle="${t.id}" ${d ? 'checked' : ''}>
             <span class="title">${esc(t.titre)}</span>
@@ -901,8 +1116,7 @@ function render() {
           <div class="steps">${stepsHTML}</div>
         </div>`;
     }).join('');
-    return `
-      <div class="section ${sec.cls}" data-section="${sec.id}">
+    return `<div class="section ${sec.cls}" data-section="${sec.id}">
         <div class="sec-head" data-collapse="${sec.id}">
           <div class="sec-icon">${sec.icon}</div>
           <div class="sec-title">${esc(sec.titre)}<small>${esc(sec.sous)}</small></div>
@@ -915,14 +1129,12 @@ function render() {
 
   $('count').textContent = activeTasks + (activeTasks === 1 ? ' tâche en cours' : ' tâches en cours');
 
-  /* ---- Rendu présentation ---- */
   renderPres(allTasks, allSteps, doneSteps, doneTasks, activeTasks, globalPct);
-
   save();
 }
 
 /* =========================================================
-   RENDU PRÉSENTATION
+   RENDU PRÉSENTATION (données des slides)
    ========================================================= */
 function renderPres(allTasks, allSteps, doneSteps, doneTasks, activeTasks, globalPct) {
   $('pTotal').textContent  = allTasks.length;
@@ -934,38 +1146,29 @@ function renderPres(allTasks, allSteps, doneSteps, doneTasks, activeTasks, globa
 
   $('pSections').innerHTML = sections.map(sec => {
     const st = sectionStats(sec);
-    const color = SECTION_COLORS[sec.id] || '#1d4ed8';
-    return `
-      <div class="pres-sec">
+    const color = SECTION_COLORS_SS[sec.id] || '#60a5fa';
+    return `<div class="s-sec">
         <div class="name">${esc(sec.titre)}</div>
         <div class="track"><i style="width:${st.pct}%;background:${color}"></i></div>
         <div class="pct">${st.pct}%</div>
       </div>`;
   }).join('');
 
-  // Deadlines — toutes les tâches avec deadline, triées par section
   const withDeadline = [];
-  sections.forEach(sec => {
-    sec.taches.forEach(t => {
-      if (t.deadline) withDeadline.push({ sec, t });
-    });
-  });
-
-  const colorMap = { dfm: '#1d4ed8', dmm: '#7c3aed', drh: '#0d9488' };
+  sections.forEach(sec => sec.taches.forEach(t => { if (t.deadline) withDeadline.push({ sec, t }); }));
 
   $('pDeadlines').innerHTML = withDeadline.map(({ sec, t }) => {
     const done = taskDone(t);
     const pct = Math.round(t.steps.filter(s => s.f).length / t.steps.length * 100);
-    return `
-      <div class="dl-item">
-        <div class="dot" style="background:${colorMap[sec.id] || '#1d4ed8'}"></div>
-        <div class="dl-body">
-          <div class="dl-title">${esc(t.titre)}</div>
-          <div class="dl-meta">${esc(sec.titre)} · Avancement ${pct}%${done ? ' · ✓ Terminé' : ''}</div>
+    return `<div class="s-dl">
+        <div class="dot" style="background:${SECTION_COLORS_SS[sec.id] || '#60a5fa'}"></div>
+        <div class="body">
+          <div class="title">${esc(t.titre)}</div>
+          <div class="meta">${esc(sec.titre)} · Avancement ${pct}%${done ? ' · ✓ Terminé' : ''}</div>
         </div>
-        <div class="dl-when">⏰ ${esc(t.deadline)}</div>
+        <div class="when">⏰ ${esc(t.deadline)}</div>
       </div>`;
-  }).join('') || '<p style="color:#64748b;font-size:.9rem">Aucune deadline critique.</p>';
+  }).join('') || '<p style="color:#94a3b8">Aucune deadline critique.</p>';
 }
 
 /* =========================================================
@@ -977,8 +1180,7 @@ $('sections').addEventListener('change', e => {
     const t = findTask(step.dataset.task);
     if (!t) return;
     t.steps[+step.dataset.step].f = step.checked;
-    render();
-    return;
+    render(); return;
   }
   const toggle = e.target.closest('input[data-toggle]');
   if (toggle) {
@@ -1007,6 +1209,134 @@ $('reset').addEventListener('click', () => {
   if (confirm('Réinitialiser toutes les tâches ? Toutes les cases seront décochées.')) {
     sections = seed();
     render();
+  }
+});
+
+/* =========================================================
+   SLIDESHOW
+   ========================================================= */
+const slides = document.querySelectorAll('.slide');
+const TOTAL = slides.length;
+let current = 0;
+
+const ssEl        = $('slideshow');
+const ssCounter   = $('ssCounter');
+const ssProgress  = $('ssProgress');
+const ssPrev      = $('ssPrev');
+const ssNext      = $('ssNext');
+const ssHint      = $('ssHint');
+
+function goTo(idx) {
+  if (idx < 0) idx = 0;
+  if (idx >= TOTAL) idx = TOTAL - 1;
+
+  slides.forEach((s, i) => {
+    s.classList.remove('active', 'prev');
+    if (i === idx)      s.classList.add('active');
+    else if (i < idx)   s.classList.add('prev');
+  });
+
+  current = idx;
+  ssCounter.textContent = (idx + 1) + ' / ' + TOTAL;
+  ssProgress.style.width = ((idx + 1) / TOTAL * 100) + '%';
+
+  ssPrev.disabled = idx === 0;
+  ssNext.disabled = idx === TOTAL - 1;
+
+  // Réinitialiser la barre globale de la slide 4 pour animer à chaque affichage
+  if (idx === 3) {
+    const bar = $('pBar');
+    const w = bar.style.width;
+    bar.style.width = '0%';
+    setTimeout(() => { bar.style.width = w; }, 80);
+  }
+}
+
+function next() { if (current < TOTAL - 1) goTo(current + 1); }
+function prev() { if (current > 0) goTo(current - 1); }
+
+/* Ouvrir */
+$('btnLaunch').addEventListener('click', () => {
+  ssEl.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  goTo(0);
+
+  // Tenter le plein écran natif
+  if (ssEl.requestFullscreen) {
+    ssEl.requestFullscreen().catch(() => {});
+  } else if (ssEl.webkitRequestFullscreen) {
+    ssEl.webkitRequestFullscreen();
+  }
+
+  // Cacher l'astuce après 5 secondes
+  ssHint.classList.remove('hide');
+  clearTimeout(window._hintTimer);
+  window._hintTimer = setTimeout(() => ssHint.classList.add('hide'), 5000);
+});
+
+/* Fermer */
+function closeSlideshow() {
+  ssEl.classList.remove('open');
+  document.body.style.overflow = '';
+  if (document.fullscreenElement) {
+    document.exitFullscreen().catch(() => {});
+  } else if (document.webkitFullscreenElement) {
+    document.webkitExitFullscreen();
+  }
+}
+$('ssClose').addEventListener('click', closeSlideshow);
+
+/* Boutons */
+ssPrev.addEventListener('click', e => { e.stopPropagation(); prev(); });
+ssNext.addEventListener('click', e => { e.stopPropagation(); next(); });
+
+/* Clic sur la zone → slide suivante (ou fermer si dernière slide) */
+$('clickzone').addEventListener('click', () => {
+  if (current === TOTAL - 1) closeSlideshow();
+  else next();
+});
+
+/* Clavier */
+document.addEventListener('keydown', e => {
+  if (!ssEl.classList.contains('open')) return;
+
+  if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown' || e.key === 'Enter') {
+    e.preventDefault();
+    if (current === TOTAL - 1) closeSlideshow();
+    else next();
+  } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+    e.preventDefault();
+    prev();
+  } else if (e.key === 'Escape') {
+    e.preventDefault();
+    closeSlideshow();
+  } else if (e.key === 'Home') {
+    e.preventDefault();
+    goTo(0);
+  } else if (e.key === 'End') {
+    e.preventDefault();
+    goTo(TOTAL - 1);
+  }
+});
+
+/* Swipe sur mobile */
+let touchStartX = 0;
+ssEl.addEventListener('touchstart', e => {
+  touchStartX = e.changedTouches[0].screenX;
+}, { passive: true });
+ssEl.addEventListener('touchend', e => {
+  const diff = e.changedTouches[0].screenX - touchStartX;
+  if (Math.abs(diff) < 60) return;
+  if (diff < 0) next();
+  else prev();
+}, { passive: true });
+
+/* Sync si on quitte le plein écran natif (touche Échap du navigateur) */
+document.addEventListener('fullscreenchange', () => {
+  if (!document.fullscreenElement && ssEl.classList.contains('open')) {
+    // L'utilisateur a quitté le plein écran natif — on ferme aussi la présentation
+    // (comportement attendu : Échap quitte la présentation)
+    closeSlideshow();
   }
 });
 
