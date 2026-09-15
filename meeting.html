@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Todo Liste — Toutes les Tâches</title>
+<title>Todo Liste — Par Sous-Direction</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -17,27 +17,24 @@
   }
 
   .app {
-    max-width: 780px;
+    max-width: 820px;
     margin: 0 auto;
-    background: #fff;
-    border-radius: 16px;
-    box-shadow: 0 4px 24px rgba(15, 23, 42, .08);
-    overflow: hidden;
   }
 
   /* Header */
   .head {
-    padding: 26px 28px;
     background: linear-gradient(135deg, #1d4ed8, #0d9488);
     color: #fff;
+    border-radius: 16px 16px 0 0;
+    padding: 26px 28px;
   }
   .head h1 { font-size: 1.5rem; font-weight: 700; letter-spacing: -.02em; }
   .head p { font-size: .88rem; opacity: .88; margin-top: 4px; }
 
-  /* Progress */
+  /* Global progress */
   .progress {
+    background: #fff;
     padding: 16px 28px;
-    background: #f8fafc;
     border-bottom: 1px solid #e2e8f0;
   }
   .progress .top {
@@ -63,34 +60,72 @@
     transition: width .4s ease;
   }
 
-  /* Filters */
-  .filters {
-    display: flex;
-    gap: 4px;
-    padding: 14px 28px;
+  /* Section */
+  .section {
     background: #fff;
     border-bottom: 1px solid #e2e8f0;
   }
-  .filters button {
-    padding: 8px 16px;
-    background: transparent;
-    border: none;
-    border-radius: 8px;
-    font-size: .85rem;
-    font-weight: 600;
-    font-family: inherit;
-    color: #64748b;
+  .section:last-of-type { border-radius: 0 0 16px 16px; border-bottom: none; }
+
+  .sec-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 28px;
+    background: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
     cursor: pointer;
+    user-select: none;
     transition: .15s;
   }
-  .filters button:hover { background: #eef2ff; color: #1d4ed8; }
-  .filters button.active { background: #1d4ed8; color: #fff; }
+  .sec-head:hover { background: #eef2ff; }
 
-  /* Task list */
-  .list { list-style: none; }
+  .sec-head .sec-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+  .sec-dfm .sec-icon   { background: #eef2ff; color: #1d4ed8; }
+  .sec-dmm .sec-icon   { background: #f3e8ff; color: #7c3aed; }
+  .sec-drh .sec-icon   { background: #ccfbf1; color: #0d9488; }
+
+  .sec-head .sec-title {
+    flex: 1;
+    font-size: 1.05rem;
+    font-weight: 700;
+  }
+  .sec-head .sec-title small {
+    display: block;
+    font-size: .78rem;
+    font-weight: 500;
+    color: #64748b;
+    margin-top: 2px;
+  }
+  .sec-head .sec-badge {
+    font-size: .75rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: #e2e8f0;
+    color: #475569;
+  }
+  .sec-head .chev {
+    font-size: .9rem;
+    color: #94a3b8;
+    transition: transform .2s;
+  }
+  .section.collapsed .chev { transform: rotate(-90deg); }
+  .section.collapsed .sec-body { display: none; }
+
+  /* Task inside section */
+  .sec-body { padding: 4px 0; }
 
   .task {
-    padding: 18px 28px;
+    padding: 16px 28px;
     border-bottom: 1px solid #f1f5f9;
   }
   .task:last-child { border-bottom: none; }
@@ -130,7 +165,7 @@
 
   .task-head .title {
     flex: 1;
-    font-size: 1rem;
+    font-size: .97rem;
     font-weight: 700;
     line-height: 1.4;
     cursor: pointer;
@@ -141,18 +176,19 @@
     color: #94a3b8;
   }
 
-  .task-head .resp {
-    font-size: .7rem;
+  .task-head .deadline {
+    font-size: .72rem;
     font-weight: 800;
-    letter-spacing: .04em;
+    letter-spacing: .03em;
     padding: 4px 10px;
     border-radius: 999px;
-    background: #eef2ff;
-    color: #1d4ed8;
+    background: #fef3c7;
+    color: #b45309;
     text-transform: uppercase;
     white-space: nowrap;
     margin-top: 3px;
   }
+  .task.done .task-head .deadline { background: #dcfce7; color: #16a34a; }
 
   /* Steps */
   .steps {
@@ -166,7 +202,7 @@
     display: flex;
     align-items: flex-start;
     gap: 10px;
-    font-size: .89rem;
+    font-size: .88rem;
     cursor: pointer;
     user-select: none;
     color: #334155;
@@ -205,11 +241,13 @@
     justify-content: space-between;
     align-items: center;
     padding: 14px 28px;
-    background: #f8fafc;
+    background: #fff;
+    border-radius: 0 0 16px 16px;
     border-top: 1px solid #e2e8f0;
     font-size: .83rem;
     color: #64748b;
     font-weight: 600;
+    margin-top: 0;
   }
   .foot .reset {
     background: none;
@@ -228,7 +266,8 @@
   @media (max-width: 520px) {
     body { padding: 0; }
     .app { border-radius: 0; }
-    .head, .progress, .filters, .task, .foot { padding-left: 18px; padding-right: 18px; }
+    .head { border-radius: 0; }
+    .head, .progress, .sec-head, .task, .foot { padding-left: 18px; padding-right: 18px; }
     .steps { margin-left: 0; }
   }
 </style>
@@ -237,7 +276,7 @@
 
 <div class="app">
   <div class="head">
-    <h1>📋 Toutes les Tâches</h1>
+    <h1>📋 Todo Liste — Par Sous-Direction</h1>
     <p>DFM · DMM · DRH &amp; DSS — cochez les étapes au fur et à mesure.</p>
   </div>
 
@@ -249,13 +288,7 @@
     <div class="bar"><i id="progBar"></i></div>
   </div>
 
-  <div class="filters">
-    <button class="active" data-filter="all">Toutes</button>
-    <button data-filter="active">En cours</button>
-    <button data-filter="done">Terminées</button>
-  </div>
-
-  <ul class="list" id="list"></ul>
+  <div id="sections"></div>
 
   <div class="foot">
     <span id="count">0 tâche</span>
@@ -264,116 +297,145 @@
 </div>
 
 <script>
-const KEY = 'all_tasks_v1';
+const KEY = 'todo_sectioned_v1';
 const $ = id => document.getElementById(id);
 
 /* =========================================================
-   LES TÂCHES (données initiales)
+   STRUCTURE : Sections → Tâches → Étapes
    ========================================================= */
 function seed() {
   return [
     {
-      id: uid(),
-      titre: 'Préparation des salles Datacenter & accélération des travaux Algérie Télécom',
-      resp: 'DFM',
-      steps: [
-        { t: 'Inventaire des 3 sites', f: false },
-        { t: 'Définition des besoins (surface, climatisation, énergie)', f: false },
-        { t: 'Rédaction du cahier des charges Datacenter', f: false },
-        { t: 'Contact & planification avec Algérie Télécom', f: false },
-        { t: 'Lancement et accélération des travaux', f: false },
-        { t: 'Réception et mise en service', f: false }
+      id: 'dfm',
+      titre: 'DFM',
+      sous: '3 Cahiers de charge + Datacenter',
+      icon: '⚙️',
+      cls: 'sec-dfm',
+      taches: [
+        {
+          id: uid(),
+          titre: 'Cahier 1 — 5 Serveurs',
+          deadline: '',
+          steps: [
+            { t: 'Étude des besoins (CPU, RAM, stockage)', f: false },
+            { t: 'Rédaction des spécifications techniques', f: false },
+            { t: 'Lancement de la consultation', f: false },
+            { t: 'Réception du matériel', f: false },
+            { t: 'Installation & configuration', f: false }
+          ]
+        },
+        {
+          id: uid(),
+          titre: 'Cahier 2 — Matériel informatique',
+          deadline: '',
+          steps: [
+            { t: 'Recensement des besoins par service', f: false },
+            { t: 'Établissement du cahier des charges', f: false },
+            { t: 'Validation hiérarchique', f: false },
+            { t: 'Passation de la commande', f: false }
+          ]
+        },
+        {
+          id: uid(),
+          titre: 'Cahier 3 — Réseaux LAN et électriques (3 sites)',
+          deadline: '',
+          steps: [
+            { t: 'Audit réseau des 3 sites', f: false },
+            { t: 'Schéma d\'architecture LAN', f: false },
+            { t: 'Étude électrique & onduleurs', f: false },
+            { t: 'Travaux de câblage', f: false },
+            { t: 'Tests et recette', f: false }
+          ]
+        },
+        {
+          id: uid(),
+          titre: 'Préparation des salles Datacenter & travaux Algérie Télécom',
+          deadline: 'Fin octobre',
+          steps: [
+            { t: 'Inventaire des 3 sites', f: false },
+            { t: 'Définition des besoins (surface, climatisation, énergie)', f: false },
+            { t: 'Rédaction du cahier des charges Datacenter', f: false },
+            { t: 'Contact & planification avec Algérie Télécom', f: false },
+            { t: 'Lancement et accélération des travaux', f: false },
+            { t: 'Réception et mise en service', f: false }
+          ]
+        }
       ]
     },
+
     {
-      id: uid(),
-      titre: 'Serveurs — acquisition et configuration (5 serveurs)',
-      resp: 'DFM',
-      steps: [
-        { t: 'Étude des besoins (CPU, RAM, stockage)', f: false },
-        { t: 'Rédaction des spécifications techniques', f: false },
-        { t: 'Lancement de la consultation', f: false },
-        { t: 'Réception du matériel', f: false },
-        { t: 'Installation & configuration', f: false }
+      id: 'dmm',
+      titre: 'DMM',
+      sous: 'Fiches techniques & mots de passe Radio',
+      icon: '📡',
+      cls: 'sec-dmm',
+      taches: [
+        {
+          id: uid(),
+          titre: 'Fiches techniques des équipements',
+          deadline: '',
+          steps: [
+            { t: 'Recensement des équipements', f: false },
+            { t: 'Collecte des documentations', f: false },
+            { t: 'Rédaction des fiches techniques', f: false },
+            { t: 'Validation et archivage', f: false }
+          ]
+        },
+        {
+          id: uid(),
+          titre: 'Demande des mots de passe des équipements Radio',
+          deadline: 'Le plus tôt possible',
+          steps: [
+            { t: 'Inventaire des équipements Radio', f: false },
+            { t: 'Rédaction de la demande officielle', f: false },
+            { t: 'Transmission aux fournisseurs', f: false },
+            { t: 'Réception & sécurisation des mots de passe', f: false }
+          ]
+        }
       ]
     },
+
     {
-      id: uid(),
-      titre: 'Matériel informatique',
-      resp: 'DFM',
-      steps: [
-        { t: 'Recensement des besoins par service', f: false },
-        { t: 'Établissement du cahier des charges', f: false },
-        { t: 'Validation hiérarchique', f: false },
-        { t: 'Passation de la commande', f: false }
-      ]
-    },
-    {
-      id: uid(),
-      titre: 'Réseaux LAN et électriques — 3 sites',
-      resp: 'DFM',
-      steps: [
-        { t: 'Audit réseau des 3 sites', f: false },
-        { t: 'Schéma d\'architecture LAN', f: false },
-        { t: 'Étude électrique & onduleurs', f: false },
-        { t: 'Travaux de câblage', f: false },
-        { t: 'Tests et recette', f: false }
-      ]
-    },
-    {
-      id: uid(),
-      titre: 'Fiches techniques des équipements',
-      resp: 'DMM',
-      steps: [
-        { t: 'Recensement des équipements', f: false },
-        { t: 'Collecte des documentations', f: false },
-        { t: 'Rédaction des fiches techniques', f: false },
-        { t: 'Validation et archivage', f: false }
-      ]
-    },
-    {
-      id: uid(),
-      titre: 'Demande des mots de passe des équipements Radio',
-      resp: 'DMM',
-      steps: [
-        { t: 'Inventaire des équipements Radio', f: false },
-        { t: 'Rédaction de la demande officielle', f: false },
-        { t: 'Transmission aux fournisseurs', f: false },
-        { t: 'Réception & sécurisation des mots de passe', f: false }
-      ]
-    },
-    {
-      id: uid(),
-      titre: 'Informations RH Santé — NIN, email, téléphone',
-      resp: 'DRH/DSS',
-      steps: [
-        { t: 'Diffusion du modèle de collecte', f: false },
-        { t: 'Collecte des NIN', f: false },
-        { t: 'Collecte des emails professionnels', f: false },
-        { t: 'Collecte des numéros de téléphone', f: false },
-        { t: 'Contrôle qualité & dédoublonnage', f: false }
-      ]
-    },
-    {
-      id: uid(),
-      titre: 'Liste de tous les employés en Excel',
-      resp: 'DRH/DSS',
-      steps: [
-        { t: 'Consolidation des listes par structure', f: false },
-        { t: 'Mise au format Excel normalisé', f: false },
-        { t: 'Vérification des doublons', f: false },
-        { t: 'Transmission à la hiérarchie', f: false }
-      ]
-    },
-    {
-      id: uid(),
-      titre: 'Liste des affectations (NIN, email, phone)',
-      resp: 'DRH/DSS',
-      steps: [
-        { t: 'Récupération du fichier de référence', f: false },
-        { t: 'Rapprochement NIN / affectation', f: false },
-        { t: 'Complétion email & téléphone', f: false },
-        { t: 'Validation finale', f: false }
+      id: 'drh',
+      titre: 'DRH & DSS',
+      sous: 'Informations RH Santé',
+      icon: '🗂️',
+      cls: 'sec-drh',
+      taches: [
+        {
+          id: uid(),
+          titre: 'Informations RH Santé — NIN, email, téléphone',
+          deadline: '',
+          steps: [
+            { t: 'Diffusion du modèle de collecte', f: false },
+            { t: 'Collecte des NIN', f: false },
+            { t: 'Collecte des emails professionnels', f: false },
+            { t: 'Collecte des numéros de téléphone', f: false },
+            { t: 'Contrôle qualité & dédoublonnage', f: false }
+          ]
+        },
+        {
+          id: uid(),
+          titre: 'Liste de tous les employés en Excel',
+          deadline: '',
+          steps: [
+            { t: 'Consolidation des listes par structure', f: false },
+            { t: 'Mise au format Excel normalisé', f: false },
+            { t: 'Vérification des doublons', f: false },
+            { t: 'Transmission à la hiérarchie', f: false }
+          ]
+        },
+        {
+          id: uid(),
+          titre: 'Liste des affectations (NIN, email, phone)',
+          deadline: '',
+          steps: [
+            { t: 'Récupération du fichier de référence', f: false },
+            { t: 'Rapprochement NIN / affectation', f: false },
+            { t: 'Complétion email & téléphone', f: false },
+            { t: 'Validation finale', f: false }
+          ]
+        }
       ]
     }
   ];
@@ -382,8 +444,7 @@ function seed() {
 /* =========================================================
    ÉTAT
    ========================================================= */
-let tasks = load();
-let filter = 'all';
+let sections = load();
 
 function uid() { return Math.random().toString(36).slice(2, 10); }
 
@@ -395,7 +456,7 @@ function load() {
   return seed();
 }
 function save() {
-  try { localStorage.setItem(KEY, JSON.stringify(tasks)); } catch (e) {}
+  try { localStorage.setItem(KEY, JSON.stringify(sections)); } catch (e) {}
 }
 
 /* =========================================================
@@ -406,33 +467,26 @@ function esc(s) {
     { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
   ));
 }
-function taskProgress(t) {
-  if (!t.steps.length) return 0;
-  return Math.round(t.steps.filter(s => s.f).length / t.steps.length * 100);
+function taskDone(t) { return t.steps.length && t.steps.every(s => s.f); }
+function sectionStats(sec) {
+  const total = sec.taches.reduce((n, t) => n + t.steps.length, 0);
+  const done  = sec.taches.reduce((n, t) => n + t.steps.filter(s => s.f).length, 0);
+  return { total, done };
 }
-function isDone(t) { return taskProgress(t) === 100; }
 
 /* =========================================================
    RENDU
    ========================================================= */
 function render() {
-  const list = $('list');
+  const box = $('sections');
 
-  // filter
-  let visible = tasks;
-  if (filter === 'active') visible = tasks.filter(t => !isDone(t));
-  if (filter === 'done')   visible = tasks.filter(t => isDone(t));
+  box.innerHTML = sections.map(sec => {
+    const { total, done } = sectionStats(sec);
+    const doneTasks = sec.taches.filter(taskDone).length;
 
-  // tasks HTML
-  if (!visible.length) {
-    const msg = filter === 'done' ? 'Aucune tâche terminée.'
-              : filter === 'active' ? 'Toutes les tâches sont terminées 🎉'
-              : 'Aucune tâche.';
-    list.innerHTML = `<li style="padding:60px 20px;text-align:center;color:#94a3b8;font-size:.9rem">${msg}</li>`;
-  } else {
-    list.innerHTML = visible.map(t => {
-      const done = isDone(t);
-      const steps = t.steps.map((s, i) => `
+    const tachesHTML = sec.taches.map(t => {
+      const d = taskDone(t);
+      const stepsHTML = t.steps.map((s, i) => `
         <label class="step">
           <input type="checkbox" data-task="${t.id}" data-step="${i}" ${s.f ? 'checked' : ''}>
           <span>${esc(s.t)}</span>
@@ -440,27 +494,42 @@ function render() {
       `).join('');
 
       return `
-        <li class="task ${done ? 'done' : ''}">
+        <div class="task ${d ? 'done' : ''}">
           <div class="task-head">
-            <input type="checkbox" data-task-toggle="${t.id}" ${done ? 'checked' : ''}>
+            <input type="checkbox" data-toggle="${t.id}" ${d ? 'checked' : ''}>
             <span class="title">${esc(t.titre)}</span>
-            <span class="resp">${esc(t.resp)}</span>
+            ${t.deadline ? `<span class="deadline">⏰ ${esc(t.deadline)}</span>` : ''}
           </div>
-          <div class="steps">${steps}</div>
-        </li>
+          <div class="steps">${stepsHTML}</div>
+        </div>
       `;
     }).join('');
-  }
+
+    return `
+      <div class="section ${sec.cls}" data-section="${sec.id}">
+        <div class="sec-head" data-collapse="${sec.id}">
+          <div class="sec-icon">${sec.icon}</div>
+          <div class="sec-title">
+            ${esc(sec.titre)}
+            <small>${esc(sec.sous)}</small>
+          </div>
+          <span class="sec-badge">${doneTasks}/${sec.taches.length} tâches</span>
+          <span class="chev">▾</span>
+        </div>
+        <div class="sec-body">${tachesHTML}</div>
+      </div>
+    `;
+  }).join('');
 
   // global progress
-  const allSteps = tasks.flatMap(t => t.steps);
+  const allSteps = sections.flatMap(s => s.taches.flatMap(t => t.steps));
   const doneSteps = allSteps.filter(s => s.f).length;
   const pct = allSteps.length ? Math.round(doneSteps / allSteps.length * 100) : 0;
   $('progBar').style.width = pct + '%';
   $('progTxt').textContent = pct + ' % (' + doneSteps + '/' + allSteps.length + ' étapes)';
 
   // count
-  const active = tasks.filter(t => !isDone(t)).length;
+  const active = sections.flatMap(s => s.taches).filter(t => !taskDone(t)).length;
   $('count').textContent = active + (active === 1 ? ' tâche en cours' : ' tâches en cours');
 
   save();
@@ -469,41 +538,48 @@ function render() {
 /* =========================================================
    INTERACTIONS
    ========================================================= */
-// cocher une étape
-$('list').addEventListener('change', e => {
-  const cb = e.target.closest('input[data-step]');
-  if (cb) {
-    const t = tasks.find(x => x.id === cb.dataset.task);
+
+// cocher une étape ou une tâche entière
+$('sections').addEventListener('change', e => {
+  const step = e.target.closest('input[data-step]');
+  if (step) {
+    const t = findTask(step.dataset.task);
     if (!t) return;
-    t.steps[+cb.dataset.step].f = cb.checked;
+    t.steps[+step.dataset.step].f = step.checked;
     render();
     return;
   }
 
-  // cocher la tâche entière
-  const all = e.target.closest('input[data-task-toggle]');
-  if (all) {
-    const t = tasks.find(x => x.id === all.dataset.taskToggle);
+  const toggle = e.target.closest('input[data-toggle]');
+  if (toggle) {
+    const t = findTask(toggle.dataset.toggle);
     if (!t) return;
-    t.steps.forEach(s => s.f = all.checked);
+    t.steps.forEach(s => s.f = toggle.checked);
     render();
   }
 });
 
-// filtres
-document.querySelectorAll('.filters button').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.filters button').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    filter = btn.dataset.filter;
-    render();
-  });
+// replier / déplier une section
+$('sections').addEventListener('click', e => {
+  const head = e.target.closest('[data-collapse]');
+  if (!head) return;
+  const sec = head.closest('.section');
+  sec.classList.toggle('collapsed');
 });
+
+// chercher une tâche par id
+function findTask(id) {
+  for (const sec of sections) {
+    const t = sec.taches.find(x => x.id === id);
+    if (t) return t;
+  }
+  return null;
+}
 
 // réinitialiser
 $('reset').addEventListener('click', () => {
   if (confirm('Réinitialiser toutes les tâches ? Toutes les cases seront décochées.')) {
-    tasks = seed();
+    sections = seed();
     render();
   }
 });
