@@ -31,22 +31,65 @@
   .head h1 { font-size: 1.5rem; font-weight: 700; letter-spacing: -.02em; }
   .head p { font-size: .88rem; opacity: .88; margin-top: 4px; }
 
-  /* Global progress */
-  .progress {
+  /* ===== RÉSUMÉ GLOBAL ===== */
+  .summary {
     background: #fff;
-    padding: 16px 28px;
+    padding: 22px 28px;
     border-bottom: 1px solid #e2e8f0;
   }
-  .progress .top {
+  .summary .sum-title {
+    font-size: .75rem;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: #64748b;
+    margin-bottom: 16px;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .stat {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 14px;
+    text-align: center;
+  }
+  .stat .n {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -.02em;
+    line-height: 1;
+  }
+  .stat .l {
+    font-size: .7rem;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    margin-top: 6px;
+  }
+  .stat.total  .n { color: #1d4ed8; }
+  .stat.done   .n { color: #16a34a; }
+  .stat.active .n { color: #d97706; }
+  .stat.steps  .n { color: #7c3aed; }
+
+  /* Barre globale */
+  .global-bar-wrap { margin-bottom: 20px; }
+  .global-bar-wrap .bl {
     display: flex;
     justify-content: space-between;
     font-size: .85rem;
-    font-weight: 600;
+    font-weight: 700;
     margin-bottom: 8px;
   }
-  .progress .top span:last-child { color: #64748b; }
+  .global-bar-wrap .bl span:last-child { color: #1d4ed8; }
   .bar {
-    height: 10px;
+    height: 12px;
     background: #e2e8f0;
     border-radius: 999px;
     overflow: hidden;
@@ -57,7 +100,47 @@
     width: 0%;
     background: linear-gradient(90deg, #1d4ed8, #0d9488);
     border-radius: 999px;
-    transition: width .4s ease;
+    transition: width .5s ease;
+  }
+
+  /* Mini barres par section */
+  .mini-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .mini {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .mini .mini-label {
+    width: 90px;
+    font-size: .8rem;
+    font-weight: 700;
+    color: #334155;
+    flex-shrink: 0;
+  }
+  .mini .mini-bar {
+    flex: 1;
+    height: 8px;
+    background: #e2e8f0;
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .mini .mini-bar > i {
+    display: block;
+    height: 100%;
+    width: 0%;
+    border-radius: 999px;
+    transition: width .5s ease;
+  }
+  .mini .mini-pct {
+    width: 42px;
+    text-align: right;
+    font-size: .8rem;
+    font-weight: 800;
+    color: #475569;
   }
 
   /* Section */
@@ -247,7 +330,6 @@
     font-size: .83rem;
     color: #64748b;
     font-weight: 600;
-    margin-top: 0;
   }
   .foot .reset {
     background: none;
@@ -263,12 +345,16 @@
   }
   .foot .reset:hover { background: #fee2e2; color: #dc2626; }
 
+  @media (max-width: 620px) {
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  }
   @media (max-width: 520px) {
     body { padding: 0; }
     .app { border-radius: 0; }
     .head { border-radius: 0; }
-    .head, .progress, .sec-head, .task, .foot { padding-left: 18px; padding-right: 18px; }
+    .head, .summary, .sec-head, .task, .foot { padding-left: 18px; padding-right: 18px; }
     .steps { margin-left: 0; }
+    .mini .mini-label { width: 70px; font-size: .75rem; }
   }
 </style>
 </head>
@@ -280,12 +366,38 @@
     <p>DFM · DMM · DRH &amp; DSS — cochez les étapes au fur et à mesure.</p>
   </div>
 
-  <div class="progress">
-    <div class="top">
-      <span>Avancement global</span>
-      <span id="progTxt">0 %</span>
+  <!-- ===== RÉSUMÉ GLOBAL ===== -->
+  <div class="summary">
+    <div class="sum-title">📊 Résumé global</div>
+
+    <div class="stats-grid">
+      <div class="stat total">
+        <div class="n" id="sTotal">0</div>
+        <div class="l">Tâches</div>
+      </div>
+      <div class="stat done">
+        <div class="n" id="sDone">0</div>
+        <div class="l">Terminées</div>
+      </div>
+      <div class="stat active">
+        <div class="n" id="sActive">0</div>
+        <div class="l">En cours</div>
+      </div>
+      <div class="stat steps">
+        <div class="n" id="sSteps">0</div>
+        <div class="l">Étapes faites</div>
+      </div>
     </div>
-    <div class="bar"><i id="progBar"></i></div>
+
+    <div class="global-bar-wrap">
+      <div class="bl">
+        <span>Avancement global</span>
+        <span id="gPct">0 %</span>
+      </div>
+      <div class="bar"><i id="gBar"></i></div>
+    </div>
+
+    <div class="mini-bars" id="miniBars"></div>
   </div>
 
   <div id="sections"></div>
@@ -297,8 +409,14 @@
 </div>
 
 <script>
-const KEY = 'todo_sectioned_v1';
+const KEY = 'todo_sectioned_v2';
 const $ = id => document.getElementById(id);
+
+const SECTION_COLORS = {
+  dfm: '#1d4ed8',
+  dmm: '#7c3aed',
+  drh: '#0d9488'
+};
 
 /* =========================================================
    STRUCTURE : Sections → Tâches → Étapes
@@ -362,7 +480,6 @@ function seed() {
         }
       ]
     },
-
     {
       id: 'dmm',
       titre: 'DMM',
@@ -394,7 +511,6 @@ function seed() {
         }
       ]
     },
-
     {
       id: 'drh',
       titre: 'DRH & DSS',
@@ -468,21 +584,49 @@ function esc(s) {
   ));
 }
 function taskDone(t) { return t.steps.length && t.steps.every(s => s.f); }
+
 function sectionStats(sec) {
   const total = sec.taches.reduce((n, t) => n + t.steps.length, 0);
   const done  = sec.taches.reduce((n, t) => n + t.steps.filter(s => s.f).length, 0);
-  return { total, done };
+  const doneTasks = sec.taches.filter(taskDone).length;
+  return { total, done, doneTasks, pct: total ? Math.round(done / total * 100) : 0 };
 }
 
 /* =========================================================
    RENDU
    ========================================================= */
 function render() {
-  const box = $('sections');
+  /* --- Résumé global --- */
+  const allTasks  = sections.flatMap(s => s.taches);
+  const allSteps  = allTasks.flatMap(t => t.steps);
+  const doneSteps = allSteps.filter(s => s.f).length;
+  const doneTasks = allTasks.filter(taskDone).length;
+  const activeTasks = allTasks.length - doneTasks;
+  const globalPct = allSteps.length ? Math.round(doneSteps / allSteps.length * 100) : 0;
 
-  box.innerHTML = sections.map(sec => {
-    const { total, done } = sectionStats(sec);
-    const doneTasks = sec.taches.filter(taskDone).length;
+  $('sTotal').textContent  = allTasks.length;
+  $('sDone').textContent   = doneTasks;
+  $('sActive').textContent = activeTasks;
+  $('sSteps').textContent  = doneSteps + '/' + allSteps.length;
+  $('gPct').textContent    = globalPct + ' %';
+  $('gBar').style.width    = globalPct + '%';
+
+  /* --- Mini barres par section --- */
+  $('miniBars').innerHTML = sections.map(sec => {
+    const st = sectionStats(sec);
+    const color = SECTION_COLORS[sec.id] || '#1d4ed8';
+    return `
+      <div class="mini">
+        <div class="mini-label">${esc(sec.titre)}</div>
+        <div class="mini-bar"><i style="width:${st.pct}%;background:${color}"></i></div>
+        <div class="mini-pct">${st.pct}%</div>
+      </div>
+    `;
+  }).join('');
+
+  /* --- Sections --- */
+  $('sections').innerHTML = sections.map(sec => {
+    const st = sectionStats(sec);
 
     const tachesHTML = sec.taches.map(t => {
       const d = taskDone(t);
@@ -513,7 +657,7 @@ function render() {
             ${esc(sec.titre)}
             <small>${esc(sec.sous)}</small>
           </div>
-          <span class="sec-badge">${doneTasks}/${sec.taches.length} tâches</span>
+          <span class="sec-badge">${st.doneTasks}/${sec.taches.length} tâches</span>
           <span class="chev">▾</span>
         </div>
         <div class="sec-body">${tachesHTML}</div>
@@ -521,15 +665,8 @@ function render() {
     `;
   }).join('');
 
-  // global progress
-  const allSteps = sections.flatMap(s => s.taches.flatMap(t => t.steps));
-  const doneSteps = allSteps.filter(s => s.f).length;
-  const pct = allSteps.length ? Math.round(doneSteps / allSteps.length * 100) : 0;
-  $('progBar').style.width = pct + '%';
-  $('progTxt').textContent = pct + ' % (' + doneSteps + '/' + allSteps.length + ' étapes)';
-
-  // count
-  const active = sections.flatMap(s => s.taches).filter(t => !taskDone(t)).length;
+  /* --- Footer --- */
+  const active = allTasks.filter(t => !taskDone(t)).length;
   $('count').textContent = active + (active === 1 ? ' tâche en cours' : ' tâches en cours');
 
   save();
@@ -538,8 +675,6 @@ function render() {
 /* =========================================================
    INTERACTIONS
    ========================================================= */
-
-// cocher une étape ou une tâche entière
 $('sections').addEventListener('change', e => {
   const step = e.target.closest('input[data-step]');
   if (step) {
@@ -559,15 +694,12 @@ $('sections').addEventListener('change', e => {
   }
 });
 
-// replier / déplier une section
 $('sections').addEventListener('click', e => {
   const head = e.target.closest('[data-collapse]');
   if (!head) return;
-  const sec = head.closest('.section');
-  sec.classList.toggle('collapsed');
+  head.closest('.section').classList.toggle('collapsed');
 });
 
-// chercher une tâche par id
 function findTask(id) {
   for (const sec of sections) {
     const t = sec.taches.find(x => x.id === id);
@@ -576,7 +708,6 @@ function findTask(id) {
   return null;
 }
 
-// réinitialiser
 $('reset').addEventListener('click', () => {
   if (confirm('Réinitialiser toutes les tâches ? Toutes les cases seront décochées.')) {
     sections = seed();
