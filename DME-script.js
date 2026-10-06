@@ -26,12 +26,7 @@
        MOTIVATIONAL BANNER
        ===================================================================== */
     const DME_motivationalMessages = [
-        { fr: "Vos informations contribuent à la numérisation de la santé", ar: "معلوماتك تساهم في رقمنة قطاع الصحة" },
-        { fr: "Merci de faire partie de la transformation digitale", ar: "شكرًا لكونك جزءًا من التحول الرقمي" },
-        { fr: "Chaque donnée collectée améliore nos services", ar: "كل بيان يتم جمعه يُحسّن خدماتنا" },
-        { fr: "Votre professionnalisme construit l'avenir", ar: "احترافيتك تبني المستقبل" },
-        { fr: "Ensemble, modernisons notre système de santé", ar: "معًا، لنُحدّث نظامنا الصحي" },
-        { fr: "La qualité des soins commence par de bonnes données", ar: "جودة الرعاية تبدأ ببيانات دقيقة" }
+        { fr: "Merci de faire partie de la transformation digitale", ar: "شكرًا لكونك جزءًا من التحول الرقمي" }
     ];
 
     let DME_currentMessageIndex = 0;
