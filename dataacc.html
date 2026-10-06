@@ -25,7 +25,7 @@
     }
 
     /* ========== Motivation Banner ========== */
-    .DF-motivation-banner {
+    .DME-motivation-banner {
         position: relative;
         background: linear-gradient(90deg, #1e3a8a 0%, #4f46e5 50%, #7c3aed 100%);
         color: #fff;
@@ -34,7 +34,7 @@
         box-shadow: 0 4px 18px rgba(30, 58, 138, 0.25);
         z-index: 100;
     }
-    .DF-motivation-content {
+    .DME-motivation-content {
         display: flex;
         flex-wrap: wrap;
         gap: 6px 22px;
@@ -47,30 +47,30 @@
         position: relative;
         z-index: 2;
     }
-    .DF-motivation-text { color: #e0e7ff; }
-    .DF-motivation-text-ar { direction: rtl; color: #fff; font-weight: 600; }
-    .DF-motivation-progress {
+    .DME-motivation-text { color: #e0e7ff; }
+    .DME-motivation-text-ar { direction: rtl; color: #fff; font-weight: 600; }
+    .DME-motivation-progress {
         position: absolute;
         bottom: 0; left: 0; right: 0;
         height: 3px;
         background: rgba(255,255,255,0.12);
     }
-    .DF-motivation-progress-bar {
+    .DME-motivation-progress-bar {
         height: 100%;
         width: 30%;
         background: linear-gradient(90deg, #fbbf24, #f59e0b);
         border-radius: 0 3px 3px 0;
-        animation: DF-progress 4s ease-in-out infinite;
+        animation: DME-progress 4s ease-in-out infinite;
         box-shadow: 0 0 12px rgba(251, 191, 36, 0.6);
     }
-    @keyframes DF-progress {
+    @keyframes DME-progress {
         0%   { width: 5%; }
         50%  { width: 95%; }
         100% { width: 5%; }
     }
 
     /* ========== Card ========== */
-    .DF-card {
+    .DME-card {
         max-width: 1280px;
         margin: 28px auto 40px;
         background: #fff;
@@ -78,49 +78,24 @@
         box-shadow: 0 20px 60px -12px rgba(15, 23, 42, 0.18),
                     0 8px 24px -8px rgba(15, 23, 42, 0.10);
         overflow: hidden;
-        animation: DF-fadeUp 0.6s ease-out both;
+        animation: DME-fadeUp 0.6s ease-out both;
     }
-    @keyframes DF-fadeUp {
+    @keyframes DME-fadeUp {
         from { opacity: 0; transform: translateY(20px); }
         to   { opacity: 1; transform: translateY(0); }
     }
 
     /* ========== Inputs ========== */
-    .DF-input {
+    .DME-input {
         transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         outline: none;
     }
-    .DF-input:focus {
+    .DME-input:focus {
         border-color: #4f46e5 !important;
         box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15);
         transform: translateY(-1px);
     }
-    .DF-input:focus:hover {
-        transform: translateY(-1px);
-    }
-    .DF-input::placeholder { color: #9ca3af; }
-
-    /* ========== Radio Options ========== */
-    .DF-radio-option {
-        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-        cursor: pointer;
-    }
-    .DF-radio-option:hover {
-        border-color: #a5b4fc;
-        background: #f5f3ff;
-        transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(99, 102, 241, 0.12);
-    }
-    input[type="radio"]:checked + .DF-radio-option {
-        border-color: #4f46e5;
-        background: linear-gradient(135deg, #eef2ff, #f5f3ff);
-        box-shadow: 0 8px 20px rgba(79, 70, 229, 0.18);
-    }
-    input[type="radio"]:checked + .DF-radio-option .DF-radio-indicator {
-        border-color: #4f46e5;
-        background: #4f46e5;
-        box-shadow: inset 0 0 0 4px #fff, 0 0 0 1px #4f46e5;
-    }
+    .DME-input::placeholder { color: #9ca3af; }
 
     /* ========== Errors ========== */
     .DF-field-error {
@@ -132,17 +107,17 @@
         line-height: 1.5;
     }
     .DF-field-error.show { display: block; }
-    .DF-has-error .DF-input,
-    .DF-has-error select.DF-input {
+    .DF-has-error .DME-input,
+    .DF-has-error select.DME-input {
         border-color: #dc2626 !important;
         background: #fef2f2 !important;
     }
-    .DF-has-error .DF-input:focus {
+    .DF-has-error .DME-input:focus {
         box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.12);
     }
 
     /* ========== Submit Button ========== */
-    .DF-btn-primary {
+    .DME-btn-primary {
         background: linear-gradient(135deg, #4f46e5 0%, #6366f1 50%, #8b5cf6 100%);
         background-size: 200% 200%;
         transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
@@ -150,46 +125,46 @@
         position: relative;
         overflow: hidden;
     }
-    .DF-btn-primary:hover:not(:disabled) {
+    .DME-btn-primary:hover:not(:disabled) {
         background-position: right center;
         box-shadow: 0 14px 30px -5px rgba(79, 70, 229, 0.55);
         transform: translateY(-2px);
     }
-    .DF-btn-primary:active:not(:disabled) {
+    .DME-btn-primary:active:not(:disabled) {
         transform: translateY(0);
         box-shadow: 0 5px 15px -5px rgba(79, 70, 229, 0.4);
     }
-    .DF-btn-primary:disabled {
+    .DME-btn-primary:disabled {
         opacity: 0.75;
         cursor: not-allowed;
         transform: none;
     }
 
     /* ========== Spinner ========== */
-    .DF-spinner {
+    .DME-spinner {
         width: 22px;
         height: 22px;
         border: 3px solid rgba(255,255,255,0.35);
         border-top-color: #fff;
         border-radius: 50%;
-        animation: DF-spin 0.7s linear infinite;
+        animation: DME-spin 0.7s linear infinite;
     }
-    @keyframes DF-spin { to { transform: rotate(360deg); } }
+    @keyframes DME-spin { to { transform: rotate(360deg); } }
 
     /* ========== Alerts ========== */
-    .DF-alert-show { animation: DF-slideDown 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-    @keyframes DF-slideDown {
+    .DME-alert-show { animation: DME-slideDown 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+    @keyframes DME-slideDown {
         from { opacity: 0; transform: translateY(-10px); }
         to   { opacity: 1; transform: translateY(0); }
     }
 
     /* ========== Logo Container ========== */
-    .DF-logo-container {
+    .DME-logo-container {
         box-shadow: 0 0 0 4px rgba(255,255,255,0.35),
                     0 20px 40px -10px rgba(0,0,0,0.3);
         transition: transform 0.4s ease;
     }
-    .DF-logo-container:hover { transform: scale(1.05) rotate(-2deg); }
+    .DME-logo-container:hover { transform: scale(1.05) rotate(-2deg); }
 
     /* ========== Field hint ========== */
     .DF-hint {
@@ -200,16 +175,10 @@
         line-height: 1.5;
     }
 
-    /* ========== Responsive text ========== */
+    /* ========== Responsive ========== */
     @media (max-width: 640px) {
-        .DF-card { border-radius: 16px; margin: 16px 12px 28px; }
-        .DF-motivation-content { font-size: 12px; }
-    }
-
-    /* ========== Print/selection lock ========== */
-    .DF-noselect {
-        user-select: none;
-        -webkit-user-select: none;
+        .DME-card { border-radius: 16px; margin: 16px 12px 28px; }
+        .DME-motivation-content { font-size: 12px; }
     }
 </style>
 
@@ -228,718 +197,327 @@ document.addEventListener('keydown', e => {
 <body>
 
 <!-- ================= MOTIVATION BANNER ================= -->
-<div class="DF-motivation-banner DF-noselect">
-    <div class="DF-motivation-content">
-        <span class="DF-motivation-text">📋 Formulaire officiel de collecte des données médecins — Cellule de Numérisation</span>
-        <span class="DF-motivation-text-ar">📋 استمارة رسمية لجمع بيانات الأطباء — خلية الرقمنة</span>
+<div id="DME-motivationBanner" class="DME-motivation-banner">
+    <div class="DME-motivation-content">
+        <span id="DME-motivationText" class="DME-motivation-text"></span>
+        <span id="DME-motivationTextAr" class="DME-motivation-text-ar"></span>
     </div>
-    <div class="DF-motivation-progress">
-        <div class="DF-motivation-progress-bar"></div>
+    <div class="DME-motivation-progress">
+        <div id="DME-motivationProgressBar" class="DME-motivation-progress-bar"></div>
     </div>
 </div>
 
 <!-- ================= MAIN CARD ================= -->
-<div class="DF-card">
+<div class="w-full relative" style="z-index: 1;">
+    <div class="DME-card DME-animate-in">
 
-    <!-- ========== HEADER ========== -->
-    <div class="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 px-6 py-10 md:px-16 md:py-12 relative overflow-hidden">
+        <!-- ========== HEADER ========== -->
+        <div class="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 px-6 py-10 md:px-16 md:py-12 relative overflow-hidden">
 
-        <div class="absolute -top-20 -right-20 w-64 h-64 bg-white/10 rounded-full"></div>
-        <div class="absolute -bottom-20 -left-20 w-80 h-80 bg-white/5 rounded-full"></div>
-        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-white/5 rounded-full"></div>
+            <div class="absolute -top-20 -right-20 w-64 h-64 bg-white/10 rounded-full"></div>
+            <div class="absolute -bottom-20 -left-20 w-80 h-80 bg-white/5 rounded-full"></div>
+            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-white/5 rounded-full"></div>
 
-        <div class="relative">
+            <div class="relative">
 
-            <!-- Logos + State info -->
-            <div class="flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-6 sm:gap-4 mb-8">
+                <!-- Logos + State info -->
+                <div class="flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-6 sm:gap-4 mb-8">
 
-                <div class="flex items-center gap-4">
-                    <div class="flex-shrink-0">
-                        <div class="w-20 h-20 md:w-28 md:h-28 bg-white rounded-full shadow-2xl flex items-center justify-center p-2 DF-logo-container">
-                            <img src="logosante.png" alt="Ministère de la Santé"
-                                 class="w-full h-full object-contain rounded-full"
-                                 onerror="this.parentElement.innerHTML='<span class=\'text-3xl\'>🏛️</span>'">
+                    <div class="flex items-center gap-4">
+                        <div class="flex-shrink-0">
+                            <div class="w-20 h-20 md:w-28 md:h-28 bg-white rounded-full shadow-2xl flex items-center justify-center p-2 DME-logo-container">
+                                <img src="logosante.png" alt="Ministère de la Santé"
+                                     class="w-full h-full object-contain rounded-full"
+                                     onerror="this.parentElement.innerHTML='<span class=\'text-3xl\'>🏛️</span>'">
+                            </div>
+                        </div>
+                        <div class="hidden sm:block text-left">
+                            <p class="text-white font-bold text-xs md:text-sm mb-1" dir="rtl">
+                                الجمهورية الجزائرية الديمقراطية الشعبية
+                            </p>
+                            <p class="text-blue-100 font-medium text-xs md:text-sm mb-2">
+                                République Algérienne Démocratique et Populaire
+                            </p>
+                            <p class="text-white font-bold text-xs md:text-sm" dir="rtl">وزارة الصحة</p>
+                            <p class="text-blue-100 font-medium text-xs md:text-sm">Ministère de la Santé</p>
                         </div>
                     </div>
-                    <div class="hidden sm:block text-left">
-                        <p class="text-white font-bold text-xs md:text-sm mb-1" dir="rtl">
-                            الجمهورية الجزائرية الديمقراطية الشعبية
-                        </p>
-                        <p class="text-blue-100 font-medium text-xs md:text-sm mb-2">
-                            République Algérienne Démocratique et Populaire
-                        </p>
-                        <p class="text-white font-bold text-xs md:text-sm" dir="rtl">وزارة الصحة</p>
-                        <p class="text-blue-100 font-medium text-xs md:text-sm">Ministère de la Santé</p>
+
+                    <div class="flex items-center gap-4">
+                        <div class="hidden sm:block text-right">
+                            <p class="text-blue-100 font-medium text-sm md:text-base" dir="rtl">
+                                مديرية الصحة والسكان - غرداية
+                            </p>
+                            <p class="text-blue-200 text-xs md:text-sm mt-1">
+                                Direction de la Santé et de la Population - Ghardaia
+                            </p>
+                            <p class="text-blue-200 text-xs md:text-sm mt-2" dir="rtl">
+                                خلية الرقمنة
+                            </p>
+                            <p class="text-blue-200 text-xs md:text-sm">
+                                Cellule de Numérisation
+                            </p>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <div class="w-20 h-20 md:w-28 md:h-28 bg-white rounded-full shadow-2xl flex items-center justify-center p-2 DME-logo-container">
+                                <img src="DSPLOGO.png" alt="DSP Ghardaia"
+                                     class="w-full h-full object-contain rounded-full"
+                                     onerror="this.parentElement.innerHTML='<span class=\'text-3xl\'>🏥</span>'">
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="flex items-center gap-4">
-                    <div class="hidden sm:block text-right">
-                        <p class="text-blue-100 font-medium text-sm md:text-base" dir="rtl">
-                            مديرية الصحة والسكان - غرداية
-                        </p>
-                        <p class="text-blue-200 text-xs md:text-sm mt-1">
-                            Direction de la Santé et de la Population - Ghardaia
-                        </p>
-                        <p class="text-blue-200 text-xs md:text-sm mt-2" dir="rtl">
-                            خلية الرقمنة
-                        </p>
-                        <p class="text-blue-200 text-xs md:text-sm">
-                            Cellule de Numérisation
-                        </p>
-                    </div>
-                    <div class="flex-shrink-0">
-                        <div class="w-20 h-20 md:w-28 md:h-28 bg-white rounded-full shadow-2xl flex items-center justify-center p-2 DF-logo-container">
-                            <img src="DSPLOGO.png" alt="DSP Ghardaia"
-                                 class="w-full h-full object-contain rounded-full"
-                                 onerror="this.parentElement.innerHTML='<span class=\'text-3xl\'>🏥</span>'">
-                        </div>
-                    </div>
+                <!-- Title -->
+                <div class="border-t border-white/20 pt-8 text-center">
+                    <h2 class="text-xl md:text-3xl font-bold text-white mb-2">
+                        Fiche d'Informations du Médecin
+                    </h2>
+                    <p class="text-lg md:text-xl text-blue-100 font-medium" dir="rtl">
+                        استمارة معلومات الطبيب
+                    </p>
+                    <p class="text-blue-200 text-xs md:text-sm mt-3">
+                        Collecte des données professionnelles / جمع البيانات المهنية
+                    </p>
                 </div>
-            </div>
-
-            <!-- Title -->
-            <div class="border-t border-white/20 pt-8 text-center">
-                <h2 class="text-xl md:text-3xl font-bold text-white mb-2">
-                    Fiche d'Informations du Médecin
-                </h2>
-                <p class="text-lg md:text-xl text-blue-100 font-medium" dir="rtl">
-                    استمارة معلومات الطبيب
-                </p>
-                <p class="text-blue-200 text-xs md:text-sm mt-3">
-                    Collecte des données professionnelles / جمع البيانات المهنية
-                </p>
             </div>
         </div>
-    </div>
 
-    <!-- ========== FORM BODY ========== -->
-    <div class="p-6 md:p-14">
-        <form id="DF-form" class="space-y-8 max-w-5xl mx-auto" novalidate>
+        <!-- ========== FORM BODY ========== -->
+        <div class="p-6 md:p-14">
+            <form id="DME-feedbackForm" class="space-y-8 max-w-5xl mx-auto" novalidate>
 
-            <!-- Offline banner -->
-            <div id="DF-offline" class="hidden bg-amber-50 border border-amber-200 rounded-xl p-4 text-sm text-amber-800 leading-relaxed text-center">
-                ⚠️ Connexion au serveur impossible pour le moment. Vous pouvez remplir le formulaire, il sera renvoyé à l'envoi.
-                <span dir="rtl" class="block mt-1">تعذّر الاتصال بالخادم حاليًا. يمكنك ملء الاستمارة وسيُعاد المحاولة عند الإرسال.</span>
-            </div>
-
-            <!-- =========== NOM + PRÉNOM =========== -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-
-                <!-- Nom -->
-                <div id="DF-fg-nom">
-                    <label for="DF-nom" class="block mb-3">
-                        <span class="flex items-center justify-between gap-4">
-                            <span class="text-base font-semibold text-gray-900">Nom <span class="text-red-500">*</span></span>
-                            <span dir="rtl" class="text-sm font-medium text-gray-500">اللقب *</span>
-                        </span>
-                    </label>
-                    <input type="text" id="DF-nom" name="nom" required
-                           dir="auto" autocomplete="family-name"
-                           placeholder="Ex: Benali / مثال: بن علي"
-                           class="DF-input w-full px-5 py-4 bg-white border border-gray-300 rounded-xl text-gray-900 text-base font-medium">
-                    <span class="DF-hint">Lettres uniquement (AR/FR) — حروف فقط (عربية أو فرنسية)</span>
-                    <p class="DF-field-error" id="DF-err-nom"></p>
+                <!-- Offline banner -->
+                <div id="DF-offline" class="hidden bg-amber-50 border border-amber-200 rounded-xl p-4 text-sm text-amber-800 leading-relaxed text-center">
+                    ⚠️ Connexion au serveur impossible pour le moment. Vous pouvez remplir le formulaire, il sera renvoyé à l'envoi.
+                    <span dir="rtl" class="block mt-1">تعذّر الاتصال بالخادم حاليًا. يمكنك ملء الاستمارة وسيُعاد المحاولة عند الإرسال.</span>
                 </div>
 
-                <!-- Prénom -->
-                <div id="DF-fg-prenom">
-                    <label for="DF-prenom" class="block mb-3">
-                        <span class="flex items-center justify-between gap-4">
-                            <span class="text-base font-semibold text-gray-900">Prénom <span class="text-red-500">*</span></span>
-                            <span dir="rtl" class="text-sm font-medium text-gray-500">الاسم *</span>
-                        </span>
-                    </label>
-                    <input type="text" id="DF-prenom" name="prenom" required
-                           dir="auto" autocomplete="given-name"
-                           placeholder="Ex: Mohamed / مثال: محمد"
-                           class="DF-input w-full px-5 py-4 bg-white border border-gray-300 rounded-xl text-gray-900 text-base font-medium">
-                    <span class="DF-hint">Lettres uniquement (AR/FR) — حروف فقط (عربية أو فرنسية)</span>
-                    <p class="DF-field-error" id="DF-err-prenom"></p>
-                </div>
-            </div>
+                <!-- =========== NOM + PRÉNOM =========== -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
 
-            <!-- =========== GRADE =========== -->
-            <div id="DF-fg-grade">
-                <label for="DF-grade" class="block mb-3">
-                    <span class="flex items-center justify-between gap-4">
-                        <span class="text-base font-semibold text-gray-900">Grade <span class="text-red-500">*</span></span>
-                        <span dir="rtl" class="text-sm font-medium text-gray-500">الرتبة *</span>
-                    </span>
-                </label>
-                <select id="DF-grade" name="grade" required
-                        class="DF-input w-full px-5 py-4 bg-white border border-gray-300 rounded-xl text-gray-900 text-base font-medium appearance-none"
-                        style="background-image:url('data:image/svg+xml;charset=UTF-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%2364748b%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpolyline points=%226 9 12 15 18 9%22/%3E%3C/svg%3E');background-repeat:no-repeat;background-position:right 16px center;background-size:18px;padding-right:48px;">
-                    <option value="" disabled selected>— Sélectionnez votre grade / اختر الرتبة —</option>
-                    <option value="Médecin généraliste de santé publique">Médecin généraliste de santé publique</option>
-                    <option value="Médecin généraliste principal de santé publique">Médecin généraliste principal de santé publique</option>
-                    <option value="Médecin généraliste en chef de santé publique">Médecin généraliste en chef de santé publique</option>
-                </select>
-                <p class="DF-field-error" id="DF-err-grade"></p>
-            </div>
-
-            <!-- =========== NIN + NSS =========== -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-
-                <!-- NIN -->
-                <div id="DF-fg-nin">
-                    <label for="DF-nin" class="block mb-3">
-                        <span class="flex items-center justify-between gap-4">
-                            <span class="text-base font-semibold text-gray-900">
-                                NIN <span class="text-red-500">*</span>
-                                <span class="text-xs font-normal text-gray-500 ml-1">(18 chiffres)</span>
+                    <!-- Nom -->
+                    <div id="DF-fg-nom">
+                        <label for="DF-nom" class="block mb-3">
+                            <span class="flex items-center justify-between gap-4">
+                                <span class="text-base font-semibold text-gray-900">Nom <span class="text-red-500">*</span></span>
+                                <span dir="rtl" class="text-sm font-medium text-gray-500">اللقب *</span>
                             </span>
-                            <span dir="rtl" class="text-sm font-medium text-gray-500">الرقم التعريفي الوطني *</span>
-                        </span>
-                    </label>
-                    <input type="text" id="DF-nin" name="nin" required
-                           dir="ltr" inputmode="numeric" maxlength="18"
-                           autocomplete="off"
-                           placeholder="000000000000000000"
-                           class="DF-input w-full px-5 py-4 bg-white border border-gray-300 rounded-xl text-gray-900 text-base font-medium tracking-widest">
-                    <span class="DF-hint">Chiffres uniquement — أرقام فقط (18)</span>
-                    <p class="DF-field-error" id="DF-err-nin"></p>
-                </div>
-
-                <!-- NSS -->
-                <div id="DF-fg-nss">
-                    <label for="DF-nss" class="block mb-3">
-                        <span class="flex items-center justify-between gap-4">
-                            <span class="text-base font-semibold text-gray-900">
-                                NSS
-                                <span class="text-xs font-normal text-gray-500 ml-1">(Optionnel)</span>
-                            </span>
-                            <span dir="rtl" class="text-sm font-medium text-gray-500">رقم الضمان الاجتماعي (اختياري)</span>
-                        </span>
-                    </label>
-                    <input type="text" id="DF-nss" name="nss"
-                           dir="ltr" inputmode="numeric" maxlength="15"
-                           autocomplete="off"
-                           placeholder="Optionnel / اختياري"
-                           class="DF-input w-full px-5 py-4 bg-white border border-gray-300 rounded-xl text-gray-900 text-base font-medium tracking-widest">
-                    <span class="DF-hint">Chiffres uniquement (9–15) — أرقام فقط</span>
-                    <p class="DF-field-error" id="DF-err-nss"></p>
-                </div>
-            </div>
-
-            <!-- =========== TÉLÉPHONE + EMAIL =========== -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-
-                <!-- Téléphone -->
-                <div id="DF-fg-phone">
-                    <label for="DF-phone" class="block mb-3">
-                        <span class="flex items-center justify-between gap-4">
-                            <span class="text-base font-semibold text-gray-900">Téléphone <span class="text-red-500">*</span></span>
-                            <span dir="rtl" class="text-sm font-medium text-gray-500">رقم الهاتف *</span>
-                        </span>
-                    </label>
-                    <input type="tel" id="DF-phone" name="phone" required
-                           dir="ltr" inputmode="tel"
-                           autocomplete="tel"
-                           placeholder="0555 12 34 56"
-                           class="DF-input w-full px-5 py-4 bg-white border border-gray-300 rounded-xl text-gray-900 text-base font-medium">
-                    <span class="DF-hint">Chiffres et + ( ) - — أرقام و + ( ) -</span>
-                    <p class="DF-field-error" id="DF-err-phone"></p>
-                </div>
-
-                <!-- Email -->
-                <div id="DF-fg-email">
-                    <label for="DF-email" class="block mb-3">
-                        <span class="flex items-center justify-between gap-4">
-                            <span class="text-base font-semibold text-gray-900">E-mail <span class="text-red-500">*</span></span>
-                            <span dir="rtl" class="text-sm font-medium text-gray-500">البريد الإلكتروني *</span>
-                        </span>
-                    </label>
-                    <input type="email" id="DF-email" name="email" required
-                           dir="ltr" inputmode="email"
-                           autocomplete="email"
-                           placeholder="exemple@domain.com"
-                           class="DF-input w-full px-5 py-4 bg-white border border-gray-300 rounded-xl text-gray-900 text-base font-medium">
-                    <span class="DF-hint">Lettres latines, chiffres, @ . _ - +</span>
-                    <p class="DF-field-error" id="DF-err-email"></p>
-                </div>
-            </div>
-
-            <!-- =========== Consent =========== -->
-            <div class="bg-indigo-50 border border-indigo-100 rounded-xl p-4 md:p-5">
-                <p class="text-sm text-indigo-900 leading-relaxed">
-                    🔒 Les informations fournies sont utilisées uniquement à des fins de numérisation et ne seront partagées avec aucun tiers.
-                </p>
-                <p dir="rtl" class="text-sm text-indigo-800 mt-2 leading-relaxed">
-                    🔒 تُستخدم المعلومات المقدَّمة لأغراض الرقمنة فقط، ولن تُشارَك مع أي طرف ثالث.
-                </p>
-            </div>
-
-            <!-- Honeypot -->
-            <div style="position:absolute;left:-9999px;" aria-hidden="true">
-                <label for="DF-website">Website</label>
-                <input type="text" id="DF-website" name="website" tabindex="-1" autocomplete="off">
-            </div>
-
-            <!-- =========== SUCCESS ALERT =========== -->
-            <div id="DF-successAlert" class="hidden bg-green-50 border border-green-200 rounded-xl p-5 DF-alert-show">
-                <div class="flex items-start gap-4">
-                    <div class="flex-shrink-0 w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
-                        </svg>
+                        </label>
+                        <input type="text" id="DF-nom" name="nom" required
+                               dir="auto" autocomplete="family-name"
+                               placeholder="Ex: Benali / مثال: بن علي"
+                               class="DME-input w-full px-5 py-4 bg-white border border-gray-300 rounded-xl text-gray-900 text-base font-medium">
+                        <span class="DF-hint">Lettres uniquement (AR/FR) — حروف فقط (عربية أو فرنسية)</span>
+                        <p class="DF-field-error" id="DF-err-nom"></p>
                     </div>
-                    <div class="flex-1">
-                        <p class="text-base font-semibold text-green-800">
-                            Merci ! Vos informations ont été enregistrées avec succès.
-                        </p>
-                        <p dir="rtl" class="text-base text-green-600 mt-1">
-                            شكرًا! تم تسجيل معلوماتك بنجاح.
-                        </p>
-                        <div id="DF-refBadge" class="inline-block mt-3 bg-white border border-dashed border-green-300 text-green-700 font-bold px-4 py-2 rounded-lg text-sm tracking-wider" dir="ltr">
-                            REF: —
+
+                    <!-- Prénom -->
+                    <div id="DF-fg-prenom">
+                        <label for="DF-prenom" class="block mb-3">
+                            <span class="flex items-center justify-between gap-4">
+                                <span class="text-base font-semibold text-gray-900">Prénom <span class="text-red-500">*</span></span>
+                                <span dir="rtl" class="text-sm font-medium text-gray-500">الاسم *</span>
+                            </span>
+                        </label>
+                        <input type="text" id="DF-prenom" name="prenom" required
+                               dir="auto" autocomplete="given-name"
+                               placeholder="Ex: Mohamed / مثال: محمد"
+                               class="DME-input w-full px-5 py-4 bg-white border border-gray-300 rounded-xl text-gray-900 text-base font-medium">
+                        <span class="DF-hint">Lettres uniquement (AR/FR) — حروف فقط (عربية أو فرنسية)</span>
+                        <p class="DF-field-error" id="DF-err-prenom"></p>
+                    </div>
+                </div>
+
+                <!-- =========== GRADE =========== -->
+                <div id="DF-fg-grade">
+                    <label for="DF-grade" class="block mb-3">
+                        <span class="flex items-center justify-between gap-4">
+                            <span class="text-base font-semibold text-gray-900">Grade <span class="text-red-500">*</span></span>
+                            <span dir="rtl" class="text-sm font-medium text-gray-500">الرتبة *</span>
+                        </span>
+                    </label>
+                    <select id="DF-grade" name="grade" required
+                            class="DME-input w-full px-5 py-4 bg-white border border-gray-300 rounded-xl text-gray-900 text-base font-medium appearance-none"
+                            style="background-image:url('data:image/svg+xml;charset=UTF-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%2364748b%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpolyline points=%226 9 12 15 18 9%22/%3E%3C/svg%3E');background-repeat:no-repeat;background-position:right 16px center;background-size:18px;padding-right:48px;">
+                        <option value="" disabled selected>— Sélectionnez votre grade / اختر الرتبة —</option>
+                        <option value="Médecin généraliste de santé publique">Médecin généraliste de santé publique</option>
+                        <option value="Médecin généraliste principal de santé publique">Médecin généraliste principal de santé publique</option>
+                        <option value="Médecin généraliste en chef de santé publique">Médecin généraliste en chef de santé publique</option>
+                    </select>
+                    <p class="DF-field-error" id="DF-err-grade"></p>
+                </div>
+
+                <!-- =========== NIN + NSS =========== -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+
+                    <!-- NIN -->
+                    <div id="DF-fg-nin">
+                        <label for="DF-nin" class="block mb-3">
+                            <span class="flex items-center justify-between gap-4">
+                                <span class="text-base font-semibold text-gray-900">
+                                    NIN <span class="text-red-500">*</span>
+                                    <span class="text-xs font-normal text-gray-500 ml-1">(18 chiffres)</span>
+                                </span>
+                                <span dir="rtl" class="text-sm font-medium text-gray-500">الرقم التعريفي الوطني *</span>
+                            </span>
+                        </label>
+                        <input type="text" id="DF-nin" name="nin" required
+                               dir="ltr" inputmode="numeric" maxlength="18"
+                               autocomplete="off"
+                               placeholder="000000000000000000"
+                               class="DME-input w-full px-5 py-4 bg-white border border-gray-300 rounded-xl text-gray-900 text-base font-medium tracking-widest">
+                        <span class="DF-hint">Chiffres uniquement — أرقام فقط (18)</span>
+                        <p class="DF-field-error" id="DF-err-nin"></p>
+                    </div>
+
+                    <!-- NSS -->
+                    <div id="DF-fg-nss">
+                        <label for="DF-nss" class="block mb-3">
+                            <span class="flex items-center justify-between gap-4">
+                                <span class="text-base font-semibold text-gray-900">
+                                    NSS
+                                    <span class="text-xs font-normal text-gray-500 ml-1">(Optionnel)</span>
+                                </span>
+                                <span dir="rtl" class="text-sm font-medium text-gray-500">رقم الضمان الاجتماعي (اختياري)</span>
+                            </span>
+                        </label>
+                        <input type="text" id="DF-nss" name="nss"
+                               dir="ltr" inputmode="numeric" maxlength="15"
+                               autocomplete="off"
+                               placeholder="Optionnel / اختياري"
+                               class="DME-input w-full px-5 py-4 bg-white border border-gray-300 rounded-xl text-gray-900 text-base font-medium tracking-widest">
+                        <span class="DF-hint">Chiffres uniquement (9–15) — أرقام فقط</span>
+                        <p class="DF-field-error" id="DF-err-nss"></p>
+                    </div>
+                </div>
+
+                <!-- =========== TÉLÉPHONE + EMAIL =========== -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+
+                    <!-- Téléphone -->
+                    <div id="DF-fg-phone">
+                        <label for="DF-phone" class="block mb-3">
+                            <span class="flex items-center justify-between gap-4">
+                                <span class="text-base font-semibold text-gray-900">Téléphone <span class="text-red-500">*</span></span>
+                                <span dir="rtl" class="text-sm font-medium text-gray-500">رقم الهاتف *</span>
+                            </span>
+                        </label>
+                        <input type="tel" id="DF-phone" name="phone" required
+                               dir="ltr" inputmode="tel"
+                               autocomplete="tel"
+                               placeholder="0555 12 34 56"
+                               class="DME-input w-full px-5 py-4 bg-white border border-gray-300 rounded-xl text-gray-900 text-base font-medium">
+                        <span class="DF-hint">Chiffres et + ( ) - — أرقام و + ( ) -</span>
+                        <p class="DF-field-error" id="DF-err-phone"></p>
+                    </div>
+
+                    <!-- Email -->
+                    <div id="DF-fg-email">
+                        <label for="DF-email" class="block mb-3">
+                            <span class="flex items-center justify-between gap-4">
+                                <span class="text-base font-semibold text-gray-900">E-mail <span class="text-red-500">*</span></span>
+                                <span dir="rtl" class="text-sm font-medium text-gray-500">البريد الإلكتروني *</span>
+                            </span>
+                        </label>
+                        <input type="email" id="DF-email" name="email" required
+                               dir="ltr" inputmode="email"
+                               autocomplete="email"
+                               placeholder="exemple@domain.com"
+                               class="DME-input w-full px-5 py-4 bg-white border border-gray-300 rounded-xl text-gray-900 text-base font-medium">
+                        <span class="DF-hint">Lettres latines, chiffres, @ . _ - +</span>
+                        <p class="DF-field-error" id="DF-err-email"></p>
+                    </div>
+                </div>
+
+                <!-- =========== Consent =========== -->
+                <div class="bg-indigo-50 border border-indigo-100 rounded-xl p-4 md:p-5">
+                    <p class="text-sm text-indigo-900 leading-relaxed">
+                        🔒 Les informations fournies sont utilisées uniquement à des fins de numérisation et ne seront partagées avec aucun tiers.
+                    </p>
+                    <p dir="rtl" class="text-sm text-indigo-800 mt-2 leading-relaxed">
+                        🔒 تُستخدم المعلومات المقدَّمة لأغراض الرقمنة فقط، ولن تُشارَك مع أي طرف ثالث.
+                    </p>
+                </div>
+
+                <!-- Honeypot -->
+                <div style="position:absolute;left:-9999px;" aria-hidden="true">
+                    <label for="DF-website">Website</label>
+                    <input type="text" id="DF-website" name="website" tabindex="-1" autocomplete="off">
+                </div>
+
+                <!-- =========== SUCCESS ALERT =========== -->
+                <div id="DME-successAlert" class="hidden bg-green-50 border border-green-200 rounded-xl p-5 DME-alert-show">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0 w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                            </svg>
                         </div>
-                        <div id="DF-recap" class="mt-4 rounded-lg overflow-hidden border border-green-200"></div>
-                        <button type="button" onclick="DF_reset()"
-                                class="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-indigo-600 hover:text-indigo-800 transition-colors">
-                            ↻ Enregistrer un autre médecin / تسجيل طبيب آخر
-                        </button>
+                        <div class="flex-1">
+                            <p class="text-base font-semibold text-green-800">
+                                Merci ! Vos informations ont été enregistrées avec succès.
+                            </p>
+                            <p dir="rtl" class="text-base text-green-600 mt-1">
+                                شكرًا! تم تسجيل معلوماتك بنجاح.
+                            </p>
+                            <div id="DF-refBadge" class="inline-block mt-3 bg-white border border-dashed border-green-300 text-green-700 font-bold px-4 py-2 rounded-lg text-sm tracking-wider" dir="ltr">
+                                REF: —
+                            </div>
+                            <div id="DF-recap" class="mt-4 rounded-lg overflow-hidden border border-green-200"></div>
+                            <button type="button" onclick="DF_reset()"
+                                    class="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-indigo-600 hover:text-indigo-800 transition-colors">
+                                ↻ Enregistrer un autre médecin / تسجيل طبيب آخر
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- =========== ERROR ALERT =========== -->
-            <div id="DF-errorAlert" class="hidden bg-red-50 border border-red-200 rounded-xl p-5 DF-alert-show">
-                <div class="flex items-start gap-4">
-                    <div class="flex-shrink-0 w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
-                        <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </div>
-                    <div>
-                        <p class="text-base font-semibold text-red-800">
-                            Une erreur est survenue lors de l'envoi. Veuillez réessayer.
-                        </p>
-                        <p dir="rtl" class="text-base text-red-600 mt-1">
-                            حدث خطأ أثناء الإرسال. يرجى المحاولة مرة أخرى.
-                        </p>
-                        <p id="DF-errorMsg" class="text-sm text-red-500 mt-2 font-medium"></p>
+                <!-- =========== ERROR ALERT =========== -->
+                <div id="DME-errorAlert" class="hidden bg-red-50 border border-red-200 rounded-xl p-5 DME-alert-show">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0 w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                            <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-base font-semibold text-red-800">
+                                Une erreur est survenue lors de l'envoi. Veuillez réessayer.
+                            </p>
+                            <p dir="rtl" class="text-base text-red-600 mt-1">
+                                حدث خطأ أثناء الإرسال. يرجى المحاولة مرة أخرى.
+                            </p>
+                            <p id="DF-errorMsg" class="text-sm text-red-500 mt-2 font-medium"></p>
+                        </div>
                     </div>
                 </div>
+
+                <!-- =========== SUBMIT BUTTON =========== -->
+                <button type="submit" id="DME-submitBtn"
+                        class="DME-btn-primary w-full text-white font-bold py-5 rounded-xl flex justify-center items-center gap-4 text-lg">
+                    <span id="DME-btnText_fr">Envoyer la fiche</span>
+                    <span class="text-white/60">/</span>
+                    <span id="DME-btnText_ar" dir="rtl">إرسال الاستمارة</span>
+                    <div id="DME-btnSpinner" class="DME-spinner hidden"></div>
+                </button>
+
+            </form>
+
+            <!-- ========== FOOTER ========== -->
+            <div class="text-center mt-12 pt-8 border-t border-gray-200">
+                <p class="text-sm text-gray-500">
+                    © 2026 DSP Ghardaia — Direction de la Santé et de la Population
+                </p>
+                <p class="text-sm text-gray-400 mt-1" dir="rtl">
+                    مديرية الصحة والسكان — غرداية، الجزائر
+                </p>
             </div>
-
-            <!-- =========== SUBMIT BUTTON =========== -->
-            <button type="submit" id="DF-submitBtn"
-                    class="DF-btn-primary w-full text-white font-bold py-5 rounded-xl flex justify-center items-center gap-4 text-lg">
-                <span id="DF-btnText_fr">Envoyer la fiche</span>
-                <span class="text-white/60">/</span>
-                <span id="DF-btnText_ar" dir="rtl">إرسال الاستمارة</span>
-                <div id="DF-btnSpinner" class="DF-spinner hidden"></div>
-            </button>
-
-        </form>
-
-        <!-- ========== FOOTER ========== -->
-        <div class="text-center mt-12 pt-8 border-t border-gray-200">
-            <p class="text-sm text-gray-500">
-                © 2026 DSP Ghardaia — Direction de la Santé et de la Population
-            </p>
-            <p class="text-sm text-gray-400 mt-1" dir="rtl">
-                مديرية الصحة والسكان — غرداية، الجزائر
-            </p>
         </div>
     </div>
 </div>
 
-<!-- ================= JAVASCRIPT ================= -->
-<script>
-/* =========================================================================
-   CONFIGURATION
-   ========================================================================= */
-const DF_API_BASE = 'https://empty-grass-e190.05juillet-ballouh-info-8e2.workers.dev';
-const DF_ENDPOINT = '/api/doctors';
-
-const DF_GRADE_VALUES = [
-    'Médecin généraliste de santé publique',
-    'Médecin généraliste principal de santé publique',
-    'Médecin généraliste en chef de santé publique'
-];
-
-/* =========================================================================
-   HELPERS
-   ========================================================================= */
-const $ = id => document.getElementById(id);
-
-function DF_escapeHtml(str) {
-    if (!str) return '';
-    return String(str)
-        .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-        .replace(/"/g,'&quot;').replace(/'/g,'&#039;');
-}
-
-function DF_setError(field, errId, message) {
-    const fg = $('DF-fg-' + field);
-    const el = $(errId);
-    if (message) {
-        fg.classList.add('DF-has-error');
-        el.textContent = message;
-        el.classList.add('show');
-    } else {
-        fg.classList.remove('DF-has-error');
-        el.textContent = '';
-        el.classList.remove('show');
-    }
-}
-
-function DF_clearAllErrors() {
-    ['nom','prenom','grade','nin','nss','phone','email']
-        .forEach(f => DF_setError(f, 'DF-err-' + f, ''));
-}
-
-/* =========================================================================
-   STRICT INPUT FILTERS — each field only accepts what it is meant for
-   ========================================================================= */
-
-/* -- Letters only (Arabic OR Latin), with spaces, hyphens, apostrophes -- */
-const DF_NAME_ALLOWED       = /[\p{Script=Arabic}\p{Script=Latin}\s'’\-]/u;
-const DF_NAME_DISALLOWED_G  = /[^\p{Script=Arabic}\p{Script=Latin}\s'’\-]/gu;
-
-function DF_attachNameFilter(el) {
-    el.addEventListener('beforeinput', e => {
-        if (e.data && !DF_NAME_ALLOWED.test(e.data)) e.preventDefault();
-    });
-    el.addEventListener('input', () => {
-        const cleaned = el.value.replace(DF_NAME_DISALLOWED_G, '').replace(/\s{2,}/g, ' ');
-        if (cleaned !== el.value) el.value = cleaned;
-    });
-    el.addEventListener('paste', e => {
-        e.preventDefault();
-        const text = (e.clipboardData || window.clipboardData).getData('text');
-        const cleaned = (text || '').replace(DF_NAME_DISALLOWED_G, '');
-        document.execCommand('insertText', false, cleaned);
-    });
-}
-
-/* -- Digits only -- */
-function DF_attachDigitsFilter(el, maxLen) {
-    el.addEventListener('beforeinput', e => {
-        if (e.data && /\D/.test(e.data)) e.preventDefault();
-    });
-    el.addEventListener('input', () => {
-        const cleaned = el.value.replace(/\D/g, '');
-        const sliced  = maxLen ? cleaned.slice(0, maxLen) : cleaned;
-        if (sliced !== el.value) el.value = sliced;
-    });
-    el.addEventListener('paste', e => {
-        e.preventDefault();
-        const text = (e.clipboardData || window.clipboardData).getData('text') || '';
-        const digits = text.replace(/\D/g, '');
-        const sliced = maxLen ? digits.slice(0, maxLen) : digits;
-        document.execCommand('insertText', false, sliced);
-    });
-}
-
-/* -- Phone: digits + + ( ) - space -- */
-const DF_PHONE_ALLOWED       = /[\d+\s\-()]/;
-const DF_PHONE_DISALLOWED_G  = /[^\d+\s\-()]/g;
-
-function DF_attachPhoneFilter(el) {
-    el.addEventListener('beforeinput', e => {
-        if (e.data && !DF_PHONE_ALLOWED.test(e.data)) e.preventDefault();
-    });
-    el.addEventListener('input', () => {
-        const cleaned = el.value.replace(DF_PHONE_DISALLOWED_G, '');
-        if (cleaned !== el.value) el.value = cleaned;
-    });
-    el.addEventListener('paste', e => {
-        e.preventDefault();
-        const text = (e.clipboardData || window.clipboardData).getData('text') || '';
-        document.execCommand('insertText', false, text.replace(DF_PHONE_DISALLOWED_G, ''));
-    });
-}
-
-/* -- Email: latin letters, digits, @ . _ - + % -- */
-const DF_EMAIL_ALLOWED       = /[a-zA-Z0-9@._+\-%]/;
-const DF_EMAIL_DISALLOWED_G  = /[^a-zA-Z0-9@._+\-%]/g;
-
-function DF_attachEmailFilter(el) {
-    el.addEventListener('beforeinput', e => {
-        if (e.data && !DF_EMAIL_ALLOWED.test(e.data)) e.preventDefault();
-    });
-    el.addEventListener('input', () => {
-        const cleaned = el.value.replace(DF_EMAIL_DISALLOWED_G, '');
-        if (cleaned !== el.value) el.value = cleaned;
-    });
-    el.addEventListener('paste', e => {
-        e.preventDefault();
-        const text = (e.clipboardData || window.clipboardData).getData('text') || '';
-        document.execCommand('insertText', false, text.replace(DF_EMAIL_DISALLOWED_G, ''));
-    });
-}
-
-/* =========================================================================
-   VALIDATION
-   ========================================================================= */
-const DF_NAME_REGEX = /^[\p{Script=Arabic}\p{Script=Latin}][\p{Script=Arabic}\p{Script=Latin}\s'’\-]*$/u;
-
-function DF_validate() {
-    DF_clearAllErrors();
-    let ok = true;
-    let firstInvalid = null;
-
-    /* Nom */
-    const nom = $('DF-nom').value.trim().replace(/\s+/g, ' ');
-    if (!nom) {
-        DF_setError('nom', 'DF-err-nom', 'Ce champ est obligatoire — هذا الحقل مطلوب');
-        ok = false; firstInvalid = firstInvalid || 'DF-nom';
-    } else if (nom.length < 2) {
-        DF_setError('nom', 'DF-err-nom', 'Nom trop court (min. 2 caractères)');
-        ok = false; firstInvalid = firstInvalid || 'DF-nom';
-    } else if (nom.length > 60) {
-        DF_setError('nom', 'DF-err-nom', 'Nom trop long (max. 60 caractères)');
-        ok = false; firstInvalid = firstInvalid || 'DF-nom';
-    } else if (!DF_NAME_REGEX.test(nom)) {
-        DF_setError('nom', 'DF-err-nom', 'Lettres arabes ou latines uniquement — حروف عربية أو فرنسية فقط');
-        ok = false; firstInvalid = firstInvalid || 'DF-nom';
-    }
-
-    /* Prénom */
-    const prenom = $('DF-prenom').value.trim().replace(/\s+/g, ' ');
-    if (!prenom) {
-        DF_setError('prenom', 'DF-err-prenom', 'Ce champ est obligatoire — هذا الحقل مطلوب');
-        ok = false; firstInvalid = firstInvalid || 'DF-prenom';
-    } else if (prenom.length < 2) {
-        DF_setError('prenom', 'DF-err-prenom', 'Prénom trop court (min. 2 caractères)');
-        ok = false; firstInvalid = firstInvalid || 'DF-prenom';
-    } else if (prenom.length > 60) {
-        DF_setError('prenom', 'DF-err-prenom', 'Prénom trop long (max. 60 caractères)');
-        ok = false; firstInvalid = firstInvalid || 'DF-prenom';
-    } else if (!DF_NAME_REGEX.test(prenom)) {
-        DF_setError('prenom', 'DF-err-prenom', 'Lettres arabes ou latines uniquement — حروف عربية أو فرنسية فقط');
-        ok = false; firstInvalid = firstInvalid || 'DF-prenom';
-    }
-
-    /* Grade */
-    const grade = $('DF-grade').value;
-    if (!grade) {
-        DF_setError('grade', 'DF-err-grade', 'Veuillez sélectionner un grade — يرجى اختيار الرتبة');
-        ok = false; firstInvalid = firstInvalid || 'DF-grade';
-    } else if (!DF_GRADE_VALUES.includes(grade)) {
-        DF_setError('grade', 'DF-err-grade', 'Grade invalide — رتبة غير صحيحة');
-        ok = false; firstInvalid = firstInvalid || 'DF-grade';
-    }
-
-    /* NIN */
-    const nin = $('DF-nin').value.replace(/\D/g, '');
-    if (!nin) {
-        DF_setError('nin', 'DF-err-nin', 'Ce champ est obligatoire — هذا الحقل مطلوب');
-        ok = false; firstInvalid = firstInvalid || 'DF-nin';
-    } else if (nin.length !== 18) {
-        DF_setError('nin', 'DF-err-nin', 'Le NIN doit contenir 18 chiffres (actuel : ' + nin.length + ')');
-        ok = false; firstInvalid = firstInvalid || 'DF-nin';
-    }
-
-    /* NSS (optionnel) */
-    const nss = $('DF-nss').value.replace(/\D/g, '');
-    if (nss && (nss.length < 9 || nss.length > 15)) {
-        DF_setError('nss', 'DF-err-nss', 'Longueur invalide (9–15 chiffres)');
-        ok = false; firstInvalid = firstInvalid || 'DF-nss';
-    }
-
-    /* Téléphone */
-    const phoneRaw = $('DF-phone').value.trim();
-    const phone = phoneRaw.replace(/[\s\-().]/g, '');
-    if (!phoneRaw) {
-        DF_setError('phone', 'DF-err-phone', 'Ce champ est obligatoire — هذا الحقل مطلوب');
-        ok = false; firstInvalid = firstInvalid || 'DF-phone';
-    } else if (!/^(\+|00)?\d{8,15}$/.test(phone)) {
-        DF_setError('phone', 'DF-err-phone', 'Numéro de téléphone invalide — رقم هاتف غير صحيح');
-        ok = false; firstInvalid = firstInvalid || 'DF-phone';
-    }
-
-    /* Email */
-    const email = $('DF-email').value.trim();
-    if (!email) {
-        DF_setError('email', 'DF-err-email', 'Ce champ est obligatoire — هذا الحقل مطلوب');
-        ok = false; firstInvalid = firstInvalid || 'DF-email';
-    } else if (!/^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/.test(email)) {
-        DF_setError('email', 'DF-err-email', 'Adresse e-mail invalide — بريد إلكتروني غير صحيح');
-        ok = false; firstInvalid = firstInvalid || 'DF-email';
-    }
-
-    if (firstInvalid) {
-        const el = $(firstInvalid);
-        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        setTimeout(() => el.focus({ preventScroll: true }), 350);
-    }
-
-    return ok
-        ? { nom, prenom, grade, nin, nss: nss || null, phone, email }
-        : null;
-}
-
-/* =========================================================================
-   SUBMIT
-   ========================================================================= */
-async function DF_submit(event) {
-    event.preventDefault();
-
-    if ($('DF-website').value.trim() !== '') return; // honeypot
-
-    /* hide previous alerts */
-    $('DF-successAlert').classList.add('hidden');
-    $('DF-errorAlert').classList.add('hidden');
-
-    const data = DF_validate();
-    if (!data) {
-        DF_showError('Veuillez corriger les champs en rouge — يرجى تصحيح الحقول المطلوبة');
-        return;
-    }
-
-    const btn = $('DF-submitBtn');
-    const spinner = $('DF-btnSpinner');
-    btn.disabled = true;
-    spinner.classList.remove('hidden');
-
-    const payload = {
-        nom: data.nom,
-        prenom: data.prenom,
-        full_name: data.nom + ' ' + data.prenom,
-        grade: data.grade,
-        nin: data.nin,
-        nss: data.nss,
-        phone: data.phone,
-        email: data.email
-    };
-
-    try {
-        const res = await fetch(DF_API_BASE + DF_ENDPOINT, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        });
-
-        let body = {};
-        try { body = await res.json(); } catch (_) {}
-
-        if (!res.ok) {
-            const msg = body && (body.message || body.error)
-                ? body.message || body.error
-                : "Échec de l'envoi — فشل الإرسال";
-            throw new Error(msg);
-        }
-
-        const reference = body.reference || body.ref || body.id
-            ? String(body.reference || body.ref || body.id)
-            : 'DOC-' + Date.now().toString(36).toUpperCase();
-
-        DF_showSuccess(payload, reference);
-    } catch (err) {
-        console.error(err);
-        DF_showError(err.message || 'Erreur de connexion au serveur');
-    } finally {
-        btn.disabled = false;
-        spinner.classList.add('hidden');
-    }
-}
-
-/* =========================================================================
-   SUCCESS / ERROR VIEWS
-   ========================================================================= */
-function DF_showSuccess(payload, reference) {
-    $('DF-refBadge').textContent = 'REF: ' + reference;
-
-    $('DF-recap').innerHTML = `
-        <div class="recap-row flex justify-between gap-4 px-4 py-2.5 text-sm border-b border-green-200 bg-white">
-            <span class="text-gray-500">Nom / اللقب</span>
-            <span class="font-medium text-gray-900">${DF_escapeHtml(payload.nom)}</span>
-        </div>
-        <div class="recap-row flex justify-between gap-4 px-4 py-2.5 text-sm border-b border-green-200 bg-green-50">
-            <span class="text-gray-500">Prénom / الاسم</span>
-            <span class="font-medium text-gray-900">${DF_escapeHtml(payload.prenom)}</span>
-        </div>
-        <div class="recap-row flex justify-between gap-4 px-4 py-2.5 text-sm border-b border-green-200 bg-white">
-            <span class="text-gray-500">Grade / الرتبة</span>
-            <span class="font-medium text-gray-900 text-right">${DF_escapeHtml(payload.grade)}</span>
-        </div>
-        <div class="recap-row flex justify-between gap-4 px-4 py-2.5 text-sm border-b border-green-200 bg-green-50">
-            <span class="text-gray-500">NIN</span>
-            <span class="font-medium text-gray-900 tracking-wider" dir="ltr">${DF_escapeHtml(payload.nin)}</span>
-        </div>
-        <div class="recap-row flex justify-between gap-4 px-4 py-2.5 text-sm border-b border-green-200 bg-white">
-            <span class="text-gray-500">NSS</span>
-            <span class="font-medium text-gray-900 tracking-wider" dir="ltr">${payload.nss ? DF_escapeHtml(payload.nss) : '—'}</span>
-        </div>
-        <div class="recap-row flex justify-between gap-4 px-4 py-2.5 text-sm border-b border-green-200 bg-green-50">
-            <span class="text-gray-500">Téléphone</span>
-            <span class="font-medium text-gray-900" dir="ltr">${DF_escapeHtml(payload.phone)}</span>
-        </div>
-        <div class="recap-row flex justify-between gap-4 px-4 py-2.5 text-sm bg-white">
-            <span class="text-gray-500">E-mail</span>
-            <span class="font-medium text-gray-900" dir="ltr">${DF_escapeHtml(payload.email)}</span>
-        </div>
-    `;
-
-    $('DF-successAlert').classList.remove('hidden');
-    $('DF-form').querySelectorAll('input, select, textarea, button[type="submit"]').forEach(el => {
-        el.disabled = true;
-    });
-
-    $('DF-successAlert').scrollIntoView({ behavior: 'smooth', block: 'center' });
-}
-
-function DF_showError(msg) {
-    const el = $('DF-errorMsg');
-    if (el) el.textContent = msg;
-    $('DF-errorAlert').classList.remove('hidden');
-    $('DF-errorAlert').scrollIntoView({ behavior: 'smooth', block: 'center' });
-    setTimeout(() => $('DF-errorAlert').classList.add('hidden'), 8000);
-}
-
-function DF_reset() {
-    $('DF-form').reset();
-    DF_clearAllErrors();
-    $('DF-form').querySelectorAll('input, select, textarea, button[type="submit"]').forEach(el => {
-        el.disabled = false;
-    });
-    $('DF-successAlert').classList.add('hidden');
-    $('DF-errorAlert').classList.add('hidden');
-    $('DF-nom').focus();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-/* =========================================================================
-   LIVE ERROR CLEARING
-   ========================================================================= */
-['DF-nom','DF-prenom','DF-grade','DF-nin','DF-nss','DF-phone','DF-email'].forEach(id => {
-    const el = $(id);
-    if (!el) return;
-    const key = id.replace('DF-', '');
-    const clear = () => {
-        const fg = $('DF-fg-' + key);
-        if (fg && fg.classList.contains('DF-has-error')) DF_setError(key, 'DF-err-' + key, '');
-    };
-    el.addEventListener('input', clear);
-    el.addEventListener('change', clear);
-});
-
-/* =========================================================================
-   INIT
-   ========================================================================= */
-document.addEventListener('DOMContentLoaded', () => {
-
-    /* Attach strict per-field filters */
-    DF_attachNameFilter($('DF-nom'));
-    DF_attachNameFilter($('DF-prenom'));
-    DF_attachDigitsFilter($('DF-nin'), 18);
-    DF_attachDigitsFilter($('DF-nss'), 15);
-    DF_attachPhoneFilter($('DF-phone'));
-    DF_attachEmailFilter($('DF-email'));
-
-    /* Bind form */
-    $('DF-form').addEventListener('submit', DF_submit);
-
-    /* Soft server-reachability check */
-    fetch(DF_API_BASE + '/api/setup-status', { method: 'GET' })
-        .then(r => { if (!r.ok) throw new Error(); })
-        .catch(() => $('DF-offline').classList.remove('hidden'));
-});
-</script>
-
+<!-- ================= SCRIPT ================= -->
+<script src="DME-script.js"></script>
 </body>
 </html>
