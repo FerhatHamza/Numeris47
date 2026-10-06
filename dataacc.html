@@ -24,7 +24,6 @@
         min-height: 100vh;
     }
 
-    /* ========== Motivation Banner ========== */
     .DME-motivation-banner {
         position: relative;
         background: linear-gradient(90deg, #1e3a8a 0%, #4f46e5 50%, #7c3aed 100%);
@@ -69,7 +68,6 @@
         100% { width: 5%; }
     }
 
-    /* ========== Card ========== */
     .DME-card {
         max-width: 1280px;
         margin: 28px auto 40px;
@@ -85,7 +83,6 @@
         to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* ========== Inputs ========== */
     .DME-input {
         transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         outline: none;
@@ -97,7 +94,6 @@
     }
     .DME-input::placeholder { color: #9ca3af; }
 
-    /* ========== Errors ========== */
     .DF-field-error {
         color: #dc2626;
         font-size: 13px;
@@ -116,7 +112,6 @@
         box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.12);
     }
 
-    /* ========== Submit Button ========== */
     .DME-btn-primary {
         background: linear-gradient(135deg, #4f46e5 0%, #6366f1 50%, #8b5cf6 100%);
         background-size: 200% 200%;
@@ -140,7 +135,6 @@
         transform: none;
     }
 
-    /* ========== Spinner ========== */
     .DME-spinner {
         width: 22px;
         height: 22px;
@@ -151,14 +145,12 @@
     }
     @keyframes DME-spin { to { transform: rotate(360deg); } }
 
-    /* ========== Alerts ========== */
     .DME-alert-show { animation: DME-slideDown 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
     @keyframes DME-slideDown {
         from { opacity: 0; transform: translateY(-10px); }
         to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* ========== Logo Container ========== */
     .DME-logo-container {
         box-shadow: 0 0 0 4px rgba(255,255,255,0.35),
                     0 20px 40px -10px rgba(0,0,0,0.3);
@@ -166,7 +158,6 @@
     }
     .DME-logo-container:hover { transform: scale(1.05) rotate(-2deg); }
 
-    /* ========== Field hint ========== */
     .DF-hint {
         font-size: 12px;
         color: #6b7280;
@@ -175,7 +166,6 @@
         line-height: 1.5;
     }
 
-    /* ========== Responsive ========== */
     @media (max-width: 640px) {
         .DME-card { border-radius: 16px; margin: 16px 12px 28px; }
         .DME-motivation-content { font-size: 12px; }
@@ -183,7 +173,6 @@
 </style>
 
 <script>
-/* ========== BASIC PROTECTION ========== */
 document.addEventListener('contextmenu', e => e.preventDefault());
 document.addEventListener('keydown', e => {
     const k = e.key;
@@ -219,8 +208,6 @@ document.addEventListener('keydown', e => {
             <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-white/5 rounded-full"></div>
 
             <div class="relative">
-
-                <!-- Logos + State info -->
                 <div class="flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-6 sm:gap-4 mb-8">
 
                     <div class="flex items-center gap-4">
@@ -228,7 +215,7 @@ document.addEventListener('keydown', e => {
                             <div class="w-20 h-20 md:w-28 md:h-28 bg-white rounded-full shadow-2xl flex items-center justify-center p-2 DME-logo-container">
                                 <img src="logosante.png" alt="Ministère de la Santé"
                                      class="w-full h-full object-contain rounded-full"
-                                     onerror="this.parentElement.innerHTML='<span class=\'text-3xl\'></span>'">
+                                     onerror="this.parentElement.innerHTML='<span class=\'text-3xl\'>🏛️</span>'">
                             </div>
                         </div>
                         <div class="hidden sm:block text-left">
@@ -251,12 +238,8 @@ document.addEventListener('keydown', e => {
                             <p class="text-blue-200 text-xs md:text-sm mt-1">
                                 Direction de la Santé et de la Population - Ghardaia
                             </p>
-                            <p class="text-blue-200 text-xs md:text-sm mt-2" dir="rtl">
-                                خلية الرقمنة
-                            </p>
-                            <p class="text-blue-200 text-xs md:text-sm">
-                                Cellule de Numérisation
-                            </p>
+                            <p class="text-blue-200 text-xs md:text-sm mt-2" dir="rtl">خلية الرقمنة</p>
+                            <p class="text-blue-200 text-xs md:text-sm">Cellule de Numérisation</p>
                         </div>
                         <div class="flex-shrink-0">
                             <div class="w-20 h-20 md:w-28 md:h-28 bg-white rounded-full shadow-2xl flex items-center justify-center p-2 DME-logo-container">
@@ -268,13 +251,12 @@ document.addEventListener('keydown', e => {
                     </div>
                 </div>
 
-                <!-- Title -->
                 <div class="border-t border-white/20 pt-8 text-center">
                     <h2 class="text-xl md:text-3xl font-bold text-white mb-2">
-                        Fiche d'Informations du Médecins
+                        Fiche d'Informations du Médecin
                     </h2>
                     <p class="text-lg md:text-xl text-blue-100 font-medium" dir="rtl">
-                        استمارة معلومات الأطباء
+                        استمارة معلومات الطبيب
                     </p>
                     <p class="text-blue-200 text-xs md:text-sm mt-3">
                         Collecte des données professionnelles / جمع البيانات المهنية
@@ -287,16 +269,12 @@ document.addEventListener('keydown', e => {
         <div class="p-6 md:p-14">
             <form id="DME-feedbackForm" class="space-y-8 max-w-5xl mx-auto" novalidate>
 
-                <!-- Offline banner -->
                 <div id="DF-offline" class="hidden bg-amber-50 border border-amber-200 rounded-xl p-4 text-sm text-amber-800 leading-relaxed text-center">
                     ⚠️ Connexion au serveur impossible pour le moment. Vous pouvez remplir le formulaire, il sera renvoyé à l'envoi.
                     <span dir="rtl" class="block mt-1">تعذّر الاتصال بالخادم حاليًا. يمكنك ملء الاستمارة وسيُعاد المحاولة عند الإرسال.</span>
                 </div>
 
-                <!-- =========== NOM + PRÉNOM =========== -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-
-                    <!-- Nom -->
                     <div id="DF-fg-nom">
                         <label for="DF-nom" class="block mb-3">
                             <span class="flex items-center justify-between gap-4">
@@ -308,11 +286,10 @@ document.addEventListener('keydown', e => {
                                dir="auto" autocomplete="family-name"
                                placeholder="Ex: Benali / مثال: بن علي"
                                class="DME-input w-full px-5 py-4 bg-white border border-gray-300 rounded-xl text-gray-900 text-base font-medium">
-                        <span class="DF-hint">Lettres uniquement (AR/FR) — حروف فقط (فرنسية)</span>
+                        <span class="DF-hint">Lettres uniquement (AR/FR) — حروف فقط (عربية أو فرنسية)</span>
                         <p class="DF-field-error" id="DF-err-nom"></p>
                     </div>
 
-                    <!-- Prénom -->
                     <div id="DF-fg-prenom">
                         <label for="DF-prenom" class="block mb-3">
                             <span class="flex items-center justify-between gap-4">
@@ -324,12 +301,11 @@ document.addEventListener('keydown', e => {
                                dir="auto" autocomplete="given-name"
                                placeholder="Ex: Mohamed / مثال: محمد"
                                class="DME-input w-full px-5 py-4 bg-white border border-gray-300 rounded-xl text-gray-900 text-base font-medium">
-                        <span class="DF-hint">Lettres uniquement (AR/FR) — حروف فقط (فرنسية)</span>
+                        <span class="DF-hint">Lettres uniquement (AR/FR) — حروف فقط (عربية أو فرنسية)</span>
                         <p class="DF-field-error" id="DF-err-prenom"></p>
                     </div>
                 </div>
 
-                <!-- =========== GRADE =========== -->
                 <div id="DF-fg-grade">
                     <label for="DF-grade" class="block mb-3">
                         <span class="flex items-center justify-between gap-4">
@@ -348,10 +324,7 @@ document.addEventListener('keydown', e => {
                     <p class="DF-field-error" id="DF-err-grade"></p>
                 </div>
 
-                <!-- =========== NIN + NSS =========== -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-
-                    <!-- NIN -->
                     <div id="DF-fg-nin">
                         <label for="DF-nin" class="block mb-3">
                             <span class="flex items-center justify-between gap-4">
@@ -371,7 +344,6 @@ document.addEventListener('keydown', e => {
                         <p class="DF-field-error" id="DF-err-nin"></p>
                     </div>
 
-                    <!-- NSS -->
                     <div id="DF-fg-nss">
                         <label for="DF-nss" class="block mb-3">
                             <span class="flex items-center justify-between gap-4">
@@ -392,10 +364,7 @@ document.addEventListener('keydown', e => {
                     </div>
                 </div>
 
-                <!-- =========== TÉLÉPHONE + EMAIL =========== -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-
-                    <!-- Téléphone -->
                     <div id="DF-fg-phone">
                         <label for="DF-phone" class="block mb-3">
                             <span class="flex items-center justify-between gap-4">
@@ -412,7 +381,6 @@ document.addEventListener('keydown', e => {
                         <p class="DF-field-error" id="DF-err-phone"></p>
                     </div>
 
-                    <!-- Email -->
                     <div id="DF-fg-email">
                         <label for="DF-email" class="block mb-3">
                             <span class="flex items-center justify-between gap-4">
@@ -430,23 +398,20 @@ document.addEventListener('keydown', e => {
                     </div>
                 </div>
 
-                <!-- =========== Consent =========== -->
                 <div class="bg-indigo-50 border border-indigo-100 rounded-xl p-4 md:p-5">
                     <p class="text-sm text-indigo-900 leading-relaxed">
-                         Les informations fournies sont utilisées uniquement à des fins de numérisation et ne seront partagées avec aucun tiers.
+                        🔒 Les informations fournies sont utilisées uniquement à des fins de numérisation et ne seront partagées avec aucun tiers.
                     </p>
                     <p dir="rtl" class="text-sm text-indigo-800 mt-2 leading-relaxed">
-                         تُستخدم المعلومات المقدَّمة لأغراض الرقمنة فقط، ولن تُشارَك مع أي طرف ثالث.
+                        🔒 تُستخدم المعلومات المقدَّمة لأغراض الرقمنة فقط، ولن تُشارَك مع أي طرف ثالث.
                     </p>
                 </div>
 
-                <!-- Honeypot -->
                 <div style="position:absolute;left:-9999px;" aria-hidden="true">
                     <label for="DF-website">Website</label>
                     <input type="text" id="DF-website" name="website" tabindex="-1" autocomplete="off">
                 </div>
 
-                <!-- =========== SUCCESS ALERT =========== -->
                 <div id="DME-successAlert" class="hidden bg-green-50 border border-green-200 rounded-xl p-5 DME-alert-show">
                     <div class="flex items-start gap-4">
                         <div class="flex-shrink-0 w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
@@ -473,7 +438,6 @@ document.addEventListener('keydown', e => {
                     </div>
                 </div>
 
-                <!-- =========== ERROR ALERT =========== -->
                 <div id="DME-errorAlert" class="hidden bg-red-50 border border-red-200 rounded-xl p-5 DME-alert-show">
                     <div class="flex items-start gap-4">
                         <div class="flex-shrink-0 w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
@@ -493,7 +457,6 @@ document.addEventListener('keydown', e => {
                     </div>
                 </div>
 
-                <!-- =========== SUBMIT BUTTON =========== -->
                 <button type="submit" id="DME-submitBtn"
                         class="DME-btn-primary w-full text-white font-bold py-5 rounded-xl flex justify-center items-center gap-4 text-lg">
                     <span id="DME-btnText_fr">Envoyer la fiche</span>
@@ -504,7 +467,6 @@ document.addEventListener('keydown', e => {
 
             </form>
 
-            <!-- ========== FOOTER ========== -->
             <div class="text-center mt-12 pt-8 border-t border-gray-200">
                 <p class="text-sm text-gray-500">
                     © 2026 DSP Ghardaia — Direction de la Santé et de la Population
@@ -517,7 +479,6 @@ document.addEventListener('keydown', e => {
     </div>
 </div>
 
-<!-- ================= SCRIPT ================= -->
 <script src="DME-script.js"></script>
 </body>
 </html>
