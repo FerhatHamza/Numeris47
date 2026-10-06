@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0f172a">
+<title>Numeris47 — استمارة معلومات الطبيب | Fiche Médecin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+    /* ========== RESET & ROOT ========== */
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Tajawal',sans-serif; -webkit-tap-highlight-color:transparent; }
+    :root {
+        --sidebar-bg: #0f172a;
+        --main-bg: #f1f5f9;
+        --card-bg: #ffffff;
+        --text-primary: #1e293b;
+        --text-secondary: #64748b;
+        --border: #e2e8f0;
+        --primary: #3b82f6;
+        --primary-hover: #2563eb;
+        --danger: #ef4444;
+        --success: #22c55e;
+        --warning: #f59e0b;
+        --shadow: 0 1px 3px rgba(0,0,0,0.08);
+        --shadow-lg: 0 10px 30px rgba(15,23,42,0.10);
+        --radius: 12px;
+    }
+    html, body { min-height:100%; }
+    body {
+        background: var(--main-bg);
+        color: var(--text-primary);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 24px 16px 60px;
+    }
+    .hidden { display: none !important; }
+
+    /* ========== LAYOUT ========== */
+    .page {
+        width: 100%;
+        max-width: 720px;
+        margin: 0 auto;
+    }
+
+    /* ========== HEADER ========== */
+    .page-header {
+        background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+        color: #fff;
+        border-radius: var(--radius) var(--radius) 0 0;
+        padding: 28px 24px 24px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+    .page-header::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at 85% -20%, rgba(59,130,246,.45), transparent 55%);
+        pointer-events: none;
+    }
+    .brand {
+        display: inline-block;
+        font-size: .8rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        background: rgba(255,255,255,.12);
+        border: 1px solid rgba(255,255,255,.18);
+        padding: 5px 14px;
+        border-radius: 999px;
+        margin-bottom: 14px;
+        position: relative;
+        z-index: 1;
+    }
+    .page-header h1 {
+        font-size: 1.55rem;
+        font-weight: 700;
+        line-height: 1.4;
+        position: relative;
+        z-index: 1;
+    }
+    .page-header p {
+        font-size: .95rem;
+        color: #cbd5e1;
+        margin-top: 6px;
+        position: relative;
+        z-index: 1;
+        direction: ltr;
+    }
+
+    /* ========== CARD ========== */
+    .card {
+        background: var(--card-bg);
+        border-radius: 0 0 var(--radius) var(--radius);
+        box-shadow: var(--shadow-lg);
+        padding: 26px 24px 30px;
+    }
+    @media (max-width: 520px) {
+        .page-header { padding: 22px 16px 20px; }
+        .page-header h1 { font-size: 1.25rem; }
+        .card { padding: 20px 16px 26px; }
+    }
+
+    /* ========== FORM ========== */
+    .form-group { margin-bottom: 20px; }
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        font-size: .95rem;
+        color: var(--text-primary);
+        line-height: 1.5;
+    }
+    .form-group label small {
+        display: inline-block;
+        color: var(--text-secondary);
+        font-weight: 400;
+        font-size: .8rem;
+        direction: ltr;
+    }
+    .req { color: var(--danger); font-weight: 700; }
+
+    .form-group input,
+    .form-group select {
+        width: 100%;
+        padding: 13px 14px;
+        border: 1.5px solid var(--border);
+        border-radius: 10px;
+        font-size: 1rem;
+        background: #f8fafc;
+        color: var(--text-primary);
+        transition: border-color .2s, background .2s, box-shadow .2s;
+        font-family: inherit;
+        appearance: none;
+        -webkit-appearance: none;
+    }
+    .form-group select {
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: left 12px center;
+        background-size: 18px;
+        padding-left: 40px;
+        cursor: pointer;
+    }
+    .form-group input[dir="ltr"] { text-align: left; }
+    .form-group input::placeholder { color: #94a3b8; }
+
+    .form-group input:focus,
+    .form-group select:focus {
+        outline: none;
+        border-color: var(--primary);
+        background: #fff;
+        box-shadow: 0 0 0 4px rgba(59,130,246,.12);
+    }
+    .form-group.has-error input,
+    .form-group.has-error select {
+        border-color: var(--danger);
+        background: #fef2f2;
+    }
+    .form-group.has-error input:focus,
+    .form-group.has-error select:focus {
+        box-shadow: 0 0 0 4px rgba(239,68,68,.12);
+    }
+
+    .field-error {
+        color: var(--danger);
+        font-size: .82rem;
+        margin-top: 6px;
+        min-height: 0;
+        display: none;
+        line-height: 1.5;
+    }
+    .form-group.has-error .field-error { display: block; }
+
+    .hint {
+        display: block;
+        color: var(--text-secondary);
+        font-size: .78rem;
+        margin-top: 6px;
+        line-height: 1.5;
+    }
+
+    /* ========== BUTTONS ========== */
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        padding: 14px 24px;
+        background: var(--primary);
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 1.05rem;
+        font-weight: 700;
+        font-family: inherit;
+        transition: background .25s, transform .1s, opacity .2s;
+    }
+    .btn:hover { background: var(--primary-hover); }
+    .btn:active { transform: scale(.985); }
+    .btn:disabled { opacity: .65; cursor: not-allowed; transform: none; }
+    .btn-secondary { background: var(--text-secondary); }
+    .btn-secondary:hover { background: #475569; }
+
+    .spinner {
+        width: 17px; height: 17px;
+        border: 2.5px solid rgba(255,255,255,.35);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: spin .7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ========== NOTE ========== */
+    .doc-note {
+        background: #f1f5f9;
+        border-right: 3px solid var(--primary);
+        border-radius: 8px;
+        padding: 12px 14px;
+        font-size: .82rem;
+        color: var(--text-secondary);
+        line-height: 1.7;
+        margin-bottom: 20px;
+    }
+
+    /* ========== SUCCESS ========== */
+    .success-box { text-align: center; padding: 12px 0 4px; }
+    .success-box .check {
+        width: 74px; height: 74px;
+        border-radius: 50%;
+        background: #d1fae5;
+        color: #059669;
+        font-size: 2.2rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        animation: pop .4s cubic-bezier(.18,.89,.32,1.28);
+    }
+    @keyframes pop {
+        from { transform: scale(.5); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+    }
+    .success-box h2 { font-size: 1.25rem; margin-bottom: 8px; }
+    .success-box p { color: var(--text-secondary); font-size: .92rem; line-height: 1.7; }
+    .ref-badge {
+        display: inline-block;
+        margin-top: 16px;
+        background: #eff6ff;
+        border: 1px dashed #93c5fd;
+        color: var(--primary-hover);
+        font-weight: 700;
+        padding: 10px 18px;
+        border-radius: 10px;
+        font-size: .95rem;
+        direction: ltr;
+        letter-spacing: .5px;
+    }
+
+    /* ========== SUMMARY (recap) ========== */
+    .recap {
+        text-align: right;
+        margin-top: 22px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    .recap-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 11px 14px;
+        font-size: .88rem;
+        border-bottom: 1px solid var(--border);
+        background: #fff;
+    }
+    .recap-row:last-child { border-bottom: none; }
+    .recap-row:nth-child(odd) { background: #f8fafc; }
+    .recap-row span:first-child { color: var(--text-secondary); flex-shrink: 0; }
+    .recap-row span:last-child { font-weight: 500; text-align: left; direction: ltr; word-break: break-word; }
+
+    /* ========== FOOTER ========== */
+    .page-footer {
+        text-align: center;
+        margin-top: 22px;
+        font-size: .78rem;
+        color: var(--text-secondary);
+        line-height: 1.8;
+    }
+    .page-footer strong { color: var(--text-primary); }
+
+    /* ========== TOAST ========== */
+    .toast-container {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 3000;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+        width: max-content;
+        max-width: 92vw;
+    }
+    .toast {
+        background: #333;
+        color: #fff;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-size: .9rem;
+        box-shadow: 0 6px 18px rgba(0,0,0,.22);
+        animation: slideIn .3s ease-out;
+        text-align: center;
+    }
+    .toast.success { background: var(--success); }
+    .toast.error   { background: var(--danger); }
+    @keyframes slideIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ========== OFFLINE BANNER ========== */
+    .offline-banner {
+        background: #fef3c7;
+        color: #92400e;
+        border-radius: 10px;
+        padding: 11px 14px;
+        font-size: .84rem;
+        margin-bottom: 18px;
+        line-height: 1.6;
+        text-align: center;
+    }
+</style>
+</head>
+<body>
+
+<!-- ================= TOASTS ================= -->
+<div id="toast-container" class="toast-container"></div>
+
+<div class="page">
+
+    <!-- ================= HEADER ================= -->
+    <header class="page-header">
+        <div class="brand">NUMERIS47</div>
+        <h1>استمارة معلومات الطبيب</h1>
+        <p>Fiche d'informations du médecin</p>
+    </header>
+
+    <!-- ================= FORM CARD ================= -->
+    <main class="card">
+
+        <!-- Offline / API warning (injected by JS) -->
+        <div id="offline-banner" class="offline-banner hidden"></div>
+
+        <!-- ---------- FORM ---------- -->
+        <form id="doctor-form" novalidate autocomplete="on">
+
+            <!-- Nom et Prénom -->
+            <div class="form-group" id="fg-name">
+                <label for="doc-name">
+                    الاسم واللقب <span class="req">*</span>
+                    <small>— Nom et Prénom</small>
+                </label>
+                <input type="text" id="doc-name" name="full_name"
+                       placeholder="مثال: محمد بن علي"
+                       autocomplete="name" required>
+                <p class="field-error" id="err-name"></p>
+            </div>
+
+            <!-- Grade -->
+            <div class="form-group" id="fg-grade">
+                <label for="doc-grade">
+                    الرتبة <span class="req">*</span>
+                    <small>— Grade</small>
+                </label>
+                <select id="doc-grade" name="grade" required>
+                    <option value="">— اختر الرتبة / Choisir le grade —</option>
+                    <option value="Médecin généraliste de santé publique">
+                        Médecin généraliste de santé publique
+                    </option>
+                    <option value="Médecin généraliste principal de santé publique">
+                        Médecin généraliste principal de santé publique
+                    </option>
+                    <option value="Médecin généraliste en chef de santé publique">
+                        Médecin généraliste en chef de santé publique
+                    </option>
+                </select>
+                <p class="field-error" id="err-grade"></p>
+            </div>
+
+            <!-- NIN -->
+            <div class="form-group" id="fg-nin">
+                <label for="doc-nin">
+                    الرقم التعريفي الوطني <span class="req">*</span>
+                    <small>— NIN (18 chiffres)</small>
+                </label>
+                <input type="text" id="doc-nin" name="nin"
+                       dir="ltr" inputmode="numeric" maxlength="18"
+                       placeholder="000000000000000000"
+                       autocomplete="off" required>
+                <span class="hint">يجب أن يتكون من 18 رقمًا بالضبط.</span>
+                <p class="field-error" id="err-nin"></p>
+            </div>
+
+            <!-- NSS (optionnel) -->
+            <div class="form-group" id="fg-nss">
+                <label for="doc-nss">
+                    رقم الضمان الاجتماعي
+                    <small>— NSS (optionnel)</small>
+                </label>
+                <input type="text" id="doc-nss" name="nss"
+                       dir="ltr" inputmode="numeric" maxlength="15"
+                       placeholder="اختياري / Optionnel"
+                       autocomplete="off">
+                <p class="field-error" id="err-nss"></p>
+            </div>
+
+            <!-- Téléphone -->
+            <div class="form-group" id="fg-phone">
+                <label for="doc-phone">
+                    رقم الهاتف <span class="req">*</span>
+                    <small>— Numéro de téléphone</small>
+                </label>
+                <input type="tel" id="doc-phone" name="phone"
+                       dir="ltr" inputmode="tel"
+                       placeholder="0555 12 34 56"
+                       autocomplete="tel" required>
+                <p class="field-error" id="err-phone"></p>
+            </div>
+
+            <!-- E-mail -->
+            <div class="form-group" id="fg-email">
+                <label for="doc-email">
+                    البريد الإلكتروني <span class="req">*</span>
+                    <small>— Adresse e-mail</small>
+                </label>
+                <input type="email" id="doc-email" name="email"
+                       dir="ltr" inputmode="email"
+                       placeholder="exemple@domain.com"
+                       autocomplete="email" required>
+                <p class="field-error" id="err-email"></p>
+            </div>
+
+            <!-- Honeypot (anti-spam) -->
+            <div style="position:absolute;left:-9999px;" aria-hidden="true">
+                <label for="doc-website">Website</label>
+                <input type="text" id="doc-website" name="website" tabindex="-1" autocomplete="off">
+            </div>
+
+            <p class="doc-note">
+                تُستخدم هذه البيانات لأغراض الرقمنة فقط، ولن تُشارَك مع أي طرف ثالث.
+                <br>
+                Ces informations sont utilisées uniquement à des fins de numérisation et ne seront partagées avec aucun tiers.
+            </p>
+
+            <button type="submit" class="btn" id="doctor-submit">
+                إرسال الاستمارة — Envoyer
+            </button>
+        </form>
+
+        <!-- ---------- SUCCESS ---------- -->
+        <div id="doctor-success" class="success-box hidden">
+            <div class="check">✓</div>
+            <h2>تم إرسال معلوماتك بنجاح</h2>
+            <p>
+                شكرًا لك. تم استلام بياناتك وسيتم التحقق منها من طرف الفريق المختص.
+                <br>
+                <span style="direction:ltr;display:inline-block;">Merci, vos informations ont bien été enregistrées.</span>
+            </p>
+            <div class="ref-badge" id="doctor-ref">REF: —</div>
+
+            <div class="recap" id="doctor-recap"></div>
+
+            <button type="button" class="btn btn-secondary" style="margin-top:22px;" onclick="resetDoctorForm()">
+                تسجيل طبيب آخر — Nouvelle fiche
+            </button>
+        </div>
+
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="page-footer">
+        <strong>Numeris47</strong> — منصة الرقمنة<br>
+        © <span id="year"></span> جميع الحقوق محفوظة
+    </footer>
+
+</div>
+
+<script>
+/* =========================================================================
+   CONFIGURATION
+   ========================================================================= */
+const API_BASE = 'https://empty-grass-e190.05juillet-ballouh-info-8e2.workers.dev';
+const DOCTORS_ENDPOINT = '/api/doctors';   // <-- adapt if your Worker route differs
+
+/* =========================================================================
+   HELPERS
+   ========================================================================= */
+function $(id) { return document.getElementById(id); }
+
+function showToast(message, type = 'info') {
+    const c = $('toast-container');
+    const t = document.createElement('div');
+    t.className = 'toast ' + (type === 'error' ? 'error' : type === 'success' ? 'success' : '');
+    t.textContent = message;
+    c.appendChild(t);
+    setTimeout(() => t.remove(), 3800);
+}
+
+function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+}
+
+/* ---------- error display ---------- */
+function setError(fieldId, errId, message) {
+    const fg = $('fg-' + fieldId);
+    const el = $(errId);
+    if (message) {
+        fg.classList.add('has-error');
+        el.textContent = message;
+    } else {
+        fg.classList.remove('has-error');
+        el.textContent = '';
+    }
+}
+function clearAllErrors() {
+    ['name','grade','nin','nss','phone','email'].forEach(f => setError(f, 'err-' + f, ''));
+}
+
+/* =========================================================================
+   VALIDATION
+   ========================================================================= */
+const GRADE_VALUES = [
+    'Médecin généraliste de santé publique',
+    'Médecin généraliste principal de santé publique',
+    'Médecin généraliste en chef de santé publique'
+];
+
+function validateForm() {
+    clearAllErrors();
+    let ok = true;
+    let firstInvalid = null;
+
+    /* ---- Nom et Prénom ---- */
+    const name = $('doc-name').value.trim().replace(/\s+/g, ' ');
+    if (!name) {
+        setError('name', 'err-name', 'هذا الحقل مطلوب — Champ obligatoire');
+        ok = false; firstInvalid = firstInvalid || 'doc-name';
+    } else if (name.length < 3) {
+        setError('name', 'err-name', 'الاسم قصير جدًا (3 أحرف على الأقل)');
+        ok = false; firstInvalid = firstInvalid || 'doc-name';
+    } else if (!/^[\p{L}\s'’\-.]+$/u.test(name)) {
+        setError('name', 'err-name', 'الاسم يحتوي على رموز غير مسموحة');
+        ok = false; firstInvalid = firstInvalid || 'doc-name';
+    } else if (name.length > 80) {
+        setError('name', 'err-name', 'الاسم طويل جدًا (80 حرفًا كحد أقصى)');
+        ok = false; firstInvalid = firstInvalid || 'doc-name';
+    }
+
+    /* ---- Grade ---- */
+    const grade = $('doc-grade').value;
+    if (!grade) {
+        setError('grade', 'err-grade', 'يرجى اختيار الرتبة — Veuillez choisir le grade');
+        ok = false; firstInvalid = firstInvalid || 'doc-grade';
+    } else if (!GRADE_VALUES.includes(grade)) {
+        setError('grade', 'err-grade', 'رتبة غير صحيحة');
+        ok = false; firstInvalid = firstInvalid || 'doc-grade';
+    }
+
+    /* ---- NIN (18 chiffres) ---- */
+    const nin = $('doc-nin').value.replace(/[\s\-]/g, '');
+    if (!nin) {
+        setError('nin', 'err-nin', 'هذا الحقل مطلوب — Champ obligatoire');
+        ok = false; firstInvalid = firstInvalid || 'doc-nin';
+    } else if (!/^\d+$/.test(nin)) {
+        setError('nin', 'err-nin', 'يُسمح بالأرقام فقط — Chiffres uniquement');
+        ok = false; firstInvalid = firstInvalid || 'doc-nin';
+    } else if (nin.length !== 18) {
+        setError('nin', 'err-nin', 'يجب أن يتكون الرقم من 18 رقمًا (المُدخل: ' + nin.length + ')');
+        ok = false; firstInvalid = firstInvalid || 'doc-nin';
+    }
+
+    /* ---- NSS (optionnel) ---- */
+    const nss = $('doc-nss').value.replace(/[\s\-]/g, '');
+    if (nss) {
+        if (!/^\d+$/.test(nss)) {
+            setError('nss', 'err-nss', 'يُسمح بالأرقام فقط — Chiffres uniquement');
+            ok = false; firstInvalid = firstInvalid || 'doc-nss';
+        } else if (nss.length < 9 || nss.length > 15) {
+            setError('nss', 'err-nss', 'طول الرقم غير صحيح (بين 9 و15 رقمًا)');
+            ok = false; firstInvalid = firstInvalid || 'doc-nss';
+        }
+    }
+
+    /* ---- Téléphone ---- */
+    const phoneRaw = $('doc-phone').value.trim();
+    const phone = phoneRaw.replace(/[\s\-().]/g, '');
+    if (!phoneRaw) {
+        setError('phone', 'err-phone', 'هذا الحقل مطلوب — Champ obligatoire');
+        ok = false; firstInvalid = firstInvalid || 'doc-phone';
+    } else if (!/^(\+|00)?\d{8,15}$/.test(phone)) {
+        setError('phone', 'err-phone', 'رقم هاتف غير صحيح — Numéro invalide');
+        ok = false; firstInvalid = firstInvalid || 'doc-phone';
+    }
+
+    /* ---- E-mail ---- */
+    const email = $('doc-email').value.trim().toLowerCase();
+    if (!email) {
+        setError('email', 'err-email', 'هذا الحقل مطلوب — Champ obligatoire');
+        ok = false; firstInvalid = firstInvalid || 'doc-email';
+    } else if (!/^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/.test(email)) {
+        setError('email', 'err-email', 'بريد إلكتروني غير صحيح — E-mail invalide');
+        ok = false; firstInvalid = firstInvalid || 'doc-email';
+    }
+
+    if (firstInvalid) {
+        const el = $(firstInvalid);
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(() => el.focus({ preventScroll: true }), 350);
+    }
+
+    return ok ? { name, grade, nin, nss: nss || null, phone, email } : null;
+}
+
+/* =========================================================================
+   SUBMIT
+   ========================================================================= */
+async function submitDoctor(event) {
+    event.preventDefault();
+
+    /* Anti-spam honeypot */
+    if ($('doc-website').value.trim() !== '') {
+        console.warn('Spam detected');
+        return;
+    }
+
+    const data = validateForm();
+    if (!data) {
+        showToast('يرجى تصحيح الحقول المطلوبة', 'error');
+        return;
+    }
+
+    const btn = $('doctor-submit');
+    const originalHtml = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> جاري الإرسال...';
+
+    const payload = {
+        full_name: data.name,
+        grade:     data.grade,
+        nin:       data.nin,
+        nss:       data.nss,
+        phone:     data.phone,
+        email:     data.email
+    };
+
+    try {
+        const res = await fetch(API_BASE + DOCTORS_ENDPOINT, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) {
+            let msg = 'تعذّر إرسال الاستمارة — Échec de l\'envoi';
+            try {
+                const errBody = await res.json();
+                if (errBody && (errBody.message || errBody.error)) {
+                    msg = errBody.message || errBody.error;
+                }
+            } catch (_) { /* keep default message */ }
+            throw new Error(msg);
+        }
+
+        let result = {};
+        try { result = await res.json(); } catch (_) { /* some APIs return 204 */ }
+
+        const reference = result.reference || result.ref || result.id
+            ? String(result.reference || result.ref || result.id)
+            : 'DOC-' + Date.now().toString(36).toUpperCase();
+
+        showSuccess(payload, reference);
+        showToast('تم الإرسال بنجاح', 'success');
+
+    } catch (err) {
+        console.error('Submit error:', err);
+        showToast(err.message || 'خطأ في الاتصال بالخادم', 'error');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalHtml;
+    }
+}
+
+/* =========================================================================
+   SUCCESS VIEW
+   ========================================================================= */
+function showSuccess(payload, reference) {
+    $('doctor-form').classList.add('hidden');
+    $('doctor-success').classList.remove('hidden');
+
+    $('doctor-ref').textContent = 'REF: ' + reference;
+
+    $('doctor-recap').innerHTML = `
+        <div class="recap-row"><span>Nom et Prénom</span><span>${escapeHtml(payload.full_name)}</span></div>
+        <div class="recap-row"><span>Grade</span><span>${escapeHtml(payload.grade)}</span></div>
+        <div class="recap-row"><span>NIN</span><span>${escapeHtml(payload.nin)}</span></div>
+        <div class="recap-row"><span>NSS</span><span>${payload.nss ? escapeHtml(payload.nss) : '—'}</span></div>
+        <div class="recap-row"><span>Téléphone</span><span>${escapeHtml(payload.phone)}</span></div>
+        <div class="recap-row"><span>E-mail</span><span>${escapeHtml(payload.email)}</span></div>
+    `;
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function resetDoctorForm() {
+    $('doctor-form').reset();
+    clearAllErrors();
+    $('doctor-success').classList.add('hidden');
+    $('doctor-form').classList.remove('hidden');
+    $('doctor-name') && $('doc-name').focus();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* =========================================================================
+   LIVE CLEARING OF ERRORS + INPUT SANITIZING
+   ========================================================================= */
+['doc-name','doc-grade','doc-nin','doc-nss','doc-phone','doc-email'].forEach(id => {
+    const el = $(id);
+    if (!el) return;
+    el.addEventListener('input', () => {
+        const key = id.replace('doc-', '');
+        const fg = $('fg-' + key);
+        if (fg && fg.classList.contains('has-error')) setError(key, 'err-' + key, '');
+    });
+    el.addEventListener('change', () => {
+        const key = id.replace('doc-', '');
+        const fg = $('fg-' + key);
+        if (fg && fg.classList.contains('has-error')) setError(key, 'err-' + key, '');
+    });
+});
+
+/* Digits-only inputs */
+['doc-nin', 'doc-nss'].forEach(id => {
+    const el = $(id);
+    if (!el) return;
+    el.addEventListener('input', () => {
+        el.value = el.value.replace(/[^\d]/g, '');
+    });
+});
+
+/* =========================================================================
+   BASIC PROTECTION (same spirit as the main app)
+   ========================================================================= */
+(function () {
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.addEventListener('keydown', e => {
+        if (
+            e.key === 'F12' ||
+            (e.ctrlKey && e.shiftKey && ['I','J','C'].includes(e.key)) ||
+            (e.ctrlKey && e.key === 'U')
+        ) {
+            e.preventDefault();
+            return false;
+        }
+    });
+})();
+
+/* =========================================================================
+   INIT
+   ========================================================================= */
+document.addEventListener('DOMContentLoaded', () => {
+    $('year').textContent = new Date().getFullYear();
+
+    /* Warn if the API is unreachable (non-blocking) */
+    fetch(API_BASE + '/api/setup-status', { method: 'GET' })
+        .then(r => { if (!r.ok) throw new Error(); })
+        .catch(() => {
+            const b = $('offline-banner');
+            b.textContent = '⚠ تعذّر الاتصال بالخادم حاليًا. يمكنك ملء الاستمارة، وسيُعاد المحاولة عند الإرسال.';
+            b.classList.remove('hidden');
+        });
+});
+</script>
+
+</body>
+</html>
