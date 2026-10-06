@@ -1,578 +1,623 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="fr" dir="ltr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#0f172a">
-<title>Numeris47 — استمارة معلومات الطبيب | Fiche Médecin</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DSP Ghardaia — Fiche Médecin / استمارة الطبيب</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+
 <style>
-    /* ========== RESET & ROOT ========== */
-    * { margin:0; padding:0; box-sizing:border-box; font-family:'Tajawal',sans-serif; -webkit-tap-highlight-color:transparent; }
-    :root {
-        --sidebar-bg:#0f172a;
-        --main-bg:#f1f5f9;
-        --card-bg:#ffffff;
-        --text-primary:#1e293b;
-        --text-secondary:#64748b;
-        --border:#e2e8f0;
-        --primary:#3b82f6;
-        --primary-hover:#2563eb;
-        --danger:#ef4444;
-        --success:#22c55e;
-        --warning:#f59e0b;
-        --shadow:0 1px 3px rgba(0,0,0,0.08);
-        --shadow-lg:0 10px 30px rgba(15,23,42,0.10);
-        --radius:12px;
+    html, body {
+        font-family: 'Inter', 'Tajawal', system-ui, -apple-system, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
     }
-    html, body { min-height:100%; }
+    [dir="rtl"], .rtl { font-family: 'Tajawal', 'Inter', sans-serif; }
+
     body {
-        background:var(--main-bg);
-        color:var(--text-primary);
-        min-height:100vh;
-        display:flex;
-        flex-direction:column;
-        align-items:center;
-        padding:24px 16px 60px;
-    }
-    .hidden { display:none !important; }
-
-    /* ========== LAYOUT ========== */
-    .page { width:100%; max-width:720px; margin:0 auto; }
-
-    /* ========== HEADER ========== */
-    .page-header {
-        background:linear-gradient(135deg,#0f172a 0%,#1e3a8a 100%);
-        color:#fff;
-        border-radius:var(--radius) var(--radius) 0 0;
-        padding:28px 24px 24px;
-        text-align:center;
-        position:relative;
-        overflow:hidden;
-    }
-    .page-header::after {
-        content:'';
-        position:absolute;
-        inset:0;
-        background:radial-gradient(circle at 85% -20%, rgba(59,130,246,.45), transparent 55%);
-        pointer-events:none;
-    }
-    .brand {
-        display:inline-block;
-        font-size:.8rem;
-        font-weight:700;
-        letter-spacing:1px;
-        background:rgba(255,255,255,.12);
-        border:1px solid rgba(255,255,255,.18);
-        padding:5px 14px;
-        border-radius:999px;
-        margin-bottom:14px;
-        position:relative;
-        z-index:1;
-    }
-    .page-header h1 {
-        font-size:1.55rem;
-        font-weight:700;
-        line-height:1.4;
-        position:relative;
-        z-index:1;
-    }
-    .page-header p {
-        font-size:.95rem;
-        color:#cbd5e1;
-        margin-top:6px;
-        position:relative;
-        z-index:1;
-        direction:ltr;
+        background: linear-gradient(135deg, #eff6ff 0%, #e0e7ff 50%, #f5f3ff 100%);
+        min-height: 100vh;
     }
 
-    /* ========== CARD ========== */
-    .card {
-        background:var(--card-bg);
-        border-radius:0 0 var(--radius) var(--radius);
-        box-shadow:var(--shadow-lg);
-        padding:26px 24px 30px;
+    /* ========== Motivation Banner ========== */
+    .DF-motivation-banner {
+        position: relative;
+        background: linear-gradient(90deg, #1e3a8a 0%, #4f46e5 50%, #7c3aed 100%);
+        color: #fff;
+        padding: 14px 24px;
+        overflow: hidden;
+        box-shadow: 0 4px 18px rgba(30, 58, 138, 0.25);
+        z-index: 100;
     }
-    @media (max-width:520px) {
-        .page-header { padding:22px 16px 20px; }
-        .page-header h1 { font-size:1.25rem; }
-        .card { padding:20px 16px 26px; }
+    .DF-motivation-content {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px 22px;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: 0.2px;
+        position: relative;
+        z-index: 2;
     }
-
-    /* ========== FORM ========== */
-    .form-group { margin-bottom:20px; }
-    .form-group label {
-        display:block;
-        margin-bottom:8px;
-        font-weight:500;
-        font-size:.95rem;
-        color:var(--text-primary);
-        line-height:1.5;
+    .DF-motivation-text { color: #e0e7ff; }
+    .DF-motivation-text-ar { direction: rtl; color: #fff; font-weight: 600; }
+    .DF-motivation-progress {
+        position: absolute;
+        bottom: 0; left: 0; right: 0;
+        height: 3px;
+        background: rgba(255,255,255,0.12);
     }
-    .form-group label small {
-        display:inline-block;
-        color:var(--text-secondary);
-        font-weight:400;
-        font-size:.8rem;
-        direction:ltr;
+    .DF-motivation-progress-bar {
+        height: 100%;
+        width: 30%;
+        background: linear-gradient(90deg, #fbbf24, #f59e0b);
+        border-radius: 0 3px 3px 0;
+        animation: DF-progress 4s ease-in-out infinite;
+        box-shadow: 0 0 12px rgba(251, 191, 36, 0.6);
     }
-    .req { color:var(--danger); font-weight:700; }
-
-    .form-group input,
-    .form-group select {
-        width:100%;
-        padding:13px 14px;
-        border:1.5px solid var(--border);
-        border-radius:10px;
-        font-size:1rem;
-        background:#f8fafc;
-        color:var(--text-primary);
-        transition:border-color .2s, background .2s, box-shadow .2s;
-        font-family:inherit;
-        appearance:none;
-        -webkit-appearance:none;
-    }
-    .form-group select {
-        background-image:url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
-        background-repeat:no-repeat;
-        background-position:left 12px center;
-        background-size:18px;
-        padding-left:40px;
-        cursor:pointer;
-    }
-    .form-group input::placeholder { color:#94a3b8; }
-
-    .form-group input:focus,
-    .form-group select:focus {
-        outline:none;
-        border-color:var(--primary);
-        background:#fff;
-        box-shadow:0 0 0 4px rgba(59,130,246,.12);
-    }
-    .form-group.has-error input,
-    .form-group.has-error select {
-        border-color:var(--danger);
-        background:#fef2f2;
-    }
-    .form-group.has-error input:focus,
-    .form-group.has-error select:focus {
-        box-shadow:0 0 0 4px rgba(239,68,68,.12);
+    @keyframes DF-progress {
+        0%   { width: 5%; }
+        50%  { width: 95%; }
+        100% { width: 5%; }
     }
 
-    .field-error {
-        color:var(--danger);
-        font-size:.82rem;
-        margin-top:6px;
-        display:none;
-        line-height:1.5;
+    /* ========== Card ========== */
+    .DF-card {
+        max-width: 1280px;
+        margin: 28px auto 40px;
+        background: #fff;
+        border-radius: 24px;
+        box-shadow: 0 20px 60px -12px rgba(15, 23, 42, 0.18),
+                    0 8px 24px -8px rgba(15, 23, 42, 0.10);
+        overflow: hidden;
+        animation: DF-fadeUp 0.6s ease-out both;
     }
-    .form-group.has-error .field-error { display:block; }
-
-    .hint {
-        display:block;
-        color:var(--text-secondary);
-        font-size:.78rem;
-        margin-top:6px;
-        line-height:1.5;
-    }
-
-    /* ========== BUTTONS ========== */
-    .btn {
-        display:inline-flex;
-        align-items:center;
-        justify-content:center;
-        gap:8px;
-        width:100%;
-        padding:14px 24px;
-        background:var(--primary);
-        color:#fff;
-        border:none;
-        border-radius:10px;
-        cursor:pointer;
-        font-size:1.05rem;
-        font-weight:700;
-        font-family:inherit;
-        transition:background .25s, transform .1s, opacity .2s;
-    }
-    .btn:hover { background:var(--primary-hover); }
-    .btn:active { transform:scale(.985); }
-    .btn:disabled { opacity:.65; cursor:not-allowed; transform:none; }
-    .btn-secondary { background:var(--text-secondary); }
-    .btn-secondary:hover { background:#475569; }
-
-    .spinner {
-        width:17px; height:17px;
-        border:2.5px solid rgba(255,255,255,.35);
-        border-top-color:#fff;
-        border-radius:50%;
-        animation:spin .7s linear infinite;
-    }
-    @keyframes spin { to { transform:rotate(360deg); } }
-
-    /* ========== NOTE ========== */
-    .doc-note {
-        background:#f1f5f9;
-        border-right:3px solid var(--primary);
-        border-radius:8px;
-        padding:12px 14px;
-        font-size:.82rem;
-        color:var(--text-secondary);
-        line-height:1.7;
-        margin-bottom:20px;
+    @keyframes DF-fadeUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* ========== SUCCESS ========== */
-    .success-box { text-align:center; padding:12px 0 4px; }
-    .success-box .check {
-        width:74px; height:74px;
-        border-radius:50%;
-        background:#d1fae5;
-        color:#059669;
-        font-size:2.2rem;
-        font-weight:700;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        margin:0 auto 20px;
-        animation:pop .4s cubic-bezier(.18,.89,.32,1.28);
+    /* ========== Inputs ========== */
+    .DF-input {
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        outline: none;
     }
-    @keyframes pop {
-        from { transform:scale(.5); opacity:0; }
-        to   { transform:scale(1); opacity:1; }
+    .DF-input:focus {
+        border-color: #4f46e5 !important;
+        box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15);
+        transform: translateY(-1px);
     }
-    .success-box h2 { font-size:1.25rem; margin-bottom:8px; }
-    .success-box p { color:var(--text-secondary); font-size:.92rem; line-height:1.7; }
-    .ref-badge {
-        display:inline-block;
-        margin-top:16px;
-        background:#eff6ff;
-        border:1px dashed #93c5fd;
-        color:var(--primary-hover);
-        font-weight:700;
-        padding:10px 18px;
-        border-radius:10px;
-        font-size:.95rem;
-        direction:ltr;
-        letter-spacing:.5px;
+    .DF-input:focus:hover {
+        transform: translateY(-1px);
+    }
+    .DF-input::placeholder { color: #9ca3af; }
+
+    /* ========== Radio Options ========== */
+    .DF-radio-option {
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+    }
+    .DF-radio-option:hover {
+        border-color: #a5b4fc;
+        background: #f5f3ff;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(99, 102, 241, 0.12);
+    }
+    input[type="radio"]:checked + .DF-radio-option {
+        border-color: #4f46e5;
+        background: linear-gradient(135deg, #eef2ff, #f5f3ff);
+        box-shadow: 0 8px 20px rgba(79, 70, 229, 0.18);
+    }
+    input[type="radio"]:checked + .DF-radio-option .DF-radio-indicator {
+        border-color: #4f46e5;
+        background: #4f46e5;
+        box-shadow: inset 0 0 0 4px #fff, 0 0 0 1px #4f46e5;
     }
 
-    /* ========== RECAP ========== */
-    .recap {
-        text-align:right;
-        margin-top:22px;
-        border:1px solid var(--border);
-        border-radius:10px;
-        overflow:hidden;
+    /* ========== Errors ========== */
+    .DF-field-error {
+        color: #dc2626;
+        font-size: 13px;
+        margin-top: 6px;
+        display: none;
+        font-weight: 500;
+        line-height: 1.5;
     }
-    .recap-row {
-        display:flex;
-        justify-content:space-between;
-        gap:14px;
-        padding:11px 14px;
-        font-size:.88rem;
-        border-bottom:1px solid var(--border);
-        background:#fff;
+    .DF-field-error.show { display: block; }
+    .DF-has-error .DF-input,
+    .DF-has-error select.DF-input {
+        border-color: #dc2626 !important;
+        background: #fef2f2 !important;
     }
-    .recap-row:last-child { border-bottom:none; }
-    .recap-row:nth-child(odd) { background:#f8fafc; }
-    .recap-row span:first-child { color:var(--text-secondary); flex-shrink:0; }
-    .recap-row span:last-child { font-weight:500; text-align:left; word-break:break-word; }
-
-    /* ========== FOOTER ========== */
-    .page-footer {
-        text-align:center;
-        margin-top:22px;
-        font-size:.78rem;
-        color:var(--text-secondary);
-        line-height:1.8;
-    }
-    .page-footer strong { color:var(--text-primary); }
-
-    /* ========== TOAST ========== */
-    .toast-container {
-        position:fixed;
-        bottom:20px;
-        left:50%;
-        transform:translateX(-50%);
-        z-index:3000;
-        display:flex;
-        flex-direction:column;
-        gap:10px;
-        align-items:center;
-        width:max-content;
-        max-width:92vw;
-    }
-    .toast {
-        background:#333;
-        color:#fff;
-        padding:12px 20px;
-        border-radius:8px;
-        font-size:.9rem;
-        box-shadow:0 6px 18px rgba(0,0,0,.22);
-        animation:slideIn .3s ease-out;
-        text-align:center;
-    }
-    .toast.success { background:var(--success); }
-    .toast.error   { background:var(--danger); }
-    @keyframes slideIn {
-        from { opacity:0; transform:translateY(20px); }
-        to   { opacity:1; transform:translateY(0); }
+    .DF-has-error .DF-input:focus {
+        box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.12);
     }
 
-    /* ========== OFFLINE BANNER ========== */
-    .offline-banner {
-        background:#fef3c7;
-        color:#92400e;
-        border-radius:10px;
-        padding:11px 14px;
-        font-size:.84rem;
-        margin-bottom:18px;
-        line-height:1.6;
-        text-align:center;
+    /* ========== Submit Button ========== */
+    .DF-btn-primary {
+        background: linear-gradient(135deg, #4f46e5 0%, #6366f1 50%, #8b5cf6 100%);
+        background-size: 200% 200%;
+        transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.4);
+        position: relative;
+        overflow: hidden;
+    }
+    .DF-btn-primary:hover:not(:disabled) {
+        background-position: right center;
+        box-shadow: 0 14px 30px -5px rgba(79, 70, 229, 0.55);
+        transform: translateY(-2px);
+    }
+    .DF-btn-primary:active:not(:disabled) {
+        transform: translateY(0);
+        box-shadow: 0 5px 15px -5px rgba(79, 70, 229, 0.4);
+    }
+    .DF-btn-primary:disabled {
+        opacity: 0.75;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    /* ========== Spinner ========== */
+    .DF-spinner {
+        width: 22px;
+        height: 22px;
+        border: 3px solid rgba(255,255,255,0.35);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: DF-spin 0.7s linear infinite;
+    }
+    @keyframes DF-spin { to { transform: rotate(360deg); } }
+
+    /* ========== Alerts ========== */
+    .DF-alert-show { animation: DF-slideDown 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+    @keyframes DF-slideDown {
+        from { opacity: 0; transform: translateY(-10px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ========== Logo Container ========== */
+    .DF-logo-container {
+        box-shadow: 0 0 0 4px rgba(255,255,255,0.35),
+                    0 20px 40px -10px rgba(0,0,0,0.3);
+        transition: transform 0.4s ease;
+    }
+    .DF-logo-container:hover { transform: scale(1.05) rotate(-2deg); }
+
+    /* ========== Field hint ========== */
+    .DF-hint {
+        font-size: 12px;
+        color: #6b7280;
+        margin-top: 6px;
+        display: block;
+        line-height: 1.5;
+    }
+
+    /* ========== Responsive text ========== */
+    @media (max-width: 640px) {
+        .DF-card { border-radius: 16px; margin: 16px 12px 28px; }
+        .DF-motivation-content { font-size: 12px; }
+    }
+
+    /* ========== Print/selection lock ========== */
+    .DF-noselect {
+        user-select: none;
+        -webkit-user-select: none;
     }
 </style>
+
+<script>
+/* ========== BASIC PROTECTION ========== */
+document.addEventListener('contextmenu', e => e.preventDefault());
+document.addEventListener('keydown', e => {
+    const k = e.key;
+    if (k === 'F12') { e.preventDefault(); return false; }
+    if (e.ctrlKey && e.shiftKey && ['I','i','J','j','C','c'].includes(k)) { e.preventDefault(); return false; }
+    if (e.ctrlKey && ['U','u','S','s','P','p'].includes(k)) { e.preventDefault(); return false; }
+});
+</script>
 </head>
+
 <body>
 
-<!-- ================= TOASTS ================= -->
-<div id="toast-container" class="toast-container"></div>
+<!-- ================= MOTIVATION BANNER ================= -->
+<div class="DF-motivation-banner DF-noselect">
+    <div class="DF-motivation-content">
+        <span class="DF-motivation-text">📋 Formulaire officiel de collecte des données médecins — Cellule de Numérisation</span>
+        <span class="DF-motivation-text-ar">📋 استمارة رسمية لجمع بيانات الأطباء — خلية الرقمنة</span>
+    </div>
+    <div class="DF-motivation-progress">
+        <div class="DF-motivation-progress-bar"></div>
+    </div>
+</div>
 
-<div class="page">
+<!-- ================= MAIN CARD ================= -->
+<div class="DF-card">
 
-    <!-- ================= HEADER ================= -->
-    <header class="page-header">
-        <div class="brand">NUMERIS47</div>
-        <h1>استمارة معلومات الأطباء</h1>
-        <p>Fiche d'informations du médecins</p>
-    </header>
+    <!-- ========== HEADER ========== -->
+    <div class="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 px-6 py-10 md:px-16 md:py-12 relative overflow-hidden">
 
-    <!-- ================= FORM CARD ================= -->
-    <main class="card">
+        <div class="absolute -top-20 -right-20 w-64 h-64 bg-white/10 rounded-full"></div>
+        <div class="absolute -bottom-20 -left-20 w-80 h-80 bg-white/5 rounded-full"></div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-white/5 rounded-full"></div>
 
-        <div id="offline-banner" class="offline-banner hidden"></div>
+        <div class="relative">
 
-        <!-- ---------- FORM ---------- -->
-        <form id="doctor-form" novalidate autocomplete="on">
+            <!-- Logos + State info -->
+            <div class="flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-6 sm:gap-4 mb-8">
 
-            <!-- Nom (family name) -->
-            <div class="form-group" id="fg-nom">
-                <label for="doc-nom">
-                    اللقب <span class="req">*</span>
-                    <small>— Nom de famille</small>
-                </label>
-                <input type="text" id="doc-nom" name="nom"
-                       dir="auto" inputmode="text"
-                       placeholder="Ex: Ferhat"
-                       autocomplete="family-name" required>
-                <span class="hint">حروف فقط  (فرنسية) — Lettres uniquement</span>
-                <p class="field-error" id="err-nom"></p>
+                <div class="flex items-center gap-4">
+                    <div class="flex-shrink-0">
+                        <div class="w-20 h-20 md:w-28 md:h-28 bg-white rounded-full shadow-2xl flex items-center justify-center p-2 DF-logo-container">
+                            <img src="logosante.png" alt="Ministère de la Santé"
+                                 class="w-full h-full object-contain rounded-full"
+                                 onerror="this.parentElement.innerHTML='<span class=\'text-3xl\'>🏛️</span>'">
+                        </div>
+                    </div>
+                    <div class="hidden sm:block text-left">
+                        <p class="text-white font-bold text-xs md:text-sm mb-1" dir="rtl">
+                            الجمهورية الجزائرية الديمقراطية الشعبية
+                        </p>
+                        <p class="text-blue-100 font-medium text-xs md:text-sm mb-2">
+                            République Algérienne Démocratique et Populaire
+                        </p>
+                        <p class="text-white font-bold text-xs md:text-sm" dir="rtl">وزارة الصحة</p>
+                        <p class="text-blue-100 font-medium text-xs md:text-sm">Ministère de la Santé</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <div class="hidden sm:block text-right">
+                        <p class="text-blue-100 font-medium text-sm md:text-base" dir="rtl">
+                            مديرية الصحة والسكان - غرداية
+                        </p>
+                        <p class="text-blue-200 text-xs md:text-sm mt-1">
+                            Direction de la Santé et de la Population - Ghardaia
+                        </p>
+                        <p class="text-blue-200 text-xs md:text-sm mt-2" dir="rtl">
+                            خلية الرقمنة
+                        </p>
+                        <p class="text-blue-200 text-xs md:text-sm">
+                            Cellule de Numérisation
+                        </p>
+                    </div>
+                    <div class="flex-shrink-0">
+                        <div class="w-20 h-20 md:w-28 md:h-28 bg-white rounded-full shadow-2xl flex items-center justify-center p-2 DF-logo-container">
+                            <img src="DSPLOGO.png" alt="DSP Ghardaia"
+                                 class="w-full h-full object-contain rounded-full"
+                                 onerror="this.parentElement.innerHTML='<span class=\'text-3xl\'>🏥</span>'">
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <!-- Prénom (given name) -->
-            <div class="form-group" id="fg-prenom">
-                <label for="doc-prenom">
-                    الاسم <span class="req">*</span>
-                    <small>— Prénom</small>
-                </label>
-                <input type="text" id="doc-prenom" name="prenom"
-                       dir="auto" inputmode="text"
-                       placeholder="Ex: Mohamed"
-                       autocomplete="given-name" required>
-                <span class="hint">حروف فقط (فرنسية) — Lettres uniquement</span>
-                <p class="field-error" id="err-prenom"></p>
+            <!-- Title -->
+            <div class="border-t border-white/20 pt-8 text-center">
+                <h2 class="text-xl md:text-3xl font-bold text-white mb-2">
+                    Fiche d'Informations du Médecin
+                </h2>
+                <p class="text-lg md:text-xl text-blue-100 font-medium" dir="rtl">
+                    استمارة معلومات الطبيب
+                </p>
+                <p class="text-blue-200 text-xs md:text-sm mt-3">
+                    Collecte des données professionnelles / جمع البيانات المهنية
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== FORM BODY ========== -->
+    <div class="p-6 md:p-14">
+        <form id="DF-form" class="space-y-8 max-w-5xl mx-auto" novalidate>
+
+            <!-- Offline banner -->
+            <div id="DF-offline" class="hidden bg-amber-50 border border-amber-200 rounded-xl p-4 text-sm text-amber-800 leading-relaxed text-center">
+                ⚠️ Connexion au serveur impossible pour le moment. Vous pouvez remplir le formulaire, il sera renvoyé à l'envoi.
+                <span dir="rtl" class="block mt-1">تعذّر الاتصال بالخادم حاليًا. يمكنك ملء الاستمارة وسيُعاد المحاولة عند الإرسال.</span>
             </div>
 
-            <!-- Grade -->
-            <div class="form-group" id="fg-grade">
-                <label for="doc-grade">
-                    الرتبة <span class="req">*</span>
-                    <small>— Grade</small>
+            <!-- =========== NOM + PRÉNOM =========== -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+
+                <!-- Nom -->
+                <div id="DF-fg-nom">
+                    <label for="DF-nom" class="block mb-3">
+                        <span class="flex items-center justify-between gap-4">
+                            <span class="text-base font-semibold text-gray-900">Nom <span class="text-red-500">*</span></span>
+                            <span dir="rtl" class="text-sm font-medium text-gray-500">اللقب *</span>
+                        </span>
+                    </label>
+                    <input type="text" id="DF-nom" name="nom" required
+                           dir="auto" autocomplete="family-name"
+                           placeholder="Ex: Benali / مثال: بن علي"
+                           class="DF-input w-full px-5 py-4 bg-white border border-gray-300 rounded-xl text-gray-900 text-base font-medium">
+                    <span class="DF-hint">Lettres uniquement (AR/FR) — حروف فقط (عربية أو فرنسية)</span>
+                    <p class="DF-field-error" id="DF-err-nom"></p>
+                </div>
+
+                <!-- Prénom -->
+                <div id="DF-fg-prenom">
+                    <label for="DF-prenom" class="block mb-3">
+                        <span class="flex items-center justify-between gap-4">
+                            <span class="text-base font-semibold text-gray-900">Prénom <span class="text-red-500">*</span></span>
+                            <span dir="rtl" class="text-sm font-medium text-gray-500">الاسم *</span>
+                        </span>
+                    </label>
+                    <input type="text" id="DF-prenom" name="prenom" required
+                           dir="auto" autocomplete="given-name"
+                           placeholder="Ex: Mohamed / مثال: محمد"
+                           class="DF-input w-full px-5 py-4 bg-white border border-gray-300 rounded-xl text-gray-900 text-base font-medium">
+                    <span class="DF-hint">Lettres uniquement (AR/FR) — حروف فقط (عربية أو فرنسية)</span>
+                    <p class="DF-field-error" id="DF-err-prenom"></p>
+                </div>
+            </div>
+
+            <!-- =========== GRADE =========== -->
+            <div id="DF-fg-grade">
+                <label for="DF-grade" class="block mb-3">
+                    <span class="flex items-center justify-between gap-4">
+                        <span class="text-base font-semibold text-gray-900">Grade <span class="text-red-500">*</span></span>
+                        <span dir="rtl" class="text-sm font-medium text-gray-500">الرتبة *</span>
+                    </span>
                 </label>
-                <select id="doc-grade" name="grade" required>
-                    <option value="">— اختر الرتبة / Choisir le grade —</option>
-                    <option value="Médecin généraliste de santé publique">
-                        Médecin généraliste de santé publique
-                    </option>
-                    <option value="Médecin généraliste principal de santé publique">
-                        Médecin généraliste principal de santé publique
-                    </option>
-                    <option value="Médecin généraliste en chef de santé publique">
-                        Médecin généraliste en chef de santé publique
-                    </option>
+                <select id="DF-grade" name="grade" required
+                        class="DF-input w-full px-5 py-4 bg-white border border-gray-300 rounded-xl text-gray-900 text-base font-medium appearance-none"
+                        style="background-image:url('data:image/svg+xml;charset=UTF-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%2364748b%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpolyline points=%226 9 12 15 18 9%22/%3E%3C/svg%3E');background-repeat:no-repeat;background-position:right 16px center;background-size:18px;padding-right:48px;">
+                    <option value="" disabled selected>— Sélectionnez votre grade / اختر الرتبة —</option>
+                    <option value="Médecin généraliste de santé publique">Médecin généraliste de santé publique</option>
+                    <option value="Médecin généraliste principal de santé publique">Médecin généraliste principal de santé publique</option>
+                    <option value="Médecin généraliste en chef de santé publique">Médecin généraliste en chef de santé publique</option>
                 </select>
-                <p class="field-error" id="err-grade"></p>
+                <p class="DF-field-error" id="DF-err-grade"></p>
             </div>
 
-            <!-- NIN -->
-            <div class="form-group" id="fg-nin">
-                <label for="doc-nin">
-                    الرقم التعريفي الوطني <span class="req">*</span>
-                    <small>— NIN (18 chiffres)</small>
-                </label>
-                <input type="text" id="doc-nin" name="nin"
-                       dir="ltr" inputmode="numeric" maxlength="18"
-                       placeholder="000000000000000000"
-                       autocomplete="off" required>
-                <span class="hint">أرقام فقط — Chiffres uniquement (18)</span>
-                <p class="field-error" id="err-nin"></p>
+            <!-- =========== NIN + NSS =========== -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+
+                <!-- NIN -->
+                <div id="DF-fg-nin">
+                    <label for="DF-nin" class="block mb-3">
+                        <span class="flex items-center justify-between gap-4">
+                            <span class="text-base font-semibold text-gray-900">
+                                NIN <span class="text-red-500">*</span>
+                                <span class="text-xs font-normal text-gray-500 ml-1">(18 chiffres)</span>
+                            </span>
+                            <span dir="rtl" class="text-sm font-medium text-gray-500">الرقم التعريفي الوطني *</span>
+                        </span>
+                    </label>
+                    <input type="text" id="DF-nin" name="nin" required
+                           dir="ltr" inputmode="numeric" maxlength="18"
+                           autocomplete="off"
+                           placeholder="000000000000000000"
+                           class="DF-input w-full px-5 py-4 bg-white border border-gray-300 rounded-xl text-gray-900 text-base font-medium tracking-widest">
+                    <span class="DF-hint">Chiffres uniquement — أرقام فقط (18)</span>
+                    <p class="DF-field-error" id="DF-err-nin"></p>
+                </div>
+
+                <!-- NSS -->
+                <div id="DF-fg-nss">
+                    <label for="DF-nss" class="block mb-3">
+                        <span class="flex items-center justify-between gap-4">
+                            <span class="text-base font-semibold text-gray-900">
+                                NSS
+                                <span class="text-xs font-normal text-gray-500 ml-1">(Optionnel)</span>
+                            </span>
+                            <span dir="rtl" class="text-sm font-medium text-gray-500">رقم الضمان الاجتماعي (اختياري)</span>
+                        </span>
+                    </label>
+                    <input type="text" id="DF-nss" name="nss"
+                           dir="ltr" inputmode="numeric" maxlength="15"
+                           autocomplete="off"
+                           placeholder="Optionnel / اختياري"
+                           class="DF-input w-full px-5 py-4 bg-white border border-gray-300 rounded-xl text-gray-900 text-base font-medium tracking-widest">
+                    <span class="DF-hint">Chiffres uniquement (9–15) — أرقام فقط</span>
+                    <p class="DF-field-error" id="DF-err-nss"></p>
+                </div>
             </div>
 
-            <!-- NSS (optionnel) -->
-            <div class="form-group" id="fg-nss">
-                <label for="doc-nss">
-                    رقم الضمان الاجتماعي
-                    <small>— NSS (optionnel)</small>
-                </label>
-                <input type="text" id="doc-nss" name="nss"
-                       dir="ltr" inputmode="numeric" maxlength="15"
-                       placeholder="اختياري / Optionnel"
-                       autocomplete="off">
-                <span class="hint">أرقام فقط — Chiffres uniquement</span>
-                <p class="field-error" id="err-nss"></p>
+            <!-- =========== TÉLÉPHONE + EMAIL =========== -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+
+                <!-- Téléphone -->
+                <div id="DF-fg-phone">
+                    <label for="DF-phone" class="block mb-3">
+                        <span class="flex items-center justify-between gap-4">
+                            <span class="text-base font-semibold text-gray-900">Téléphone <span class="text-red-500">*</span></span>
+                            <span dir="rtl" class="text-sm font-medium text-gray-500">رقم الهاتف *</span>
+                        </span>
+                    </label>
+                    <input type="tel" id="DF-phone" name="phone" required
+                           dir="ltr" inputmode="tel"
+                           autocomplete="tel"
+                           placeholder="0555 12 34 56"
+                           class="DF-input w-full px-5 py-4 bg-white border border-gray-300 rounded-xl text-gray-900 text-base font-medium">
+                    <span class="DF-hint">Chiffres et + ( ) - — أرقام و + ( ) -</span>
+                    <p class="DF-field-error" id="DF-err-phone"></p>
+                </div>
+
+                <!-- Email -->
+                <div id="DF-fg-email">
+                    <label for="DF-email" class="block mb-3">
+                        <span class="flex items-center justify-between gap-4">
+                            <span class="text-base font-semibold text-gray-900">E-mail <span class="text-red-500">*</span></span>
+                            <span dir="rtl" class="text-sm font-medium text-gray-500">البريد الإلكتروني *</span>
+                        </span>
+                    </label>
+                    <input type="email" id="DF-email" name="email" required
+                           dir="ltr" inputmode="email"
+                           autocomplete="email"
+                           placeholder="exemple@domain.com"
+                           class="DF-input w-full px-5 py-4 bg-white border border-gray-300 rounded-xl text-gray-900 text-base font-medium">
+                    <span class="DF-hint">Lettres latines, chiffres, @ . _ - +</span>
+                    <p class="DF-field-error" id="DF-err-email"></p>
+                </div>
             </div>
 
-            <!-- Téléphone -->
-            <div class="form-group" id="fg-phone">
-                <label for="doc-phone">
-                    رقم الهاتف <span class="req">*</span>
-                    <small>— Numéro de téléphone</small>
-                </label>
-                <input type="tel" id="doc-phone" name="phone"
-                       dir="ltr" inputmode="tel"
-                       placeholder="0555 12 34 56"
-                       autocomplete="tel" required>
-                <span class="hint">أرقام، +، مسافات، شرطات — Chiffres et + ( ) -</span>
-                <p class="field-error" id="err-phone"></p>
-            </div>
-
-            <!-- E-mail -->
-            <div class="form-group" id="fg-email">
-                <label for="doc-email">
-                    البريد الإلكتروني <span class="req">*</span>
-                    <small>— Adresse e-mail</small>
-                </label>
-                <input type="email" id="doc-email" name="email"
-                       dir="ltr" inputmode="email"
-                       placeholder="exemple@domain.com"
-                       autocomplete="email" required>
-                <span class="hint">حروف لاتينية، أرقام، @ . _ - +</span>
-                <p class="field-error" id="err-email"></p>
+            <!-- =========== Consent =========== -->
+            <div class="bg-indigo-50 border border-indigo-100 rounded-xl p-4 md:p-5">
+                <p class="text-sm text-indigo-900 leading-relaxed">
+                    🔒 Les informations fournies sont utilisées uniquement à des fins de numérisation et ne seront partagées avec aucun tiers.
+                </p>
+                <p dir="rtl" class="text-sm text-indigo-800 mt-2 leading-relaxed">
+                    🔒 تُستخدم المعلومات المقدَّمة لأغراض الرقمنة فقط، ولن تُشارَك مع أي طرف ثالث.
+                </p>
             </div>
 
             <!-- Honeypot -->
             <div style="position:absolute;left:-9999px;" aria-hidden="true">
-                <label for="doc-website">Website</label>
-                <input type="text" id="doc-website" name="website" tabindex="-1" autocomplete="off">
+                <label for="DF-website">Website</label>
+                <input type="text" id="DF-website" name="website" tabindex="-1" autocomplete="off">
             </div>
 
-            <p class="doc-note">
-                تُستخدم هذه البيانات لأغراض الرقمنة فقط، ولن تُشارَك مع أي طرف ثالث.
-                <br>
-                Ces informations sont utilisées uniquement à des fins de numérisation et ne seront partagées avec aucun tiers.
-            </p>
+            <!-- =========== SUCCESS ALERT =========== -->
+            <div id="DF-successAlert" class="hidden bg-green-50 border border-green-200 rounded-xl p-5 DF-alert-show">
+                <div class="flex items-start gap-4">
+                    <div class="flex-shrink-0 w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-base font-semibold text-green-800">
+                            Merci ! Vos informations ont été enregistrées avec succès.
+                        </p>
+                        <p dir="rtl" class="text-base text-green-600 mt-1">
+                            شكرًا! تم تسجيل معلوماتك بنجاح.
+                        </p>
+                        <div id="DF-refBadge" class="inline-block mt-3 bg-white border border-dashed border-green-300 text-green-700 font-bold px-4 py-2 rounded-lg text-sm tracking-wider" dir="ltr">
+                            REF: —
+                        </div>
+                        <div id="DF-recap" class="mt-4 rounded-lg overflow-hidden border border-green-200"></div>
+                        <button type="button" onclick="DF_reset()"
+                                class="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-indigo-600 hover:text-indigo-800 transition-colors">
+                            ↻ Enregistrer un autre médecin / تسجيل طبيب آخر
+                        </button>
+                    </div>
+                </div>
+            </div>
 
-            <button type="submit" class="btn" id="doctor-submit">
-                إرسال الاستمارة — Envoyer
+            <!-- =========== ERROR ALERT =========== -->
+            <div id="DF-errorAlert" class="hidden bg-red-50 border border-red-200 rounded-xl p-5 DF-alert-show">
+                <div class="flex items-start gap-4">
+                    <div class="flex-shrink-0 w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                        <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-base font-semibold text-red-800">
+                            Une erreur est survenue lors de l'envoi. Veuillez réessayer.
+                        </p>
+                        <p dir="rtl" class="text-base text-red-600 mt-1">
+                            حدث خطأ أثناء الإرسال. يرجى المحاولة مرة أخرى.
+                        </p>
+                        <p id="DF-errorMsg" class="text-sm text-red-500 mt-2 font-medium"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- =========== SUBMIT BUTTON =========== -->
+            <button type="submit" id="DF-submitBtn"
+                    class="DF-btn-primary w-full text-white font-bold py-5 rounded-xl flex justify-center items-center gap-4 text-lg">
+                <span id="DF-btnText_fr">Envoyer la fiche</span>
+                <span class="text-white/60">/</span>
+                <span id="DF-btnText_ar" dir="rtl">إرسال الاستمارة</span>
+                <div id="DF-btnSpinner" class="DF-spinner hidden"></div>
             </button>
+
         </form>
 
-        <!-- ---------- SUCCESS ---------- -->
-        <div id="doctor-success" class="success-box hidden">
-            <div class="check">✓</div>
-            <h2>تم إرسال معلوماتك بنجاح</h2>
-            <p>
-                شكرًا لك. تم استلام بياناتك وسيتم التحقق منها من طرف الفريق المختص.
-                <br>
-                <span style="direction:ltr;display:inline-block;">Merci, vos informations ont bien été enregistrées.</span>
+        <!-- ========== FOOTER ========== -->
+        <div class="text-center mt-12 pt-8 border-t border-gray-200">
+            <p class="text-sm text-gray-500">
+                © 2026 DSP Ghardaia — Direction de la Santé et de la Population
             </p>
-            <div class="ref-badge" id="doctor-ref">REF: —</div>
-
-            <div class="recap" id="doctor-recap"></div>
-
-            <button type="button" class="btn btn-secondary" style="margin-top:22px;" onclick="resetDoctorForm()">
-                تسجيل طبيب آخر — Nouvelle fiche
-            </button>
+            <p class="text-sm text-gray-400 mt-1" dir="rtl">
+                مديرية الصحة والسكان — غرداية، الجزائر
+            </p>
         </div>
-
-    </main>
-
-    <!-- ================= FOOTER ================= -->
-    <footer class="page-footer">
-        <strong>Numeris47</strong> — منصة الرقمنة<br>
-        © <span id="year"></span> جميع الحقوق محفوظة
-    </footer>
-
+    </div>
 </div>
 
+<!-- ================= JAVASCRIPT ================= -->
 <script>
 /* =========================================================================
    CONFIGURATION
    ========================================================================= */
-const API_BASE = 'https://empty-grass-e190.05juillet-ballouh-info-8e2.workers.dev';
-const DOCTORS_ENDPOINT = '/api/doctors';
+const DF_API_BASE = 'https://empty-grass-e190.05juillet-ballouh-info-8e2.workers.dev';
+const DF_ENDPOINT = '/api/doctors';
+
+const DF_GRADE_VALUES = [
+    'Médecin généraliste de santé publique',
+    'Médecin généraliste principal de santé publique',
+    'Médecin généraliste en chef de santé publique'
+];
 
 /* =========================================================================
    HELPERS
    ========================================================================= */
-function $(id) { return document.getElementById(id); }
+const $ = id => document.getElementById(id);
 
-function showToast(message, type = 'info') {
-    const c = $('toast-container');
-    const t = document.createElement('div');
-    t.className = 'toast ' + (type === 'error' ? 'error' : type === 'success' ? 'success' : '');
-    t.textContent = message;
-    c.appendChild(t);
-    setTimeout(() => t.remove(), 3800);
-}
-
-function escapeHtml(str) {
+function DF_escapeHtml(str) {
     if (!str) return '';
     return String(str)
-        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+        .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+        .replace(/"/g,'&quot;').replace(/'/g,'&#039;');
 }
 
-function setError(fieldId, errId, message) {
-    const fg = $('fg-' + fieldId);
+function DF_setError(field, errId, message) {
+    const fg = $('DF-fg-' + field);
     const el = $(errId);
-    if (message) { fg.classList.add('has-error'); el.textContent = message; }
-    else         { fg.classList.remove('has-error'); el.textContent = ''; }
+    if (message) {
+        fg.classList.add('DF-has-error');
+        el.textContent = message;
+        el.classList.add('show');
+    } else {
+        fg.classList.remove('DF-has-error');
+        el.textContent = '';
+        el.classList.remove('show');
+    }
 }
-function clearAllErrors() {
+
+function DF_clearAllErrors() {
     ['nom','prenom','grade','nin','nss','phone','email']
-        .forEach(f => setError(f, 'err-' + f, ''));
+        .forEach(f => DF_setError(f, 'DF-err-' + f, ''));
 }
 
 /* =========================================================================
-   STRICT INPUT FILTERS
-   Each field only accepts what it is meant for.
+   STRICT INPUT FILTERS — each field only accepts what it is meant for
    ========================================================================= */
 
-/* -- Letters only (Arabic OR Latin), with spaces, hyphen, apostrophe -- */
-const NAME_ALLOWED = /[\p{Script=Arabic}\p{Script=Latin}\s'’\-]/u;
-const NAME_DISALLOWED_G = /[^\p{Script=Arabic}\p{Script=Latin}\s'’\-]/gu;
+/* -- Letters only (Arabic OR Latin), with spaces, hyphens, apostrophes -- */
+const DF_NAME_ALLOWED       = /[\p{Script=Arabic}\p{Script=Latin}\s'’\-]/u;
+const DF_NAME_DISALLOWED_G  = /[^\p{Script=Arabic}\p{Script=Latin}\s'’\-]/gu;
 
-function attachNameFilter(el) {
-    el.addEventListener('beforeinput', (e) => {
-        if (e.data && !NAME_ALLOWED.test(e.data)) e.preventDefault();
+function DF_attachNameFilter(el) {
+    el.addEventListener('beforeinput', e => {
+        if (e.data && !DF_NAME_ALLOWED.test(e.data)) e.preventDefault();
     });
     el.addEventListener('input', () => {
-        const cleaned = el.value.replace(NAME_DISALLOWED_G, '').replace(/\s{2,}/g, ' ');
+        const cleaned = el.value.replace(DF_NAME_DISALLOWED_G, '').replace(/\s{2,}/g, ' ');
         if (cleaned !== el.value) el.value = cleaned;
     });
-    el.addEventListener('paste', (e) => {
+    el.addEventListener('paste', e => {
         e.preventDefault();
         const text = (e.clipboardData || window.clipboardData).getData('text');
-        const cleaned = (text || '').replace(NAME_DISALLOWED_G, '');
+        const cleaned = (text || '').replace(DF_NAME_DISALLOWED_G, '');
         document.execCommand('insertText', false, cleaned);
     });
 }
 
 /* -- Digits only -- */
-function attachDigitsFilter(el, maxLen) {
-    el.addEventListener('beforeinput', (e) => {
+function DF_attachDigitsFilter(el, maxLen) {
+    el.addEventListener('beforeinput', e => {
         if (e.data && /\D/.test(e.data)) e.preventDefault();
     });
     el.addEventListener('input', () => {
@@ -580,7 +625,7 @@ function attachDigitsFilter(el, maxLen) {
         const sliced  = maxLen ? cleaned.slice(0, maxLen) : cleaned;
         if (sliced !== el.value) el.value = sliced;
     });
-    el.addEventListener('paste', (e) => {
+    el.addEventListener('paste', e => {
         e.preventDefault();
         const text = (e.clipboardData || window.clipboardData).getData('text') || '';
         const digits = text.replace(/\D/g, '');
@@ -590,305 +635,309 @@ function attachDigitsFilter(el, maxLen) {
 }
 
 /* -- Phone: digits + + ( ) - space -- */
-const PHONE_ALLOWED = /[\d+\s\-()]/;
-const PHONE_DISALLOWED_G = /[^\d+\s\-()]/g;
+const DF_PHONE_ALLOWED       = /[\d+\s\-()]/;
+const DF_PHONE_DISALLOWED_G  = /[^\d+\s\-()]/g;
 
-function attachPhoneFilter(el) {
-    el.addEventListener('beforeinput', (e) => {
-        if (e.data && !PHONE_ALLOWED.test(e.data)) e.preventDefault();
+function DF_attachPhoneFilter(el) {
+    el.addEventListener('beforeinput', e => {
+        if (e.data && !DF_PHONE_ALLOWED.test(e.data)) e.preventDefault();
     });
     el.addEventListener('input', () => {
-        const cleaned = el.value.replace(PHONE_DISALLOWED_G, '');
+        const cleaned = el.value.replace(DF_PHONE_DISALLOWED_G, '');
         if (cleaned !== el.value) el.value = cleaned;
     });
-    el.addEventListener('paste', (e) => {
+    el.addEventListener('paste', e => {
         e.preventDefault();
         const text = (e.clipboardData || window.clipboardData).getData('text') || '';
-        document.execCommand('insertText', false, text.replace(PHONE_DISALLOWED_G, ''));
+        document.execCommand('insertText', false, text.replace(DF_PHONE_DISALLOWED_G, ''));
     });
 }
 
 /* -- Email: latin letters, digits, @ . _ - + % -- */
-const EMAIL_ALLOWED = /[a-zA-Z0-9@._+\-%]/;
-const EMAIL_DISALLOWED_G = /[^a-zA-Z0-9@._+\-%]/g;
+const DF_EMAIL_ALLOWED       = /[a-zA-Z0-9@._+\-%]/;
+const DF_EMAIL_DISALLOWED_G  = /[^a-zA-Z0-9@._+\-%]/g;
 
-function attachEmailFilter(el) {
-    el.addEventListener('beforeinput', (e) => {
-        if (e.data && !EMAIL_ALLOWED.test(e.data)) e.preventDefault();
+function DF_attachEmailFilter(el) {
+    el.addEventListener('beforeinput', e => {
+        if (e.data && !DF_EMAIL_ALLOWED.test(e.data)) e.preventDefault();
     });
     el.addEventListener('input', () => {
-        const cleaned = el.value.replace(EMAIL_DISALLOWED_G, '');
+        const cleaned = el.value.replace(DF_EMAIL_DISALLOWED_G, '');
         if (cleaned !== el.value) el.value = cleaned;
     });
-    el.addEventListener('paste', (e) => {
+    el.addEventListener('paste', e => {
         e.preventDefault();
         const text = (e.clipboardData || window.clipboardData).getData('text') || '';
-        document.execCommand('insertText', false, text.replace(EMAIL_DISALLOWED_G, ''));
+        document.execCommand('insertText', false, text.replace(DF_EMAIL_DISALLOWED_G, ''));
     });
 }
 
 /* =========================================================================
    VALIDATION
    ========================================================================= */
-const GRADE_VALUES = [
-    'Médecin généraliste de santé publique',
-    'Médecin généraliste principal de santé publique',
-    'Médecin généraliste en chef de santé publique'
-];
+const DF_NAME_REGEX = /^[\p{Script=Arabic}\p{Script=Latin}][\p{Script=Arabic}\p{Script=Latin}\s'’\-]*$/u;
 
-const NAME_REGEX  = /^[\p{Script=Arabic}\p{Script=Latin}][\p{Script=Arabic}\p{Script=Latin}\s'’\-]*$/u;
-
-function validateForm() {
-    clearAllErrors();
+function DF_validate() {
+    DF_clearAllErrors();
     let ok = true;
     let firstInvalid = null;
 
-    /* ---- Nom ---- */
-    const nom = $('doc-nom').value.trim().replace(/\s+/g, ' ');
+    /* Nom */
+    const nom = $('DF-nom').value.trim().replace(/\s+/g, ' ');
     if (!nom) {
-        setError('nom', 'err-nom', 'هذا الحقل مطلوب — Champ obligatoire');
-        ok = false; firstInvalid = firstInvalid || 'doc-nom';
+        DF_setError('nom', 'DF-err-nom', 'Ce champ est obligatoire — هذا الحقل مطلوب');
+        ok = false; firstInvalid = firstInvalid || 'DF-nom';
     } else if (nom.length < 2) {
-        setError('nom', 'err-nom', 'اللقب قصير جدًا (حرفان على الأقل)');
-        ok = false; firstInvalid = firstInvalid || 'doc-nom';
+        DF_setError('nom', 'DF-err-nom', 'Nom trop court (min. 2 caractères)');
+        ok = false; firstInvalid = firstInvalid || 'DF-nom';
     } else if (nom.length > 60) {
-        setError('nom', 'err-nom', 'اللقب طويل جدًا (60 حرفًا كحد أقصى)');
-        ok = false; firstInvalid = firstInvalid || 'doc-nom';
-    } else if (!NAME_REGEX.test(nom)) {
-        setError('nom', 'err-nom', 'حروف عربية أو فرنسية فقط');
-        ok = false; firstInvalid = firstInvalid || 'doc-nom';
+        DF_setError('nom', 'DF-err-nom', 'Nom trop long (max. 60 caractères)');
+        ok = false; firstInvalid = firstInvalid || 'DF-nom';
+    } else if (!DF_NAME_REGEX.test(nom)) {
+        DF_setError('nom', 'DF-err-nom', 'Lettres arabes ou latines uniquement — حروف عربية أو فرنسية فقط');
+        ok = false; firstInvalid = firstInvalid || 'DF-nom';
     }
 
-    /* ---- Prénom ---- */
-    const prenom = $('doc-prenom').value.trim().replace(/\s+/g, ' ');
+    /* Prénom */
+    const prenom = $('DF-prenom').value.trim().replace(/\s+/g, ' ');
     if (!prenom) {
-        setError('prenom', 'err-prenom', 'هذا الحقل مطلوب — Champ obligatoire');
-        ok = false; firstInvalid = firstInvalid || 'doc-prenom';
+        DF_setError('prenom', 'DF-err-prenom', 'Ce champ est obligatoire — هذا الحقل مطلوب');
+        ok = false; firstInvalid = firstInvalid || 'DF-prenom';
     } else if (prenom.length < 2) {
-        setError('prenom', 'err-prenom', 'الاسم قصير جدًا (حرفان على الأقل)');
-        ok = false; firstInvalid = firstInvalid || 'doc-prenom';
+        DF_setError('prenom', 'DF-err-prenom', 'Prénom trop court (min. 2 caractères)');
+        ok = false; firstInvalid = firstInvalid || 'DF-prenom';
     } else if (prenom.length > 60) {
-        setError('prenom', 'err-prenom', 'الاسم طويل جدًا (60 حرفًا كحد أقصى)');
-        ok = false; firstInvalid = firstInvalid || 'doc-prenom';
-    } else if (!NAME_REGEX.test(prenom)) {
-        setError('prenom', 'err-prenom', 'حروف عربية أو فرنسية فقط');
-        ok = false; firstInvalid = firstInvalid || 'doc-prenom';
+        DF_setError('prenom', 'DF-err-prenom', 'Prénom trop long (max. 60 caractères)');
+        ok = false; firstInvalid = firstInvalid || 'DF-prenom';
+    } else if (!DF_NAME_REGEX.test(prenom)) {
+        DF_setError('prenom', 'DF-err-prenom', 'Lettres arabes ou latines uniquement — حروف عربية أو فرنسية فقط');
+        ok = false; firstInvalid = firstInvalid || 'DF-prenom';
     }
 
-    /* ---- Grade ---- */
-    const grade = $('doc-grade').value;
+    /* Grade */
+    const grade = $('DF-grade').value;
     if (!grade) {
-        setError('grade', 'err-grade', 'يرجى اختيار الرتبة — Veuillez choisir le grade');
-        ok = false; firstInvalid = firstInvalid || 'doc-grade';
-    } else if (!GRADE_VALUES.includes(grade)) {
-        setError('grade', 'err-grade', 'رتبة غير صحيحة');
-        ok = false; firstInvalid = firstInvalid || 'doc-grade';
+        DF_setError('grade', 'DF-err-grade', 'Veuillez sélectionner un grade — يرجى اختيار الرتبة');
+        ok = false; firstInvalid = firstInvalid || 'DF-grade';
+    } else if (!DF_GRADE_VALUES.includes(grade)) {
+        DF_setError('grade', 'DF-err-grade', 'Grade invalide — رتبة غير صحيحة');
+        ok = false; firstInvalid = firstInvalid || 'DF-grade';
     }
 
-    /* ---- NIN ---- */
-    const nin = $('doc-nin').value.replace(/\D/g, '');
+    /* NIN */
+    const nin = $('DF-nin').value.replace(/\D/g, '');
     if (!nin) {
-        setError('nin', 'err-nin', 'هذا الحقل مطلوب — Champ obligatoire');
-        ok = false; firstInvalid = firstInvalid || 'doc-nin';
+        DF_setError('nin', 'DF-err-nin', 'Ce champ est obligatoire — هذا الحقل مطلوب');
+        ok = false; firstInvalid = firstInvalid || 'DF-nin';
     } else if (nin.length !== 18) {
-        setError('nin', 'err-nin', 'يجب أن يتكون من 18 رقمًا (المُدخل: ' + nin.length + ')');
-        ok = false; firstInvalid = firstInvalid || 'doc-nin';
+        DF_setError('nin', 'DF-err-nin', 'Le NIN doit contenir 18 chiffres (actuel : ' + nin.length + ')');
+        ok = false; firstInvalid = firstInvalid || 'DF-nin';
     }
 
-    /* ---- NSS ---- */
-    const nss = $('doc-nss').value.replace(/\D/g, '');
-    if (nss) {
-        if (nss.length < 9 || nss.length > 15) {
-            setError('nss', 'err-nss', 'طول الرقم غير صحيح (بين 9 و15 رقمًا)');
-            ok = false; firstInvalid = firstInvalid || 'doc-nss';
-        }
+    /* NSS (optionnel) */
+    const nss = $('DF-nss').value.replace(/\D/g, '');
+    if (nss && (nss.length < 9 || nss.length > 15)) {
+        DF_setError('nss', 'DF-err-nss', 'Longueur invalide (9–15 chiffres)');
+        ok = false; firstInvalid = firstInvalid || 'DF-nss';
     }
 
-    /* ---- Téléphone ---- */
-    const phoneRaw = $('doc-phone').value.trim();
+    /* Téléphone */
+    const phoneRaw = $('DF-phone').value.trim();
     const phone = phoneRaw.replace(/[\s\-().]/g, '');
     if (!phoneRaw) {
-        setError('phone', 'err-phone', 'هذا الحقل مطلوب — Champ obligatoire');
-        ok = false; firstInvalid = firstInvalid || 'doc-phone';
+        DF_setError('phone', 'DF-err-phone', 'Ce champ est obligatoire — هذا الحقل مطلوب');
+        ok = false; firstInvalid = firstInvalid || 'DF-phone';
     } else if (!/^(\+|00)?\d{8,15}$/.test(phone)) {
-        setError('phone', 'err-phone', 'رقم هاتف غير صحيح — Numéro invalide');
-        ok = false; firstInvalid = firstInvalid || 'doc-phone';
+        DF_setError('phone', 'DF-err-phone', 'Numéro de téléphone invalide — رقم هاتف غير صحيح');
+        ok = false; firstInvalid = firstInvalid || 'DF-phone';
     }
 
-    /* ---- E-mail ---- */
-    const email = $('doc-email').value.trim();
+    /* Email */
+    const email = $('DF-email').value.trim();
     if (!email) {
-        setError('email', 'err-email', 'هذا الحقل مطلوب — Champ obligatoire');
-        ok = false; firstInvalid = firstInvalid || 'doc-email';
+        DF_setError('email', 'DF-err-email', 'Ce champ est obligatoire — هذا الحقل مطلوب');
+        ok = false; firstInvalid = firstInvalid || 'DF-email';
     } else if (!/^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/.test(email)) {
-        setError('email', 'err-email', 'بريد إلكتروني غير صحيح — E-mail invalide');
-        ok = false; firstInvalid = firstInvalid || 'doc-email';
+        DF_setError('email', 'DF-err-email', 'Adresse e-mail invalide — بريد إلكتروني غير صحيح');
+        ok = false; firstInvalid = firstInvalid || 'DF-email';
     }
 
     if (firstInvalid) {
         const el = $(firstInvalid);
-        el.scrollIntoView({ behavior:'smooth', block:'center' });
-        setTimeout(() => el.focus({ preventScroll:true }), 350);
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(() => el.focus({ preventScroll: true }), 350);
     }
 
     return ok
-        ? { nom, prenom, full_name: nom + ' ' + prenom, grade, nin, nss: nss || null, phone, email }
+        ? { nom, prenom, grade, nin, nss: nss || null, phone, email }
         : null;
 }
 
 /* =========================================================================
    SUBMIT
    ========================================================================= */
-async function submitDoctor(event) {
+async function DF_submit(event) {
     event.preventDefault();
 
-    if ($('doc-website').value.trim() !== '') return; // honeypot
+    if ($('DF-website').value.trim() !== '') return; // honeypot
 
-    const data = validateForm();
+    /* hide previous alerts */
+    $('DF-successAlert').classList.add('hidden');
+    $('DF-errorAlert').classList.add('hidden');
+
+    const data = DF_validate();
     if (!data) {
-        showToast('يرجى تصحيح الحقول المطلوبة', 'error');
+        DF_showError('Veuillez corriger les champs en rouge — يرجى تصحيح الحقول المطلوبة');
         return;
     }
 
-    const btn = $('doctor-submit');
-    const originalHtml = btn.innerHTML;
+    const btn = $('DF-submitBtn');
+    const spinner = $('DF-btnSpinner');
     btn.disabled = true;
-    btn.innerHTML = '<span class="spinner"></span> جاري الإرسال...';
+    spinner.classList.remove('hidden');
 
     const payload = {
-        nom:       data.nom,
-        prenom:    data.prenom,
-        full_name: data.full_name,
-        grade:     data.grade,
-        nin:       data.nin,
-        nss:       data.nss,
-        phone:     data.phone,
-        email:     data.email
+        nom: data.nom,
+        prenom: data.prenom,
+        full_name: data.nom + ' ' + data.prenom,
+        grade: data.grade,
+        nin: data.nin,
+        nss: data.nss,
+        phone: data.phone,
+        email: data.email
     };
 
     try {
-        const res = await fetch(API_BASE + DOCTORS_ENDPOINT, {
+        const res = await fetch(DF_API_BASE + DF_ENDPOINT, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
         });
 
+        let body = {};
+        try { body = await res.json(); } catch (_) {}
+
         if (!res.ok) {
-            let msg = "تعذّر إرسال الاستمارة — Échec de l'envoi";
-            try {
-                const errBody = await res.json();
-                if (errBody && (errBody.message || errBody.error)) {
-                    msg = errBody.message || errBody.error;
-                }
-            } catch (_) {}
+            const msg = body && (body.message || body.error)
+                ? body.message || body.error
+                : "Échec de l'envoi — فشل الإرسال";
             throw new Error(msg);
         }
 
-        let result = {};
-        try { result = await res.json(); } catch (_) {}
-
-        const reference = (result.reference || result.ref || result.id)
-            ? String(result.reference || result.ref || result.id)
+        const reference = body.reference || body.ref || body.id
+            ? String(body.reference || body.ref || body.id)
             : 'DOC-' + Date.now().toString(36).toUpperCase();
 
-        showSuccess(payload, reference);
-        showToast('تم الإرسال بنجاح', 'success');
-
+        DF_showSuccess(payload, reference);
     } catch (err) {
-        console.error('Submit error:', err);
-        showToast(err.message || 'خطأ في الاتصال بالخادم', 'error');
+        console.error(err);
+        DF_showError(err.message || 'Erreur de connexion au serveur');
     } finally {
         btn.disabled = false;
-        btn.innerHTML = originalHtml;
+        spinner.classList.add('hidden');
     }
 }
 
 /* =========================================================================
-   SUCCESS VIEW
+   SUCCESS / ERROR VIEWS
    ========================================================================= */
-function showSuccess(payload, reference) {
-    $('doctor-form').classList.add('hidden');
-    $('doctor-success').classList.remove('hidden');
+function DF_showSuccess(payload, reference) {
+    $('DF-refBadge').textContent = 'REF: ' + reference;
 
-    $('doctor-ref').textContent = 'REF: ' + reference;
-
-    $('doctor-recap').innerHTML = `
-        <div class="recap-row"><span>Nom / اللقب</span><span>${escapeHtml(payload.nom)}</span></div>
-        <div class="recap-row"><span>Prénom / الاسم</span><span>${escapeHtml(payload.prenom)}</span></div>
-        <div class="recap-row"><span>Grade / الرتبة</span><span>${escapeHtml(payload.grade)}</span></div>
-        <div class="recap-row"><span>NIN</span><span>${escapeHtml(payload.nin)}</span></div>
-        <div class="recap-row"><span>NSS</span><span>${payload.nss ? escapeHtml(payload.nss) : '—'}</span></div>
-        <div class="recap-row"><span>Téléphone</span><span>${escapeHtml(payload.phone)}</span></div>
-        <div class="recap-row"><span>E-mail</span><span>${escapeHtml(payload.email)}</span></div>
+    $('DF-recap').innerHTML = `
+        <div class="recap-row flex justify-between gap-4 px-4 py-2.5 text-sm border-b border-green-200 bg-white">
+            <span class="text-gray-500">Nom / اللقب</span>
+            <span class="font-medium text-gray-900">${DF_escapeHtml(payload.nom)}</span>
+        </div>
+        <div class="recap-row flex justify-between gap-4 px-4 py-2.5 text-sm border-b border-green-200 bg-green-50">
+            <span class="text-gray-500">Prénom / الاسم</span>
+            <span class="font-medium text-gray-900">${DF_escapeHtml(payload.prenom)}</span>
+        </div>
+        <div class="recap-row flex justify-between gap-4 px-4 py-2.5 text-sm border-b border-green-200 bg-white">
+            <span class="text-gray-500">Grade / الرتبة</span>
+            <span class="font-medium text-gray-900 text-right">${DF_escapeHtml(payload.grade)}</span>
+        </div>
+        <div class="recap-row flex justify-between gap-4 px-4 py-2.5 text-sm border-b border-green-200 bg-green-50">
+            <span class="text-gray-500">NIN</span>
+            <span class="font-medium text-gray-900 tracking-wider" dir="ltr">${DF_escapeHtml(payload.nin)}</span>
+        </div>
+        <div class="recap-row flex justify-between gap-4 px-4 py-2.5 text-sm border-b border-green-200 bg-white">
+            <span class="text-gray-500">NSS</span>
+            <span class="font-medium text-gray-900 tracking-wider" dir="ltr">${payload.nss ? DF_escapeHtml(payload.nss) : '—'}</span>
+        </div>
+        <div class="recap-row flex justify-between gap-4 px-4 py-2.5 text-sm border-b border-green-200 bg-green-50">
+            <span class="text-gray-500">Téléphone</span>
+            <span class="font-medium text-gray-900" dir="ltr">${DF_escapeHtml(payload.phone)}</span>
+        </div>
+        <div class="recap-row flex justify-between gap-4 px-4 py-2.5 text-sm bg-white">
+            <span class="text-gray-500">E-mail</span>
+            <span class="font-medium text-gray-900" dir="ltr">${DF_escapeHtml(payload.email)}</span>
+        </div>
     `;
 
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    $('DF-successAlert').classList.remove('hidden');
+    $('DF-form').querySelectorAll('input, select, textarea, button[type="submit"]').forEach(el => {
+        el.disabled = true;
+    });
+
+    $('DF-successAlert').scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
-function resetDoctorForm() {
-    $('doctor-form').reset();
-    clearAllErrors();
-    $('doctor-success').classList.add('hidden');
-    $('doctor-form').classList.remove('hidden');
-    $('doc-nom').focus();
+function DF_showError(msg) {
+    const el = $('DF-errorMsg');
+    if (el) el.textContent = msg;
+    $('DF-errorAlert').classList.remove('hidden');
+    $('DF-errorAlert').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    setTimeout(() => $('DF-errorAlert').classList.add('hidden'), 8000);
+}
+
+function DF_reset() {
+    $('DF-form').reset();
+    DF_clearAllErrors();
+    $('DF-form').querySelectorAll('input, select, textarea, button[type="submit"]').forEach(el => {
+        el.disabled = false;
+    });
+    $('DF-successAlert').classList.add('hidden');
+    $('DF-errorAlert').classList.add('hidden');
+    $('DF-nom').focus();
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 /* =========================================================================
    LIVE ERROR CLEARING
    ========================================================================= */
-['doc-nom','doc-prenom','doc-grade','doc-nin','doc-nss','doc-phone','doc-email']
-.forEach(id => {
+['DF-nom','DF-prenom','DF-grade','DF-nin','DF-nss','DF-phone','DF-email'].forEach(id => {
     const el = $(id);
     if (!el) return;
-    const key = id.replace('doc-', '');
+    const key = id.replace('DF-', '');
     const clear = () => {
-        const fg = $('fg-' + key);
-        if (fg && fg.classList.contains('has-error')) setError(key, 'err-' + key, '');
+        const fg = $('DF-fg-' + key);
+        if (fg && fg.classList.contains('DF-has-error')) DF_setError(key, 'DF-err-' + key, '');
     };
     el.addEventListener('input', clear);
     el.addEventListener('change', clear);
 });
 
 /* =========================================================================
-   BASIC PROTECTION
-   ========================================================================= */
-(function () {
-    document.addEventListener('contextmenu', e => e.preventDefault());
-    document.addEventListener('keydown', e => {
-        if (
-            e.key === 'F12' ||
-            (e.ctrlKey && e.shiftKey && ['I','J','C'].includes(e.key)) ||
-            (e.ctrlKey && e.key === 'U')
-        ) {
-            e.preventDefault();
-            return false;
-        }
-    });
-})();
-
-/* =========================================================================
    INIT
    ========================================================================= */
 document.addEventListener('DOMContentLoaded', () => {
-    $('year').textContent = new Date().getFullYear();
 
-    /* Attach strict filters */
-    attachNameFilter($('doc-nom'));
-    attachNameFilter($('doc-prenom'));
-    attachDigitsFilter($('doc-nin'), 18);
-    attachDigitsFilter($('doc-nss'), 15);
-    attachPhoneFilter($('doc-phone'));
-    attachEmailFilter($('doc-email'));
+    /* Attach strict per-field filters */
+    DF_attachNameFilter($('DF-nom'));
+    DF_attachNameFilter($('DF-prenom'));
+    DF_attachDigitsFilter($('DF-nin'), 18);
+    DF_attachDigitsFilter($('DF-nss'), 15);
+    DF_attachPhoneFilter($('DF-phone'));
+    DF_attachEmailFilter($('DF-email'));
 
-    /* Warn if API unreachable */
-    fetch(API_BASE + '/api/setup-status', { method:'GET' })
+    /* Bind form */
+    $('DF-form').addEventListener('submit', DF_submit);
+
+    /* Soft server-reachability check */
+    fetch(DF_API_BASE + '/api/setup-status', { method: 'GET' })
         .then(r => { if (!r.ok) throw new Error(); })
-        .catch(() => {
-            const b = $('offline-banner');
-            b.textContent = '⚠ تعذّر الاتصال بالخادم حاليًا. يمكنك ملء الاستمارة، وسيُعاد المحاولة عند الإرسال.';
-            b.classList.remove('hidden');
-        });
+        .catch(() => $('DF-offline').classList.remove('hidden'));
 });
 </script>
 
