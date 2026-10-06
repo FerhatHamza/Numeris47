@@ -26,13 +26,17 @@
        MOTIVATIONAL BANNER
        ===================================================================== */
     const DME_motivationalMessages = [
-        { fr: "Merci de faire partie de la transformation digitale", ar: "شكرًا لكونك جزءًا من التحول الرقمي" }
+        { fr: "Vos informations contribuent à la numérisation de la santé", ar: "معلوماتك تساهم في رقمنة قطاع الصحة" },
+        { fr: "Merci de faire partie de la transformation digitale", ar: "شكرًا لكونك جزءًا من التحول الرقمي" },
+        { fr: "Chaque donnée collectée améliore nos services", ar: "كل بيان يتم جمعه يُحسّن خدماتنا" },
+        { fr: "Votre professionnalisme construit l'avenir", ar: "احترافيتك تبني المستقبل" },
+        { fr: "Ensemble, modernisons notre système de santé", ar: "معًا، لنُحدّث نظامنا الصحي" },
+        { fr: "La qualité des soins commence par de bonnes données", ar: "جودة الرعاية تبدأ ببيانات دقيقة" }
     ];
 
     let DME_currentMessageIndex = 0;
     const DME_motivationText   = document.getElementById('DME-motivationText');
     const DME_motivationTextAr = document.getElementById('DME-motivationTextAr');
-    const DME_motivationBanner = document.getElementById('DME-motivationBanner');
 
     function DME_updateMotivationalMessage() {
         if (!DME_motivationText || !DME_motivationTextAr) return;
@@ -122,8 +126,6 @@
     /* =====================================================================
        STRICT INPUT FILTERS
        ===================================================================== */
-
-    /* -- Letters only (Arabic OR Latin), with spaces, hyphens, apostrophes -- */
     const DF_NAME_ALLOWED      = /[\p{Script=Arabic}\p{Script=Latin}\s'’\-]/u;
     const DF_NAME_DISALLOWED_G = /[^\p{Script=Arabic}\p{Script=Latin}\s'’\-]/gu;
 
@@ -144,7 +146,6 @@
         });
     }
 
-    /* -- Digits only -- */
     function DF_attachDigitsFilter(el, maxLen) {
         if (!el) return;
         el.addEventListener('beforeinput', function(e) {
@@ -164,7 +165,6 @@
         });
     }
 
-    /* -- Phone: digits + + ( ) - space -- */
     const DF_PHONE_ALLOWED      = /[\d+\s\-()]/;
     const DF_PHONE_DISALLOWED_G = /[^\d+\s\-()]/g;
 
@@ -184,7 +184,6 @@
         });
     }
 
-    /* -- Email: latin letters, digits, @ . _ - + % -- */
     const DF_EMAIL_ALLOWED      = /[a-zA-Z0-9@._+\-%]/;
     const DF_EMAIL_DISALLOWED_G = /[^a-zA-Z0-9@._+\-%]/g;
 
@@ -204,7 +203,6 @@
         });
     }
 
-    /* Apply filters */
     DF_attachNameFilter(DF_nom);
     DF_attachNameFilter(DF_prenom);
     DF_attachDigitsFilter(DF_nin, 18);
@@ -222,7 +220,6 @@
         let ok = true;
         let firstInvalid = null;
 
-        /* Nom */
         const nom = DF_nom.value.trim().replace(/\s+/g, ' ');
         if (!nom) {
             DF_setError('nom', 'DF-err-nom', 'Ce champ est obligatoire — هذا الحقل مطلوب');
@@ -238,7 +235,6 @@
             ok = false; firstInvalid = firstInvalid || 'DF-nom';
         }
 
-        /* Prénom */
         const prenom = DF_prenom.value.trim().replace(/\s+/g, ' ');
         if (!prenom) {
             DF_setError('prenom', 'DF-err-prenom', 'Ce champ est obligatoire — هذا الحقل مطلوب');
@@ -254,7 +250,6 @@
             ok = false; firstInvalid = firstInvalid || 'DF-prenom';
         }
 
-        /* Grade */
         const grade = DF_grade.value;
         if (!grade) {
             DF_setError('grade', 'DF-err-grade', 'Veuillez sélectionner un grade — يرجى اختيار الرتبة');
@@ -264,7 +259,6 @@
             ok = false; firstInvalid = firstInvalid || 'DF-grade';
         }
 
-        /* NIN */
         const nin = DF_nin.value.replace(/\D/g, '');
         if (!nin) {
             DF_setError('nin', 'DF-err-nin', 'Ce champ est obligatoire — هذا الحقل مطلوب');
@@ -274,14 +268,12 @@
             ok = false; firstInvalid = firstInvalid || 'DF-nin';
         }
 
-        /* NSS (optionnel) */
         const nss = DF_nss.value.replace(/\D/g, '');
         if (nss && (nss.length < 9 || nss.length > 15)) {
             DF_setError('nss', 'DF-err-nss', 'Longueur invalide (9–15 chiffres)');
             ok = false; firstInvalid = firstInvalid || 'DF-nss';
         }
 
-        /* Téléphone */
         const phoneRaw = DF_phone.value.trim();
         const phone = phoneRaw.replace(/[\s\-().]/g, '');
         if (!phoneRaw) {
@@ -292,7 +284,6 @@
             ok = false; firstInvalid = firstInvalid || 'DF-phone';
         }
 
-        /* E-mail */
         const email = DF_email.value.trim();
         if (!email) {
             DF_setError('email', 'DF-err-email', 'Ce champ est obligatoire — هذا الحقل مطلوب');
@@ -321,12 +312,8 @@
     DME_feedbackForm.addEventListener('submit', async function(e) {
         e.preventDefault();
 
-        /* Honeypot anti-spam */
-        if (DF_website && DF_website.value.trim() !== '') {
-            return;
-        }
+        if (DF_website && DF_website.value.trim() !== '') return;
 
-        /* Hide previous alerts */
         if (DME_successAlert) DME_successAlert.classList.add('hidden');
         if (DME_errorAlert)   DME_errorAlert.classList.add('hidden');
 
@@ -336,7 +323,6 @@
             return;
         }
 
-        /* Lock UI */
         DME_submitBtn.disabled = true;
         DME_submitBtn.classList.add('opacity-70', 'cursor-not-allowed');
         DME_btnTextFr.textContent = 'Envoi en cours...';
@@ -371,15 +357,12 @@
                 throw new Error(msg);
             }
 
-            /* Build reference */
             const reference = (body.reference || body.ref || body.id)
                 ? String(body.reference || body.ref || body.id)
                 : 'DOC-' + Date.now().toString(36).toUpperCase();
 
-            /* Success */
             DME_showSuccess(payload, reference);
 
-            /* Update motivational banner */
             if (DME_motivationText && DME_motivationTextAr) {
                 DME_motivationText.textContent = "Merci ! Vos informations ont été enregistrées !";
                 DME_motivationTextAr.textContent = "شكرًا! تم تسجيل معلوماتك!";
@@ -390,13 +373,10 @@
 
         } catch (error) {
             console.error('Submission error:', error);
-
             let errorMsg = error.message || 'Erreur inconnue';
             errorMsg = errorMsg.replace('Erreur:', '').trim();
-
             DME_showError(errorMsg);
         } finally {
-            /* Unlock UI */
             DME_submitBtn.disabled = false;
             DME_submitBtn.classList.remove('opacity-70', 'cursor-not-allowed');
             DME_btnTextFr.textContent = 'Envoyer la fiche';
@@ -450,7 +430,6 @@
             DME_successAlert.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
 
-        /* Lock form inputs */
         DME_feedbackForm.querySelectorAll('input, select, textarea').forEach(function(el) {
             el.disabled = true;
         });
@@ -473,7 +452,7 @@
     }
 
     /* =====================================================================
-       RESET (global, called from the success panel button)
+       RESET
        ===================================================================== */
     window.DF_reset = function() {
         DME_feedbackForm.reset();
