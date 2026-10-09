@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>جدول الشكاوى — استمارة | Tableau des Réclamations</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+    html, body {
+        font-family: 'Tajawal', 'Inter', system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+    }
+    [dir="ltr"], .ltr { font-family: 'Inter', 'Tajawal', sans-serif; }
+
+    body {
+        background: linear-gradient(135deg, #eff6ff 0%, #e0e7ff 50%, #f5f3ff 100%);
+        min-height: 100vh;
+        padding: 24px 12px 60px;
+    }
+
+    .REC-card {
+        max-width: 1400px;
+        margin: 0 auto;
+        background: #fff;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px -12px rgba(15, 23, 42, 0.18);
+        overflow: hidden;
+    }
+
+    .REC-input {
+        width: 100%;
+        padding: 8px 10px;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 14px;
+        background: #f8fafc;
+        transition: all 0.2s;
+        outline: none;
+        text-align: center;
+        font-family: inherit;
+    }
+    .REC-input:focus {
+        border-color: #4f46e5;
+        background: #fff;
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+    }
+    .REC-input.text-right { text-align: right; }
+    .REC-input.text-left  { text-align: left; }
+
+    .REC-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13.5px;
+    }
+    .REC-table th,
+    .REC-table td {
+        border: 1px solid #cbd5e1;
+        padding: 8px 6px;
+        text-align: center;
+        vertical-align: middle;
+    }
+    .REC-table thead th {
+        background: linear-gradient(180deg, #1e3a8a, #3730a3);
+        color: #fff;
+        font-weight: 700;
+        font-size: 13px;
+        line-height: 1.5;
+        padding: 10px 6px;
+    }
+    .REC-table thead th .fr {
+        display: block;
+        font-size: 11px;
+        font-weight: 400;
+        color: #c7d2fe;
+        margin-top: 2px;
+        direction: ltr;
+    }
+    .REC-table tbody tr:nth-child(even) td {
+        background: #f8fafc;
+    }
+    .REC-table tbody tr:hover td {
+        background: #eef2ff;
+    }
+    .REC-table tbody tr.total-row td {
+        background: #fef3c7 !important;
+        font-weight: 700;
+        color: #78350f;
+    }
+    .REC-row-label {
+        font-weight: 600;
+        color: #1e293b;
+        text-align: right;
+        padding-right: 14px;
+    }
+    .REC-row-label .fr {
+        display: block;
+        font-size: 11px;
+        font-weight: 400;
+        color: #64748b;
+        direction: ltr;
+        text-align: left;
+        margin-top: 2px;
+    }
+
+    .REC-num {
+        font-variant-numeric: tabular-nums;
+        font-weight: 600;
+        color: #1e40af;
+    }
+
+    /* Photo uploader */
+    .REC-photo-zone {
+        border: 2px dashed #cbd5e1;
+        border-radius: 10px;
+        padding: 12px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s;
+        background: #f8fafc;
+    }
+    .REC-photo-zone:hover,
+    .REC-photo-zone.drag-over {
+        border-color: #4f46e5;
+        background: #eef2ff;
+    }
+
+    .REC-thumbs {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+        gap: 8px;
+        margin-top: 10px;
+    }
+    .REC-thumb {
+        position: relative;
+        aspect-ratio: 1;
+        border-radius: 8px;
+        overflow: hidden;
+        border: 2px solid #e2e8f0;
+        background: #f1f5f9;
+    }
+    .REC-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .REC-thumb .rm {
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: rgba(239, 68, 68, 0.95);
+        color: #fff;
+        font-size: 13px;
+        line-height: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border: none;
+        font-weight: 700;
+    }
+    .REC-thumb .rm:hover { background: #dc2626; }
+
+    .REC-site-block {
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 20px;
+        background: #fff;
+    }
+    .REC-site-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #e2e8f0;
+    }
+    .REC-site-title h3 {
+        font-size: 16px;
+        font-weight: 700;
+        color: #1e3a8a;
+    }
+    .REC-site-title .badge {
+        background: #eef2ff;
+        color: #4338ca;
+        font-size: 12px;
+        font-weight: 600;
+        padding: 4px 10px;
+        border-radius: 999px;
+    }
+
+    .REC-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 14px 28px;
+        background: linear-gradient(135deg, #4f46e5, #7c3aed);
+        color: #fff;
+        border: none;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.25s;
+        box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.4);
+        font-family: inherit;
+    }
+    .REC-btn:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 14px 30px -5px rgba(79, 70, 229, 0.55);
+    }
+    .REC-btn:disabled { opacity: 0.7; cursor: not-allowed; }
+
+    .REC-spinner {
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(255, 255, 255, 0.35);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: REC-spin 0.7s linear infinite;
+    }
+    @keyframes REC-spin { to { transform: rotate(360deg); } }
+
+    .REC-toast {
+        position: fixed;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #1e293b;
+        color: #fff;
+        padding: 14px 22px;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 500;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        z-index: 9999;
+        animation: REC-toastIn 0.3s ease-out;
+    }
+    .REC-toast.success { background: #16a34a; }
+    .REC-toast.error   { background: #dc2626; }
+    @keyframes REC-toastIn {
+        from { opacity: 0; transform: translate(-50%, 20px); }
+        to   { opacity: 1; transform: translate(-50%, 0); }
+    }
+
+    @media (max-width: 768px) {
+        body { padding: 12px 6px 40px; }
+        .REC-table { font-size: 12px; }
+        .REC-table th, .REC-table td { padding: 6px 3px; }
+        .REC-table thead th { font-size: 11px; }
+        .REC-row-label { padding-right: 6px; font-size: 12px; }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="REC-card">
+
+    <!-- ========== HEADER ========== -->
+    <div class="bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-700 px-6 py-8 md:px-12 md:py-10 text-center text-white relative overflow-hidden">
+        <div class="absolute -top-20 -right-20 w-64 h-64 bg-white/10 rounded-full"></div>
+        <div class="absolute -bottom-20 -left-20 w-80 h-80 bg-white/5 rounded-full"></div>
+
+        <div class="relative">
+            <div class="inline-block bg-white/15 border border-white/25 text-xs font-bold px-4 py-1.5 rounded-full mb-4 tracking-widest">
+                NUMERIS47 · DSP GHARDAIA
+            </div>
+            <h1 class="text-xl md:text-3xl font-bold mb-2">
+                جدول إحصاء الشكاوى
+            </h1>
+            <p class="text-blue-100 text-sm md:text-base" dir="ltr">
+                Tableau de Recensement des Réclamations
+            </p>
+            <p class="text-blue-200 text-xs md:text-sm mt-3">
+                📸 مع إمكانية إرفاق صور الحالات · 7 مؤسسات
+            </p>
+        </div>
+    </div>
+
+    <!-- ========== BODY ========== -->
+    <div class="p-4 md:p-10">
+
+        <!-- Info bar -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                    📅 التاريخ / Date
+                </label>
+                <input type="date" id="REC-date" class="REC-input text-center" style="text-align: center;">
+            </div>
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                    📆 الفترة / Période
+                </label>
+                <select id="REC-periode" class="REC-input">
+                    <option value="mensuel">شهري / Mensuel</option>
+                    <option value="trimestriel">ربع سنوي / Trimestriel</option>
+                    <option value="semestriel">نصف سنوي / Semestriel</option>
+                    <option value="annuel">سنوي / Annuel</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                    🏥 الولاية / Wilaya
+                </label>
+                <input type="text" id="REC-wilaya" class="REC-input text-center" value="غرداية / Ghardaïa">
+            </div>
+        </div>
+
+        <!-- ========== SITES ========== -->
+        <div id="REC-sites-container"></div>
+
+        <!-- ========== GLOBAL TOTAL ========== -->
+        <div class="bg-amber-50 border-2 border-amber-300 rounded-xl p-5 mb-8">
+            <h3 class="text-lg font-bold text-amber-900 mb-4 text-center">
+                المجموع العام / Total Général
+            </h3>
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-3 text-center">
+                <div>
+                    <div class="text-xs text-amber-700 font-medium mb-1">الاستقبال</div>
+                    <div class="text-2xl font-bold text-amber-900" id="GT-accueil">0</div>
+                </div>
+                <div>
+                    <div class="text-xs text-amber-700 font-medium mb-1">المعاملة</div>
+                    <div class="text-2xl font-bold text-amber-900" id="GT-traitement">0</div>
+                </div>
+                <div>
+                    <div class="text-xs text-amber-700 font-medium mb-1">التوجيه</div>
+                    <div class="text-2xl font-bold text-amber-900" id="GT-orientation">0</div>
+                </div>
+                <div>
+                    <div class="text-xs text-amber-700 font-medium mb-1">الرد</div>
+                    <div class="text-2xl font-bold text-amber-900" id="GT-reponse">0</div>
+                </div>
+                <div>
+                    <div class="text-xs text-amber-700 font-medium mb-1">أخرى (تذكر)</div>
+                    <div class="text-2xl font-bold text-amber-900" id="GT-autres">0</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== ACTIONS ========== -->
+        <div class="flex flex-col md:flex-row gap-4 justify-center items-center pt-6 border-t border-gray-200">
+
+            <button type="button" id="REC-add-site" class="REC-btn" style="background: linear-gradient(135deg, #64748b, #475569); box-shadow: 0 10px 25px -5px rgba(100, 116, 139, 0.4);">
+                ➕ إضافة مؤسسة / Ajouter un site
+            </button>
+
+            <button type="button" id="REC-submit" class="REC-btn">
+                <span id="REC-btn-txt">📤 إرسال الجدول / Envoyer</span>
+                <span id="REC-btn-spinner" class="REC-spinner" style="display: none;"></span>
+            </button>
+        </div>
+
+        <!-- Info about photo limits -->
+        <p class="text-center text-xs text-gray-500 mt-6">
+            📷 الحد الأقصى 5 صور لكل مؤسسة · حجم كل صورة ≤ 5MB (JPG, PNG, WEBP)
+            <br>
+            <span dir="ltr">Max 5 photos par site · 5MB par image (JPG, PNG, WEBP)</span>
+        </p>
+
+    </div>
+
+</div>
+
+<!-- ================= SCRIPT ================= -->
+<script>
+(function() {
+    'use strict';
+
+    /* ============================================================
+       CONFIG
+       ============================================================ */
+    const WORKER_URL = 'https://empty-grass-e190.05juillet-ballouh-info-8e2.workers.dev/api/reclamations';
+    const MAX_PHOTOS_PER_SITE = 5;
+    const MAX_PHOTO_SIZE      = 5 * 1024 * 1024; // 5MB
+    const DEFAULT_SITE_COUNT  = 7;
+
+    /* ============================================================
+       STATE
+       ============================================================ */
+    let sites = []; // [{ id, name, rows, photos: [ {name, size, dataUrl} ] }]
+
+    /* ============================================================
+       HELPERS
+       ============================================================ */
+    function toast(msg, type) {
+        const t = document.createElement('div');
+        t.className = 'REC-toast ' + (type || '');
+        t.textContent = msg;
+        document.body.appendChild(t);
+        setTimeout(() => t.remove(), 4000);
+    }
+
+    function uid() {
+        return 'site-' + Math.random().toString(36).slice(2, 9);
+    }
+
+    function esc(s) {
+        return String(s || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
+    /* ============================================================
+       SITE FACTORY — one site = one table
+       ============================================================ */
+    function createSite(name) {
+        return {
+            id: uid(),
+            name: name || '',
+            photos: [], // { name, size, dataUrl }
+            rows: [
+                { key: 'accueil',     ar: 'الاستقبال',         fr: 'Accueil',              count: '', services: '', dirs: '', etabs: '', records: '', action: '' },
+                { key: 'traitement',  ar: 'المعاملة',          fr: 'Traitement',           count: '', services: '', dirs: '', etabs: '', records: '', action: '' },
+                { key: 'orientation', ar: 'التوجيه',           fr: 'Orientation',          count: '', services: '', dirs: '', etabs: '', records: '', action: '' },
+                { key: 'reponse',     ar: 'الرد',              fr: 'Réponse',              count: '', services: '', dirs: '', etabs: '', records: '', action: '' },
+                { key: 'autres',      ar: 'أصناف أخرى (تذكر)', fr: 'Autres (à préciser)',  count: '', services: '', dirs: '', etabs: '', records: '', action: '' }
+            ]
+        };
+    }
+
+    /* ============================================================
+       RENDER
+       ============================================================ */
+    const container = document.getElementById('REC-sites-container');
+
+    function renderAll() {
+        container.innerHTML = '';
+        sites.forEach((site, idx) => {
+            container.appendChild(renderSiteBlock(site, idx));
+        });
+        recalcGlobalTotals();
+    }
+
+    function renderSiteBlock(site, idx) {
+        const block = document.createElement('div');
+        block.className = 'REC-site-block';
+        block.dataset.siteId = site.id;
+
+        // --- Header
+        const head = document.createElement('div');
+        head.className = 'REC-site-title';
+        head.innerHTML = `
+            <h3>🏥 <span style="color:#4f46e5;">المؤسسة ${idx + 1}</span> · Site ${idx + 1}</h3>
+            <span class="badge" data-role="site-badge">${site.photos.length} 📷</span>
+        `;
+        block.appendChild(head);
+
+        // --- Site name input
+        const nameWrap = document.createElement('div');
+        nameWrap.style.marginBottom = '12px';
+        nameWrap.innerHTML = `
+            <label class="block text-xs font-semibold text-gray-600 mb-1">
+                اسم المؤسسة / Nom du site
+            </label>
+            <input type="text" class="REC-input text-right" dir="auto"
+                   data-role="site-name" placeholder="مثال: عيادة متعددة الخدمات غرداية"
+                   value="${esc(site.name)}">
+        `;
+        block.appendChild(nameWrap);
+        const nameInput = nameWrap.querySelector('[data-role="site-name"]');
+        nameInput.addEventListener('input', (e) => {
+            site.name = e.target.value;
+        });
+
+        // --- Table
+        const tableWrap = document.createElement('div');
+        tableWrap.style.overflowX = 'auto';
+        tableWrap.innerHTML = `
+            <table class="REC-table">
+                <thead>
+                    <tr>
+                        <th style="min-width:140px;">
+                            الإدارات والمؤسسات العمومية
+                            <span class="fr">Administrations & Établissements Publics</span>
+                        </th>
+                        <th style="min-width:120px;">
+                            عدد الإدارات والمؤسسات المعنية
+                            <span class="fr">Nombre d'administrations concernées</span>
+                        </th>
+                        <th style="min-width:110px;">
+                            عدد السجلات المفتوحة
+                            <span class="fr">Nombre de registres ouverts</span>
+                        </th>
+                        <th style="min-width:120px;">
+                            أصناف الشكوى
+                            <span class="fr">Catégories de la réclamation</span>
+                        </th>
+                        <th style="min-width:90px;">
+                            العدد
+                            <span class="fr">Nombre</span>
+                        </th>
+                        <th style="min-width:120px;">
+                            المتكفل بها
+                            <span class="fr">Pris en charge par</span>
+                        </th>
+                        <th style="min-width:160px;">
+                            الإجراءات المتخذة
+                            <span class="fr">Mesures prises</span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        `;
+        const tbody = tableWrap.querySelector('tbody');
+
+        site.rows.forEach((row, ridx) => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td style="text-align:center;">
+                    <input type="text" class="REC-input" data-row="${ridx}" data-field="dirs"
+                           value="${esc(row.dirs)}" placeholder="—">
+                </td>
+                <td style="text-align:center;">
+                    <input type="number" min="0" class="REC-input REC-num" data-row="${ridx}" data-field="etabs"
+                           value="${esc(row.etabs)}" placeholder="0">
+                </td>
+                <td style="text-align:center;">
+                    <input type="number" min="0" class="REC-input REC-num" data-row="${ridx}" data-field="records"
+                           value="${esc(row.records)}" placeholder="0">
+                </td>
+                <td class="REC-row-label">
+                    ${esc(row.ar)}
+                    <span class="fr">${esc(row.fr)}</span>
+                </td>
+                <td style="text-align:center;">
+                    <input type="number" min="0" class="REC-input REC-num" data-row="${ridx}" data-field="count"
+                           value="${esc(row.count)}" placeholder="0">
+                </td>
+                <td style="text-align:center;">
+                    <input type="text" class="REC-input" data-row="${ridx}" data-field="services"
+                           value="${esc(row.services)}" placeholder="—">
+                </td>
+                <td style="text-align:center;">
+                    <input type="text" class="REC-input text-right" dir="auto" data-row="${ridx}" data-field="action"
+                           value="${esc(row.action)}" placeholder="—">
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        // Bind row inputs
+        tbody.addEventListener('input', (e) => {
+            const input = e.target.closest('input[data-row]');
+            if (!input) return;
+            const r = parseInt(input.dataset.row, 10);
+            const field = input.dataset.field;
+            if (!site.rows[r]) return;
+            site.rows[r][field] = input.value;
+            recalcGlobalTotals();
+        });
+
+        block.appendChild(tableWrap);
+
+        // --- Total row (per site)
+        const siteTotal = document.createElement('div');
+        siteTotal.className = 'bg-indigo-50 border border-indigo-200 rounded-lg p-3 mt-3';
+        siteTotal.innerHTML = `
+            <div class="flex items-center justify-between text-sm">
+                <span class="font-bold text-indigo-900">مجموع المؤسسة / Total du site</span>
+                <span class="font-bold text-indigo-700" data-role="site-total">0</span>
+            </div>
+        `;
+        block.appendChild(siteTotal);
+
+        // --- Photo uploader
+        const photoWrap = document.createElement('div');
+        photoWrap.style.marginTop = '16px';
+        photoWrap.innerHTML = `
+            <label class="block text-xs font-semibold text-gray-600 mb-2">
+                📷 صور الحالات / Photos des cas
+                <span class="text-gray-400 font-normal">(اختياري — حتى ${MAX_PHOTOS_PER_SITE} صور)</span>
+            </label>
+            <div class="REC-photo-zone" data-role="photo-zone">
+                <div class="text-3xl mb-1">📎</div>
+                <div class="text-sm text-gray-600">
+                    <span class="text-indigo-600 font-semibold">اضغط للتحميل</span> أو اسحب الصور هنا
+                </div>
+                <div class="text-xs text-gray-400 mt-1" dir="ltr">
+                    Cliquez ou glissez-déposez · Max ${MAX_PHOTOS_PER_SITE} · 5MB
+                </div>
+                <input type="file" accept="image/*" multiple hidden data-role="photo-input">
+            </div>
+            <div class="REC-thumbs" data-role="photo-thumbs"></div>
+        `;
+        block.appendChild(photoWrap);
+
+        // Bind photo zone
+        const photoZone = photoWrap.querySelector('[data-role="photo-zone"]');
+        const photoInput = photoWrap.querySelector('[data-role="photo-input"]');
+        const photoThumbs = photoWrap.querySelector('[data-role="photo-thumbs"]');
+        const siteBadge = head.querySelector('[data-role="site-badge"]');
+
+        photoZone.addEventListener('click', () => photoInput.click());
+        photoZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            photoZone.classList.add('drag-over');
+        });
+        photoZone.addEventListener('dragleave', () => {
+            photoZone.classList.remove('drag-over');
+        });
+        photoZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            photoZone.classList.remove('drag-over');
+            handleFiles(site, e.dataTransfer.files);
+        });
+        photoInput.addEventListener('change', (e) => {
+            handleFiles(site, e.target.files);
+            photoInput.value = '';
+        });
+
+        function handleFiles(site, files) {
+            const arr = Array.from(files);
+            arr.forEach((file) => {
+                if (site.photos.length >= MAX_PHOTOS_PER_SITE) {
+                    toast(`⚠ الحد الأقصى ${MAX_PHOTOS_PER_SITE} صور لكل مؤسسة`, 'error');
+                    return;
+                }
+                if (!file.type.startsWith('image/')) {
+                    toast('⚠ يرجى اختيار صور فقط', 'error');
+                    return;
+                }
+                if (file.size > MAX_PHOTO_SIZE) {
+                    toast(`⚠ "${file.name}" كبير جدًا (الحد 5MB)`, 'error');
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    site.photos.push({
+                        name: file.name,
+                        size: file.size,
+                        dataUrl: ev.target.result
+                    });
+                    renderThumbs(site, photoThumbs, siteBadge);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        renderThumbs(site, photoThumbs, siteBadge);
+        return block;
+    }
+
+    function renderThumbs(site, thumbsEl, badge) {
+        thumbsEl.innerHTML = '';
+        site.photos.forEach((p, i) => {
+            const div = document.createElement('div');
+            div.className = 'REC-thumb';
+            div.innerHTML = `
+                <img src="${p.dataUrl}" alt="${esc(p.name)}">
+                <button type="button" class="rm" title="حذف">×</button>
+            `;
+            div.querySelector('.rm').addEventListener('click', () => {
+                site.photos.splice(i, 1);
+                renderThumbs(site, thumbsEl, badge);
+            });
+            thumbsEl.appendChild(div);
+        });
+        if (badge) badge.textContent = `${site.photos.length} 📷`;
+    }
+
+    /* ============================================================
+       TOTALS
+       ============================================================ */
+    function recalcGlobalTotals() {
+        const totals = { accueil: 0, traitement: 0, orientation: 0, reponse: 0, autres: 0 };
+
+        sites.forEach((site) => {
+            let siteTotal = 0;
+            site.rows.forEach((row) => {
+                const v = parseInt(row.count || '0', 10) || 0;
+                siteTotal += v;
+                if (totals[row.key] !== undefined) totals[row.key] += v;
+            });
+
+            // Update per-site total badge
+            const block = document.querySelector(`[data-site-id="${site.id}"]`);
+            if (block) {
+                const el = block.querySelector('[data-role="site-total"]');
+                if (el) el.textContent = siteTotal;
+            }
+        });
+
+        document.getElementById('GT-accueil').textContent     = totals.accueil;
+        document.getElementById('GT-traitement').textContent  = totals.traitement;
+        document.getElementById('GT-orientation').textContent = totals.orientation;
+        document.getElementById('GT-reponse').textContent     = totals.reponse;
+        document.getElementById('GT-autres').textContent      = totals.autres;
+    }
+
+    /* ============================================================
+       ADD / REMOVE SITE
+       ============================================================ */
+    document.getElementById('REC-add-site').addEventListener('click', () => {
+        if (sites.length >= 15) {
+            toast('⚠ الحد الأقصى 15 مؤسسة', 'error');
+            return;
+        }
+        sites.push(createSite(''));
+        renderAll();
+        toast('✅ تمت إضافة مؤسسة جديدة', 'success');
+    });
+
+    /* ============================================================
+       SUBMIT
+       ============================================================ */
+    document.getElementById('REC-submit').addEventListener('click', async () => {
+        // Validate
+        if (sites.length === 0) {
+            toast('⚠ يرجى إضافة مؤسسة واحدة على الأقل', 'error');
+            return;
+        }
+        for (let i = 0; i < sites.length; i++) {
+            if (!sites[i].name.trim()) {
+                toast(`⚠ يرجى إدخال اسم المؤسسة ${i + 1}`, 'error');
+                document.querySelector(`[data-site-id="${sites[i].id}"]`)
+                    ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
+        }
+
+        // Prepare payload
+        const payload = {
+            date: document.getElementById('REC-date').value,
+            periode: document.getElementById('REC-periode').value,
+            wilaya: document.getElementById('REC-wilaya').value,
+            sites: sites.map((s) => ({
+                name: s.name,
+                photos: s.photos.map((p) => p.dataUrl),
+                rows: s.rows.map((r) => ({
+                    key: r.key,
+                    label: r.ar,
+                    dirs: r.dirs,
+                    etabs: r.etabs,
+                    records: r.records,
+                    count: r.count,
+                    services: r.services,
+                    action: r.action
+                }))
+            }))
+        };
+
+        // UI
+        const btn = document.getElementById('REC-submit');
+        const txt = document.getElementById('REC-btn-txt');
+        const spn = document.getElementById('REC-btn-spinner');
+        btn.disabled = true;
+        txt.textContent = 'جاري الإرسال... / Envoi...';
+        spn.style.display = 'inline-block';
+
+        try {
+            const res = await fetch(WORKER_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            let body = {};
+            try { body = await res.json(); } catch (_) {}
+
+            if (!res.ok) {
+                throw new Error(body.message || body.error || `Erreur ${res.status}`);
+            }
+
+            toast('✅ تم إرسال الجدول بنجاح / Tableau envoyé', 'success');
+
+            // Reset
+            sites = [];
+            for (let i = 0; i < DEFAULT_SITE_COUNT; i++) {
+                sites.push(createSite(''));
+            }
+            renderAll();
+            document.getElementById('REC-date').value = '';
+
+        } catch (err) {
+            console.error(err);
+            toast('❌ ' + (err.message || 'فشل الإرسال'), 'error');
+        } finally {
+            btn.disabled = false;
+            txt.textContent = '📤 إرسال الجدول / Envoyer';
+            spn.style.display = 'none';
+        }
+    });
+
+    /* ============================================================
+       INIT — 7 empty sites by default
+       ============================================================ */
+    for (let i = 0; i < DEFAULT_SITE_COUNT; i++) {
+        sites.push(createSite(''));
+    }
+    document.getElementById('REC-date').valueAsDate = new Date();
+    renderAll();
+
+})();
+</script>
+
+</body>
+</html>
