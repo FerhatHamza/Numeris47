@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>جدول الشكاوى — استمارة | Tableau des Réclamations</title>
+<title>استمارة الشكاوى — Réclamations</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
 
@@ -21,144 +21,163 @@
     body {
         background: linear-gradient(135deg, #eff6ff 0%, #e0e7ff 50%, #f5f3ff 100%);
         min-height: 100vh;
-        padding: 24px 12px 60px;
+        padding: 24px 12px 80px;
     }
 
-    .REC-card {
-        max-width: 1400px;
+    .RC-card {
+        max-width: 900px;
         margin: 0 auto;
         background: #fff;
-        border-radius: 20px;
+        border-radius: 22px;
         box-shadow: 0 20px 60px -12px rgba(15, 23, 42, 0.18);
         overflow: hidden;
     }
 
-    .REC-input {
+    .RC-input {
         width: 100%;
-        padding: 8px 10px;
+        padding: 13px 15px;
         border: 1.5px solid #e2e8f0;
-        border-radius: 8px;
-        font-size: 14px;
+        border-radius: 12px;
+        font-size: 15px;
         background: #f8fafc;
         transition: all 0.2s;
         outline: none;
-        text-align: center;
         font-family: inherit;
+        color: #1e293b;
     }
-    .REC-input:focus {
+    .RC-input:focus {
         border-color: #4f46e5;
         background: #fff;
-        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+        box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.12);
     }
-    .REC-input.text-right { text-align: right; }
-    .REC-input.text-left  { text-align: left; }
+    .RC-input::placeholder { color: #94a3b8; }
 
-    .REC-table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 13.5px;
+    select.RC-input {
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: left 14px center;
+        background-size: 18px;
+        padding-left: 42px;
+        cursor: pointer;
     }
-    .REC-table th,
-    .REC-table td {
-        border: 1px solid #cbd5e1;
-        padding: 8px 6px;
-        text-align: center;
-        vertical-align: middle;
+
+    /* Category row */
+    .RC-cat-row {
+        display: grid;
+        grid-template-columns: 1fr 130px 60px;
+        gap: 12px;
+        align-items: center;
+        padding: 12px 0;
+        border-bottom: 1px solid #f1f5f9;
     }
-    .REC-table thead th {
-        background: linear-gradient(180deg, #1e3a8a, #3730a3);
-        color: #fff;
-        font-weight: 700;
-        font-size: 13px;
-        line-height: 1.5;
-        padding: 10px 6px;
-    }
-    .REC-table thead th .fr {
-        display: block;
-        font-size: 11px;
-        font-weight: 400;
-        color: #c7d2fe;
-        margin-top: 2px;
-        direction: ltr;
-    }
-    .REC-table tbody tr:nth-child(even) td {
-        background: #f8fafc;
-    }
-    .REC-table tbody tr:hover td {
-        background: #eef2ff;
-    }
-    .REC-table tbody tr.total-row td {
-        background: #fef3c7 !important;
-        font-weight: 700;
-        color: #78350f;
-    }
-    .REC-row-label {
+    .RC-cat-row:last-child { border-bottom: none; }
+    .RC-cat-label {
         font-weight: 600;
         color: #1e293b;
-        text-align: right;
-        padding-right: 14px;
+        font-size: 15px;
+        line-height: 1.4;
     }
-    .REC-row-label .fr {
+    .RC-cat-label .fr {
         display: block;
-        font-size: 11px;
+        font-size: 12px;
         font-weight: 400;
         color: #64748b;
         direction: ltr;
-        text-align: left;
         margin-top: 2px;
     }
-
-    .REC-num {
-        font-variant-numeric: tabular-nums;
+    .RC-cat-input {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 10px;
+        font-size: 15px;
+        background: #f8fafc;
+        text-align: center;
         font-weight: 600;
         color: #1e40af;
+        font-variant-numeric: tabular-nums;
+        transition: all 0.2s;
+        outline: none;
+        font-family: inherit;
+    }
+    .RC-cat-input:focus {
+        border-color: #4f46e5;
+        background: #fff;
+        box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.12);
+    }
+    .RC-cat-input:disabled {
+        opacity: 0.4;
+        background: #f1f5f9;
+        cursor: not-allowed;
+    }
+    .RC-cat-note {
+        width: 100%;
+        padding: 8px 10px;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 10px;
+        font-size: 13px;
+        background: #f8fafc;
+        text-align: center;
+        transition: all 0.2s;
+        outline: none;
+        font-family: inherit;
+    }
+    .RC-cat-note:focus {
+        border-color: #4f46e5;
+        background: #fff;
     }
 
     /* Photo uploader */
-    .REC-photo-zone {
+    .RC-photo-zone {
         border: 2px dashed #cbd5e1;
-        border-radius: 10px;
-        padding: 12px;
+        border-radius: 14px;
+        padding: 28px 18px;
         text-align: center;
         cursor: pointer;
-        transition: all 0.2s;
+        transition: all 0.25s;
         background: #f8fafc;
     }
-    .REC-photo-zone:hover,
-    .REC-photo-zone.drag-over {
+    .RC-photo-zone:hover,
+    .RC-photo-zone.drag-over {
         border-color: #4f46e5;
         background: #eef2ff;
+        transform: translateY(-2px);
     }
+    .RC-photo-zone .icon { font-size: 40px; line-height: 1; margin-bottom: 8px; }
+    .RC-photo-zone .title { font-size: 15px; color: #475569; font-weight: 500; }
+    .RC-photo-zone .title span { color: #4f46e5; font-weight: 700; }
+    .RC-photo-zone .sub { font-size: 12px; color: #94a3b8; margin-top: 6px; }
 
-    .REC-thumbs {
+    .RC-thumbs {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
-        gap: 8px;
-        margin-top: 10px;
+        grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+        gap: 10px;
+        margin-top: 14px;
     }
-    .REC-thumb {
+    .RC-thumb {
         position: relative;
         aspect-ratio: 1;
-        border-radius: 8px;
+        border-radius: 10px;
         overflow: hidden;
         border: 2px solid #e2e8f0;
         background: #f1f5f9;
+        animation: RC-pop 0.3s ease-out;
     }
-    .REC-thumb img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
+    @keyframes RC-pop {
+        from { transform: scale(0.7); opacity: 0; }
+        to   { transform: scale(1); opacity: 1; }
     }
-    .REC-thumb .rm {
+    .RC-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .RC-thumb .rm {
         position: absolute;
-        top: 2px;
-        right: 2px;
-        width: 20px;
-        height: 20px;
+        top: 4px;
+        right: 4px;
+        width: 24px;
+        height: 24px;
         border-radius: 50%;
         background: rgba(239, 68, 68, 0.95);
         color: #fff;
-        font-size: 13px;
+        font-size: 15px;
         line-height: 1;
         display: flex;
         align-items: center;
@@ -166,109 +185,162 @@
         cursor: pointer;
         border: none;
         font-weight: 700;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     }
-    .REC-thumb .rm:hover { background: #dc2626; }
+    .RC-thumb .rm:hover { background: #dc2626; }
 
-    .REC-site-block {
-        border: 1px solid #e2e8f0;
-        border-radius: 12px;
-        padding: 16px;
-        margin-bottom: 20px;
-        background: #fff;
-    }
-    .REC-site-title {
+    /* "Clean / neat" toggle */
+    .RC-neat-box {
+        background: #ecfdf5;
+        border: 2px solid #86efac;
+        border-radius: 14px;
+        padding: 16px 20px;
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        margin-bottom: 12px;
-        padding-bottom: 10px;
-        border-bottom: 2px solid #e2e8f0;
+        gap: 14px;
+        cursor: pointer;
+        transition: all 0.2s;
+        user-select: none;
     }
-    .REC-site-title h3 {
+    .RC-neat-box:hover { background: #d1fae5; }
+    .RC-neat-box.active {
+        background: #d1fae5;
+        border-color: #22c55e;
+        box-shadow: 0 8px 20px -8px rgba(34, 197, 94, 0.4);
+    }
+    .RC-neat-box .check {
+        width: 26px;
+        height: 26px;
+        border: 2px solid #22c55e;
+        border-radius: 7px;
+        background: #fff;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+    }
+    .RC-neat-box.active .check {
+        background: #22c55e;
+        color: #fff;
+    }
+    .RC-neat-box.active .check::after {
+        content: '✓';
         font-size: 16px;
         font-weight: 700;
-        color: #1e3a8a;
     }
-    .REC-site-title .badge {
-        background: #eef2ff;
-        color: #4338ca;
+    .RC-neat-box .label { flex: 1; }
+    .RC-neat-box .label strong {
+        display: block;
+        color: #065f46;
+        font-size: 15px;
+        font-weight: 700;
+    }
+    .RC-neat-box .label small {
+        color: #047857;
         font-size: 12px;
-        font-weight: 600;
-        padding: 4px 10px;
-        border-radius: 999px;
     }
 
-    .REC-btn {
+    /* Buttons */
+    .RC-btn {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        gap: 8px;
-        padding: 14px 28px;
+        gap: 10px;
+        width: 100%;
+        padding: 16px 28px;
         background: linear-gradient(135deg, #4f46e5, #7c3aed);
         color: #fff;
         border: none;
-        border-radius: 12px;
-        font-size: 16px;
+        border-radius: 14px;
+        font-size: 17px;
         font-weight: 700;
         cursor: pointer;
         transition: all 0.25s;
-        box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.4);
+        box-shadow: 0 12px 28px -8px rgba(79, 70, 229, 0.5);
         font-family: inherit;
     }
-    .REC-btn:hover:not(:disabled) {
+    .RC-btn:hover:not(:disabled) {
         transform: translateY(-2px);
-        box-shadow: 0 14px 30px -5px rgba(79, 70, 229, 0.55);
+        box-shadow: 0 18px 34px -8px rgba(79, 70, 229, 0.6);
     }
-    .REC-btn:disabled { opacity: 0.7; cursor: not-allowed; }
+    .RC-btn:disabled { opacity: 0.7; cursor: not-allowed; }
 
-    .REC-spinner {
+    .RC-spinner {
         width: 20px;
         height: 20px;
         border: 3px solid rgba(255, 255, 255, 0.35);
         border-top-color: #fff;
         border-radius: 50%;
-        animation: REC-spin 0.7s linear infinite;
+        animation: RC-spin 0.7s linear infinite;
     }
-    @keyframes REC-spin { to { transform: rotate(360deg); } }
+    @keyframes RC-spin { to { transform: rotate(360deg); } }
 
-    .REC-toast {
+    /* Alerts */
+    .RC-alert {
+        padding: 16px 20px;
+        border-radius: 12px;
+        display: flex;
+        gap: 14px;
+        align-items: flex-start;
+        margin-bottom: 18px;
+        animation: RC-slideDown 0.4s ease-out;
+    }
+    @keyframes RC-slideDown {
+        from { opacity: 0; transform: translateY(-10px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+    .RC-alert-success { background: #d1fae5; border: 1px solid #86efac; color: #065f46; }
+    .RC-alert-error   { background: #fee2e2; border: 1px solid #fca5a5; color: #991b1b; }
+    .RC-alert .ic {
+        width: 32px; height: 32px;
+        border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 18px; font-weight: 700;
+        flex-shrink: 0;
+    }
+    .RC-alert-success .ic { background: #10b981; color: #fff; }
+    .RC-alert-error   .ic { background: #ef4444; color: #fff; }
+
+    /* Toast */
+    .RC-toast {
         position: fixed;
         bottom: 24px;
         left: 50%;
         transform: translateX(-50%);
         background: #1e293b;
         color: #fff;
-        padding: 14px 22px;
-        border-radius: 10px;
+        padding: 14px 24px;
+        border-radius: 12px;
         font-size: 14px;
         font-weight: 500;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
         z-index: 9999;
-        animation: REC-toastIn 0.3s ease-out;
+        animation: RC-toastIn 0.3s ease-out;
+        max-width: 90vw;
+        text-align: center;
     }
-    .REC-toast.success { background: #16a34a; }
-    .REC-toast.error   { background: #dc2626; }
-    @keyframes REC-toastIn {
+    .RC-toast.success { background: #16a34a; }
+    .RC-toast.error   { background: #dc2626; }
+    @keyframes RC-toastIn {
         from { opacity: 0; transform: translate(-50%, 20px); }
         to   { opacity: 1; transform: translate(-50%, 0); }
     }
 
-    @media (max-width: 768px) {
-        body { padding: 12px 6px 40px; }
-        .REC-table { font-size: 12px; }
-        .REC-table th, .REC-table td { padding: 6px 3px; }
-        .REC-table thead th { font-size: 11px; }
-        .REC-row-label { padding-right: 6px; font-size: 12px; }
+    /* Hide all fields when "neat" is active */
+    .RC-form-body.hidden-fields {
+        opacity: 0.35;
+        pointer-events: none;
     }
 </style>
 </head>
 
 <body>
 
-<div class="REC-card">
+<div class="RC-card">
 
     <!-- ========== HEADER ========== -->
-    <div class="bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-700 px-6 py-8 md:px-12 md:py-10 text-center text-white relative overflow-hidden">
+    <div class="bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-700 px-6 py-9 md:px-12 md:py-11 text-center text-white relative overflow-hidden">
         <div class="absolute -top-20 -right-20 w-64 h-64 bg-white/10 rounded-full"></div>
         <div class="absolute -bottom-20 -left-20 w-80 h-80 bg-white/5 rounded-full"></div>
 
@@ -277,98 +349,175 @@
                 NUMERIS47 · DSP GHARDAIA
             </div>
             <h1 class="text-xl md:text-3xl font-bold mb-2">
-                جدول إحصاء الشكاوى
+                استمارة الشكاوى
             </h1>
             <p class="text-blue-100 text-sm md:text-base" dir="ltr">
-                Tableau de Recensement des Réclamations
+                Formulaire de Réclamations
             </p>
             <p class="text-blue-200 text-xs md:text-sm mt-3">
-                📸 مع إمكانية إرفاق صور الحالات · 7 مؤسسات
+                اختر المؤسسة، املأ الأصناف، أرفق الصور ثم أرسل
+                <br>
+                <span dir="ltr">Choisissez le site, remplissez, joignez les photos, envoyez</span>
             </p>
         </div>
     </div>
 
     <!-- ========== BODY ========== -->
-    <div class="p-4 md:p-10">
+    <div class="p-6 md:p-10">
 
-        <!-- Info bar -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <!-- SUCCESS ALERT -->
+        <div id="RC-success" class="RC-alert RC-alert-success" style="display: none;">
+            <div class="ic">✓</div>
             <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">
-                    📅 التاريخ / Date
-                </label>
-                <input type="date" id="REC-date" class="REC-input text-center" style="text-align: center;">
+                <p style="font-weight: 700;">تم إرسال الاستمارة بنجاح</p>
+                <p dir="rtl" style="font-size: 13px; margin-top: 4px;">شكرًا! تم استلام بياناتك.</p>
+                <p id="RC-success-ref" dir="ltr" style="font-size: 13px; margin-top: 6px; font-weight: 700;"></p>
             </div>
+        </div>
+
+        <!-- ERROR ALERT -->
+        <div id="RC-error" class="RC-alert RC-alert-error" style="display: none;">
+            <div class="ic">✕</div>
             <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">
-                    📆 الفترة / Période
+                <p style="font-weight: 700;">حدث خطأ أثناء الإرسال</p>
+                <p id="RC-error-msg" style="font-size: 13px; margin-top: 4px;"></p>
+            </div>
+        </div>
+
+        <form id="RC-form" novalidate>
+
+            <!-- ========== SITE SELECTOR ========== -->
+            <div style="margin-bottom: 26px;">
+                <label for="RC-site" style="display: block; margin-bottom: 8px; font-weight: 700; color: #1e293b; font-size: 15px;">
+                    🏥 اختر المؤسسة <span style="color: #dc2626;">*</span>
+                    <span style="display: block; font-size: 12px; font-weight: 400; color: #64748b; direction: ltr;" dir="ltr">Choisissez l'établissement</span>
                 </label>
-                <select id="REC-periode" class="REC-input">
-                    <option value="mensuel">شهري / Mensuel</option>
-                    <option value="trimestriel">ربع سنوي / Trimestriel</option>
-                    <option value="semestriel">نصف سنوي / Semestriel</option>
-                    <option value="annuel">سنوي / Annuel</option>
+                <select id="RC-site" class="RC-input" required>
+                    <option value="">— اختر من القائمة / Sélectionnez —</option>
+                    <option value="Polyclinique Bailich Mazouz">Polyclinique Bailich Mazouz</option>
+                    <option value="Polyclinique Vieux Ksar">Polyclinique Vieux Ksar</option>
+                    <option value="Polyclinique du martyr officier Ahmed Taleb">Polyclinique du martyr officier Ahmed Taleb</option>
+                    <option value="Centre de santé cité el moudjahidine">Centre de santé cité el moudjahidine</option>
+                    <option value="Centre de santé Baba saad">Centre de santé Baba saad</option>
+                    <option value="Centre de santé Belle vue">Centre de santé Belle vue</option>
+                    <option value="Centre de santé Chikh Ameur">Centre de santé Chikh Ameur</option>
                 </select>
             </div>
-            <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">
-                    🏥 الولاية / Wilaya
-                </label>
-                <input type="text" id="REC-wilaya" class="REC-input text-center" value="غرداية / Ghardaïa">
+
+            <!-- ========== FORM BODY (hidden when "neat") ========== -->
+            <div id="RC-form-body" class="RC-form-body">
+
+                <!-- ========== COMPLAINT CATEGORIES ========== -->
+                <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 14px; padding: 18px 20px; margin-bottom: 24px;">
+                    <h3 style="font-size: 16px; font-weight: 700; color: #1e293b; margin-bottom: 4px;">
+                        📋 أصناف الشكوى
+                    </h3>
+                    <p dir="ltr" style="font-size: 12px; color: #64748b; margin-bottom: 14px;">Catégories de la réclamation</p>
+
+                    <div class="RC-cat-row">
+                        <div class="RC-cat-label">
+                            الاستقبال
+                            <span class="fr">Accueil</span>
+                        </div>
+                        <input type="number" min="0" class="RC-cat-input" id="RC-count-accueil" placeholder="0" value="">
+                        <span style="text-align: center; color: #64748b; font-size: 12px;">عدد</span>
+                    </div>
+
+                    <div class="RC-cat-row">
+                        <div class="RC-cat-label">
+                            المعاملة
+                            <span class="fr">Traitement</span>
+                        </div>
+                        <input type="number" min="0" class="RC-cat-input" id="RC-count-traitement" placeholder="0" value="">
+                        <span style="text-align: center; color: #64748b; font-size: 12px;">عدد</span>
+                    </div>
+
+                    <div class="RC-cat-row">
+                        <div class="RC-cat-label">
+                            التوجيه
+                            <span class="fr">Orientation</span>
+                        </div>
+                        <input type="number" min="0" class="RC-cat-input" id="RC-count-orientation" placeholder="0" value="">
+                        <span style="text-align: center; color: #64748b; font-size: 12px;">عدد</span>
+                    </div>
+
+                    <div class="RC-cat-row">
+                        <div class="RC-cat-label">
+                            الرد
+                            <span class="fr">Réponse</span>
+                        </div>
+                        <input type="number" min="0" class="RC-cat-input" id="RC-count-reponse" placeholder="0" value="">
+                        <span style="text-align: center; color: #64748b; font-size: 12px;">عدد</span>
+                    </div>
+
+                    <div class="RC-cat-row">
+                        <div class="RC-cat-label">
+                            أصناف أخرى (تذكر)
+                            <span class="fr">Autres (à préciser)</span>
+                        </div>
+                        <input type="number" min="0" class="RC-cat-input" id="RC-count-autres" placeholder="0" value="">
+                        <input type="text" class="RC-cat-note" id="RC-note-autres" placeholder="ما هي؟ / Lesquelles ?" style="grid-column: 1 / -1; margin-top: 4px;">
+                    </div>
+
+                    <!-- Total -->
+                    <div style="margin-top: 14px; padding-top: 14px; border-top: 2px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-weight: 700; color: #1e293b; font-size: 15px;">المجموع</span>
+                        <span id="RC-total" style="font-weight: 700; color: #4f46e5; font-size: 22px; font-variant-numeric: tabular-nums;">0</span>
+                    </div>
+                </div>
+
+                <!-- ========== PHOTOS ========== -->
+                <div style="margin-bottom: 24px;">
+                    <label style="display: block; margin-bottom: 10px; font-weight: 700; color: #1e293b; font-size: 15px;">
+                        📷 صور الحالات
+                        <span style="font-weight: 400; color: #64748b; font-size: 12px;">(اختياري · حتى 10 صور)</span>
+                        <span style="display: block; font-size: 12px; font-weight: 400; color: #64748b; direction: ltr;" dir="ltr">Photos des cas (Optionnel · Max 10)</span>
+                    </label>
+
+                    <div class="RC-photo-zone" id="RC-photo-zone">
+                        <div class="icon">📎</div>
+                        <div class="title"><span>اضغط للتحميل</span> أو اسحب الصور هنا</div>
+                        <div class="sub" dir="ltr">Cliquez ou glissez-déposez · JPG · PNG · WEBP · 5 MB max</div>
+                        <input type="file" id="RC-photo-input" accept="image/*" multiple hidden>
+                    </div>
+
+                    <div class="RC-thumbs" id="RC-thumbs"></div>
+                </div>
+
+                <!-- ========== NOTE / COMMENT (Optional) ========== -->
+                <div style="margin-bottom: 24px;">
+                    <label for="RC-comment" style="display: block; margin-bottom: 8px; font-weight: 700; color: #1e293b; font-size: 15px;">
+                        📝 ملاحظات إضافية
+                        <span style="font-weight: 400; color: #64748b; font-size: 12px;">(اختياري)</span>
+                        <span style="display: block; font-size: 12px; font-weight: 400; color: #64748b; direction: ltr;" dir="ltr">Remarques (Optionnel)</span>
+                    </label>
+                    <textarea id="RC-comment" class="RC-input" rows="3" placeholder="أي ملاحظة تريد إضافتها... / Remarque éventuelle..."></textarea>
+                </div>
+
             </div>
-        </div>
+            <!-- ============ END FORM BODY ============ -->
 
-        <!-- ========== SITES ========== -->
-        <div id="REC-sites-container"></div>
-
-        <!-- ========== GLOBAL TOTAL ========== -->
-        <div class="bg-amber-50 border-2 border-amber-300 rounded-xl p-5 mb-8">
-            <h3 class="text-lg font-bold text-amber-900 mb-4 text-center">
-                المجموع العام / Total Général
-            </h3>
-            <div class="grid grid-cols-2 md:grid-cols-5 gap-3 text-center">
-                <div>
-                    <div class="text-xs text-amber-700 font-medium mb-1">الاستقبال</div>
-                    <div class="text-2xl font-bold text-amber-900" id="GT-accueil">0</div>
+            <!-- ========== "NEAT" TOGGLE ========== -->
+            <div style="margin-bottom: 24px;">
+                <div class="RC-neat-box" id="RC-neat-toggle">
+                    <div class="check"></div>
+                    <div class="label">
+                        <strong>لا توجد شكاوى / نظيف</strong>
+                        <small>— Aucune réclamation / Néant</small>
+                    </div>
                 </div>
-                <div>
-                    <div class="text-xs text-amber-700 font-medium mb-1">المعاملة</div>
-                    <div class="text-2xl font-bold text-amber-900" id="GT-traitement">0</div>
-                </div>
-                <div>
-                    <div class="text-xs text-amber-700 font-medium mb-1">التوجيه</div>
-                    <div class="text-2xl font-bold text-amber-900" id="GT-orientation">0</div>
-                </div>
-                <div>
-                    <div class="text-xs text-amber-700 font-medium mb-1">الرد</div>
-                    <div class="text-2xl font-bold text-amber-900" id="GT-reponse">0</div>
-                </div>
-                <div>
-                    <div class="text-xs text-amber-700 font-medium mb-1">أخرى (تذكر)</div>
-                    <div class="text-2xl font-bold text-amber-900" id="GT-autres">0</div>
-                </div>
+                <p style="text-align: center; font-size: 12px; color: #64748b; margin-top: 8px;">
+                    حدد هذا الخيار إذا لم تكن هناك أي شكوى لهذه المؤسسة
+                </p>
             </div>
-        </div>
 
-        <!-- ========== ACTIONS ========== -->
-        <div class="flex flex-col md:flex-row gap-4 justify-center items-center pt-6 border-t border-gray-200">
-
-            <button type="button" id="REC-add-site" class="REC-btn" style="background: linear-gradient(135deg, #64748b, #475569); box-shadow: 0 10px 25px -5px rgba(100, 116, 139, 0.4);">
-                ➕ إضافة مؤسسة / Ajouter un site
+            <!-- ========== SUBMIT ========== -->
+            <button type="submit" class="RC-btn" id="RC-submit">
+                <span id="RC-btn-txt">📤 إرسال الاستمارة / Envoyer</span>
+                <span id="RC-btn-spinner" class="RC-spinner" style="display: none;"></span>
             </button>
 
-            <button type="button" id="REC-submit" class="REC-btn">
-                <span id="REC-btn-txt">📤 إرسال الجدول / Envoyer</span>
-                <span id="REC-btn-spinner" class="REC-spinner" style="display: none;"></span>
-            </button>
-        </div>
-
-        <!-- Info about photo limits -->
-        <p class="text-center text-xs text-gray-500 mt-6">
-            📷 الحد الأقصى 5 صور لكل مؤسسة · حجم كل صورة ≤ 5MB (JPG, PNG, WEBP)
-            <br>
-            <span dir="ltr">Max 5 photos par site · 5MB par image (JPG, PNG, WEBP)</span>
-        </p>
+        </form>
 
     </div>
 
@@ -383,28 +532,32 @@
        CONFIG
        ============================================================ */
     const WORKER_URL = 'https://empty-grass-e190.05juillet-ballouh-info-8e2.workers.dev/api/reclamations';
-    const MAX_PHOTOS_PER_SITE = 5;
-    const MAX_PHOTO_SIZE      = 5 * 1024 * 1024; // 5MB
-    const DEFAULT_SITE_COUNT  = 7;
+    const MAX_PHOTOS = 10;
+    const MAX_PHOTO_SIZE = 5 * 1024 * 1024; // 5MB
 
     /* ============================================================
        STATE
        ============================================================ */
-    let sites = []; // [{ id, name, rows, photos: [ {name, size, dataUrl} ] }]
+    let photos = []; // { name, size, dataUrl }
+    let isNeat = false;
 
     /* ============================================================
        HELPERS
        ============================================================ */
+    function $(id) { return document.getElementById(id); }
+
     function toast(msg, type) {
         const t = document.createElement('div');
-        t.className = 'REC-toast ' + (type || '');
+        t.className = 'RC-toast ' + (type || '');
         t.textContent = msg;
         document.body.appendChild(t);
         setTimeout(() => t.remove(), 4000);
     }
 
-    function uid() {
-        return 'site-' + Math.random().toString(36).slice(2, 9);
+    function formatSize(b) {
+        if (b < 1024) return b + ' B';
+        if (b < 1024 * 1024) return (b / 1024).toFixed(1) + ' KB';
+        return (b / (1024 * 1024)).toFixed(1) + ' MB';
     }
 
     function esc(s) {
@@ -417,349 +570,174 @@
     }
 
     /* ============================================================
-       SITE FACTORY — one site = one table
-       ============================================================ */
-    function createSite(name) {
-        return {
-            id: uid(),
-            name: name || '',
-            photos: [], // { name, size, dataUrl }
-            rows: [
-                { key: 'accueil',     ar: 'الاستقبال',         fr: 'Accueil',              count: '', services: '', dirs: '', etabs: '', records: '', action: '' },
-                { key: 'traitement',  ar: 'المعاملة',          fr: 'Traitement',           count: '', services: '', dirs: '', etabs: '', records: '', action: '' },
-                { key: 'orientation', ar: 'التوجيه',           fr: 'Orientation',          count: '', services: '', dirs: '', etabs: '', records: '', action: '' },
-                { key: 'reponse',     ar: 'الرد',              fr: 'Réponse',              count: '', services: '', dirs: '', etabs: '', records: '', action: '' },
-                { key: 'autres',      ar: 'أصناف أخرى (تذكر)', fr: 'Autres (à préciser)',  count: '', services: '', dirs: '', etabs: '', records: '', action: '' }
-            ]
-        };
-    }
-
-    /* ============================================================
-       RENDER
-       ============================================================ */
-    const container = document.getElementById('REC-sites-container');
-
-    function renderAll() {
-        container.innerHTML = '';
-        sites.forEach((site, idx) => {
-            container.appendChild(renderSiteBlock(site, idx));
-        });
-        recalcGlobalTotals();
-    }
-
-    function renderSiteBlock(site, idx) {
-        const block = document.createElement('div');
-        block.className = 'REC-site-block';
-        block.dataset.siteId = site.id;
-
-        // --- Header
-        const head = document.createElement('div');
-        head.className = 'REC-site-title';
-        head.innerHTML = `
-            <h3>🏥 <span style="color:#4f46e5;">المؤسسة ${idx + 1}</span> · Site ${idx + 1}</h3>
-            <span class="badge" data-role="site-badge">${site.photos.length} 📷</span>
-        `;
-        block.appendChild(head);
-
-        // --- Site name input
-        const nameWrap = document.createElement('div');
-        nameWrap.style.marginBottom = '12px';
-        nameWrap.innerHTML = `
-            <label class="block text-xs font-semibold text-gray-600 mb-1">
-                اسم المؤسسة / Nom du site
-            </label>
-            <input type="text" class="REC-input text-right" dir="auto"
-                   data-role="site-name" placeholder="مثال: عيادة متعددة الخدمات غرداية"
-                   value="${esc(site.name)}">
-        `;
-        block.appendChild(nameWrap);
-        const nameInput = nameWrap.querySelector('[data-role="site-name"]');
-        nameInput.addEventListener('input', (e) => {
-            site.name = e.target.value;
-        });
-
-        // --- Table
-        const tableWrap = document.createElement('div');
-        tableWrap.style.overflowX = 'auto';
-        tableWrap.innerHTML = `
-            <table class="REC-table">
-                <thead>
-                    <tr>
-                        <th style="min-width:140px;">
-                            الإدارات والمؤسسات العمومية
-                            <span class="fr">Administrations & Établissements Publics</span>
-                        </th>
-                        <th style="min-width:120px;">
-                            عدد الإدارات والمؤسسات المعنية
-                            <span class="fr">Nombre d'administrations concernées</span>
-                        </th>
-                        <th style="min-width:110px;">
-                            عدد السجلات المفتوحة
-                            <span class="fr">Nombre de registres ouverts</span>
-                        </th>
-                        <th style="min-width:120px;">
-                            أصناف الشكوى
-                            <span class="fr">Catégories de la réclamation</span>
-                        </th>
-                        <th style="min-width:90px;">
-                            العدد
-                            <span class="fr">Nombre</span>
-                        </th>
-                        <th style="min-width:120px;">
-                            المتكفل بها
-                            <span class="fr">Pris en charge par</span>
-                        </th>
-                        <th style="min-width:160px;">
-                            الإجراءات المتخذة
-                            <span class="fr">Mesures prises</span>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-        `;
-        const tbody = tableWrap.querySelector('tbody');
-
-        site.rows.forEach((row, ridx) => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td style="text-align:center;">
-                    <input type="text" class="REC-input" data-row="${ridx}" data-field="dirs"
-                           value="${esc(row.dirs)}" placeholder="—">
-                </td>
-                <td style="text-align:center;">
-                    <input type="number" min="0" class="REC-input REC-num" data-row="${ridx}" data-field="etabs"
-                           value="${esc(row.etabs)}" placeholder="0">
-                </td>
-                <td style="text-align:center;">
-                    <input type="number" min="0" class="REC-input REC-num" data-row="${ridx}" data-field="records"
-                           value="${esc(row.records)}" placeholder="0">
-                </td>
-                <td class="REC-row-label">
-                    ${esc(row.ar)}
-                    <span class="fr">${esc(row.fr)}</span>
-                </td>
-                <td style="text-align:center;">
-                    <input type="number" min="0" class="REC-input REC-num" data-row="${ridx}" data-field="count"
-                           value="${esc(row.count)}" placeholder="0">
-                </td>
-                <td style="text-align:center;">
-                    <input type="text" class="REC-input" data-row="${ridx}" data-field="services"
-                           value="${esc(row.services)}" placeholder="—">
-                </td>
-                <td style="text-align:center;">
-                    <input type="text" class="REC-input text-right" dir="auto" data-row="${ridx}" data-field="action"
-                           value="${esc(row.action)}" placeholder="—">
-                </td>
-            `;
-            tbody.appendChild(tr);
-        });
-
-        // Bind row inputs
-        tbody.addEventListener('input', (e) => {
-            const input = e.target.closest('input[data-row]');
-            if (!input) return;
-            const r = parseInt(input.dataset.row, 10);
-            const field = input.dataset.field;
-            if (!site.rows[r]) return;
-            site.rows[r][field] = input.value;
-            recalcGlobalTotals();
-        });
-
-        block.appendChild(tableWrap);
-
-        // --- Total row (per site)
-        const siteTotal = document.createElement('div');
-        siteTotal.className = 'bg-indigo-50 border border-indigo-200 rounded-lg p-3 mt-3';
-        siteTotal.innerHTML = `
-            <div class="flex items-center justify-between text-sm">
-                <span class="font-bold text-indigo-900">مجموع المؤسسة / Total du site</span>
-                <span class="font-bold text-indigo-700" data-role="site-total">0</span>
-            </div>
-        `;
-        block.appendChild(siteTotal);
-
-        // --- Photo uploader
-        const photoWrap = document.createElement('div');
-        photoWrap.style.marginTop = '16px';
-        photoWrap.innerHTML = `
-            <label class="block text-xs font-semibold text-gray-600 mb-2">
-                📷 صور الحالات / Photos des cas
-                <span class="text-gray-400 font-normal">(اختياري — حتى ${MAX_PHOTOS_PER_SITE} صور)</span>
-            </label>
-            <div class="REC-photo-zone" data-role="photo-zone">
-                <div class="text-3xl mb-1">📎</div>
-                <div class="text-sm text-gray-600">
-                    <span class="text-indigo-600 font-semibold">اضغط للتحميل</span> أو اسحب الصور هنا
-                </div>
-                <div class="text-xs text-gray-400 mt-1" dir="ltr">
-                    Cliquez ou glissez-déposez · Max ${MAX_PHOTOS_PER_SITE} · 5MB
-                </div>
-                <input type="file" accept="image/*" multiple hidden data-role="photo-input">
-            </div>
-            <div class="REC-thumbs" data-role="photo-thumbs"></div>
-        `;
-        block.appendChild(photoWrap);
-
-        // Bind photo zone
-        const photoZone = photoWrap.querySelector('[data-role="photo-zone"]');
-        const photoInput = photoWrap.querySelector('[data-role="photo-input"]');
-        const photoThumbs = photoWrap.querySelector('[data-role="photo-thumbs"]');
-        const siteBadge = head.querySelector('[data-role="site-badge"]');
-
-        photoZone.addEventListener('click', () => photoInput.click());
-        photoZone.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            photoZone.classList.add('drag-over');
-        });
-        photoZone.addEventListener('dragleave', () => {
-            photoZone.classList.remove('drag-over');
-        });
-        photoZone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            photoZone.classList.remove('drag-over');
-            handleFiles(site, e.dataTransfer.files);
-        });
-        photoInput.addEventListener('change', (e) => {
-            handleFiles(site, e.target.files);
-            photoInput.value = '';
-        });
-
-        function handleFiles(site, files) {
-            const arr = Array.from(files);
-            arr.forEach((file) => {
-                if (site.photos.length >= MAX_PHOTOS_PER_SITE) {
-                    toast(`⚠ الحد الأقصى ${MAX_PHOTOS_PER_SITE} صور لكل مؤسسة`, 'error');
-                    return;
-                }
-                if (!file.type.startsWith('image/')) {
-                    toast('⚠ يرجى اختيار صور فقط', 'error');
-                    return;
-                }
-                if (file.size > MAX_PHOTO_SIZE) {
-                    toast(`⚠ "${file.name}" كبير جدًا (الحد 5MB)`, 'error');
-                    return;
-                }
-                const reader = new FileReader();
-                reader.onload = (ev) => {
-                    site.photos.push({
-                        name: file.name,
-                        size: file.size,
-                        dataUrl: ev.target.result
-                    });
-                    renderThumbs(site, photoThumbs, siteBadge);
-                };
-                reader.readAsDataURL(file);
-            });
-        }
-
-        renderThumbs(site, photoThumbs, siteBadge);
-        return block;
-    }
-
-    function renderThumbs(site, thumbsEl, badge) {
-        thumbsEl.innerHTML = '';
-        site.photos.forEach((p, i) => {
-            const div = document.createElement('div');
-            div.className = 'REC-thumb';
-            div.innerHTML = `
-                <img src="${p.dataUrl}" alt="${esc(p.name)}">
-                <button type="button" class="rm" title="حذف">×</button>
-            `;
-            div.querySelector('.rm').addEventListener('click', () => {
-                site.photos.splice(i, 1);
-                renderThumbs(site, thumbsEl, badge);
-            });
-            thumbsEl.appendChild(div);
-        });
-        if (badge) badge.textContent = `${site.photos.length} 📷`;
-    }
-
-    /* ============================================================
        TOTALS
        ============================================================ */
-    function recalcGlobalTotals() {
-        const totals = { accueil: 0, traitement: 0, orientation: 0, reponse: 0, autres: 0 };
+    const countIds = ['accueil', 'traitement', 'orientation', 'reponse', 'autres'];
 
-        sites.forEach((site) => {
-            let siteTotal = 0;
-            site.rows.forEach((row) => {
-                const v = parseInt(row.count || '0', 10) || 0;
-                siteTotal += v;
-                if (totals[row.key] !== undefined) totals[row.key] += v;
-            });
-
-            // Update per-site total badge
-            const block = document.querySelector(`[data-site-id="${site.id}"]`);
-            if (block) {
-                const el = block.querySelector('[data-role="site-total"]');
-                if (el) el.textContent = siteTotal;
-            }
+    function recalcTotal() {
+        let total = 0;
+        countIds.forEach((k) => {
+            const v = parseInt($('RC-count-' + k).value || '0', 10) || 0;
+            total += v;
         });
+        $('RC-total').textContent = total;
+    }
 
-        document.getElementById('GT-accueil').textContent     = totals.accueil;
-        document.getElementById('GT-traitement').textContent  = totals.traitement;
-        document.getElementById('GT-orientation').textContent = totals.orientation;
-        document.getElementById('GT-reponse').textContent     = totals.reponse;
-        document.getElementById('GT-autres').textContent      = totals.autres;
+    countIds.forEach((k) => {
+        $('RC-count-' + k).addEventListener('input', (e) => {
+            // Only digits
+            e.target.value = e.target.value.replace(/\D/g, '').slice(0, 6);
+            recalcTotal();
+        });
+    });
+
+    /* ============================================================
+       PHOTO HANDLING
+       ============================================================ */
+    const photoZone = $('RC-photo-zone');
+    const photoInput = $('RC-photo-input');
+    const photoThumbs = $('RC-thumbs');
+
+    photoZone.addEventListener('click', () => photoInput.click());
+    photoZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        photoZone.classList.add('drag-over');
+    });
+    photoZone.addEventListener('dragleave', () => {
+        photoZone.classList.remove('drag-over');
+    });
+    photoZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        photoZone.classList.remove('drag-over');
+        addFiles(e.dataTransfer.files);
+    });
+    photoInput.addEventListener('change', (e) => {
+        addFiles(e.target.files);
+        photoInput.value = '';
+    });
+
+    function addFiles(files) {
+        const arr = Array.from(files);
+
+        for (const file of arr) {
+            if (photos.length >= MAX_PHOTOS) {
+                toast(`⚠ الحد الأقصى ${MAX_PHOTOS} صور`, 'error');
+                break;
+            }
+            if (!file.type.startsWith('image/')) {
+                toast(`⚠ "${file.name}" ليس صورة`, 'error');
+                continue;
+            }
+            if (file.size > MAX_PHOTO_SIZE) {
+                toast(`⚠ "${file.name}" كبير جدًا (الحد 5MB)`, 'error');
+                continue;
+            }
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                photos.push({
+                    name: file.name,
+                    size: file.size,
+                    dataUrl: ev.target.result
+                });
+                renderThumbs();
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function renderThumbs() {
+        photoThumbs.innerHTML = '';
+        photos.forEach((p, i) => {
+            const div = document.createElement('div');
+            div.className = 'RC-thumb';
+            div.innerHTML = `
+                <img src="${p.dataUrl}" alt="${esc(p.name)}" title="${esc(p.name)} — ${formatSize(p.size)}">
+                <button type="button" class="rm" title="حذف">×</button>
+            `;
+            div.querySelector('.rm').addEventListener('click', (e) => {
+                e.stopPropagation();
+                photos.splice(i, 1);
+                renderThumbs();
+            });
+            photoThumbs.appendChild(div);
+        });
     }
 
     /* ============================================================
-       ADD / REMOVE SITE
+       "NEAT" TOGGLE
        ============================================================ */
-    document.getElementById('REC-add-site').addEventListener('click', () => {
-        if (sites.length >= 15) {
-            toast('⚠ الحد الأقصى 15 مؤسسة', 'error');
-            return;
+    const neatToggle = $('RC-neat-toggle');
+    const formBody = $('RC-form-body');
+
+    neatToggle.addEventListener('click', () => {
+        isNeat = !isNeat;
+        neatToggle.classList.toggle('active', isNeat);
+        formBody.classList.toggle('hidden-fields', isNeat);
+
+        // Clear counts when neat
+        if (isNeat) {
+            countIds.forEach((k) => { $('RC-count-' + k).value = ''; });
+            $('RC-note-autres').value = '';
+            photos = [];
+            renderThumbs();
+            recalcTotal();
         }
-        sites.push(createSite(''));
-        renderAll();
-        toast('✅ تمت إضافة مؤسسة جديدة', 'success');
     });
 
     /* ============================================================
        SUBMIT
        ============================================================ */
-    document.getElementById('REC-submit').addEventListener('click', async () => {
-        // Validate
-        if (sites.length === 0) {
-            toast('⚠ يرجى إضافة مؤسسة واحدة على الأقل', 'error');
+    const form = $('RC-form');
+    const successBox = $('RC-success');
+    const errorBox = $('RC-error');
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        successBox.style.display = 'none';
+        errorBox.style.display = 'none';
+
+        const site = $('RC-site').value.trim();
+        if (!site) {
+            toast('⚠ يرجى اختيار المؤسسة', 'error');
+            $('RC-site').focus();
             return;
         }
-        for (let i = 0; i < sites.length; i++) {
-            if (!sites[i].name.trim()) {
-                toast(`⚠ يرجى إدخال اسم المؤسسة ${i + 1}`, 'error');
-                document.querySelector(`[data-site-id="${sites[i].id}"]`)
-                    ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        // If not neat, require at least one count or one photo? — Allow empty, but warn
+        let total = 0;
+        const counts = {};
+        countIds.forEach((k) => {
+            const v = parseInt($('RC-count-' + k).value || '0', 10) || 0;
+            counts[k] = v;
+            total += v;
+        });
+
+        if (!isNeat && total === 0 && photos.length === 0) {
+            const ok = confirm('لم تُدخل أي عدد ولم ترفق أي صورة.\n\nهل تريد اعتبارها "نظيف / Néant"؟');
+            if (ok) {
+                isNeat = true;
+                neatToggle.classList.add('active');
+                formBody.classList.add('hidden-fields');
+            } else {
                 return;
             }
         }
 
-        // Prepare payload
         const payload = {
-            date: document.getElementById('REC-date').value,
-            periode: document.getElementById('REC-periode').value,
-            wilaya: document.getElementById('REC-wilaya').value,
-            sites: sites.map((s) => ({
-                name: s.name,
-                photos: s.photos.map((p) => p.dataUrl),
-                rows: s.rows.map((r) => ({
-                    key: r.key,
-                    label: r.ar,
-                    dirs: r.dirs,
-                    etabs: r.etabs,
-                    records: r.records,
-                    count: r.count,
-                    services: r.services,
-                    action: r.action
-                }))
-            }))
+            site: site,
+            neat: isNeat,
+            counts: isNeat ? { accueil: 0, traitement: 0, orientation: 0, reponse: 0, autres: 0 } : counts,
+            noteAutres: isNeat ? '' : $('RC-note-autres').value.trim(),
+            comment: isNeat ? '' : $('RC-comment').value.trim(),
+            photos: isNeat ? [] : photos.map((p) => p.dataUrl),
+            submittedAt: new Date().toISOString()
         };
 
         // UI
-        const btn = document.getElementById('REC-submit');
-        const txt = document.getElementById('REC-btn-txt');
-        const spn = document.getElementById('REC-btn-spinner');
+        const btn = $('RC-submit');
+        const txt = $('RC-btn-txt');
+        const spn = $('RC-btn-spinner');
         btn.disabled = true;
         txt.textContent = 'جاري الإرسال... / Envoi...';
         spn.style.display = 'inline-block';
@@ -778,34 +756,43 @@
                 throw new Error(body.message || body.error || `Erreur ${res.status}`);
             }
 
-            toast('✅ تم إرسال الجدول بنجاح / Tableau envoyé', 'success');
+            // Success
+            const ref = body.reference || ('REC-' + Date.now().toString(36).toUpperCase());
+            $('RC-success-ref').textContent = 'REF: ' + ref;
+            successBox.style.display = 'flex';
+            successBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            toast('✅ تم الإرسال بنجاح', 'success');
 
             // Reset
-            sites = [];
-            for (let i = 0; i < DEFAULT_SITE_COUNT; i++) {
-                sites.push(createSite(''));
-            }
-            renderAll();
-            document.getElementById('REC-date').value = '';
+            resetForm();
 
         } catch (err) {
             console.error(err);
+            $('RC-error-msg').textContent = err.message || 'فشل الإرسال';
+            errorBox.style.display = 'flex';
+            errorBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
             toast('❌ ' + (err.message || 'فشل الإرسال'), 'error');
         } finally {
             btn.disabled = false;
-            txt.textContent = '📤 إرسال الجدول / Envoyer';
+            txt.textContent = '📤 إرسال الاستمارة / Envoyer';
             spn.style.display = 'none';
         }
     });
 
-    /* ============================================================
-       INIT — 7 empty sites by default
-       ============================================================ */
-    for (let i = 0; i < DEFAULT_SITE_COUNT; i++) {
-        sites.push(createSite(''));
+    function resetForm() {
+        form.reset();
+        photos = [];
+        renderThumbs();
+        recalcTotal();
+        isNeat = false;
+        neatToggle.classList.remove('active');
+        formBody.classList.remove('hidden-fields');
     }
-    document.getElementById('REC-date').valueAsDate = new Date();
-    renderAll();
+
+    /* ============================================================
+       INIT
+       ============================================================ */
+    recalcTotal();
 
 })();
 </script>
