@@ -21,7 +21,7 @@
     [dir="rtl"], .rtl { font-family: 'Tajawal', 'Inter', sans-serif; }
 
     .HD-wrap {
-        max-width: 900px;
+        max-width: 920px;
         margin: 24px auto 80px;
         background: #fff;
         border-radius: 20px;
@@ -35,7 +35,7 @@
         flex-wrap: wrap;
         gap: 10px;
         justify-content: flex-end;
-        padding: 14px 32px 0;
+        padding: 16px 32px 0;
     }
     @media (max-width: 640px) {
         .HD-actions { padding: 12px 18px 0; justify-content: center; }
@@ -78,7 +78,7 @@
     .HD-header {
         background: linear-gradient(135deg, #0f766e 0%, #14b8a6 60%, #5eead4 100%);
         color: #fff;
-        padding: 28px 32px;
+        padding: 30px 32px;
         text-align: center;
         position: relative;
         overflow: hidden;
@@ -100,6 +100,8 @@
         padding: 5px 14px;
         border-radius: 999px;
         margin-bottom: 12px;
+        position: relative;
+        z-index: 1;
     }
     .HD-header h1 {
         font-size: 22px;
@@ -116,32 +118,22 @@
     }
 
     /* ===== SECTION ===== */
-    .HD-body { padding: 28px 32px 36px; }
+    .HD-body { padding: 30px 32px 40px; }
     @media (max-width: 640px) {
         .HD-body { padding: 20px 18px 28px; }
         .HD-header { padding: 22px 18px; }
         .HD-header h1 { font-size: 18px; }
     }
 
-    .HD-section { margin-bottom: 34px; }
+    .HD-section { margin-bottom: 38px; }
     .HD-section-head {
         display: flex;
         align-items: center;
-        gap: 12px;
-        padding: 12px 16px;
+        padding: 14px 18px;
         background: #f0fdfa;
         border-radius: 14px;
-        margin-bottom: 20px;
+        margin-bottom: 22px;
         border: 1px solid #ccfbf1;
-    }
-    .HD-section-head .icon {
-        width: 38px; height: 38px;
-        border-radius: 10px;
-        background: #14b8a6;
-        color: #fff;
-        display: flex; align-items: center; justify-content: center;
-        font-size: 18px;
-        flex-shrink: 0;
     }
     .HD-section-head h2 {
         font-size: 15px;
@@ -150,15 +142,16 @@
         letter-spacing: 0.5px;
         text-transform: uppercase;
         margin: 0;
+        line-height: 1.4;
     }
     .HD-section-head small {
         display: block;
-        font-size: 12px;
+        font-size: 12.5px;
         color: #64748b;
-        font-weight: 400;
+        font-weight: 500;
         text-transform: none;
         letter-spacing: 0;
-        margin-top: 2px;
+        margin-top: 3px;
         direction: rtl;
     }
 
@@ -169,14 +162,15 @@
         font-weight: 600;
         color: #334155;
         margin-bottom: 10px;
+        line-height: 1.4;
     }
     .HD-label .ar {
         display: block;
-        font-size: 12px;
+        font-size: 12.5px;
         font-weight: 400;
         color: #94a3b8;
         direction: rtl;
-        margin-top: 2px;
+        margin-top: 3px;
     }
     .HD-label .req { color: #ef4444; }
 
@@ -185,13 +179,13 @@
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
-        margin-bottom: 22px;
+        margin-bottom: 24px;
     }
     .HD-chip {
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        padding: 9px 18px;
+        padding: 10px 20px;
         border-radius: 999px;
         border: 1.5px solid #e2e8f0;
         background: #f8fafc;
@@ -203,6 +197,7 @@
         user-select: none;
         font-family: inherit;
         white-space: nowrap;
+        line-height: 1;
     }
     .HD-chip:hover {
         border-color: #5eead4;
@@ -219,7 +214,7 @@
         content: '✓';
         font-size: 12px;
         font-weight: 700;
-        margin-right: 2px;
+        margin-right: 4px;
     }
 
     /* ===== TEXT / SELECT / NUMBER INPUTS ===== */
@@ -229,11 +224,12 @@
         border: 1.5px solid #e2e8f0;
         border-radius: 14px;
         font-size: 15px;
-        background: #f1f5f9;
+        background: #f8fafc;
         color: #1e293b;
         outline: none;
         transition: all 0.2s;
         font-family: inherit;
+        line-height: 1.4;
     }
     .HD-input:focus {
         border-color: #14b8a6;
@@ -253,31 +249,29 @@
     }
 
     .HD-input-wrap {
-        position: relative;
         margin-bottom: 22px;
-    }
-    .HD-input-wrap .icon {
-        position: absolute;
-        left: 16px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: #94a3b8;
-        font-size: 17px;
-        pointer-events: none;
-    }
-    .HD-input-wrap .icon + .HD-input {
-        padding-left: 46px;
-    }
-    .HD-input-wrap textarea.HD-input {
-        padding-left: 46px;
-        padding-top: 14px;
-        resize: vertical;
     }
     .HD-input-wrap .hint {
         font-size: 12px;
         color: #64748b;
-        margin-top: 6px;
+        margin-top: 7px;
         display: block;
+        line-height: 1.5;
+    }
+
+    textarea.HD-input {
+        resize: vertical;
+        min-height: 90px;
+    }
+
+    /* ===== TWO-COLUMN GRID for compact fields ===== */
+    .HD-grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+    @media (max-width: 640px) {
+        .HD-grid-2 { grid-template-columns: 1fr; gap: 0; }
     }
 
     /* ===== SUBMIT ===== */
@@ -298,7 +292,7 @@
         transition: all 0.25s;
         box-shadow: 0 12px 28px -10px rgba(20, 184, 166, 0.6);
         font-family: inherit;
-        margin-top: 8px;
+        margin-top: 10px;
     }
     .HD-submit:hover:not(:disabled) {
         transform: translateY(-2px);
@@ -371,10 +365,10 @@
     }
 
     .HD-required-note {
-        font-size: 12px;
+        font-size: 12.5px;
         color: #64748b;
         text-align: center;
-        margin-top: 14px;
+        margin-top: 16px;
     }
     .HD-required-note .req { color: #ef4444; font-weight: 700; }
 </style>
@@ -432,30 +426,54 @@
             <!-- =========== IDENTIFICATION =========== -->
             <div class="HD-section">
                 <div class="HD-section-head">
-                    <div class="icon">👤</div>
                     <h2>Identification du patient
                         <small>تحديد هوية المريض</small>
                     </h2>
                 </div>
 
                 <div class="HD-input-wrap">
-                    <span class="icon">👤</span>
-                    <input type="text" id="HD-nom" class="HD-input" placeholder="Nom et Prénom / الاسم واللقب" required>
-                    <span class="hint">Lettres uniquement — حروف فقط</span>
+                    <label class="HD-label" for="HD-nom">
+                        Nom et Prénom <span class="req">*</span>
+                        <span class="ar">الاسم واللقب</span>
+                    </label>
+                    <input type="text" id="HD-nom" class="HD-input" placeholder="Ex: Benali Mohamed / مثال: بن علي محمد" required>
+                    <span class="hint">Lettres uniquement (arabe ou français) — حروف فقط (عربية أو فرنسية)</span>
+                </div>
+
+                <div class="HD-grid-2">
+                    <div class="HD-input-wrap">
+                        <label class="HD-label" for="HD-nin">
+                            NIN <span class="req">*</span>
+                            <span class="ar">الرقم التعريفي الوطني (18 رقمًا)</span>
+                        </label>
+                        <input type="text" id="HD-nin" class="HD-input" dir="ltr" inputmode="numeric" maxlength="18" placeholder="000000000000000000" required>
+                        <span class="hint">Chiffres uniquement — أرقام فقط</span>
+                    </div>
+
+                    <div class="HD-input-wrap">
+                        <label class="HD-label" for="HD-nss">
+                            NSS
+                            <span class="ar">رقم الضمان الاجتماعي (اختياري)</span>
+                        </label>
+                        <input type="text" id="HD-nss" class="HD-input" dir="ltr" inputmode="numeric" maxlength="15" placeholder="اختياري / Optionnel">
+                        <span class="hint">Chiffres uniquement (9–15) — أرقام فقط</span>
+                    </div>
                 </div>
 
                 <div class="HD-input-wrap">
-                    <span class="icon">🔢</span>
-                    <input type="text" id="HD-nin" class="HD-input" dir="ltr" inputmode="numeric" maxlength="18" placeholder="NIN — الرقم التعريفي الوطني (18 chiffres)" required>
+                    <label class="HD-label" for="HD-phone">
+                        Téléphone <span class="req">*</span>
+                        <span class="ar">رقم الهاتف</span>
+                    </label>
+                    <input type="tel" id="HD-phone" class="HD-input" dir="ltr" inputmode="tel" placeholder="0555 12 34 56" required>
+                    <span class="hint">Chiffres et + ( ) - — أرقام و + ( ) -</span>
                 </div>
 
                 <div class="HD-input-wrap">
-                    <span class="icon">📞</span>
-                    <input type="tel" id="HD-phone" class="HD-input" dir="ltr" inputmode="tel" placeholder="Téléphone — رقم الهاتف" required>
-                </div>
-
-                <div class="HD-input-wrap" style="margin-bottom:0;">
-                    <span class="icon">🏥</span>
+                    <label class="HD-label" for="HD-site">
+                        Établissement <span class="req">*</span>
+                        <span class="ar">المؤسسة</span>
+                    </label>
                     <select id="HD-site" class="HD-input" required>
                         <option value="">— Sélectionnez l'établissement / اختر المؤسسة —</option>
                         <option value="Polyclinique Bailich Mazouz">Polyclinique Bailich Mazouz</option>
@@ -472,7 +490,6 @@
             <!-- =========== FINANCIER =========== -->
             <div class="HD-section">
                 <div class="HD-section-head">
-                    <div class="icon">💼</div>
                     <h2>Situation financière & assurance
                         <small>الوضعية المالية والتأمين</small>
                     </h2>
@@ -514,7 +531,6 @@
             <!-- =========== SOCIO-ÉCONOMIQUE =========== -->
             <div class="HD-section">
                 <div class="HD-section-head">
-                    <div class="icon">📊</div>
                     <h2>Situation socio-économique
                         <small>الوضعية الاجتماعية والاقتصادية</small>
                     </h2>
@@ -546,13 +562,14 @@
                     <button type="button" class="HD-chip" data-value="Divorcé">Divorcé — مطلق</button>
                 </div>
 
-                <label class="HD-label">
-                    Nombre de personnes vivant au foyer
-                    <span class="ar">عدد الأشخاص الذين يعيشون في المنزل</span>
-                </label>
-                <div class="HD-input-wrap">
-                    <span class="icon">👥</span>
-                    <input type="number" min="0" max="30" id="HD-foyer" class="HD-input" placeholder="0" value="">
+                <div class="HD-grid-2">
+                    <div class="HD-input-wrap">
+                        <label class="HD-label" for="HD-foyer">
+                            Personnes vivant au foyer
+                            <span class="ar">عدد الأشخاص بالمنزل</span>
+                        </label>
+                        <input type="number" min="0" max="30" id="HD-foyer" class="HD-input" placeholder="0">
+                    </div>
                 </div>
 
                 <label class="HD-label">
@@ -605,20 +622,25 @@
             <!-- =========== STRUCTURE SANITAIRE =========== -->
             <div class="HD-section" style="margin-bottom:0;">
                 <div class="HD-section-head">
-                    <div class="icon">🏥</div>
                     <h2>Structure sanitaire de proximité
                         <small>الهيكل الصحي الأقرب لمكان الإقامة</small>
                     </h2>
                 </div>
 
                 <div class="HD-input-wrap">
-                    <span class="icon">📍</span>
-                    <input type="text" id="HD-structure" class="HD-input" placeholder="Polyclinique ou centre de santé le plus proche — الهيكل الصحي الأقرب">
+                    <label class="HD-label" for="HD-structure">
+                        Polyclinique ou centre de santé le plus proche
+                        <span class="ar">الهيكل الصحي الأقرب</span>
+                    </label>
+                    <input type="text" id="HD-structure" class="HD-input" placeholder="Nom de la structure la plus proche">
                 </div>
 
                 <div class="HD-input-wrap" style="margin-bottom:0;">
-                    <span class="icon">📝</span>
-                    <textarea id="HD-notes" class="HD-input" rows="3" placeholder="Remarques éventuelles / ملاحظات إضافية"></textarea>
+                    <label class="HD-label" for="HD-notes">
+                        Remarques éventuelles
+                        <span class="ar">ملاحظات إضافية</span>
+                    </label>
+                    <textarea id="HD-notes" class="HD-input" rows="3" placeholder="Remarques / ملاحظات"></textarea>
                 </div>
             </div>
 
@@ -666,15 +688,6 @@
         setTimeout(() => t.remove(), 4000);
     }
 
-    function esc(s) {
-        return String(s || '')
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#039;');
-    }
-
     /* =====================================================================
        CHIP GROUPS
        ===================================================================== */
@@ -705,11 +718,14 @@
     });
 
     /* =====================================================================
-       INPUT FILTERS
+       INPUT FILTERS  — each field only accepts what it is meant for
        ===================================================================== */
-    const NAME_ALLOWED = /[\p{Script=Arabic}\p{Script=Latin}\s'’\-]/u;
-    const NAME_DISALLOWED_G = /[^\p{Script=Arabic}\p{Script=Latin}\s'’\-]/gu;
+
+    /* Nom & Prénom — letters only (Arabic OR Latin), spaces, hyphen, apostrophe */
+    const NAME_ALLOWED       = /[\p{Script=Arabic}\p{Script=Latin}\s'’\-]/u;
+    const NAME_DISALLOWED_G  = /[^\p{Script=Arabic}\p{Script=Latin}\s'’\-]/gu;
     const nameInput = $('HD-nom');
+
     nameInput.addEventListener('beforeinput', (e) => {
         if (e.data && !NAME_ALLOWED.test(e.data)) e.preventDefault();
     });
@@ -724,6 +740,7 @@
         document.execCommand('insertText', false, cleaned);
     });
 
+    /* NIN — digits only, exactly 18 max */
     const ninInput = $('HD-nin');
     ninInput.addEventListener('beforeinput', (e) => {
         if (e.data && /\D/.test(e.data)) e.preventDefault();
@@ -738,7 +755,23 @@
         document.execCommand('insertText', false, text.replace(/\D/g, '').slice(0, 18));
     });
 
-    const PHONE_ALLOWED = /[\d+\s\-()]/;
+    /* NSS — digits only, 15 max (optional) */
+    const nssInput = $('HD-nss');
+    nssInput.addEventListener('beforeinput', (e) => {
+        if (e.data && /\D/.test(e.data)) e.preventDefault();
+    });
+    nssInput.addEventListener('input', () => {
+        const v = nssInput.value.replace(/\D/g, '').slice(0, 15);
+        if (v !== nssInput.value) nssInput.value = v;
+    });
+    nssInput.addEventListener('paste', (e) => {
+        e.preventDefault();
+        const text = (e.clipboardData || window.clipboardData).getData('text') || '';
+        document.execCommand('insertText', false, text.replace(/\D/g, '').slice(0, 15));
+    });
+
+    /* Téléphone — digits and + ( ) - space only */
+    const PHONE_ALLOWED      = /[\d+\s\-()]/;
     const PHONE_DISALLOWED_G = /[^\d+\s\-()]/g;
     const phoneInput = $('HD-phone');
     phoneInput.addEventListener('beforeinput', (e) => {
@@ -754,6 +787,7 @@
         document.execCommand('insertText', false, text.replace(PHONE_DISALLOWED_G, ''));
     });
 
+    /* Foyer — digits only, max 2 */
     const foyerInput = $('HD-foyer');
     foyerInput.addEventListener('beforeinput', (e) => {
         if (e.data && /\D/.test(e.data)) e.preventDefault();
@@ -778,6 +812,13 @@
         if (nin.length !== 18) {
             toast('⚠ Le NIN doit contenir 18 chiffres', 'error');
             ninInput.focus();
+            return null;
+        }
+
+        const nss = nssInput.value.replace(/\D/g, '');
+        if (nss && (nss.length < 9 || nss.length > 15)) {
+            toast('⚠ NSS invalide (9 à 15 chiffres)', 'error');
+            nssInput.focus();
             return null;
         }
 
@@ -808,8 +849,9 @@
         return {
             nom,
             nin,
-            phone: phoneRaw,
-            phone_clean: phone,
+            nss:             nss || null,
+            phone:           phoneRaw,
+            phone_clean:     phone,
             site,
             gain:            selections.gain,
             assure:          selections.assure,
@@ -881,20 +923,18 @@
     /* =====================================================================
        PRINT HELPERS
        ===================================================================== */
-
-    // Escape for HTML safe output
     const pEsc = (s) => String(s == null ? '' : s)
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;');
 
-    // Return current form data (even if incomplete) for printing
     function collectCurrent() {
         const langues = selections.langues.length ? selections.langues.join(', ') : '';
         return {
             nom:            nameInput.value.trim(),
             nin:            ninInput.value.replace(/\D/g, ''),
+            nss:            nssInput.value.replace(/\D/g, ''),
             phone:          phoneInput.value.trim(),
             site:           $('HD-site').value,
             gain:           selections.gain || '',
@@ -912,15 +952,12 @@
         };
     }
 
-    // Build the printable HTML document
-    // mode: 'blank' | 'filled'
     function buildPrintHTML(mode) {
         const data = mode === 'filled' ? collectCurrent() : {};
         const now = new Date();
         const dateStr = now.toLocaleDateString('fr-FR');
         const timeStr = now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
 
-        // Chips renderer for print
         function chips(values, current, multi) {
             if (!Array.isArray(values)) values = [values];
             const currentArr = multi
@@ -1177,6 +1214,7 @@
     <table class="pp-table">
         ${line('Nom et Prénom', data.nom, 'الاسم واللقب')}
         ${line('NIN (18 chiffres)', data.nin, 'الرقم التعريفي الوطني')}
+        ${line('NSS', data.nss, 'رقم الضمان الاجتماعي')}
         ${line('Téléphone', data.phone, 'رقم الهاتف')}
         ${line('Établissement', data.site, 'المؤسسة')}
     </table>
@@ -1319,7 +1357,6 @@
         return html;
     }
 
-    // Open a new window and print
     function openPrint(mode) {
         const html = buildPrintHTML(mode);
         const w = window.open('', '_blank', 'width=900,height=700');
@@ -1332,7 +1369,6 @@
         w.document.close();
     }
 
-    // Expose globally
     window.HD_printBlank  = () => openPrint('blank');
     window.HD_printFilled = () => openPrint('filled');
 
