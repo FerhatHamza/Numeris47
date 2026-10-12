@@ -80,7 +80,7 @@
     .PD-btn svg { width: 15px; height: 15px; }
 
     /* =====================================================
-       FORM BODY  — compact for single-page printing
+       FORM BODY
        ===================================================== */
     .PD-body {
         padding: 22px 34px 28px;
@@ -629,8 +629,6 @@
     /* ============================================================
        INPUT FILTERS
        ============================================================ */
-
-    /* Names — letters only (Arabic OR Latin), spaces, hyphen, apostrophe */
     const NAME_ALLOWED      = /[\p{Script=Arabic}\p{Script=Latin}\s'’\-]/u;
     const NAME_DISALLOWED_G = /[^\p{Script=Arabic}\p{Script=Latin}\s'’\-]/gu;
 
@@ -652,7 +650,6 @@
     attachNameFilter($('PD-nom'));
     attachNameFilter($('PD-prenom'));
 
-    /* Phone — digits, +, spaces, dashes, dots, slashes */
     const PHONE_ALLOWED      = /[\d+\s\-\/\.()]/;
     const PHONE_DISALLOWED_G = /[^\d+\s\-\/\.()]/g;
     const telEl = $('PD-tel');
@@ -666,7 +663,6 @@
         });
     }
 
-    /* Date fields — digits and / . - space */
     ['PD-naissance', 'PD-premiere'].forEach((id) => {
         const el = $(id);
         if (!el) return;
@@ -679,7 +675,6 @@
         });
     });
 
-    /* Séances — digits only, max 2 */
     const seancesEl = $('PD-seances');
     if (seancesEl) {
         seancesEl.addEventListener('beforeinput', (e) => {
@@ -714,21 +709,18 @@
     function collect() {
         const v = {};
         TEXT_FIELDS.forEach((id) => { v[id] = $(id) ? $(id).value.trim() : ''; });
-
         const c = {};
         CHECKBOXES.forEach((id) => { c[id] = $(id) ? $(id).checked : false; });
-
         const r = {};
         RADIO_GROUPS.forEach((name) => {
             const checked = document.querySelector(`input[name="${name}"]:checked`);
             r[name] = checked ? checked.id : null;
         });
-
         return { v, c, r };
     }
 
     /* ============================================================
-       PRINT  —  opens a new window and prints reliably
+       BUILD PRINT HTML — FULL A4 PAGE
        ============================================================ */
     const esc = (s) => String(s == null ? '' : s)
         .replace(/&/g, '&amp;')
@@ -736,29 +728,31 @@
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;');
 
-    /* Renders one line: label + value (value = typed text in filled mode, else blank underline) */
-    function row(label, value, mode, opts) {
-        opts = opts || {};
-        const width = opts.wide ? 'wide' : '';
+    /* A field line: label + value (filled = value, blank = dotted line) */
+    function field(label, value, mode) {
         const isEmpty = !value || !String(value).trim();
-        const content = (mode === 'filled' && !isEmpty)
-            ? `<span class="pv">${esc(value)}</span>`
-            : `<span class="bl"></span>`;
+        const inner = (mode === 'filled' && !isEmpty)
+            ? `<span class="fv">${esc(value)}</span>`
+            : `<span class="fl"></span>`;
+        return `<div class="fld"><span class="flbl">${esc(label)}</span><span class="fval">${inner}</span></div>`;
+    }
+
+    function opt(value, selected) {
+        return `<span class="op${selected ? ' on' : ''}">${selected ? '☑' : '☐'} ${esc(value)}</span>`;
+    }
+
+    function radioLine(selected) {
+        return `${selected ? '☑' : '☐'} Positif &nbsp; ${selected === false ? '☑' : '☐'} Négatif`;
+    }
+
+    /* A grid section: 3 columns by default, with a title bar */
+    function section(title, rows) {
         return `
-            <div class="row ${width}">
-                <span class="lbl">${esc(label)}</span>
-                <span class="val">${content}</span>
+            <div class="sec">
+                <div class="sec-t">${esc(title)}</div>
+                <div class="sec-body">${rows}</div>
             </div>
         `;
-    }
-
-    function option(value, selected) {
-        const mark = selected ? '☑' : '☐';
-        return `<span class="opt${selected ? ' on' : ''}">${mark} ${esc(value)}</span>`;
-    }
-
-    function radioMark(selected) {
-        return selected ? '☑' : '☐';
     }
 
     function buildHTML(mode) {
@@ -777,32 +771,62 @@
 <meta charset="UTF-8">
 <title>Protocole d'Hémodialyse — ${filled ? 'Rempli' : 'Vierge'}</title>
 <style>
-    @page { size: A4 portrait; margin: 10mm 12mm; }
-    * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    /* ==========================================================
+       PAGE SETUP — full A4 sheet
+       ========================================================== */
+    @page {
+        size: A4 portrait;
+        margin: 8mm 10mm;
+    }
+    * {
+        box-sizing: border-box;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
     html, body {
         font-family: 'Calibri', 'Segoe UI', Arial, sans-serif;
-        font-size: 9.5pt;
-        line-height: 1.35;
+        font-size: 10pt;
+        line-height: 1.3;
         color: #000;
         margin: 0;
         padding: 0;
         background: #fff;
+        width: 100%;
+        height: 100%;
+    }
+    body {
+        display: flex;
+        flex-direction: column;
+        min-height: 277mm;   /* ~A4 height minus margins */
+    }
+    .content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
     }
 
+    /* ==========================================================
+       HEADER
+       ========================================================== */
     .hdr {
         display: flex;
         justify-content: space-between;
-        gap: 16px;
+        gap: 12px;
         padding-bottom: 6px;
-        border-bottom: 1.5px solid #000;
+        border-bottom: 2px solid #0f172a;
         margin-bottom: 8px;
     }
-    .hdr-l { font-size: 8.5pt; line-height: 1.4; }
+    .hdr-l { font-size: 9pt; line-height: 1.4; }
     .hdr-l .b { font-weight: 700; }
     .hdr-l .g { color: #333; }
-    .hdr-r { text-align: right; font-size: 8pt; line-height: 1.5; color: #333; white-space: nowrap; }
+    .hdr-l .accent { color: #0d9488; font-weight: 700; }
+    .hdr-r { text-align: right; font-size: 8.5pt; line-height: 1.55; color: #333; white-space: nowrap; }
 
-    .title { text-align: center; margin-bottom: 10px; }
+    /* ==========================================================
+       TITLE
+       ========================================================== */
+    .title { text-align: center; margin-bottom: 12px; }
     .title .sub {
         font-size: 7.5pt;
         font-weight: 700;
@@ -811,102 +835,138 @@
         text-transform: uppercase;
     }
     .title h1 {
-        font-size: 14pt;
+        font-size: 16pt;
         font-weight: 800;
-        margin: 1px 0 0;
+        margin: 2px 0 0;
         color: #000;
-        letter-spacing: 0.2px;
     }
     .title h1 .accent { color: #0d9488; }
+    .title .line {
+        width: 70px;
+        height: 2px;
+        background: #0d9488;
+        margin: 6px auto 0;
+        border-radius: 2px;
+    }
 
-    .sec { margin-bottom: 8px; }
+    /* ==========================================================
+       SECTIONS — evenly distributed to fill page height
+       ========================================================== */
+    .content-inner {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .sec {
+        display: flex;
+        flex-direction: column;
+    }
     .sec-t {
         font-size: 8pt;
         font-weight: 800;
-        letter-spacing: 1.2px;
+        letter-spacing: 1.3px;
         color: #0d9488;
         text-transform: uppercase;
-        border-bottom: 0.5px solid #cbd5e1;
-        padding-bottom: 2px;
-        margin-bottom: 5px;
+        padding-bottom: 3px;
+        border-bottom: 0.75px solid #cbd5e1;
+        margin-bottom: 6px;
+    }
+    .sec-body {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
     }
 
-    .grid2, .grid3 { display: grid; gap: 4px 12px; }
-    .grid2 { grid-template-columns: 1fr 1fr; }
-    .grid3 { grid-template-columns: 1fr 1fr 1fr; }
+    /* 2- and 3-column rows */
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 5px 14px; }
+    .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px 14px; }
 
-    .row {
+    /* ==========================================================
+       FIELD LINE — label … dotted underline
+       ========================================================== */
+    .fld {
         display: flex;
         align-items: baseline;
-        gap: 4px;
-        padding: 1.5px 0;
+        gap: 5px;
         font-size: 9.5pt;
+        line-height: 1.5;
+        padding: 1px 0;
     }
-    .row .lbl {
+    .flbl {
         font-weight: 600;
-        color: #333;
+        color: #1e293b;
         white-space: nowrap;
         flex-shrink: 0;
     }
-    .row .lbl::after { content: ' :'; }
-    .row .val { flex: 1; display: flex; align-items: baseline; }
-    .row .val .pv {
+    .flbl::after { content: ' :'; }
+    .fval { flex: 1; display: flex; align-items: baseline; min-width: 0; }
+    .fv {
         font-weight: 700;
-        color: #000;
-        border-bottom: 0.75px solid #000;
-        padding: 0 3px;
-        display: inline-block;
+        color: #0f172a;
+        border-bottom: 0.75px solid #0f172a;
+        padding: 0 4px;
         min-width: 30px;
+        display: inline-block;
+        word-break: break-word;
     }
-    .row .val .bl {
-        display: inline-block;
+    .fl {
         flex: 1;
-        min-width: 30px;
-        border-bottom: 0.5px dotted #888;
+        display: inline-block;
+        border-bottom: 0.6px dotted #94a3b8;
         height: 11px;
+        min-width: 30px;
     }
 
+    /* ==========================================================
+       OPTIONS
+       ========================================================== */
     .opts {
         display: flex;
         flex-wrap: wrap;
-        gap: 2px 10px;
-        font-size: 9pt;
+        gap: 2px 12px;
+        font-size: 9.5pt;
     }
-    .opt {
-        color: #333;
-        white-space: nowrap;
-    }
-    .opt.on {
-        color: #0f766e;
-        font-weight: 700;
-    }
+    .op { color: #333; white-space: nowrap; }
+    .op.on { color: #0f766e; font-weight: 700; }
 
+    /* ==========================================================
+       SEROLOGY — a bordered box
+       ========================================================== */
     .serology {
         display: grid;
-        grid-template-columns: 110px 1fr;
-        gap: 3px 12px;
+        grid-template-columns: 130px 1fr;
+        gap: 4px 14px;
         align-items: baseline;
-        padding: 5px 8px;
-        background: #f1f5f9;
+        padding: 6px 10px;
+        background: #f8fafc;
+        border: 0.75px solid #cbd5e1;
         border-radius: 4px;
-        border: 0.5px solid #cbd5e1;
+        font-size: 9.5pt;
     }
-    .serology .n { font-size: 9pt; font-weight: 600; }
-    .serology .v { font-size: 9pt; }
+    .serology .n { font-weight: 600; color: #1e293b; }
+    .serology .v { display: flex; align-items: baseline; gap: 8px; }
+    .serology .v .fl { min-height: 11px; }
 
+    /* ==========================================================
+       SIGNATURE
+       ========================================================== */
     .sign {
         display: flex;
         justify-content: flex-end;
-        margin-top: 14px;
-        padding-top: 6px;
-        border-top: 0.5px solid #cbd5e1;
+        margin-top: auto;
+        padding-top: 10px;
+        border-top: 0.75px solid #cbd5e1;
     }
-    .sign .box { text-align: center; min-width: 180px; }
-    .sign .line { height: 30px; border-bottom: 0.75px dotted #666; margin-bottom: 3px; }
-    .sign .lbl { font-size: 9pt; font-weight: 700; }
+    .sign .box { text-align: center; min-width: 200px; }
+    .sign .line { height: 34px; border-bottom: 0.75px dotted #666; margin-bottom: 4px; }
+    .sign .lbl { font-size: 9.5pt; font-weight: 700; }
     .sign .sub { font-size: 8pt; color: #555; }
 
-    .watermark {
+    /* ==========================================================
+       WATERMARK
+       ========================================================== */
+    .wm {
         position: fixed;
         bottom: 3mm;
         right: 5mm;
@@ -916,152 +976,151 @@
 </style>
 </head>
 <body>
+    <div class="content">
 
-<div class="hdr">
-    <div class="hdr-l">
-        <div class="b">République Algérienne Démocratique Et Populaire</div>
-        <div class="b">Ministère de la Santé</div>
-        <div class="g">Direction de la Santé et de la Population — Wilaya de Ghardaïa</div>
-        <div class="g">Établissement Public de Santé de Proximité — Berriane</div>
-        <div class="b" style="color:#0d9488;">Centre d'Hémodialyse</div>
-    </div>
-    <div class="hdr-r">
-        <div>Tél / Fax : (029) 24 11 45</div>
-        <div>Tél : (029) 24 12 44 / 46</div>
-    </div>
-</div>
-
-<div class="title">
-    <div class="sub">Fiche médicale</div>
-    <h1>Protocole <span class="accent">d'Hémodialyse</span></h1>
-</div>
-
-<!-- IDENTIFICATION -->
-<div class="sec">
-    <div class="sec-t">Informations du patient</div>
-    <div class="grid3">
-        ${row('Nom', V('PD-nom'), mode)}
-        ${row('Prénom', V('PD-prenom'), mode)}
-        ${row('Date de naissance', V('PD-naissance'), mode)}
-    </div>
-    <div class="grid2">
-        ${row('Adresse', V('PD-adresse'), mode)}
-        ${row('Téléphone', V('PD-tel'), mode)}
-    </div>
-</div>
-
-<!-- PROTOCOLE -->
-<div class="sec">
-    <div class="sec-t">Protocole de dialyse</div>
-    <div class="grid3">
-        ${row('Date souhaitée', V('PD-date-souhait'), mode)}
-        ${row('Néphropathie initiale', V('PD-nephropathie'), mode)}
-        ${row('1ʳᵉ dialyse', V('PD-premiere'), mode)}
-    </div>
-    <div class="grid3">
-        ${row('Séances / semaine', V('PD-seances'), mode)}
-        ${row('Durée de séance', V('PD-duree'), mode)}
-        ${row('Générateur', V('PD-generateur'), mode)}
-    </div>
-    <div class="row">
-        <span class="lbl">Technique particulière</span>
-        <span class="val"><span class="opts">
-            ${option('Acétate', C('PD-tech-acetate'))}
-            ${option('Bicarbonate', C('PD-tech-bicarbonate'))}
-            ${option('HF', C('PD-tech-hf'))}
-            ${option('Glucose', C('PD-tech-glucose'))}
-            ${option('Bio', C('PD-tech-bio'))}
-        </span></span>
-    </div>
-    <div class="grid2">
-        ${row('Héparinisation', V('PD-heparine'), mode)}
-        <div class="row">
-            <span class="lbl">Abord vasculaire</span>
-            <span class="val"><span class="opts">
-                ${option('FAV', C('PD-fav'))}
-                ${option('Uni ponction', C('PD-uni'))}
-                ${option('Bi ponction', C('PD-bi'))}
-            </span></span>
+        <!-- ========== HEADER ========== -->
+        <div class="hdr">
+            <div class="hdr-l">
+                <div class="b">République Algérienne Démocratique Et Populaire</div>
+                <div class="b">Ministère de la Santé</div>
+                <div class="g">Direction de la Santé et de la Population — Wilaya de Ghardaïa</div>
+                <div class="g">Établissement Public de Santé de Proximité — Berriane</div>
+                <div class="accent">Centre d'Hémodialyse</div>
+            </div>
+            <div class="hdr-r">
+                <div>Tél / Fax : (029) 24 11 45</div>
+                <div>Tél : (029) 24 12 44 / 46</div>
+            </div>
         </div>
-    </div>
-</div>
 
-<!-- PARAMÈTRES -->
-<div class="sec">
-    <div class="sec-t">Paramètres techniques</div>
-    <div class="grid3">
-        ${row('Aiguille — Artère', V('PD-art'), mode)}
-        ${row('Aiguille — Veine', V('PD-veine'), mode)}
-        ${row('Débit de sang', V('PD-debit'), mode)}
-    </div>
-    <div class="grid3">
-        ${row('Poids sec', V('PD-poids'), mode)}
-        ${row('Prise inter-dialytique', V('PD-prise'), mode)}
-        ${row('Groupe sanguin', V('PD-groupe'), mode)}
-    </div>
-    ${row('Problème en per-dialyse', V('PD-probleme'), mode)}
-</div>
-
-<!-- SÉROLOGIE -->
-<div class="sec">
-    <div class="sec-t">Sérologie hépatique</div>
-    <div class="serology">
-        <div class="n">Ag HBs</div>
-        <div class="v">
-            ${radioMark(R('PD-hbs','PD-hbs-pos'))} Positif &nbsp;
-            ${radioMark(R('PD-hbs','PD-hbs-neg'))} Négatif
+        <!-- ========== TITLE ========== -->
+        <div class="title">
+            <div class="sub">Fiche médicale</div>
+            <h1>Protocole <span class="accent">d'Hémodialyse</span></h1>
+            <div class="line"></div>
         </div>
-        <div class="n">Dernière vaccination</div>
-        <div class="v">${filled && V('PD-vaccin') ? esc(V('PD-vaccin')) : '<span class="bl"></span>'}</div>
-        <div class="n">HCV</div>
-        <div class="v">
-            ${radioMark(R('PD-hcv','PD-hcv-pos'))} Positif &nbsp;
-            ${radioMark(R('PD-hcv','PD-hcv-neg'))} Négatif
+
+        <!-- ========== CONTENT ========== -->
+        <div class="content-inner">
+
+            <!-- SECTION 1 -->
+            ${section('Informations du patient', `
+                <div class="grid3">
+                    ${field('Nom', V('PD-nom'), mode)}
+                    ${field('Prénom', V('PD-prenom'), mode)}
+                    ${field('Date de naissance', V('PD-naissance'), mode)}
+                </div>
+                <div class="grid2">
+                    ${field('Adresse', V('PD-adresse'), mode)}
+                    ${field('Téléphone', V('PD-tel'), mode)}
+                </div>
+            `)}
+
+            <!-- SECTION 2 -->
+            ${section('Protocole de dialyse', `
+                <div class="grid3">
+                    ${field('Date souhaitée', V('PD-date-souhait'), mode)}
+                    ${field('Néphropathie initiale', V('PD-nephropathie'), mode)}
+                    ${field('1ʳᵉ dialyse', V('PD-premiere'), mode)}
+                </div>
+                <div class="grid3">
+                    ${field('Séances / semaine', V('PD-seances'), mode)}
+                    ${field('Durée de séance', V('PD-duree'), mode)}
+                    ${field('Générateur', V('PD-generateur'), mode)}
+                </div>
+                <div class="fld">
+                    <span class="flbl">Technique particulière</span>
+                    <span class="fval"><span class="opts">
+                        ${opt('Acétate', C('PD-tech-acetate'))}
+                        ${opt('Bicarbonate', C('PD-tech-bicarbonate'))}
+                        ${opt('HF', C('PD-tech-hf'))}
+                        ${opt('Glucose', C('PD-tech-glucose'))}
+                        ${opt('Bio', C('PD-tech-bio'))}
+                    </span></span>
+                </div>
+                <div class="grid2">
+                    ${field('Héparinisation', V('PD-heparine'), mode)}
+                    <div class="fld">
+                        <span class="flbl">Abord vasculaire</span>
+                        <span class="fval"><span class="opts">
+                            ${opt('FAV', C('PD-fav'))}
+                            ${opt('Uni ponction', C('PD-uni'))}
+                            ${opt('Bi ponction', C('PD-bi'))}
+                        </span></span>
+                    </div>
+                </div>
+            `)}
+
+            <!-- SECTION 3 -->
+            ${section('Paramètres techniques', `
+                <div class="grid3">
+                    ${field('Aiguille — Artère', V('PD-art'), mode)}
+                    ${field('Aiguille — Veine', V('PD-veine'), mode)}
+                    ${field('Débit de sang', V('PD-debit'), mode)}
+                </div>
+                <div class="grid3">
+                    ${field('Poids sec', V('PD-poids'), mode)}
+                    ${field('Prise inter-dialytique', V('PD-prise'), mode)}
+                    ${field('Groupe sanguin', V('PD-groupe'), mode)}
+                </div>
+                ${field('Problème en per-dialyse', V('PD-probleme'), mode)}
+            `)}
+
+            <!-- SECTION 4 — SÉROLOGIE -->
+            <div class="sec">
+                <div class="sec-t">Sérologie hépatique</div>
+                <div class="serology">
+                    <div class="n">Ag HBs</div>
+                    <div class="v">${radioLine(R('PD-hbs','PD-hbs-pos') ? true : (R('PD-hbs','PD-hbs-neg') ? false : null))}</div>
+
+                    <div class="n">Dernière vaccination</div>
+                    <div class="v">${filled && V('PD-vaccin') ? `<span class="fv">${esc(V('PD-vaccin'))}</span>` : `<span class="fl"></span>`}</div>
+
+                    <div class="n">HCV</div>
+                    <div class="v">${radioLine(R('PD-hcv','PD-hcv-pos') ? true : (R('PD-hcv','PD-hcv-neg') ? false : null))}</div>
+
+                    <div class="n">HIV</div>
+                    <div class="v">${radioLine(R('PD-hiv','PD-hiv-pos') ? true : (R('PD-hiv','PD-hiv-neg') ? false : null))}</div>
+                </div>
+            </div>
+
+            <!-- SECTION 5 -->
+            ${section('Antécédents & traitements', `
+                ${field("Pathologie médicale associée à l'IRC.T", V('PD-pathologie'), mode)}
+                <div class="grid2">
+                    ${field('Traitement habituel', V('PD-traitement'), mode)}
+                    ${field("Traitement conservateur d'IRCT", V('PD-conservateur'), mode)}
+                </div>
+                ${field('NB / Observations', V('PD-nb'), mode)}
+            `)}
+
         </div>
-        <div class="n">HIV</div>
-        <div class="v">
-            ${radioMark(R('PD-hiv','PD-hiv-pos'))} Positif &nbsp;
-            ${radioMark(R('PD-hiv','PD-hiv-neg'))} Négatif
+
+        <!-- ========== SIGNATURE ========== -->
+        <div class="sign">
+            <div class="box">
+                <div class="line"></div>
+                <div class="lbl">Le médecin chef de service</div>
+                <div class="sub">Signature & cachet</div>
+            </div>
         </div>
+
     </div>
-</div>
 
-<!-- ANTÉCÉDENTS -->
-<div class="sec">
-    <div class="sec-t">Antécédents & traitements</div>
-    ${row('Pathologie médicale associée à l\'IRC.T', V('PD-pathologie'), mode)}
-    <div class="grid2">
-        ${row('Traitement habituel', V('PD-traitement'), mode)}
-        ${row('Traitement conservateur d\'IRCT', V('PD-conservateur'), mode)}
-    </div>
-    ${row('NB / Observations', V('PD-nb'), mode)}
-</div>
-
-<div class="sign">
-    <div class="box">
-        <div class="line"></div>
-        <div class="lbl">Le médecin chef de service</div>
-        <div class="sub">Signature & cachet</div>
-    </div>
-</div>
-
-<div class="watermark">Numeris47 — Centre d'Hémodialyse Berriane · ${esc(dateStr)}</div>
-
+    <div class="wm">Numeris47 — Centre d'Hémodialyse Berriane · ${esc(dateStr)}</div>
 </body>
 </html>`;
     }
 
     /* ============================================================
-       PRINT LAUNCHER  —  uses hidden iframe for max compatibility
+       PRINT LAUNCHER — hidden iframe
        ============================================================ */
     function doPrint(mode) {
         const html = buildHTML(mode);
 
-        // Remove any old iframe
         const old = document.getElementById('PD-print-frame');
         if (old) old.remove();
 
-        // Create hidden iframe
         const iframe = document.createElement('iframe');
         iframe.id = 'PD-print-frame';
         iframe.style.position = 'fixed';
@@ -1074,38 +1133,33 @@
         iframe.setAttribute('aria-hidden', 'true');
         document.body.appendChild(iframe);
 
-        // Write the print document into the iframe
         const doc = iframe.contentWindow.document;
         doc.open();
         doc.write(html);
         doc.close();
 
-        // Trigger print after the iframe document is fully loaded
         const trigger = () => {
             try {
                 iframe.contentWindow.focus();
                 iframe.contentWindow.print();
             } catch (err) {
                 console.error('Print failed:', err);
-                alert('Impossible de lancer l\'impression. Autorisez les pop-ups ou réessayez.');
+                alert('Impossible de lancer l\'impression. Réessayez.');
             }
         };
 
-        // Wait for fonts/images to be ready
         if (iframe.contentWindow.document.readyState === 'complete') {
-            setTimeout(trigger, 150);
+            setTimeout(trigger, 200);
         } else {
-            iframe.onload = () => setTimeout(trigger, 150);
+            iframe.onload = () => setTimeout(trigger, 200);
         }
 
-        // Cleanup after 15s
         setTimeout(() => {
             const f = document.getElementById('PD-print-frame');
             if (f) f.remove();
         }, 15000);
     }
 
-    /* Expose globally (used by the two buttons) */
     window.PD_printBlank  = () => doPrint('blank');
     window.PD_printFilled = () => doPrint('filled');
 
