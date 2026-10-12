@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Protocole d'Hémodialyse — Formulaire</title>
+<title>Protocole d'Hémodialyse</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
 
@@ -12,35 +12,44 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
+    * { box-sizing: border-box; }
     html, body {
-        font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
-        -webkit-font-smoothing: antialiased;
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
         background: #eef2f7;
         min-height: 100vh;
+        margin: 0;
+        padding: 0;
+        -webkit-font-smoothing: antialiased;
     }
 
-    .PH-wrap {
-        max-width: 900px;
+    /* =====================================================
+       PAGE WRAPPER
+       ===================================================== */
+    .PD-page {
+        max-width: 920px;
         margin: 24px auto 80px;
         background: #fff;
-        border-radius: 16px;
-        box-shadow: 0 12px 40px -12px rgba(15, 23, 42, 0.15);
+        border-radius: 14px;
+        box-shadow: 0 10px 40px -12px rgba(15, 23, 42, 0.18);
         overflow: hidden;
     }
 
-    /* ===== TOP ACTION BAR ===== */
-    .PH-actions {
+    /* =====================================================
+       ACTION BAR
+       ===================================================== */
+    .PD-actions {
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
         justify-content: flex-end;
-        padding: 16px 32px 0;
-        background: #fff;
+        padding: 16px 26px;
+        background: #f8fafc;
+        border-bottom: 1px solid #e2e8f0;
     }
     @media (max-width: 640px) {
-        .PH-actions { padding: 12px 16px 0; justify-content: center; }
+        .PD-actions { justify-content: center; padding: 12px 14px; }
     }
-    .PH-action-btn {
+    .PD-btn {
         display: inline-flex;
         align-items: center;
         gap: 8px;
@@ -49,486 +58,557 @@
         border: 1.5px solid #cbd5e1;
         background: #fff;
         color: #334155;
-        font-size: 13.5px;
+        font-size: 13px;
         font-weight: 600;
         cursor: pointer;
-        transition: all 0.2s;
+        transition: all 0.15s;
         font-family: inherit;
     }
-    .PH-action-btn:hover {
-        border-color: #0ea5e9;
-        background: #f0f9ff;
-        color: #0369a1;
-        transform: translateY(-1px);
-        box-shadow: 0 6px 16px -6px rgba(14, 165, 233, 0.35);
+    .PD-btn:hover {
+        border-color: #0d9488;
+        background: #f0fdfa;
+        color: #0f766e;
     }
-    .PH-action-btn.primary {
-        background: #0ea5e9;
-        border-color: #0ea5e9;
+    .PD-btn.primary {
+        background: #0d9488;
+        border-color: #0d9488;
         color: #fff;
     }
-    .PH-action-btn.primary:hover {
-        background: #0284c7;
-        border-color: #0284c7;
-        color: #fff;
+    .PD-btn.primary:hover {
+        background: #0f766e;
+        border-color: #0f766e;
     }
-    .PH-action-btn svg { width: 16px; height: 16px; }
+    .PD-btn svg { width: 15px; height: 15px; }
 
-    /* ===== FORM BODY ===== */
-    .PH-body { padding: 20px 42px 40px; }
-    @media (max-width: 640px) { .PH-body { padding: 16px 18px 30px; } }
+    /* =====================================================
+       FORM BODY
+       ===================================================== */
+    .PD-body {
+        padding: 30px 44px 44px;
+    }
+    @media (max-width: 640px) { .PD-body { padding: 20px 18px 30px; } }
 
-    /* ===== HEADER ===== */
-    .PH-header-top {
-        text-align: center;
+    /* =====================================================
+       HEADER
+       ===================================================== */
+    .PD-header {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 24px;
+        padding-bottom: 20px;
+        border-bottom: 2px solid #0f172a;
+        margin-bottom: 26px;
+    }
+    .PD-header-left {
         font-size: 12.5px;
-        line-height: 1.55;
+        line-height: 1.65;
         color: #1e293b;
-        margin-bottom: 14px;
     }
-    .PH-header-top .strong { font-weight: 700; }
-    .PH-header-top .small  { font-size: 12px; }
-
-    .PH-header-contact {
+    .PD-header-left .strong { font-weight: 700; }
+    .PD-header-left .light  { color: #475569; }
+    .PD-header-right {
         text-align: right;
-        font-size: 12.5px;
-        line-height: 1.6;
-        color: #1e293b;
-        margin-bottom: 14px;
-        padding-right: 20px;
-    }
-
-    /* ===== TITLE ===== */
-    .PH-title {
-        margin: 10px auto 22px;
-        max-width: 440px;
-        text-align: center;
-        padding: 12px 24px;
-        border-radius: 8px;
-        background: linear-gradient(180deg, #fef3c7 0%, #fde68a 100%);
-        border: 2px solid #f59e0b;
-        box-shadow: inset 0 0 0 3px #fffbeb, 0 4px 12px rgba(180, 83, 9, 0.15);
-        position: relative;
-    }
-    .PH-title h1 {
-        font-size: 20px;
-        font-weight: 800;
-        color: #7c2d12;
-        letter-spacing: 0.3px;
-        line-height: 1.25;
-        font-style: italic;
-    }
-    .PH-title h1 .dash { font-style: normal; }
-
-    /* ===== FIELDS ===== */
-    .PH-fields { font-size: 13.5px; line-height: 2; color: #0f172a; }
-
-    .PH-row {
-        display: flex;
-        align-items: baseline;
-        flex-wrap: wrap;
-        gap: 4px;
-        margin-bottom: 2px;
-    }
-    .PH-row .bullet {
-        width: 16px;
-        flex-shrink: 0;
-        color: #334155;
-    }
-    .PH-row .label {
-        font-weight: 500;
+        font-size: 11.5px;
+        line-height: 1.7;
+        color: #475569;
         white-space: nowrap;
     }
-    .PH-row .label::after { content: ':'; margin-left: 2px; }
+    @media (max-width: 640px) {
+        .PD-header { grid-template-columns: 1fr; gap: 12px; }
+        .PD-header-right { text-align: left; }
+    }
 
-    /* Inline input — looks like a text line, underlined on focus */
-    .PH-input {
-        border: none;
-        border-bottom: 1px dotted #cbd5e1;
-        background: transparent;
-        padding: 2px 6px;
-        font-size: 13.5px;
-        font-weight: 600;
-        color: #0f172a;
-        font-family: inherit;
-        outline: none;
-        min-width: 90px;
-        transition: all 0.15s;
+    /* =====================================================
+       TITLE
+       ===================================================== */
+    .PD-title {
+        text-align: center;
+        margin-bottom: 32px;
     }
-    .PH-input:focus {
-        border-bottom-color: #0ea5e9;
-        background: #f0f9ff;
-    }
-    .PH-input::placeholder {
-        color: #cbd5e1;
-        font-weight: 400;
-        font-size: 12.5px;
-    }
-    .PH-input.date    { min-width: 130px; }
-    .PH-input.short   { min-width: 60px; text-align: center; }
-    .PH-input.medium  { min-width: 130px; }
-    .PH-input.long    { min-width: 200px; }
-    .PH-input.xlong   { flex: 1; min-width: 220px; }
-    .PH-input.tiny    { min-width: 40px; text-align: center; }
-
-    /* Checkbox-like options inline:  label __/__ */
-    .PH-opts {
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        flex-wrap: wrap;
-    }
-    .PH-opt {
-        display: inline-flex;
-        align-items: baseline;
-        gap: 3px;
-        cursor: pointer;
-        user-select: none;
-    }
-    .PH-opt input[type="checkbox"] {
-        appearance: none;
-        -webkit-appearance: none;
-        width: 13px;
-        height: 13px;
-        border: 1.5px solid #475569;
-        border-radius: 2px;
-        background: #fff;
-        cursor: pointer;
-        position: relative;
-        vertical-align: middle;
-        margin-right: 2px;
-        transition: all 0.15s;
-        flex-shrink: 0;
-        transform: translateY(1px);
-    }
-    .PH-opt input[type="checkbox"]:checked {
-        background: #0ea5e9;
-        border-color: #0ea5e9;
-    }
-    .PH-opt input[type="checkbox"]:checked::after {
-        content: '✓';
-        position: absolute;
-        inset: 0;
-        color: #fff;
+    .PD-title .sub {
         font-size: 11px;
         font-weight: 700;
+        letter-spacing: 3px;
+        color: #0d9488;
+        text-transform: uppercase;
+        margin-bottom: 6px;
+    }
+    .PD-title h1 {
+        font-size: 24px;
+        font-weight: 800;
+        color: #0f172a;
+        letter-spacing: -0.3px;
+        margin: 0;
+        line-height: 1.2;
+    }
+    .PD-title h1 .accent {
+        color: #0d9488;
+    }
+    .PD-title .line {
+        width: 60px;
+        height: 3px;
+        background: #0d9488;
+        margin: 12px auto 0;
+        border-radius: 2px;
+    }
+
+    /* =====================================================
+       SECTIONS
+       ===================================================== */
+    .PD-section { margin-bottom: 28px; }
+    .PD-section-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 14px;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 1.5px;
+        color: #0d9488;
+        text-transform: uppercase;
+    }
+    .PD-section-title::before {
+        content: '';
+        width: 4px;
+        height: 16px;
+        background: #0d9488;
+        border-radius: 2px;
+    }
+    .PD-section-title::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: #e2e8f0;
+    }
+
+    /* =====================================================
+       FIELDS ROWS
+       ===================================================== */
+    .PD-grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+    }
+    .PD-grid-3 {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 18px;
+    }
+    @media (max-width: 640px) {
+        .PD-grid-2, .PD-grid-3 { grid-template-columns: 1fr; }
+    }
+
+    .PD-field { margin-bottom: 18px; }
+    .PD-field label {
+        display: block;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.4px;
+        color: #64748b;
+        text-transform: uppercase;
+        margin-bottom: 6px;
+    }
+    .PD-input {
+        width: 100%;
+        padding: 11px 14px;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 10px;
+        font-size: 14.5px;
+        font-family: inherit;
+        color: #0f172a;
+        background: #fff;
+        outline: none;
+        transition: all 0.15s;
+    }
+    .PD-input:focus {
+        border-color: #0d9488;
+        box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.12);
+    }
+    .PD-input::placeholder { color: #cbd5e1; font-weight: 400; }
+
+    /* =====================================================
+       CHECKBOX CHIPS (compact options)
+       ===================================================== */
+    .PD-options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    .PD-opt {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 8px 14px;
+        border-radius: 999px;
+        border: 1.5px solid #e2e8f0;
+        background: #fff;
+        font-size: 13px;
+        font-weight: 500;
+        color: #475569;
+        cursor: pointer;
+        transition: all 0.15s;
+        user-select: none;
+    }
+    .PD-opt:hover {
+        border-color: #5eead4;
+        background: #f0fdfa;
+    }
+    .PD-opt input { display: none; }
+    .PD-opt .tick {
+        width: 16px;
+        height: 16px;
+        border-radius: 4px;
+        border: 1.5px solid #cbd5e1;
+        background: #fff;
         display: flex;
         align-items: center;
         justify-content: center;
-        line-height: 1;
+        font-size: 11px;
+        color: transparent;
+        transition: all 0.15s;
+        flex-shrink: 0;
     }
-    .PH-opt span { font-size: 13.5px; }
-
-    /* Wrap the two-option group with slashes */
-    .PH-opts .sep { color: #94a3b8; }
-
-    /* ===== BOTTOM SIGNATURE ===== */
-    .PH-footer {
-        display: flex;
-        justify-content: flex-end;
-        margin-top: 34px;
-        padding-top: 14px;
-        font-size: 13px;
-        color: #0f172a;
-    }
-    .PH-footer .sig {
-        text-align: center;
+    .PD-opt.checked {
+        background: #0d9488;
+        border-color: #0d9488;
+        color: #fff;
         font-weight: 600;
     }
-    .PH-footer .sig .line {
-        border-bottom: 1px dotted #94a3b8;
-        height: 40px;
-        min-width: 200px;
-        margin-bottom: 6px;
+    .PD-opt.checked .tick {
+        background: #fff;
+        border-color: #fff;
+        color: #0d9488;
     }
 
-    /* ===== TOAST ===== */
-    .PH-toast {
+    /* =====================================================
+       SEROLOGY SUB-BLOCK
+       ===================================================== */
+    .PD-serology {
+        display: grid;
+        grid-template-columns: 130px 1fr;
+        gap: 10px 18px;
+        align-items: center;
+        padding: 14px 16px;
+        background: #f8fafc;
+        border-radius: 10px;
+        border: 1px solid #e2e8f0;
+    }
+    .PD-serology .name {
+        font-size: 12.5px;
+        font-weight: 600;
+        color: #334155;
+    }
+    .PD-serology .val {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+    @media (max-width: 640px) {
+        .PD-serology { grid-template-columns: 1fr; }
+    }
+
+    /* =====================================================
+       FOOTER SIGNATURE
+       ===================================================== */
+    .PD-footer {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 44px;
+        padding-top: 18px;
+        border-top: 1px solid #e2e8f0;
+    }
+    .PD-signature {
+        text-align: center;
+        min-width: 220px;
+    }
+    .PD-signature .line {
+        height: 60px;
+        border-bottom: 1.5px dotted #94a3b8;
+        margin-bottom: 8px;
+    }
+    .PD-signature .label {
+        font-size: 12.5px;
+        font-weight: 600;
+        color: #0f172a;
+    }
+    .PD-signature .sub {
+        font-size: 11px;
+        color: #64748b;
+        margin-top: 2px;
+    }
+
+    /* =====================================================
+       TOAST
+       ===================================================== */
+    .PD-toast {
         position: fixed;
         bottom: 24px;
         left: 50%;
         transform: translateX(-50%);
-        background: #1e293b;
+        background: #0f172a;
         color: #fff;
-        padding: 14px 24px;
-        border-radius: 12px;
-        font-size: 14px;
+        padding: 13px 22px;
+        border-radius: 10px;
+        font-size: 13.5px;
         font-weight: 500;
         box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
         z-index: 9999;
-        animation: PH-toastIn 0.3s ease-out;
+        animation: PD-toastIn 0.25s ease-out;
         max-width: 90vw;
         text-align: center;
     }
-    .PH-toast.success { background: #16a34a; }
-    .PH-toast.error   { background: #dc2626; }
-    @keyframes PH-toastIn {
-        from { opacity: 0; transform: translate(-50%, 20px); }
+    @keyframes PD-toastIn {
+        from { opacity: 0; transform: translate(-50%, 15px); }
         to   { opacity: 1; transform: translate(-50%, 0); }
     }
+
+    /* =====================================================
+       PRINT STYLES (applied in print window)
+       ===================================================== */
+    .PD-print-area { display: none; }
 </style>
 </head>
 
 <body>
 
-<div class="PH-wrap">
+<div class="PD-page">
 
-    <!-- ================= TOP ACTION BAR ================= -->
-    <div class="PH-actions">
-        <button type="button" class="PH-action-btn" onclick="PH_printBlank()">
+    <!-- ========== ACTION BAR ========== -->
+    <div class="PD-actions">
+        <button type="button" class="PD-btn" onclick="PD_printBlank()">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6z"/>
             </svg>
-            Imprimer vierge / طباعة فارغة
+            Imprimer vierge
         </button>
-        <button type="button" class="PH-action-btn primary" onclick="PH_printFilled()">
+        <button type="button" class="PD-btn primary" onclick="PD_printFilled()">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6z"/>
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 17l2 2 4-4" />
             </svg>
-            Imprimer rempli / طباعة معبأة
+            Imprimer rempli
         </button>
     </div>
 
-    <!-- ================= FORM ================= -->
-    <div class="PH-body" id="PH-form-area">
+    <!-- ========== FORM BODY ========== -->
+    <div class="PD-body">
 
         <!-- ---- HEADER ---- -->
-        <div class="PH-header-top">
-            <div class="strong">République Algérienne Démocratique Et Populaire</div>
-            <div class="strong">Ministère de la Santé</div>
-            <div>Direction de la Santé et de la Population de la Wilaya de Ghardaïa</div>
-            <div>Etablissement Public de santé de proximité &nbsp;&nbsp;-Berriane &nbsp;–</div>
-            <div class="strong">Centre D'hémodialyse</div>
-        </div>
-
-        <div class="PH-header-contact">
-            <div>TEL / FAX : (029). 24. 11. 45</div>
-            <div>TEL : (029). 24. 12. 44/46</div>
+        <div class="PD-header">
+            <div class="PD-header-left">
+                <div class="strong">République Algérienne Démocratique Et Populaire</div>
+                <div class="strong">Ministère de la Santé</div>
+                <div class="light">Direction de la Santé et de la Population de la Wilaya de Ghardaïa</div>
+                <div class="light">Établissement Public de Santé de Proximité — Berriane</div>
+                <div class="strong" style="margin-top: 4px; color: #0d9488;">Centre d'Hémodialyse</div>
+            </div>
+            <div class="PD-header-right">
+                <div>Tél / Fax : (029) 24 11 45</div>
+                <div>Tél : (029) 24 12 44 / 46</div>
+            </div>
         </div>
 
         <!-- ---- TITLE ---- -->
-        <div class="PH-title">
-            <h1><span class="dash">-</span> Protocole D'hémodialyse <span class="dash">-</span><br>Concernant</h1>
+        <div class="PD-title">
+            <div class="sub">Fiche médicale</div>
+            <h1>Protocole <span class="accent">d'Hémodialyse</span></h1>
+            <div class="line"></div>
         </div>
 
-        <!-- ---- FIELDS ---- -->
-        <div class="PH-fields">
+        <!-- ========== SECTION 1 — PATIENT ========== -->
+        <div class="PD-section">
+            <div class="PD-section-title">Informations du patient</div>
 
-            <!-- Nom / Prénom / Date de naissance -->
-            <div class="PH-row">
-                <span class="bullet">-</span>
-                <span class="label">Nom</span>
-                <input type="text" id="PH-nom" class="PH-input medium" placeholder="Nom">
-                <span class="label">Prénom</span>
-                <input type="text" id="PH-prenom" class="PH-input medium" placeholder="Prénom">
-                <span class="label">Date de Naissance</span>
-                <input type="text" id="PH-naissance" class="PH-input date" placeholder="JJ/MM/AAAA">
+            <div class="PD-grid-3">
+                <div class="PD-field">
+                    <label for="PD-nom">Nom</label>
+                    <input type="text" id="PD-nom" class="PD-input" placeholder="Nom de famille">
+                </div>
+                <div class="PD-field">
+                    <label for="PD-prenom">Prénom</label>
+                    <input type="text" id="PD-prenom" class="PD-input" placeholder="Prénom">
+                </div>
+                <div class="PD-field">
+                    <label for="PD-naissance">Date de naissance</label>
+                    <input type="text" id="PD-naissance" class="PD-input" placeholder="JJ/MM/AAAA">
+                </div>
             </div>
 
-            <!-- Adresse -->
-            <div class="PH-row">
-                <span class="bullet">-</span>
-                <span class="label">Adresse</span>
-                <input type="text" id="PH-adresse" class="PH-input xlong" placeholder="Adresse complète">
+            <div class="PD-grid-2">
+                <div class="PD-field">
+                    <label for="PD-adresse">Adresse</label>
+                    <input type="text" id="PD-adresse" class="PD-input" placeholder="Adresse complète">
+                </div>
+                <div class="PD-field">
+                    <label for="PD-tel">Téléphone</label>
+                    <input type="text" id="PD-tel" class="PD-input" placeholder="0675 99 39 05 / 0675 67 64 93">
+                </div>
             </div>
-
-            <!-- Tél -->
-            <div class="PH-row">
-                <span class="bullet">-</span>
-                <span class="label">Tél</span>
-                <input type="text" id="PH-tel" class="PH-input xlong" placeholder="Ex: 0675.993.905 / 0675.676.493">
-            </div>
-
-            <!-- Date Souhaiter -->
-            <div class="PH-row">
-                <span class="bullet">-</span>
-                <span class="label">Date Souhaiter dans votre service du</span>
-                <input type="text" id="PH-date-souhait" class="PH-input medium" placeholder="Mois de ...">
-            </div>
-
-            <!-- Néphropathie initiale -->
-            <div class="PH-row">
-                <span class="bullet">-</span>
-                <span class="label">Néphropathie initiale</span>
-                <input type="text" id="PH-nephropathie" class="PH-input long" placeholder="Indéterminée">
-            </div>
-
-            <!-- Date de la première dialyse -->
-            <div class="PH-row">
-                <span class="bullet">-</span>
-                <span class="label">Date de la première dialyse</span>
-                <input type="text" id="PH-premiere" class="PH-input date" placeholder="JJ/MM/AAAA">
-            </div>
-
-            <!-- Nombre de séance / Durée -->
-            <div class="PH-row">
-                <span class="bullet">-</span>
-                <span class="label">Nombre de Séance Par Semaine</span>
-                <input type="text" id="PH-seances" class="PH-input short" placeholder="03">
-                <span class="label">Durée de la Séance</span>
-                <input type="text" id="PH-duree" class="PH-input short" placeholder="04H">
-            </div>
-
-            <!-- Générateur -->
-            <div class="PH-row">
-                <span class="bullet">-</span>
-                <span class="label">Générateur</span>
-                <input type="text" id="PH-generateur" class="PH-input long" placeholder="FRESINUS 4008 S/B">
-            </div>
-
-            <!-- Technique particulière -->
-            <div class="PH-row">
-                <span class="bullet">-</span>
-                <span class="label">Technique particulière.</span>
-                <span class="PH-opts">
-                    <label class="PH-opt"><input type="checkbox" id="PH-tech-acetate"><span>acetate</span></label>
-                    <span class="sep">/</span>
-                    <label class="PH-opt"><input type="checkbox" id="PH-tech-bicarbonate"><span>Bicarbonate</span></label>
-                    <span class="sep">/</span>
-                    <label class="PH-opt"><input type="checkbox" id="PH-tech-hf"><span>HF</span></label>
-                    <span class="sep">/</span>
-                    <label class="PH-opt"><input type="checkbox" id="PH-tech-glucose"><span>Glucose</span></label>
-                    <span class="sep">/</span>
-                    <label class="PH-opt"><input type="checkbox" id="PH-tech-bio"><span>Bio</span></label>
-                </span>
-            </div>
-
-            <!-- Héparinisation -->
-            <div class="PH-row">
-                <span class="bullet">-</span>
-                <span class="label">Héparinisation</span>
-                <input type="text" id="PH-heparine" class="PH-input medium" placeholder="LOVENOX 0.4">
-            </div>
-
-            <!-- Abord Vasculaire -->
-            <div class="PH-row">
-                <span class="bullet">-</span>
-                <span class="label">Abord Vasculaire</span>
-                <span class="PH-opts">
-                    <label class="PH-opt"><input type="checkbox" id="PH-fav"><span>Fav</span></label>
-                    <span class="sep">/</span>
-                    <label class="PH-opt"><input type="checkbox" id="PH-uni"><span>uni ponction</span></label>
-                    <span class="sep">/</span>
-                    <label class="PH-opt"><input type="checkbox" id="PH-bi"><span>Bi ponction</span></label>
-                </span>
-            </div>
-
-            <!-- Aiguille -->
-            <div class="PH-row">
-                <span class="bullet">-</span>
-                <span class="label">Aiguille Utilisée</span>
-                <span class="label">artère</span>
-                <input type="text" id="PH-art" class="PH-input tiny" placeholder="G16">
-                <span class="label">veine</span>
-                <input type="text" id="PH-veine" class="PH-input tiny" placeholder="G16">
-            </div>
-
-            <!-- Débit de Sang -->
-            <div class="PH-row">
-                <span class="bullet">-</span>
-                <span class="label">Débit de Sang</span>
-                <input type="text" id="PH-debit" class="PH-input short" placeholder="300">
-            </div>
-
-            <!-- Poids Sec -->
-            <div class="PH-row">
-                <span class="bullet">-</span>
-                <span class="label">Poids Sec</span>
-                <input type="text" id="PH-poids" class="PH-input short" placeholder="61.200 Kg">
-            </div>
-
-            <!-- Prise de Poids -->
-            <div class="PH-row">
-                <span class="bullet">-</span>
-                <span class="label">Prise de Poids inter dialytique</span>
-                <input type="text" id="PH-prise" class="PH-input short" placeholder="1.5">
-                <span>Kg</span>
-            </div>
-
-            <!-- Problème en per Dialyse -->
-            <div class="PH-row">
-                <span class="bullet">-</span>
-                <span class="label">Problème en per Dialyse</span>
-                <input type="text" id="PH-probleme" class="PH-input long" placeholder="Aucun">
-            </div>
-
-            <!-- Groupe Sanguin -->
-            <div class="PH-row">
-                <span class="bullet">-</span>
-                <span class="label">Groupe Sanguin</span>
-                <input type="text" id="PH-groupe" class="PH-input short" placeholder="ARH+">
-            </div>
-
-            <!-- Sérologie hépatite -->
-            <div class="PH-row" style="align-items: flex-start;">
-                <span class="bullet">-</span>
-                <span class="label">Sérologie hépatite</span>
-            </div>
-
-            <div class="PH-row" style="padding-left: 130px;">
-                <span class="label">Ag HBS</span>
-                <span class="PH-opts" style="margin-left: 8px;">
-                    <label class="PH-opt"><input type="radio" name="PH-hbs" id="PH-hbs-pos"><span>Positif</span></label>
-                    <label class="PH-opt" style="margin-left: 12px;"><input type="radio" name="PH-hbs" id="PH-hbs-neg"><span>Négatif</span></label>
-                </span>
-            </div>
-
-            <div class="PH-row" style="padding-left: 130px;">
-                <span class="label">Dernier Vaccination</span>
-                <input type="text" id="PH-vaccin" class="PH-input medium" placeholder="/">
-            </div>
-
-            <div class="PH-row" style="padding-left: 130px;">
-                <span class="label">HCV</span>
-                <span class="PH-opts" style="margin-left: 8px;">
-                    <label class="PH-opt"><input type="radio" name="PH-hcv" id="PH-hcv-pos"><span>Positif</span></label>
-                    <label class="PH-opt" style="margin-left: 12px;"><input type="radio" name="PH-hcv" id="PH-hcv-neg"><span>Négatif</span></label>
-                </span>
-            </div>
-
-            <div class="PH-row" style="padding-left: 130px;">
-                <span class="label">HIV</span>
-                <span class="PH-opts" style="margin-left: 8px;">
-                    <label class="PH-opt"><input type="radio" name="PH-hiv" id="PH-hiv-pos"><span>Positif</span></label>
-                    <label class="PH-opt" style="margin-left: 12px;"><input type="radio" name="PH-hiv" id="PH-hiv-neg"><span>Négatif</span></label>
-                </span>
-            </div>
-
-            <!-- Pathologie médicale -->
-            <div class="PH-row">
-                <span class="bullet">-</span>
-                <span class="label">Pathologie médicale associer a L'IRC.T</span>
-                <input type="text" id="PH-pathologie" class="PH-input xlong" placeholder="—">
-            </div>
-
-            <!-- Traitement habituel -->
-            <div class="PH-row">
-                <span class="bullet">-</span>
-                <span class="label">traitement habituel</span>
-                <input type="text" id="PH-traitement" class="PH-input xlong" placeholder="—">
-            </div>
-
-            <!-- Traitement conservateur -->
-            <div class="PH-row">
-                <span class="bullet">-</span>
-                <span class="label">Traitement conservateur d'IRCT</span>
-                <input type="text" id="PH-conservateur" class="PH-input xlong" placeholder="—">
-            </div>
-
-            <!-- NB -->
-            <div class="PH-row" style="margin-top: 16px;">
-                <span class="label">NB/</span>
-                <input type="text" id="PH-nb" class="PH-input xlong" placeholder="—">
-            </div>
-
         </div>
 
-        <!-- ---- SIGNATURE ---- -->
-        <div class="PH-footer">
-            <div class="sig">
+        <!-- ========== SECTION 2 — PROTOCOLE ========== -->
+        <div class="PD-section">
+            <div class="PD-section-title">Protocole de dialyse</div>
+
+            <div class="PD-grid-3">
+                <div class="PD-field">
+                    <label for="PD-date-souhait">Date souhaitée d'admission</label>
+                    <input type="text" id="PD-date-souhait" class="PD-input" placeholder="Mois de ...">
+                </div>
+                <div class="PD-field">
+                    <label for="PD-nephropathie">Néphropathie initiale</label>
+                    <input type="text" id="PD-nephropathie" class="PD-input" placeholder="Indéterminée">
+                </div>
+                <div class="PD-field">
+                    <label for="PD-premiere">1ʳᵉ dialyse</label>
+                    <input type="text" id="PD-premiere" class="PD-input" placeholder="JJ/MM/AAAA">
+                </div>
+            </div>
+
+            <div class="PD-grid-3">
+                <div class="PD-field">
+                    <label for="PD-seances">Séances / semaine</label>
+                    <input type="text" id="PD-seances" class="PD-input" placeholder="03">
+                </div>
+                <div class="PD-field">
+                    <label for="PD-duree">Durée de séance</label>
+                    <input type="text" id="PD-duree" class="PD-input" placeholder="04H">
+                </div>
+                <div class="PD-field">
+                    <label for="PD-generateur">Générateur</label>
+                    <input type="text" id="PD-generateur" class="PD-input" placeholder="FRESINUS 4008 S/B">
+                </div>
+            </div>
+
+            <div class="PD-field">
+                <label>Technique particulière</label>
+                <div class="PD-options" id="PD-tech-group">
+                    <label class="PD-opt"><input type="checkbox" id="PD-tech-acetate"><span class="tick">✓</span>Acétate</label>
+                    <label class="PD-opt"><input type="checkbox" id="PD-tech-bicarbonate"><span class="tick">✓</span>Bicarbonate</label>
+                    <label class="PD-opt"><input type="checkbox" id="PD-tech-hf"><span class="tick">✓</span>HF</label>
+                    <label class="PD-opt"><input type="checkbox" id="PD-tech-glucose"><span class="tick">✓</span>Glucose</label>
+                    <label class="PD-opt"><input type="checkbox" id="PD-tech-bio"><span class="tick">✓</span>Bio</label>
+                </div>
+            </div>
+
+            <div class="PD-grid-2">
+                <div class="PD-field">
+                    <label for="PD-heparine">Héparinisation</label>
+                    <input type="text" id="PD-heparine" class="PD-input" placeholder="LOVENOX 0.4">
+                </div>
+                <div class="PD-field">
+                    <label>Abord vasculaire</label>
+                    <div class="PD-options">
+                        <label class="PD-opt"><input type="checkbox" id="PD-fav"><span class="tick">✓</span>FAV</label>
+                        <label class="PD-opt"><input type="checkbox" id="PD-uni"><span class="tick">✓</span>Uni ponction</label>
+                        <label class="PD-opt"><input type="checkbox" id="PD-bi"><span class="tick">✓</span>Bi ponction</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== SECTION 3 — PARAMÈTRES ========== -->
+        <div class="PD-section">
+            <div class="PD-section-title">Paramètres techniques</div>
+
+            <div class="PD-grid-3">
+                <div class="PD-field">
+                    <label for="PD-art">Aiguille — Artère</label>
+                    <input type="text" id="PD-art" class="PD-input" placeholder="G16">
+                </div>
+                <div class="PD-field">
+                    <label for="PD-veine">Aiguille — Veine</label>
+                    <input type="text" id="PD-veine" class="PD-input" placeholder="G16">
+                </div>
+                <div class="PD-field">
+                    <label for="PD-debit">Débit de sang</label>
+                    <input type="text" id="PD-debit" class="PD-input" placeholder="300 ml/min">
+                </div>
+            </div>
+
+            <div class="PD-grid-3">
+                <div class="PD-field">
+                    <label for="PD-poids">Poids sec</label>
+                    <input type="text" id="PD-poids" class="PD-input" placeholder="61,200 Kg">
+                </div>
+                <div class="PD-field">
+                    <label for="PD-prise">Prise de poids inter-dialytique</label>
+                    <input type="text" id="PD-prise" class="PD-input" placeholder="1,5 Kg">
+                </div>
+                <div class="PD-field">
+                    <label for="PD-groupe">Groupe sanguin</label>
+                    <input type="text" id="PD-groupe" class="PD-input" placeholder="ARH+">
+                </div>
+            </div>
+
+            <div class="PD-field">
+                <label for="PD-probleme">Problème en per-dialyse</label>
+                <input type="text" id="PD-probleme" class="PD-input" placeholder="Aucun">
+            </div>
+        </div>
+
+        <!-- ========== SECTION 4 — SÉROLOGIE ========== -->
+        <div class="PD-section">
+            <div class="PD-section-title">Sérologie hépatique</div>
+
+            <div class="PD-serology">
+                <div class="name">Ag HBs</div>
+                <div class="val">
+                    <label class="PD-opt"><input type="radio" name="PD-hbs" id="PD-hbs-pos"><span class="tick">●</span>Positif</label>
+                    <label class="PD-opt"><input type="radio" name="PD-hbs" id="PD-hbs-neg"><span class="tick">●</span>Négatif</label>
+                </div>
+
+                <div class="name">Dernière vaccination</div>
+                <div class="val">
+                    <input type="text" id="PD-vaccin" class="PD-input" style="padding: 8px 12px; font-size: 13.5px;" placeholder="Date / observation">
+                </div>
+
+                <div class="name">HCV</div>
+                <div class="val">
+                    <label class="PD-opt"><input type="radio" name="PD-hcv" id="PD-hcv-pos"><span class="tick">●</span>Positif</label>
+                    <label class="PD-opt"><input type="radio" name="PD-hcv" id="PD-hcv-neg"><span class="tick">●</span>Négatif</label>
+                </div>
+
+                <div class="name">HIV</div>
+                <div class="val">
+                    <label class="PD-opt"><input type="radio" name="PD-hiv" id="PD-hiv-pos"><span class="tick">●</span>Positif</label>
+                    <label class="PD-opt"><input type="radio" name="PD-hiv" id="PD-hiv-neg"><span class="tick">●</span>Négatif</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== SECTION 5 — ANTÉCÉDENTS ========== -->
+        <div class="PD-section">
+            <div class="PD-section-title">Antécédents & traitements</div>
+
+            <div class="PD-field">
+                <label for="PD-pathologie">Pathologie médicale associée à l'IRC.T</label>
+                <input type="text" id="PD-pathologie" class="PD-input" placeholder="—">
+            </div>
+
+            <div class="PD-grid-2">
+                <div class="PD-field">
+                    <label for="PD-traitement">Traitement habituel</label>
+                    <input type="text" id="PD-traitement" class="PD-input" placeholder="—">
+                </div>
+                <div class="PD-field">
+                    <label for="PD-conservateur">Traitement conservateur d'IRCT</label>
+                    <input type="text" id="PD-conservateur" class="PD-input" placeholder="—">
+                </div>
+            </div>
+
+            <div class="PD-field">
+                <label for="PD-nb">NB / Observations</label>
+                <input type="text" id="PD-nb" class="PD-input" placeholder="—">
+            </div>
+        </div>
+
+        <!-- ========== FOOTER SIGNATURE ========== -->
+        <div class="PD-footer">
+            <div class="PD-signature">
                 <div class="line"></div>
-                <div>Le médecin le chef de service</div>
+                <div class="label">Le médecin chef de service</div>
+                <div class="sub">Signature & cachet</div>
             </div>
         </div>
 
@@ -542,21 +622,40 @@
 
     const $ = (id) => document.getElementById(id);
 
-    function toast(msg, type) {
+    function toast(msg) {
         const t = document.createElement('div');
-        t.className = 'PH-toast ' + (type || '');
+        t.className = 'PD-toast';
         t.textContent = msg;
         document.body.appendChild(t);
         setTimeout(() => t.remove(), 3500);
     }
 
     /* ============================================================
-       INPUT FILTERS — each field only accepts what it's meant for
+       CHIP CHECKBOX / RADIO VISUAL STATE
+       ============================================================ */
+    document.querySelectorAll('.PD-opt input').forEach((input) => {
+        const label = input.closest('.PD-opt');
+        const sync = () => {
+            if (input.type === 'radio') {
+                // Uncheck all siblings with same name
+                document.querySelectorAll(`input[name="${input.name}"]`).forEach((r) => {
+                    r.closest('.PD-opt').classList.toggle('checked', r.checked);
+                });
+            } else {
+                label.classList.toggle('checked', input.checked);
+            }
+        };
+        input.addEventListener('change', sync);
+        sync(); // initialize
+    });
+
+    /* ============================================================
+       INPUT FILTERS
        ============================================================ */
 
-    /* Nom & Prénom — letters only (Arabic OR Latin), spaces, hyphen, apostrophe */
-    const NAME_ALLOWED       = /[\p{Script=Arabic}\p{Script=Latin}\s'’\-]/u;
-    const NAME_DISALLOWED_G  = /[^\p{Script=Arabic}\p{Script=Latin}\s'’\-]/gu;
+    /* Names — letters only (Arabic OR Latin), spaces, hyphen, apostrophe */
+    const NAME_ALLOWED      = /[\p{Script=Arabic}\p{Script=Latin}\s'’\-]/u;
+    const NAME_DISALLOWED_G = /[^\p{Script=Arabic}\p{Script=Latin}\s'’\-]/gu;
 
     function attachNameFilter(el) {
         if (!el) return;
@@ -573,77 +672,64 @@
             document.execCommand('insertText', false, (text || '').replace(NAME_DISALLOWED_G, ''));
         });
     }
+    attachNameFilter($('PD-nom'));
+    attachNameFilter($('PD-prenom'));
 
-    attachNameFilter($('PH-nom'));
-    attachNameFilter($('PH-prenom'));
-
-    /* Date-like fields — digits and / . - and letters for "Mois de ..." */
-    function attachDateFilter(el) {
-        if (!el) return;
-        el.addEventListener('beforeinput', (e) => {
-            if (e.data && !/[\d\/\.\-\s\p{Script=Latin}\p{Script=Arabic}]/u.test(e.data)) {
-                e.preventDefault();
-            }
-        });
-    }
-    attachDateFilter($('PH-naissance'));
-    attachDateFilter($('PH-premiere'));
-    attachDateFilter($('PH-date-souhait'));
-
-    /* Téléphone — digits, +, spaces, dashes, dots, slashes */
-    const PHONE_ALLOWED = /[\d+\s\-\/\.()]/;
+    /* Phone — digits, +, spaces, dashes, dots, slashes */
+    const PHONE_ALLOWED      = /[\d+\s\-\/\.()]/;
     const PHONE_DISALLOWED_G = /[^\d+\s\-\/\.()]/g;
-    const telInput = $('PH-tel');
-    if (telInput) {
-        telInput.addEventListener('beforeinput', (e) => {
+    const telEl = $('PD-tel');
+    if (telEl) {
+        telEl.addEventListener('beforeinput', (e) => {
             if (e.data && !PHONE_ALLOWED.test(e.data)) e.preventDefault();
         });
-        telInput.addEventListener('input', () => {
-            const v = telInput.value.replace(PHONE_DISALLOWED_G, '');
-            if (v !== telInput.value) telInput.value = v;
+        telEl.addEventListener('input', () => {
+            const v = telEl.value.replace(PHONE_DISALLOWED_G, '');
+            if (v !== telEl.value) telEl.value = v;
         });
-        telInput.addEventListener('paste', (e) => {
+        telEl.addEventListener('paste', (e) => {
             e.preventDefault();
             const text = (e.clipboardData || window.clipboardData).getData('text') || '';
             document.execCommand('insertText', false, text.replace(PHONE_DISALLOWED_G, ''));
         });
     }
 
-    /* Numeric-only fields: séances, durée, art, veine, débit, poids, prise */
-    function attachNumericFilter(el, opts) {
+    /* Date fields — digits and / . - */
+    ['PD-naissance', 'PD-premiere'].forEach((id) => {
+        const el = $(id);
         if (!el) return;
-        const allowDot = opts && opts.allowDot;
-        const allowLetters = opts && opts.allowLetters;
         el.addEventListener('beforeinput', (e) => {
-            if (!e.data) return;
-            if (allowLetters) {
-                if (!/[\d\p{Script=Latin}\s\.\,]/u.test(e.data)) e.preventDefault();
-            } else if (allowDot) {
-                if (!/[\d\.\,]/.test(e.data)) e.preventDefault();
-            } else {
-                if (!/\d/.test(e.data)) e.preventDefault();
-            }
+            if (e.data && !/[\d\/\.\-\s]/.test(e.data)) e.preventDefault();
         });
         el.addEventListener('input', () => {
-            let v = el.value;
-            if (allowLetters) {
-                v = v.replace(/[^\dA-Za-z\s\.\,]/g, '');
-            } else if (allowDot) {
-                v = v.replace(/[^\d\.\,]/g, '');
-            } else {
-                v = v.replace(/\D/g, '');
-            }
+            const v = el.value.replace(/[^\d\/\.\-\s]/g, '');
+            if (v !== el.value) el.value = v;
+        });
+    });
+
+    /* Numeric + letters (units like 04H, G16, 61,200 Kg, 1,5) */
+    function attachMixedFilter(el, pattern) {
+        if (!el) return;
+        el.addEventListener('beforeinput', (e) => {
+            if (e.data && !pattern.test(e.data)) e.preventDefault();
+        });
+        el.addEventListener('input', () => {
+            const v = el.value.replace(new RegExp('[^' + pattern.source.slice(1, -1) + ']', 'g'), '');
             if (v !== el.value) el.value = v;
         });
     }
 
-    attachNumericFilter($('PH-seances'), { allowLetters: false });       // 03
-    attachNumericFilter($('PH-duree'),    { allowLetters: true });        // 04H
-    attachNumericFilter($('PH-art'),      { allowLetters: true });        // G16
-    attachNumericFilter($('PH-veine'),    { allowLetters: true });        // G16
-    attachNumericFilter($('PH-debit'),    { allowLetters: false });       // 300
-    attachNumericFilter($('PH-poids'),    { allowDot: true, allowLetters: true }); // 61.200 Kg
-    attachNumericFilter($('PH-prise'),    { allowDot: true });            // 1.5
+    /* Séances — digits only */
+    const seancesEl = $('PD-seances');
+    if (seancesEl) {
+        seancesEl.addEventListener('beforeinput', (e) => {
+            if (e.data && /\D/.test(e.data)) e.preventDefault();
+        });
+        seancesEl.addEventListener('input', () => {
+            const v = seancesEl.value.replace(/\D/g, '').slice(0, 2);
+            if (v !== seancesEl.value) seancesEl.value = v;
+        });
+    }
 
     /* ============================================================
        PRINT HELPERS
@@ -654,60 +740,68 @@
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;');
 
-    const FIELD_IDS = [
-        'PH-nom', 'PH-prenom', 'PH-naissance', 'PH-adresse', 'PH-tel',
-        'PH-date-souhait', 'PH-nephropathie', 'PH-premiere',
-        'PH-seances', 'PH-duree', 'PH-generateur', 'PH-heparine',
-        'PH-art', 'PH-veine', 'PH-debit', 'PH-poids', 'PH-prise',
-        'PH-probleme', 'PH-groupe', 'PH-vaccin',
-        'PH-pathologie', 'PH-traitement', 'PH-conservateur', 'PH-nb'
+    const TEXT_FIELDS = [
+        'PD-nom', 'PD-prenom', 'PD-naissance', 'PD-adresse', 'PD-tel',
+        'PD-date-souhait', 'PD-nephropathie', 'PD-premiere',
+        'PD-seances', 'PD-duree', 'PD-generateur', 'PD-heparine',
+        'PD-art', 'PD-veine', 'PD-debit', 'PD-poids', 'PD-prise',
+        'PD-probleme', 'PD-groupe', 'PD-vaccin',
+        'PD-pathologie', 'PD-traitement', 'PD-conservateur', 'PD-nb'
     ];
 
-    const CHECKBOX_IDS = [
-        'PH-tech-acetate', 'PH-tech-bicarbonate', 'PH-tech-hf',
-        'PH-tech-glucose', 'PH-tech-bio',
-        'PH-fav', 'PH-uni', 'PH-bi'
+    const CHECKBOXES = [
+        'PD-tech-acetate', 'PD-tech-bicarbonate', 'PD-tech-hf',
+        'PD-tech-glucose', 'PD-tech-bio',
+        'PD-fav', 'PD-uni', 'PD-bi'
     ];
 
-    const RADIO_NAMES = ['PH-hbs', 'PH-hcv', 'PH-hiv'];
+    const RADIOS = {
+        'PD-hbs': ['PD-hbs-pos', 'PD-hbs-neg'],
+        'PD-hcv': ['PD-hcv-pos', 'PD-hcv-neg'],
+        'PD-hiv': ['PD-hiv-pos', 'PD-hiv-neg']
+    };
 
-    function collectCurrent() {
-        const values = {};
-        FIELD_IDS.forEach((id) => {
-            const el = $(id);
-            values[id] = el ? el.value : '';
+    function collect() {
+        const v = {};
+        TEXT_FIELDS.forEach((id) => { v[id] = $(id) ? $(id).value : ''; });
+        const c = {};
+        CHECKBOXES.forEach((id) => { c[id] = $(id) ? $(id).checked : false; });
+        const r = {};
+        Object.keys(RADIOS).forEach((name) => {
+            const checked = document.querySelector(`input[name="${name}"]:checked`);
+            r[name] = checked ? checked.id : null;
         });
-        const checks = {};
-        CHECKBOX_IDS.forEach((id) => {
-            const el = $(id);
-            checks[id] = el ? el.checked : false;
-        });
-        const radios = {};
-        RADIO_NAMES.forEach((name) => {
-            const el = document.querySelector(`input[name="${name}"]:checked`);
-            radios[name] = el ? el.id : null;
-        });
-        return { values, checks, radios };
+        return { values: v, checks: c, radios: r };
     }
 
-    /* Render an underlined value or blank dots depending on mode */
-    function v(text, mode, minDots) {
-        const str = String(text == null ? '' : text).trim();
-        if (str) return `<span class="pv">${pEsc(str)}</span>`;
-        if (mode === 'blank') return `<span class="blank">${'.'.repeat(minDots || 30)}</span>`;
-        return `<span class="blank">${'.'.repeat(minDots || 30)}</span>`;
+    /* Build a printable value block: filled shows the value, blank shows a line */
+    function val(text, mode, minLen) {
+        const s = String(text == null ? '' : text).trim();
+        const min = minLen || 20;
+        if (mode === 'filled' && s) {
+            return `<span class="pv">${pEsc(s)}</span>`;
+        }
+        const dots = '&nbsp;'.repeat(2) + '<span class="dots">' + '·'.repeat(min) + '</span>';
+        return `<span class="blank">${dots}</span>`;
     }
 
-    function chk(cond) {
-        return cond ? 'X' : '__';
+    function checkboxText(cond) {
+        return cond ? '[X]' : '[&nbsp;&nbsp;]';
+    }
+
+    function radioText(selected) {
+        return selected ? '(X)' : '( )';
     }
 
     function buildPrintHTML(mode) {
         const isFilled = mode === 'filled';
-        const data = isFilled ? collectCurrent() : { values: {}, checks: {}, radios: {} };
+        const data = isFilled ? collect() : { values: {}, checks: {}, radios: {} };
         const g = (id) => isFilled ? (data.values[id] || '') : '';
         const c = (id) => isFilled ? !!data.checks[id] : false;
         const r = (name, id) => isFilled && data.radios[name] === id;
+
+        const now = new Date();
+        const dateStr = now.toLocaleDateString('fr-FR');
 
         const html = `<!DOCTYPE html>
 <html lang="fr">
@@ -715,76 +809,23 @@
 <meta charset="UTF-8">
 <title>Protocole d'Hémodialyse — ${isFilled ? 'Rempli' : 'Vierge'}</title>
 <style>
-    @page { size: A4 portrait; margin: 12mm 14mm; }
+    @page { size: A4 portrait; margin: 14mm 16mm; }
     * { box-sizing: border-box; }
     body {
-        font-family: 'Times New Roman', 'Inter', serif;
-        color: #000;
-        font-size: 12.5pt;
-        line-height: 1.7;
-        margin: 0;
-    }
-    .pp-header {
-        text-align: center;
-        font-size: 11pt;
+        font-family: 'Calibri', 'Segoe UI', Arial, sans-serif;
+        color: #0f172a;
+        font-size: 10.5pt;
         line-height: 1.5;
-        margin-bottom: 8px;
-    }
-    .pp-header .strong { font-weight: 700; }
-    .pp-contact {
-        text-align: right;
-        font-size: 11pt;
-        line-height: 1.6;
-        margin-bottom: 12px;
-        padding-right: 20px;
-    }
-    .pp-title {
-        margin: 14px auto 24px;
-        max-width: 440px;
-        text-align: center;
-        padding: 12px 24px;
-        border-radius: 8px;
-        background: #fde68a;
-        border: 2px solid #b45309;
-        box-shadow: inset 0 0 0 3px #fef3c7;
-    }
-    .pp-title h1 {
-        font-size: 16pt;
-        font-weight: 800;
-        color: #7c2d12;
-        line-height: 1.25;
-        font-style: italic;
         margin: 0;
     }
-    .pp-title h1 .dash { font-style: normal; }
-    .pp-fields { font-size: 12.5pt; line-height: 2.05; }
-    .pp-row {
+    .doc { max-width: 100%; }
+
+    /* ---------- HEADER ---------- */
+    .hdr {
         display: flex;
-        align-items: baseline;
-        flex-wrap: wrap;
-        gap: 4px;
-        margin-bottom: 2px;
+        justify-content: space-between;
+        gap: 24px;
+        padding-bottom: 12px;
+        border-bottom: 2px solid #0f172a;
+        margin-bottom: 18px;
     }
-    .pp-bullet { width: 14px; flex-shrink: 0; }
-    .pp-label { font-weight: 400; white-space: nowrap; }
-    .pp-label::after { content: ':'; margin-left: 2px; }
-    .pp-label.nocolon::after { content: ''; margin-left: 0; }
-    .pv {
-        font-weight: 700;
-        color: #000;
-        border-bottom: 1px solid #000;
-        padding: 0 4px;
-        min-width: 60px;
-        display: inline-block;
-    }
-    .blank {
-        color: #999;
-        font-size: 11pt;
-        letter-spacing: 1px;
-        border-bottom: 1px solid #000;
-        padding: 0 4px;
-        display: inline-block;
-        min-height: 1em;
-        line-height: 1.2;
-    }
-    .pp-opts { display: inline-flex; align-items: baseline; gap:
