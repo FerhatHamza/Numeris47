@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fiche Patient — Hémodialyse | بطاقة المريض - تصفية الكلى</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+    html, body {
+        font-family: 'Inter', 'Tajawal', system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        background: #f0f4f8;
+        min-height: 100vh;
+    }
+    [dir="rtl"], .rtl { font-family: 'Tajawal', 'Inter', sans-serif; }
+
+    .HD-wrap {
+        max-width: 900px;
+        margin: 24px auto 80px;
+        background: #fff;
+        border-radius: 20px;
+        box-shadow: 0 12px 40px -12px rgba(15, 23, 42, 0.15);
+        overflow: hidden;
+    }
+
+    /* ===== HEADER ===== */
+    .HD-header {
+        background: linear-gradient(135deg, #0f766e 0%, #14b8a6 60%, #5eead4 100%);
+        color: #fff;
+        padding: 28px 32px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+    .HD-header::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at 80% -30%, rgba(255,255,255,0.35), transparent 60%);
+        pointer-events: none;
+    }
+    .HD-header .badge {
+        display: inline-block;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        background: rgba(255,255,255,0.15);
+        border: 1px solid rgba(255,255,255,0.28);
+        padding: 5px 14px;
+        border-radius: 999px;
+        margin-bottom: 12px;
+    }
+    .HD-header h1 {
+        font-size: 22px;
+        font-weight: 700;
+        margin-bottom: 6px;
+        position: relative;
+        z-index: 1;
+    }
+    .HD-header p {
+        font-size: 14px;
+        color: #ccfbf1;
+        position: relative;
+        z-index: 1;
+    }
+
+    /* ===== SECTION ===== */
+    .HD-body { padding: 28px 32px 36px; }
+    @media (max-width: 640px) {
+        .HD-body { padding: 20px 18px 28px; }
+        .HD-header { padding: 22px 18px; }
+        .HD-header h1 { font-size: 18px; }
+    }
+
+    .HD-section { margin-bottom: 34px; }
+    .HD-section-head {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        background: #f0fdfa;
+        border-radius: 14px;
+        margin-bottom: 20px;
+        border: 1px solid #ccfbf1;
+    }
+    .HD-section-head .icon {
+        width: 38px; height: 38px;
+        border-radius: 10px;
+        background: #14b8a6;
+        color: #fff;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 18px;
+        flex-shrink: 0;
+    }
+    .HD-section-head h2 {
+        font-size: 15px;
+        font-weight: 700;
+        color: #0f766e;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        margin: 0;
+    }
+    .HD-section-head small {
+        display: block;
+        font-size: 12px;
+        color: #64748b;
+        font-weight: 400;
+        text-transform: none;
+        letter-spacing: 0;
+        margin-top: 2px;
+        direction: rtl;
+    }
+
+    /* ===== FIELD LABEL ===== */
+    .HD-label {
+        display: block;
+        font-size: 14px;
+        font-weight: 600;
+        color: #334155;
+        margin-bottom: 10px;
+    }
+    .HD-label .ar {
+        display: block;
+        font-size: 12px;
+        font-weight: 400;
+        color: #94a3b8;
+        direction: rtl;
+        margin-top: 2px;
+    }
+    .HD-label .req { color: #ef4444; }
+
+    /* ===== CHIP (pill button) ===== */
+    .HD-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 22px;
+    }
+    .HD-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 9px 18px;
+        border-radius: 999px;
+        border: 1.5px solid #e2e8f0;
+        background: #f8fafc;
+        color: #475569;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        user-select: none;
+        font-family: inherit;
+        white-space: nowrap;
+    }
+    .HD-chip:hover {
+        border-color: #5eead4;
+        background: #f0fdfa;
+    }
+    .HD-chip.active {
+        background: #14b8a6;
+        border-color: #14b8a6;
+        color: #fff;
+        font-weight: 600;
+        box-shadow: 0 6px 16px -6px rgba(20, 184, 166, 0.6);
+    }
+    .HD-chip.active::before {
+        content: '✓';
+        font-size: 12px;
+        font-weight: 700;
+        margin-right: 2px;
+    }
+    .HD-chip[dir="rtl"].active::before {
+        margin-right: 0;
+        margin-left: 2px;
+    }
+
+    /* ===== TEXT / SELECT / NUMBER INPUTS ===== */
+    .HD-input {
+        width: 100%;
+        padding: 14px 18px;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 14px;
+        font-size: 15px;
+        background: #f1f5f9;
+        color: #1e293b;
+        outline: none;
+        transition: all 0.2s;
+        font-family: inherit;
+    }
+    .HD-input:focus {
+        border-color: #14b8a6;
+        background: #fff;
+        box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.12);
+    }
+    .HD-input::placeholder { color: #94a3b8; }
+
+    select.HD-input {
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 16px center;
+        background-size: 18px;
+        padding-right: 46px;
+        cursor: pointer;
+        appearance: none;
+    }
+
+    .HD-input-wrap {
+        position: relative;
+        margin-bottom: 22px;
+    }
+    .HD-input-wrap .icon {
+        position: absolute;
+        left: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #94a3b8;
+        font-size: 17px;
+        pointer-events: none;
+    }
+    .HD-input-wrap .icon + .HD-input {
+        padding-left: 46px;
+    }
+    .HD-input-wrap .hint {
+        font-size: 12px;
+        color: #64748b;
+        margin-top: 6px;
+        display: block;
+    }
+
+    /* ===== SUBMIT ===== */
+    .HD-submit {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        width: 100%;
+        padding: 17px 28px;
+        background: linear-gradient(135deg, #0f766e, #14b8a6);
+        color: #fff;
+        border: none;
+        border-radius: 14px;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.25s;
+        box-shadow: 0 12px 28px -10px rgba(20, 184, 166, 0.6);
+        font-family: inherit;
+        margin-top: 8px;
+    }
+    .HD-submit:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 16px 32px -10px rgba(20, 184, 166vw, 0.75);
+    }
+    .HD-sub;
+mit:disabled {
+        opacity: 0.7;
+        text        cursor:-align not-allowed;
+    }
+
+    .HD:-spinner {
+        width: 20px; height: 20px;
+        border: 3px solid rgba(255,255,255,0.35);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: HD-spin 0.7s linear infinite;
+    }
+    @keyframes HD-spin { to { transform: rotate(360deg); } }
+
+    /* ===== ALERT ===== */
+    .HD-alert {
+        padding: 16px 20px;
+        border-radius: 14px;
+        display: flex;
+        gap: 14px;
+        align-items: flex-start;
+        margin-bottom: 22px;
+        animation: HD-slideDown 0.35s ease-out;
+    }
+    @keyframes HD-slideDown {
+        from { opacity: 0; transform: translateY(-10px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+    .HD-alert.success { background: #d1fae5; border: 1px solid #86efac; color: #065f46; }
+    .HD-alert.error   { background: #fee2e2; border: 1px solid #fca5a5; color: #991b1b; }
+    .HD-alert .ic {
+        width: 32px; height: 32px;
+        border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 18px; font-weight: 700;
+        flex-shrink: 0;
+        color: #fff;
+    }
+    .HD-alert.success .ic { background: #10b981; }
+    .HD-alert.error   .ic { background: #ef4444; }
+
+    /* ===== TOAST ===== */
+    .HD-toast {
+        position: fixed;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #1e293b;
+        color: #fff;
+        padding: 14px 24px;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 500;
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+        z-index: 9999;
+        animation: HD-toastIn 0.3s ease-out;
+        max-width: 90 center;
+    }
+    .HD-toast.success { background: #16a34a; }
+    .HD-toast.error   { background: #dc2626; }
+    @keyframes HD-toastIn {
+        from { opacity: 0; transform: translate(-50%, 20px); }
+        to   { opacity: 1; transform: translate(-50%, 0); }
+    }
+
+    .HD-required-note {
+        font-size: 12px;
+        color: #64748b;
+        text-align: center;
+        margin-top: 14px;
+    }
+    .HD-required-note .req { color: #ef4444; font-weight: 700; }
+</style>
+</head>
+
+<body>
+
+<div class="HD-wrap">
+
+    <!-- ================= HEADER ================= -->
+    <div class="HD-header">
+        <div class="badge">NUMERIS47 · DSP GHARDAIA</div>
+        <h1>Fiche Patient — Hémodialyse</h1>
+        <p dir="rtl">بطاقة المريض — وحدة تصفية الكلى</p>
+    </div>
+
+    <!-- ================= BODY ================= -->
+    <div class="HD-body">
+
+        <!-- ALERTS -->
+        <div id="HD-success" class="HD-alert success" style="display:none;">
+            <div class="ic">✓</div>
+            <div>
+                <p style="font-weight:700;">Fiche envoyée avec succès</p>
+                <p dir="rtl" style="font-size:13px; margin-top:4px;">تم إرسال البطاقة بنجاح</p>
+                <p id="HD-success-ref" dir="ltr" style="font-size:13px; margin-top:6px; font-weight:700;"></p>
+            </div>
+        </div>
+        <div id="HD-error" class="HD-alert error" style="display:none;">
+            <div class="ic">✕</div>
+            <div>
+                <p style="font-weight:700;">Erreur lors de l'envoi</p>
+                <p id="HD-error-msg" dir="rtl" style="font-size:13px; margin-top:4px;"></p>
+            </div>
+        </div>
+
+        <form id="HD-form" novalidate>
+
+            <!-- =========================================================
+                 BLOC 0 — IDENTIFICATION DU PATIENT
+                 ========================================================= -->
+            <div class="HD-section">
+                <div class="HD-section-head">
+                    <div class="icon">👤</div>
+                    <h2>Identification du patient
+                        <small>تحديد هوية المريض</small>
+                    </h2>
+                </div>
+
+                <div class="HD-input-wrap">
+                    <span class="icon">👤</span>
+                    <input type="text" id="HD-nom" class="HD-input" placeholder="Nom et Prénom / الاسم واللقب" required>
+                    <span class="hint">Lettres uniquement — حروف فقط</span>
+                </div>
+
+                <div class="HD-input-wrap">
+                    <span class="icon">🔢</span>
+                    <input type="text" id="HD-nin" class="HD-input" dir="ltr" inputmode="numeric" maxlength="18" placeholder="NIN — الرقم التعريفي الوطني (18 chiffres)" required>
+                </div>
+
+                <div class="HD-input-wrap">
+                    <span class="icon">📞</span>
+                    <input type="tel" id="HD-phone" class="HD-input" dir="ltr" inputmode="tel" placeholder="Téléphone — رقم الهاتف" required>
+                </div>
+
+                <div class="HD-input-wrap" style="margin-bottom:0;">
+                    <span class="icon">🏥</span>
+                    <select id="HD-site" class="HD-input" required>
+                        <option value="">— Sélectionnez l'établissement / اختر المؤسسة —</option>
+                        <option value="Polyclinique Bailich Mazouz">Polyclinique Bailich Mazouz</option>
+                        <option value="Polyclinique Vieux Ksar">Polyclinique Vieux Ksar</option>
+                        <option value="Polyclinique du martyr officier Ahmed Taleb">Polyclinique du martyr officier Ahmed Taleb</option>
+                        <option value="Centre de santé cité el moudjahidine">Centre de santé cité el moudjahidine</option>
+                        <option value="Centre de santé Baba saad">Centre de santé Baba saad</option>
+                        <option value="Centre de santé Belle vue">Centre de santé Belle vue</option>
+                        <option value="Centre de santé Chikh Ameur">Centre de santé Chikh Ameur</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- =========================================================
+                 BLOC 1 — SITUATION FINANCIÈRE & ASSURANCE
+                 ========================================================= -->
+            <div class="HD-section">
+                <div class="HD-section-head">
+                    <div class="icon">💼</div>
+                    <h2>Situation financière & assurance
+                        <small>الوضعية المالية والتأمين</small>
+                    </h2>
+                </div>
+
+                <!-- Gain mensuel -->
+                <label class="HD-label">
+                    Gain mensuel <span class="req">*</span>
+                    <span class="ar">الدخل الشهري</span>
+                </label>
+                <div class="HD-chips" data-group="gain">
+                    <button type="button" class="HD-chip" data-value="Inférieur SMIG">Inférieur SMIG</button>
+                    <button type="button" class="HD-chip" data-value="SMIG">SMIG</button>
+                    <button type="button" class="HD-chip" data-value="Supérieur SMIG">Supérieur SMIG</button>
+                </div>
+
+                <!-- Assuré social -->
+                <label class="HD-label">
+                    Assuré social <span class="req">*</span>
+                    <span class="ar">هل لديه تأمين اجتماعي؟</span>
+                </label>
+                <div class="HD-chips" data-group="assure">
+                    <button type="button" class="HD-chip" data-value="Oui">Oui — نعم</button>
+                    <button type="button" class="HD-chip" data-value="Non">Non — لا</button>
+                </div>
+
+                <!-- Caisse -->
+                <label class="HD-label">
+                    Caisse d'assurance <span class="req">*</span>
+                    <span class="ar">صندوق التأمين</span>
+                </label>
+                <div class="HD-chips" data-group="caisse">
+                    <button type="button" class="HD-chip" data-value="CNAS">CNAS</button>
+                    <button type="button" class="HD-chip" data-value="CASNOS">CASNOS</button>
+                    <button type="button" class="HD-chip" data-value="Assurance privée">Assurance privée</button>
+                    <button type="button" class="HD-chip" data-value="CNR">CNR</button>
+                    <button type="button" class="HD-chip" data-value="Caisse militaire">Caisse militaire</button>
+                    <button type="button" class="HD-chip" data-value="Aucune">Aucune — بدون</button>
+                </div>
+            </div>
+
+            <!-- =========================================================
+                 BLOC 2 — SITUATION SOCIO-ÉCONOMIQUE
+                 ========================================================= -->
+            <div class="HD-section">
+                <div class="HD-section-head">
+                    <div class="icon">📊</div>
+                    <h2>Situation socio-économique
+                        <small>الوضعية الاجتماعية والاقتصادية</small>
+                    </h2>
+                </div>
+
+                <!-- Groupe sanguin -->
+                <label class="HD-label">
+                    Groupe sanguin <span class="req">*</span>
+                    <span class="ar">الزمرة الدموية</span>
+                </label>
+                <div class="HD-ch="ips" data-group="groupe_sanguin">
+                    <button type="button" class="HD-chip" data-value="A+">A+</button>
+                    <button type="button" class="HD-chip" data-value="A-">A-</button>
+                    <button type="button" class="HD-chip" data-value="B+">B+</button>
+                    <button type="button" class="HD-chip" data-value="B-">B-</button>
+                    <button type="button" class="HD-chip" data-value="AB+">AB+</button>
+                    <button type="button" classHD-chip" data-value="AB-">AB-</button>
+                    <button type="button" class="HD-chip" data-value="O+">O+</button>
+                    <button type="button" class="HD-chip" data-value="O-">O-</button>
+                </div>
+
+                <!-- État civil -->
+                <label class="HD-label">
+                    État civil <span class="req">*</span>
+                    <span class="ar">الحالة المدنية</span>
+                </label>
+                <div class="HD-chips" data-group="etat_civil">
+                    <button type="button" class="HD-chip" data-value="Célibataire">Célibataire — أعزب</button>
+                    <button type="button" class="HD-chip" data-value="Marié">Marié — متزوج</button>
+                    <button type="button" class="HD-chip" data-value="Veuf">Veuf — أرمل</button>
+                    <button type="button" class="HD-chip" data-value="Divorcé">Divorcé — مطلق</button>
+                </div>
+
+                <!-- Personnes au foyer -->
+                <label class="HD-label">
+                    Nombre de personnes vivant au foyer
+                    <span class="ar">عدد الأشخاص الذين يعيشون في المنزل</span>
+                </label>
+                <div class="HD-input-wrap">
+                    <span class="icon">👥</span>
+                    <input type="number" min="0" max="30" id="HD-foyer" class="HD-input" placeholder="0" value="">
+                </div>
+
+                <!-- Langues parlées -->
+                <label class="HD-label">
+                    Langues parlées
+                    <span class="ar">اللغات المتحدث بها</span>
+                </label>
+                <div class="HD-chips" data-group="langues" data-multi="true">
+                    <button type="button" class="HD-chip" data-value="Arabe">Arabe — العربية</button>
+                    <button type="button" class="HD-chip" data-value="Tamazight">Tamazight — الأمازيغية</button>
+                    <button type="button" class="HD-chip" data-value="Français">Français</button>
+                    <button type="button" class="HD-chip" data-value="Anglais">Anglais</button>
+                </div>
+
+                <!-- Mesure de protection -->
+                <label class="HD-label">
+                    Mesure de protection <span class="req">*</span>
+                    <span class="ar">إجراءات الحماية</span>
+                </label>
+                <div class="HD-chips" data-group="protection">
+                    <button type="button" class="HD-chip" data-value="Aucune">Aucune — لا يوجد</button>
+                    <button type="button" class="HD-chip" data-value="Curatelle">Curatelle — الوصاية القضائية</button>
+                    <button type="button" class="HD-chip" data-value="Tutelle">Tutelle — الولاية</button>
+                </div>
+
+                <!-- Niveau d'instruction -->
+                <label class="HD-label">
+                    Niveau d'instruction <span class="req">*</span>
+                    <span class="ar">المستوى التعليمي</span>
+                </label>
+                <div class="HD-chips" data-group="instruction">
+                    <button type="button" class="HD-chip" data-value="Aucun">Aucun — بدون</button>
+                    <button type="button" class="HD-chip" data-value="Primaire">Primaire — ابتدائي</button>
+                    <button type="button" class="HD-chip" data-value="Moyen">Moyen — متوسط</button>
+                    <button type="button" class="HD-chip" data-value="Secondaire">Secondaire — ثانوي</button>
+                    <button type="button" class="HD-chip" data-value="Universitaire">Universitaire — جامعي</button>
+                </div>
+
+                <!-- Catégorie socio-professionnelle -->
+                <label class="HD-label">
+                    Catégorie socio-professionnelle <span class="req">*</span>
+                    <span class="ar">الفئة الاجتماعية والمهنية</span>
+                </label>
+                <div class="HD-chips" data-group="profession">
+                    <button type="button" class="HD-chip" data-value="Employé">Employé — موظف</button>
+                    <button type="button" class="HD-chip" data-value="Profession libérale">Profession libérale — مهنة حرة</button>
+                    <button type="button" class="HD-chip" data-value="Retraité">Retraité — متقاعد</button>
+                    <button type="button" class="HD-chip" data-value="Sans profession">Sans profession — بدون عمل</button>
+                    <button type="button" class="HD-chip" data-value="Etudiant">Etudiant — طالب</button>
+                    <button type="button" class="HD-chip" data-value="Autre">Autre — أخرى</button>
+                </div>
+            </div>
+
+            <!-- =========================================================
+                 BLOC 3 — CONTACT & STRUCTURE SANITAIRE
+                 ========================================================= -->
+            <div class="HD-section" style="margin-bottom:0;">
+                <div class="HD-section-head">
+                    <div class="icon">🏥</div>
+                    <h2>Structure sanitaire de proximité
+                        <small>الهيكل الصحي الأقرب لمكان الإقامة</small>
+                    </h2>
+                </div>
+
+                <div class="HD-input-wrap">
+                    <span class="icon">📍</span>
+                    <input type="text" id="HD-structure" class="HD-input" placeholder="Polyclinique ou centre de santé le plus proche — الهيكل الصحي الأقرب">
+                </div>
+
+                <div class="HD-input-wrap" style="margin-bottom:0;">
+                    <span class="icon">📝</span>
+                    <textarea id="HD-notes" class="HD-input" rows="3" placeholder="Remarques éventuelles / ملاحظات إضافية"></textarea>
+                </div>
+            </div>
+
+            <!-- SUBMIT -->
+            <button type="submit" class="HD-submit" id="HD-submit">
+                <span id="HD-btn-txt">📤 Envoyer la fiche / إرسال البطاقة</span>
+                <span id="HD-btn-spinner" class="HD-spinner" style="display:none;"></span>
+            </button>
+
+            <p class="HD-required-note">
+                <span class="req">*</span> Champs obligatoires / الحقول الإلزامية
+            </p>
+        </form>
+
+    </div>
+</div>
+
+<!-- ================= SCRIPT ================= -->
+<script>
+(function () {
+    'use strict';
+
+    /* =====================================================================
+       CONFIG
+       ===================================================================== */
+    const WORKER_URL = 'https://empty-grass-e190.05juillet-ballouh-info-8e2.workers.dev/api/patients';
+    const REQUIRED_GROUPS = ['gain', 'assure', 'caisse', 'groupe_sanguin', 'etat_civil', 'protection', 'instruction', 'profession'];
+
+    /* =====================================================================
+       STATE — selections by group
+       ===================================================================== */
+    const selections = {};   // { groupName: value | [values] }
+    REQUIRED_GROUPS.forEach((g) => { selections[g] = null; });
+    selections.langues = [];
+
+    /* =====================================================================
+       HELPERS
+       ===================================================================== */
+    const $ = (id) => document.getElementById(id);
+
+    function toast(msg, type) {
+        const t = document.createElement('div');
+        t.className = 'HD-toast ' + (type || '');
+        t.textContent = msg;
+        document.body.appendChild(t);
+        setTimeout(() => t.remove(), 4000);
+    }
+
+    function esc(s) {
+        return String(s || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
+    /* =====================================================================
+       CHIP GROUPS — single or multi select
+       ===================================================================== */
+    document.querySelectorAll('.HD-chips').forEach((container) => {
+        const group = container.dataset.group;
+        const multi = container.dataset.multi === 'true';
+
+        container.querySelectorAll('.HD-chip').forEach((chip) => {
+            chip.addEventListener('click', () => {
+                const value = chip.dataset.value;
+
+                if (multi) {
+                    const idx = selections[group].indexOf(value);
+                    if (idx >= 0) {
+                        selections[group].splice(idx, 1);
+                        chip.classList.remove('active');
+                    } else {
+                        selections[group].push(value);
+                        chip.classList.add('active');
+                    }
+                } else {
+                    // single-select: clear siblings
+                    container.querySelectorAll('.HD-chip').forEach((c) => c.classList.remove('active'));
+                    chip.classList.add('active');
+                    selections[group] = value;
+                }
+            });
+        });
+    });
+
+    /* =====================================================================
+       INPUT FILTERS
+       ===================================================================== */
+
+    // Nom & Prénom — letters only (Arabic OR Latin)
+    const NAME_ALLOWED = /[\p{Script=Arabic}\p{Script=Latin}\s'’\-]/u;
+    const NAME_DISALLOWED_G = /[^\p{Script=Arabic}\p{Script=Latin}\s'’\-]/gu;
+    const nameInput = $('HD-nom');
+
+    nameInput.addEventListener('beforeinput', (e) => {
+        if (e.data && !NAME_ALLOWED.test(e.data)) e.preventDefault();
+    });
+    nameInput.addEventListener('input', () => {
+        const cleaned = nameInput.value.replace(NAME_DISALLOWED_G, '').replace(/\s{2,}/g, ' ');
+        if (cleaned !== nameInput.value) nameInput.value = cleaned;
+    });
+    nameInput.addEventListener('paste', (e) => {
+        e.preventDefault();
+        const text = (e.clipboardData || window.clipboardData).getData('text');
+        const cleaned = (text || '').replace(NAME_DISALLOWED_G, '');
+        document.execCommand('insertText', false, cleaned);
+    });
+
+    // NIN — digits only, 18 max
+    const ninInput = $('HD-nin');
+    ninInput.addEventListener('beforeinput', (e) => {
+        if (e.data && /\D/.test(e.data)) e.preventDefault();
+    });
+    ninInput.addEventListener('input', () => {
+        const v = ninInput.value.replace(/\D/g, '').slice(0, 18);
+        if (v !== ninInput.value) ninInput.value = v;
+    });
+    ninInput.addEventListener('paste', (e) => {
+        e.preventDefault();
+        const text = (e.clipboardData || window.clipboardData).getData('text') || '';
+        document.execCommand('insertText', false, text.replace(/\D/g, '').slice(0, 18));
+    });
+
+    // Phone — digits, +, spaces, parentheses, hyphen
+    const PHONE_ALLOWED = /[\d+\s\-()]/;
+    const PHONE_DISALLOWED_G = /[^\d+\s\-()]/g;
+    const phoneInput = $('HD-phone');
+    phoneInput.addEventListener('beforeinput', (e) => {
+        if (e.data && !PHONE_ALLOWED.test(e.data)) e.preventDefault();
+    });
+    phoneInput.addEventListener('input', () => {
+        const v = phoneInput.value.replace(PHONE_DISALLOWED_G, '');
+        if (v !== phoneInput.value) phoneInput.value = v;
+    });
+    phoneInput.addEventListener('paste', (e) => {
+        e.preventDefault();
+        const text = (e.clipboardData || window.clipboardData).getData('text') || '';
+        document.execCommand('insertText', false, text.replace(PHONE_DISALLOWED_G, ''));
+    });
+
+    // Foyer — digits only
+    const foyerInput = $('HD-foyer');
+    foyerInput.addEventListener('beforeinput', (e) => {
+        if (e.data && /\D/.test(e.data)) e.preventDefault();
+    });
+    foyerInput.addEventListener('input', () => {
+        const v = foyerInput.value.replace(/\D/g, '').slice(0, 2);
+        if (v !== foyerInput.value) foyerInput.value = v;
+    });
+
+    /* =====================================================================
+       VALIDATION
+       ===================================================================== */
+    function validate() {
+        // Nom
+        const nom = nameInput.value.trim().replace(/\s+/g, ' ');
+        if (!nom || nom.length < 3) {
+            toast('⚠ Nom et Prénom obligatoires (3 caractères min.)', 'error');
+            nameInput.focus();
+            return null;
+        }
+
+        // NIN
+        const nin = ninInput.value.replace(/\D/g, '');
+        if (nin.length !== 18) {
+            toast('⚠ Le NIN doit contenir 18 chiffres', 'error');
+            ninInput.focus();
+            return null;
+        }
+
+        // Phone
+        const phoneRaw = phoneInput.value.trim();
+        const phone = phoneRaw.replace(/[\s\-().]/g, '');
+        if (!/^(\+|00)?\d{8,15}$/.test(phone)) {
+            toast('⚠ Numéro de téléphone invalide', 'error');
+            phoneInput.focus();
+            return null;
+        }
+
+        // Site
+        const site = $('HD-site').value.trim();
+        if (!site) {
+            toast('⚠ Sélectionnez un établissement', 'error');
+            $('HD-site').focus();
+            return null;
+        }
+
+        // Required chip groups
+        for (const g of REQUIRED_GROUPS) {
+            if (!selections[g]) {
+                toast(`⚠ Champ obligatoire manquant: ${g}`, 'error');
+                const el = document.querySelector(`.HD-chips[data-group="${g}"]`);
+                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return null;
+            }
+        }
+
+        return {
+            nom,
+            nin,
+            phone: phoneRaw,
+            phone_clean: phone,
+            site,
+            gain:            selections.gain,
+            assure:          selections.assure,
+            caisse:          selections.caisse,
+            groupe_sanguin:  selections.groupe_sanguin,
+            etat_civil:      selections.etat_civil,
+            foyer:           parseInt(foyerInput.value || '0', 10) || 0,
+            langues:         selections.langues.slice(),
+            protection:      selections.protection,
+            instruction:     selections.instruction,
+            profession:      selections.profession,
+            structure:       $('HD-structure').value.trim(),
+            notes:           $('HD-notes').value.trim()
+        };
+    }
+
+    /* =====================================================================
+       SUBMIT
+       ===================================================================== */
+    $('HD-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        $('HD-success').style.display = 'none';
+        $('HD-error').style.display = 'none';
+
+        const data = validate();
+        if (!data) return;
+
+        const btn = $('HD-submit');
+        const txt = $('HD-btn-txt');
+        const spn = $('HD-btn-spinner');
+        btn.disabled = true;
+        txt.textContent = 'Envoi... / جاري الإرسال...';
+        spn.style.display = 'inline-block';
+
+        try {
+            const res = await fetch(WORKER_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            let body = {};
+            try { body = await res.json(); } catch (_) {}
+
+            if (!res.ok) {
+                throw new Error(body.message || body.error || `Erreur ${res.status}`);
+            }
+
+            const ref = body.reference || ('PAT-' + Date.now().toString(36).toUpperCase());
+            $('HD-success-ref').textContent = 'REF: ' + ref;
+            $('HD-success').style.display = 'flex';
+            $('HD-success').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            toast('✅ Envoyé avec succès', 'success');
+
+            resetForm();
+
+        } catch (err) {
+            console.error(err);
+            $('HD-error-msg').textContent = err.message || 'Échec de l\'envoi';
+            $('HD-error').style.display = 'flex';
+            $('HD-error').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            toast('❌ ' + (err.message || 'Échec'), 'error');
+        } finally {
+            btn.disabled = false;
+            txt.textContent = '📤 Envoyer la fiche / إرسال البطاقة';
+            spn.style.display = 'none';
+        }
+    });
+
+    function resetForm() {
+        $('HD-form').reset();
+        document.querySelectorAll('.HD-chip.active').forEach((c) => c.classList.remove('active'));
+        REQUIRED_GROUPS.forEach((g) => { selections[g] = null; });
+        selections.langues = [];
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+})();
+</script>
+
+</body>
+</html>
