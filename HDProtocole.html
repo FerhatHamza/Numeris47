@@ -22,9 +22,6 @@
         font-size: 14px;
     }
 
-    /* =====================================================
-       PAGE WRAPPER
-       ===================================================== */
     .PD-page {
         max-width: 1020px;
         margin: 24px auto 80px;
@@ -34,9 +31,6 @@
         overflow: hidden;
     }
 
-    /* =====================================================
-       ACTION BAR
-       ===================================================== */
     .PD-actions {
         display: flex;
         flex-wrap: wrap;
@@ -46,9 +40,8 @@
         background: #f8fafc;
         border-bottom: 1px solid #e2e8f0;
     }
-    @media (max-width: 640px) {
-        .PD-actions { justify-content: center; padding: 14px 18px; }
-    }
+    @media (max-width: 640px) { .PD-actions { justify-content: center; padding: 14px 18px; } }
+
     .PD-btn {
         display: inline-flex;
         align-items: center;
@@ -70,28 +63,13 @@
         color: #0f766e;
         transform: translateY(-1px);
     }
-    .PD-btn.primary {
-        background: #0d9488;
-        border-color: #0d9488;
-        color: #fff;
-    }
-    .PD-btn.primary:hover {
-        background: #0f766e;
-        border-color: #0f766e;
-    }
+    .PD-btn.primary { background: #0d9488; border-color: #0d9488; color: #fff; }
+    .PD-btn.primary:hover { background: #0f766e; border-color: #0f766e; }
     .PD-btn svg { width: 17px; height: 17px; }
 
-    /* =====================================================
-       FORM BODY
-       ===================================================== */
-    .PD-body {
-        padding: 30px 42px 38px;
-    }
+    .PD-body { padding: 30px 42px 38px; }
     @media (max-width: 640px) { .PD-body { padding: 20px 18px 26px; } }
 
-    /* =====================================================
-       HEADER
-       ===================================================== */
     .PD-header {
         display: flex;
         justify-content: space-between;
@@ -100,13 +78,9 @@
         border-bottom: 2px solid #0f172a;
         margin-bottom: 20px;
     }
-    .PD-header-left {
-        font-size: 13px;
-        line-height: 1.6;
-        color: #1e293b;
-    }
+    .PD-header-left { font-size: 13px; line-height: 1.6; color: #1e293b; }
     .PD-header-left .strong { font-weight: 700; }
-    .PD-header-left .light  { color: #475569; }
+    .PD-header-left .light { color: #475569; }
     .PD-header-right {
         text-align: right;
         font-size: 12.5px;
@@ -119,13 +93,7 @@
         .PD-header-right { text-align: left; }
     }
 
-    /* =====================================================
-       TITLE
-       ===================================================== */
-    .PD-title {
-        text-align: center;
-        margin-bottom: 26px;
-    }
+    .PD-title { text-align: center; margin-bottom: 26px; }
     .PD-title .sub {
         font-size: 11px;
         font-weight: 700;
@@ -144,9 +112,6 @@
     }
     .PD-title h1 .accent { color: #0d9488; }
 
-    /* =====================================================
-       SECTIONS
-       ===================================================== */
     .PD-section { margin-bottom: 22px; }
     .PD-section-title {
         display: flex;
@@ -173,19 +138,8 @@
         background: #e2e8f0;
     }
 
-    /* =====================================================
-       GRIDS
-       ===================================================== */
-    .PD-grid-2 {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 14px 20px;
-    }
-    .PD-grid-3 {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        gap: 14px 20px;
-    }
+    .PD-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 20px; }
+    .PD-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px 20px; }
     @media (max-width: 640px) {
         .PD-grid-2, .PD-grid-3 { grid-template-columns: 1fr; gap: 12px; }
     }
@@ -219,14 +173,7 @@
     }
     .PD-input::placeholder { color: #cbd5e1; font-weight: 400; }
 
-    /* =====================================================
-       OPTION CHIPS
-       ===================================================== */
-    .PD-options {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-    }
+    .PD-options { display: flex; flex-wrap: wrap; gap: 8px; }
     .PD-opt {
         display: inline-flex;
         align-items: center;
@@ -242,10 +189,7 @@
         transition: all 0.15s;
         user-select: none;
     }
-    .PD-opt:hover {
-        border-color: #5eead4;
-        background: #f0fdfa;
-    }
+    .PD-opt:hover { border-color: #5eead4; background: #f0fdfa; }
     .PD-opt input { display: none; }
     .PD-opt .tick {
         width: 15px;
@@ -261,21 +205,9 @@
         transition: all 0.15s;
         flex-shrink: 0;
     }
-    .PD-opt.checked {
-        background: #0d9488;
-        border-color: #0d9488;
-        color: #fff;
-        font-weight: 600;
-    }
-    .PD-opt.checked .tick {
-        background: #fff;
-        border-color: #fff;
-        color: #0d9488;
-    }
+    .PD-opt.checked { background: #0d9488; border-color: #0d9488; color: #fff; font-weight: 600; }
+    .PD-opt.checked .tick { background: #fff; border-color: #fff; color: #0d9488; }
 
-    /* =====================================================
-       SEROLOGY BLOCK
-       ===================================================== */
     .PD-serology {
         display: grid;
         grid-template-columns: 160px 1fr;
@@ -286,23 +218,10 @@
         border-radius: 12px;
         border: 1px solid #e2e8f0;
     }
-    .PD-serology .name {
-        font-size: 13.5px;
-        font-weight: 600;
-        color: #334155;
-    }
-    .PD-serology .val {
-        display: flex;
-        gap: 8px;
-        flex-wrap: wrap;
-    }
-    @media (max-width: 640px) {
-        .PD-serology { grid-template-columns: 1fr; padding: 14px; }
-    }
+    .PD-serology .name { font-size: 13.5px; font-weight: 600; color: #334155; }
+    .PD-serology .val { display: flex; gap: 8px; flex-wrap: wrap; }
+    @media (max-width: 640px) { .PD-serology { grid-template-columns: 1fr; padding: 14px; } }
 
-    /* =====================================================
-       FOOTER SIGNATURE
-       ===================================================== */
     .PD-footer {
         display: flex;
         justify-content: flex-end;
@@ -310,29 +229,15 @@
         padding-top: 18px;
         border-top: 1px solid #e2e8f0;
     }
-    .PD-signature {
-        text-align: center;
-        min-width: 240px;
-    }
+    .PD-signature { text-align: center; min-width: 240px; }
     .PD-signature .line {
         height: 55px;
         border-bottom: 1.5px dotted #94a3b8;
         margin-bottom: 8px;
     }
-    .PD-signature .label {
-        font-size: 14px;
-        font-weight: 600;
-        color: #0f172a;
-    }
-    .PD-signature .sub {
-        font-size: 12px;
-        color: #64748b;
-        margin-top: 3px;
-    }
+    .PD-signature .label { font-size: 14px; font-weight: 600; color: #0f172a; }
+    .PD-signature .sub { font-size: 12px; color: #64748b; margin-top: 3px; }
 
-    /* =====================================================
-       TOAST
-       ===================================================== */
     .PD-toast {
         position: fixed;
         bottom: 28px;
@@ -361,7 +266,6 @@
 
 <div class="PD-page">
 
-    <!-- ========== ACTION BAR ========== -->
     <div class="PD-actions">
         <button type="button" class="PD-btn" onclick="PD_printBlank()">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -378,10 +282,8 @@
         </button>
     </div>
 
-    <!-- ========== FORM BODY ========== -->
     <div class="PD-body">
 
-        <!-- ---- HEADER ---- -->
         <div class="PD-header">
             <div class="PD-header-left">
                 <div class="strong">République Algérienne Démocratique Et Populaire</div>
@@ -396,13 +298,12 @@
             </div>
         </div>
 
-        <!-- ---- TITLE ---- -->
         <div class="PD-title">
             <div class="sub">Fiche médicale</div>
             <h1>Protocole <span class="accent">d'Hémodialyse</span></h1>
         </div>
 
-        <!-- ========== SECTION 1 — PATIENT ========== -->
+        <!-- ========== SECTION 1 ========== -->
         <div class="PD-section">
             <div class="PD-section-title">Informations du patient</div>
 
@@ -433,15 +334,16 @@
             </div>
         </div>
 
-        <!-- ========== SECTION 2 — PROTOCOLE ========== -->
+        <!-- ========== SECTION 2 ========== -->
         <div class="PD-section">
             <div class="PD-section-title">Protocole de dialyse</div>
 
-            <div class="PD-grid-3">
-                <div class="PD-field">
-                    <label for="PD-date-souhait">Date souhaitée d'admission</label>
-                    <input type="text" id="PD-date-souhait" class="PD-input" placeholder="Mois de ...">
-                </div>
+            <div class="PD-field">
+                <label for="PD-date-souhait">Date souhaitée d'admission</label>
+                <input type="text" id="PD-date-souhait" class="PD-input" placeholder="Mois de ...">
+            </div>
+
+            <div class="PD-grid-2">
                 <div class="PD-field">
                     <label for="PD-nephropathie">Néphropathie initiale</label>
                     <input type="text" id="PD-nephropathie" class="PD-input" placeholder="Indéterminée">
@@ -478,23 +380,22 @@
                 </div>
             </div>
 
-            <div class="PD-grid-2">
-                <div class="PD-field">
-                    <label for="PD-heparine">Héparinisation</label>
-                    <input type="text" id="PD-heparine" class="PD-input" placeholder="LOVENOX 0.4">
-                </div>
-                <div class="PD-field">
-                    <label>Abord vasculaire</label>
-                    <div class="PD-options">
-                        <label class="PD-opt"><input type="checkbox" id="PD-fav"><span class="tick">✓</span>FAV</label>
-                        <label class="PD-opt"><input type="checkbox" id="PD-uni"><span class="tick">✓</span>Uni ponction</label>
-                        <label class="PD-opt"><input type="checkbox" id="PD-bi"><span class="tick">✓</span>Bi ponction</label>
-                    </div>
+            <div class="PD-field">
+                <label for="PD-heparine">Héparinisation</label>
+                <input type="text" id="PD-heparine" class="PD-input" placeholder="LOVENOX 0.4">
+            </div>
+
+            <div class="PD-field" style="margin-bottom: 0;">
+                <label>Abord vasculaire</label>
+                <div class="PD-options">
+                    <label class="PD-opt"><input type="checkbox" id="PD-fav"><span class="tick">✓</span>FAV</label>
+                    <label class="PD-opt"><input type="checkbox" id="PD-uni"><span class="tick">✓</span>Uni ponction</label>
+                    <label class="PD-opt"><input type="checkbox" id="PD-bi"><span class="tick">✓</span>Bi ponction</label>
                 </div>
             </div>
         </div>
 
-        <!-- ========== SECTION 3 — PARAMÈTRES ========== -->
+        <!-- ========== SECTION 3 ========== -->
         <div class="PD-section">
             <div class="PD-section-title">Paramètres techniques</div>
 
@@ -573,15 +474,14 @@
                 <input type="text" id="PD-pathologie" class="PD-input" placeholder="—">
             </div>
 
-            <div class="PD-grid-2">
-                <div class="PD-field">
-                    <label for="PD-traitement">Traitement habituel</label>
-                    <input type="text" id="PD-traitement" class="PD-input" placeholder="—">
-                </div>
-                <div class="PD-field">
-                    <label for="PD-conservateur">Traitement conservateur d'IRCT</label>
-                    <input type="text" id="PD-conservateur" class="PD-input" placeholder="—">
-                </div>
+            <div class="PD-field">
+                <label for="PD-traitement">Traitement habituel</label>
+                <input type="text" id="PD-traitement" class="PD-input" placeholder="—">
+            </div>
+
+            <div class="PD-field">
+                <label for="PD-conservateur">Traitement conservateur d'IRCT</label>
+                <input type="text" id="PD-conservateur" class="PD-input" placeholder="—">
             </div>
 
             <div class="PD-field" style="margin-bottom: 0;">
@@ -590,7 +490,6 @@
             </div>
         </div>
 
-        <!-- ========== FOOTER SIGNATURE ========== -->
         <div class="PD-footer">
             <div class="PD-signature">
                 <div class="line"></div>
@@ -602,7 +501,6 @@
     </div>
 </div>
 
-<!-- ================= SCRIPT ================= -->
 <script>
 (function () {
     'use strict';
@@ -758,9 +656,6 @@
 <meta charset="UTF-8">
 <title>Protocole d'Hémodialyse — ${filled ? 'Rempli' : 'Vierge'}</title>
 <style>
-    /* ==========================================================
-       PAGE SETUP — single A4 portrait page
-       ========================================================== */
     @page {
         size: A4 portrait;
         margin: 8mm 10mm;
@@ -847,6 +742,7 @@
         gap: 3px;
     }
 
+    /* 2- and 3-column grids */
     .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 3px 18px; }
     .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3px 18px; }
 
@@ -891,8 +787,18 @@
         gap: 2px 12px;
         font-size: 12pt;
     }
+    /* Force options onto one line (used for Abord vasculaire) */
+    .opts-nowrap {
+        flex-wrap: nowrap;
+        gap: 12px;
+    }
     .op { color: #333; white-space: nowrap; }
     .op.on { color: #0f766e; font-weight: 700; }
+
+    /* ---------- SPACER — 2 blank lines ---------- */
+    .spacer-2 {
+        height: 34px;   /* ~2 line heights at 12pt / 1.4 */
+    }
 
     /* ---------- SEROLOGY ---------- */
     .serology {
@@ -927,6 +833,7 @@
 <body>
     <div class="content">
 
+        <!-- HEADER -->
         <div class="hdr">
             <div class="hdr-l">
                 <div class="b">République Algérienne Démocratique Et Populaire</div>
@@ -941,6 +848,7 @@
             </div>
         </div>
 
+        <!-- TITLE -->
         <div class="title">
             <div class="sub">Fiche médicale</div>
             <h1>Protocole <span class="accent">d'Hémodialyse</span></h1>
@@ -948,6 +856,7 @@
 
         <div class="content-inner">
 
+            <!-- ===== SECTION 1 ===== -->
             ${section('Informations du patient', `
                 <div class="grid3">
                     ${field('Nom', V('PD-nom'), mode)}
@@ -960,17 +869,21 @@
                 </div>
             `)}
 
+            <!-- ===== SECTION 2 — PROTOCOLE (with new layout) ===== -->
             ${section('Protocole de dialyse', `
-                <div class="grid3">
-                    ${field('Date souhaitée', V('PD-date-souhait'), mode)}
+                ${field('Date souhaitée', V('PD-date-souhait'), mode)}
+
+                <div class="grid2">
                     ${field('Néphropathie initiale', V('PD-nephropathie'), mode)}
                     ${field('1ʳᵉ dialyse', V('PD-premiere'), mode)}
                 </div>
+
                 <div class="grid3">
                     ${field('Séances / semaine', V('PD-seances'), mode)}
                     ${field('Durée de séance', V('PD-duree'), mode)}
                     ${field('Générateur', V('PD-generateur'), mode)}
                 </div>
+
                 <div class="fld">
                     <span class="flbl">Technique particulière</span>
                     <span class="fval"><span class="opts">
@@ -981,19 +894,20 @@
                         ${opt('Bio', C('PD-tech-bio'))}
                     </span></span>
                 </div>
-                <div class="grid2">
-                    ${field('Héparinisation', V('PD-heparine'), mode)}
-                    <div class="fld">
-                        <span class="flbl">Abord vasculaire</span>
-                        <span class="fval"><span class="opts">
-                            ${opt('FAV', C('PD-fav'))}
-                            ${opt('Uni ponction', C('PD-uni'))}
-                            ${opt('Bi ponction', C('PD-bi'))}
-                        </span></span>
-                    </div>
+
+                ${field('Héparinisation', V('PD-heparine'), mode)}
+
+                <div class="fld">
+                    <span class="flbl">Abord vasculaire</span>
+                    <span class="fval"><span class="opts opts-nowrap">
+                        ${opt('FAV', C('PD-fav'))}
+                        ${opt('Uni ponction', C('PD-uni'))}
+                        ${opt('Bi ponction', C('PD-bi'))}
+                    </span></span>
                 </div>
             `)}
 
+            <!-- ===== SECTION 3 ===== -->
             ${section('Paramètres techniques', `
                 <div class="grid3">
                     ${field('Aiguille — Artère', V('PD-art'), mode)}
@@ -1008,6 +922,7 @@
                 ${field('Problème en per-dialyse', V('PD-probleme'), mode)}
             `)}
 
+            <!-- ===== SECTION 4 — SÉROLOGIE ===== -->
             <div class="sec">
                 <div class="sec-t">Sérologie hépatique</div>
                 <div class="serology">
@@ -1025,17 +940,20 @@
                 </div>
             </div>
 
+            <!-- ===== SECTION 5 — ANTÉCÉDENTS (with 2-line spacer) ===== -->
             ${section('Antécédents & traitements', `
                 ${field("Pathologie médicale associée à l'IRC.T", V('PD-pathologie'), mode)}
-                <div class="grid2">
-                    ${field('Traitement habituel', V('PD-traitement'), mode)}
-                    ${field("Traitement conservateur d'IRCT", V('PD-conservateur'), mode)}
-                </div>
+
+                <div class="spacer-2"></div>
+
+                ${field('Traitement habituel', V('PD-traitement'), mode)}
+                ${field("Traitement conservateur d'IRCT", V('PD-conservateur'), mode)}
                 ${field('NB / Observations', V('PD-nb'), mode)}
             `)}
 
         </div>
 
+        <!-- SIGNATURE -->
         <div class="sign">
             <div class="box">
                 <div class="line"></div>
