@@ -29,7 +29,6 @@
         overflow: hidden;
     }
 
-    /* ===== TOP ACTION BAR ===== */
     .HD-actions {
         display: flex;
         flex-wrap: wrap;
@@ -74,7 +73,6 @@
     }
     .HD-action-btn svg { width: 16px; height: 16px; }
 
-    /* ===== HEADER ===== */
     .HD-header {
         background: linear-gradient(135deg, #0f766e 0%, #14b8a6 60%, #5eead4 100%);
         color: #fff;
@@ -117,7 +115,6 @@
         z-index: 1;
     }
 
-    /* ===== SECTION ===== */
     .HD-body { padding: 30px 32px 40px; }
     @media (max-width: 640px) {
         .HD-body { padding: 20px 18px 28px; }
@@ -155,7 +152,6 @@
         direction: rtl;
     }
 
-    /* ===== FIELD LABEL ===== */
     .HD-label {
         display: block;
         font-size: 14px;
@@ -174,7 +170,6 @@
     }
     .HD-label .req { color: #ef4444; }
 
-    /* ===== CHIP (pill button) ===== */
     .HD-chips {
         display: flex;
         flex-wrap: wrap;
@@ -217,7 +212,6 @@
         margin-right: 4px;
     }
 
-    /* ===== TEXT / SELECT / NUMBER INPUTS ===== */
     .HD-input {
         width: 100%;
         padding: 14px 18px;
@@ -264,7 +258,6 @@
         min-height: 90px;
     }
 
-    /* ===== TWO-COLUMN GRID for compact fields ===== */
     .HD-grid-2 {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -274,7 +267,6 @@
         .HD-grid-2 { grid-template-columns: 1fr; gap: 0; }
     }
 
-    /* ===== SUBMIT ===== */
     .HD-submit {
         display: flex;
         align-items: center;
@@ -312,7 +304,6 @@
     }
     @keyframes HD-spin { to { transform: rotate(360deg); } }
 
-    /* ===== ALERT ===== */
     .HD-alert {
         padding: 16px 20px;
         border-radius: 14px;
@@ -339,7 +330,6 @@
     .HD-alert.success .ic { background: #10b981; }
     .HD-alert.error   .ic { background: #ef4444; }
 
-    /* ===== TOAST ===== */
     .HD-toast {
         position: fixed;
         bottom: 24px;
@@ -378,7 +368,6 @@
 
 <div class="HD-wrap">
 
-    <!-- ================= TOP ACTION BAR ================= -->
     <div class="HD-actions">
         <button type="button" class="HD-action-btn" onclick="HD_printBlank()">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -395,14 +384,12 @@
         </button>
     </div>
 
-    <!-- ================= HEADER ================= -->
     <div class="HD-header">
         <div class="badge">NUMERIS47 · DSP GHARDAIA</div>
         <h1>Fiche Patient — Hémodialyse</h1>
         <p dir="rtl">بطاقة المريض — وحدة تصفية الكلى</p>
     </div>
 
-    <!-- ================= BODY ================= -->
     <div class="HD-body">
 
         <div id="HD-success" class="HD-alert success" style="display:none;">
@@ -423,7 +410,6 @@
 
         <form id="HD-form" novalidate>
 
-            <!-- =========== IDENTIFICATION =========== -->
             <div class="HD-section">
                 <div class="HD-section-head">
                     <h2>Identification du patient
@@ -487,7 +473,6 @@
                 </div>
             </div>
 
-            <!-- =========== FINANCIER =========== -->
             <div class="HD-section">
                 <div class="HD-section-head">
                     <h2>Situation financière & assurance
@@ -528,7 +513,6 @@
                 </div>
             </div>
 
-            <!-- =========== SOCIO-ÉCONOMIQUE =========== -->
             <div class="HD-section">
                 <div class="HD-section-head">
                     <h2>Situation socio-économique
@@ -619,7 +603,6 @@
                 </div>
             </div>
 
-            <!-- =========== STRUCTURE SANITAIRE =========== -->
             <div class="HD-section" style="margin-bottom:0;">
                 <div class="HD-section-head">
                     <h2>Structure sanitaire de proximité
@@ -657,27 +640,17 @@
     </div>
 </div>
 
-<!-- ================= SCRIPT ================= -->
 <script>
 (function () {
     'use strict';
 
-    /* =====================================================================
-       CONFIG
-       ===================================================================== */
     const WORKER_URL = 'https://empty-grass-e190.05juillet-ballouh-info-8e2.workers.dev/api/patients';
     const REQUIRED_GROUPS = ['gain', 'assure', 'caisse', 'groupe_sanguin', 'etat_civil', 'protection', 'instruction', 'profession'];
 
-    /* =====================================================================
-       STATE
-       ===================================================================== */
     const selections = {};
     REQUIRED_GROUPS.forEach((g) => { selections[g] = null; });
     selections.langues = [];
 
-    /* =====================================================================
-       HELPERS
-       ===================================================================== */
     const $ = (id) => document.getElementById(id);
 
     function toast(msg, type) {
@@ -688,9 +661,6 @@
         setTimeout(() => t.remove(), 4000);
     }
 
-    /* =====================================================================
-       CHIP GROUPS
-       ===================================================================== */
     document.querySelectorAll('.HD-chips').forEach((container) => {
         const group = container.dataset.group;
         const multi = container.dataset.multi === 'true';
@@ -717,9 +687,6 @@
         });
     });
 
-    /* =====================================================================
-       INPUT FILTERS
-       ===================================================================== */
     const NAME_ALLOWED       = /[\p{Script=Arabic}\p{Script=Latin}\s'’\-]/u;
     const NAME_DISALLOWED_G  = /[^\p{Script=Arabic}\p{Script=Latin}\s'’\-]/gu;
     const nameInput = $('HD-nom');
@@ -791,9 +758,6 @@
         if (v !== foyerInput.value) foyerInput.value = v;
     });
 
-    /* =====================================================================
-       VALIDATION
-       ===================================================================== */
     function validate() {
         const nom = nameInput.value.trim().replace(/\s+/g, ' ');
         if (!nom || nom.length < 3) {
@@ -862,9 +826,6 @@
         };
     }
 
-    /* =====================================================================
-       SUBMIT
-       ===================================================================== */
     $('HD-form').addEventListener('submit', async (e) => {
         e.preventDefault();
 
@@ -914,9 +875,6 @@
         }
     });
 
-    /* =====================================================================
-       PRINT HELPERS
-       ===================================================================== */
     const pEsc = (s) => String(s == null ? '' : s)
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
@@ -996,8 +954,8 @@
     html, body {
         font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
         color: #0f172a;
-        font-size: 8.5px;
-        line-height: 1.25;
+        font-size: 11px;
+        line-height: 1.35;
         margin: 0;
         padding: 0;
         background: #fff;
@@ -1020,76 +978,76 @@
         justify-content: space-between;
         align-items: center;
         border-bottom: 1.5px solid #0f766e;
-        padding-bottom: 4px;
-        margin-bottom: 5px;
+        padding-bottom: 5px;
+        margin-bottom: 6px;
     }
     .pp-header .left,
     .pp-header .right {
-        font-size: 7.5px;
+        font-size: 9.5px;
         color: #334155;
-        line-height: 1.25;
+        line-height: 1.35;
     }
     .pp-header .right { text-align: right; }
     .pp-header strong { font-weight: 700; }
 
     /* ---------- TITLE ---------- */
-    .pp-title { text-align: center; margin-bottom: 5px; }
+    .pp-title { text-align: center; margin-bottom: 6px; }
     .pp-title h1 {
-        font-size: 12px;
+        font-size: 15px;
         font-weight: 800;
         color: #0f766e;
-        margin: 0 0 1px;
-        letter-spacing: 0.3px;
+        margin: 0 0 2px;
+        letter-spacing: 0.4px;
     }
     .pp-title .ar {
-        font-size: 9.5px;
+        font-size: 12px;
         color: #0f766e;
         direction: rtl;
         font-family: 'Tajawal', 'Inter', sans-serif;
     }
     .pp-title .meta {
-        font-size: 7.5px;
+        font-size: 9px;
         color: #64748b;
-        margin-top: 1px;
+        margin-top: 2px;
     }
 
     /* ---------- META BAR ---------- */
     .pp-meta-bar {
         display: flex;
         justify-content: space-between;
-        font-size: 7.5px;
+        font-size: 9px;
         color: #475569;
         background: #f0fdfa;
         border: 0.5px solid #ccfbf1;
         border-radius: 3px;
-        padding: 2px 6px;
+        padding: 3px 8px;
         margin-bottom: 5px;
     }
 
     /* ---------- SECTIONS ---------- */
     .pp-section {
-        margin-bottom: 4px;
+        margin-bottom: 2px;
         break-inside: avoid;
     }
     .pp-section h2 {
-        font-size: 9px;
+        font-size: 10.5px;
         font-weight: 800;
         color: #fff;
         background: #0f766e;
-        padding: 2px 7px;
+        padding: 3px 8px;
         border-radius: 3px;
-        margin: 0 0 2px;
+        margin: 0 0 1px;
         display: flex;
         justify-content: space-between;
         align-items: center;
         letter-spacing: 0.3px;
-        line-height: 1.3;
+        line-height: 1.25;
     }
     .pp-section h2 .ar {
         font-weight: 500;
         font-family: 'Tajawal', 'Inter', sans-serif;
         direction: rtl;
-        font-size: 8px;
+        font-size: 10px;
     }
 
     /* ---------- TABLES ---------- */
@@ -1100,11 +1058,11 @@
     table.pp-table th,
     table.pp-table td {
         border: 0.5px solid #cbd5e1;
-        padding: 2px 5px;
+        padding: 3px 6px;
         vertical-align: middle;
-        font-size: 8.5px;
+        font-size: 11px;
         text-align: left;
-        line-height: 1.25;
+        line-height: 1.3;
     }
     table.pp-table th {
         background: #f1f5f9;
@@ -1114,20 +1072,20 @@
     }
     table.pp-table th .ar {
         display: block;
-        font-size: 7.5px;
+        font-size: 9.5px;
         font-weight: 400;
         color: #64748b;
         direction: rtl;
         font-family: 'Tajawal', 'Inter', sans-serif;
         margin-top: 0;
-        line-height: 1.15;
+        line-height: 1.2;
     }
     table.pp-table td {
         background: #fff;
     }
     table.pp-table td .empty {
         color: #cbd5e1;
-        font-size: 8px;
+        font-size: 10px;
         letter-spacing: 0.3px;
     }
 
@@ -1142,13 +1100,13 @@
         display: inline-flex;
         align-items: center;
         gap: 2px;
-        font-size: 8px;
+        font-size: 10px;
         color: #475569;
-        padding: 1px 4px;
+        padding: 1px 5px;
         border: 0.5px solid #e2e8f0;
         border-radius: 999px;
         background: #f8fafc;
-        line-height: 1.2;
+        line-height: 1.25;
         white-space: nowrap;
     }
     .pp-chip.on {
@@ -1162,17 +1120,17 @@
     .pp-notes {
         border: 0.5px solid #cbd5e1;
         border-radius: 3px;
-        padding: 3px 6px;
-        min-height: 22px;
+        padding: 4px 8px;
+        min-height: 26px;
         background: #fff;
         white-space: pre-wrap;
-        font-size: 8.5px;
-        line-height: 1.35;
+        font-size: 11px;
+        line-height: 1.4;
     }
     .pp-notes .empty {
         color: #cbd5e1;
         letter-spacing: 0.3px;
-        font-size: 8px;
+        font-size: 10px;
     }
 
     /* ---------- SIGNATURES ---------- */
@@ -1187,19 +1145,19 @@
     .pp-footer .sig {
         flex: 1;
         text-align: center;
-        font-size: 8px;
+        font-size: 10.5px;
         color: #475569;
     }
     .pp-footer .sig .line {
         border-top: 0.75px solid #475569;
-        margin-top: 16px;
-        padding-top: 2px;
+        margin-top: 18px;
+        padding-top: 3px;
     }
     .pp-footer .sig .ar {
         display: block;
         font-family: 'Tajawal', 'Inter', sans-serif;
         direction: rtl;
-        font-size: 7.5px;
+        font-size: 9.5px;
         color: #64748b;
         margin-top: 1px;
     }
