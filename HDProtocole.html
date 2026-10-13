@@ -410,7 +410,7 @@
                 </div>
                 <div class="PD-field">
                     <label for="PD-debit">Débit de sang</label>
-                    <input type="text" id="PD-debit" class="PD-input" placeholder="300 ml/min">ml/min
+                    <input type="text" id="PD-debit" class="PD-input" placeholder="300 ml/min">
                 </div>
             </div>
 
@@ -942,13 +942,14 @@
 
             <!-- ===== SECTION 5 — ANTÉCÉDENTS (with 2-line spacer) ===== -->
             ${section('Antécédents & traitements', `
-                ${field("Pathologie médicale associée à l'IRC.T", V('PD-pathologie'), mode)}
-
-
-                ${field('Traitement habituel', V('PD-traitement'), mode)}
-                ${field("Traitement conservateur d'IRCT", V('PD-conservateur'), mode)}
-                ${field('NB / Observations', V('PD-nb'), mode)}
-            `)}
+             ${field("Pathologie médicale associée à l'IRC.T", V('PD-pathologie'), mode)}
+               
+         
+             ${field('Traitement habituel', V('PD-traitement'), mode)}
+             ${field('', '', mode)}
+             ${field("Traitement conservateur d'IRCT", V('PD-conservateur'), mode)}
+             ${field('NB / Observations', V('PD-nb'), mode)}
+         `)}
 
         </div>
 
