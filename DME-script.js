@@ -1,4 +1,5 @@
 (function() {
+    'use strict';
 
     /* =====================================================================
        ANTI-DEBUG PROTECTION
@@ -16,10 +17,70 @@
        CONFIGURATION
        ===================================================================== */
     const WORKER_URL = 'https://empty-grass-e190.05juillet-ballouh-info-8e2.workers.dev/api/doctors';
-    const DME_GRADE_VALUES = [
+
+    // All valid grades — must match the <select> options in index.html
+    const DF_GRADE_VALUES = [
+        'Administrateur',
+        'Administrateur analyste',
+        'Administrateur Conseiller',
+        'Administrateur principal',
+        'Agent d`administration',
+        'Agent de bureau',
+        'Agent de prévention de niveau 1',
+        'Agent de saisie',
+        'Agent de service de niveau 1',
+        "Agent principal d'administration",
+        'Aide-soignant de santé publique',
+        'Aide-soignant principal de santé publique',
+        'Assistant administrateur',
+        'Assistant en fauteuil dentaire de santé publique',
+        'Assistant ingénieur de niveau 1 en informatique',
+        'Assistant ingénieur de niveau 2 en informatique',
+        'Assistant médical en chef de santé publique',
+        'Assistants documentaliste archiviste',
+        "Attaché d'administration",
+        'Attache de laboratoire de santé publique',
+        "Attaché principal d'administration",
+        'Auxiliaire de puériculture de santé publique',
+        'Biologiste Du 1er Degré De santé Publique',
+        'Biologiste Du 2ème Degré De santé Publique',
+        'Biologiste principal de santé publique',
+        'Chirurgien-dentiste généraliste de santé publique',
+        'Chirurgien-dentiste généraliste en chef de santé publique',
+        'Chirurgien-dentiste généraliste principal de santé publique',
+        'Comptable administratif principal',
+        'Conducteur automobile de niveau 1',
+        'Conducteur automobile de niveau 2',
+        'Conducteurs Automobile De 1ère Catégorie',
+        'Gardien',
+        'Hygiéniste de santé publique',
+        'Hygiéniste major de santé publique',
+        'Infirmier de santé publique',
+        'Infirmier major de santé publique',
+        'Infirmier spécialise de santé publique',
+        'Ingénieur etat en informatique',
+        'Kinésithérapeute de santé publique',
+        'Laborantin de santé publique',
+        'Laborantin major de santé publique',
+        'Laborantin spécialise de santé publique',
+        'Manipulateur en imagerie médicale de santé publique',
+        'Manipulateur en imagerie médicale major de santé publique',
+        'Manipulateur en imagerie médicale spécialise de santé publique',
         'Médecin généraliste de santé publique',
+        'Médecin généraliste en chef de santé publique',
         'Médecin généraliste principal de santé publique',
-        'Médecin généraliste en chef de santé publique'
+        'Ouvrier Professionnel de 1ère Catégorie',
+        'Ouvrier professionnel hors catégorie',
+        'Ouvrier Professionnel Niveau 1 à Plein Temps',
+        'Ouvrier Professionnel Niveau 3 à Plein Temps',
+        'Pharmacien généraliste de santé publique',
+        'Pharmacien généraliste principal de santé publique',
+        'Psychologue clinicien de santé publique',
+        'Psychologue clinicien major de santé publique',
+        'Psychologue clinicien principal de santé publique',
+        'Sage-femme de santé publique',
+        'Secrétaire',
+        'Secrétaire de direction'
     ];
 
     /* =====================================================================
@@ -220,6 +281,7 @@
         let ok = true;
         let firstInvalid = null;
 
+        /* Nom */
         const nom = DF_nom.value.trim().replace(/\s+/g, ' ');
         if (!nom) {
             DF_setError('nom', 'DF-err-nom', 'Ce champ est obligatoire — هذا الحقل مطلوب');
@@ -235,6 +297,7 @@
             ok = false; firstInvalid = firstInvalid || 'DF-nom';
         }
 
+        /* Prénom */
         const prenom = DF_prenom.value.trim().replace(/\s+/g, ' ');
         if (!prenom) {
             DF_setError('prenom', 'DF-err-prenom', 'Ce champ est obligatoire — هذا الحقل مطلوب');
@@ -250,15 +313,17 @@
             ok = false; firstInvalid = firstInvalid || 'DF-prenom';
         }
 
+        /* Grade */
         const grade = DF_grade.value;
         if (!grade) {
             DF_setError('grade', 'DF-err-grade', 'Veuillez sélectionner un grade — يرجى اختيار الرتبة');
             ok = false; firstInvalid = firstInvalid || 'DF-grade';
-        } else if (DME_GRADE_VALUES.indexOf(grade) === -1) {
+        } else if (DF_GRADE_VALUES.indexOf(grade) === -1) {
             DF_setError('grade', 'DF-err-grade', 'Grade invalide — رتبة غير صحيحة');
             ok = false; firstInvalid = firstInvalid || 'DF-grade';
         }
 
+        /* NIN */
         const nin = DF_nin.value.replace(/\D/g, '');
         if (!nin) {
             DF_setError('nin', 'DF-err-nin', 'Ce champ est obligatoire — هذا الحقل مطلوب');
@@ -268,12 +333,14 @@
             ok = false; firstInvalid = firstInvalid || 'DF-nin';
         }
 
+        /* NSS (optionnel) */
         const nss = DF_nss.value.replace(/\D/g, '');
         if (nss && (nss.length < 9 || nss.length > 15)) {
             DF_setError('nss', 'DF-err-nss', 'Longueur invalide (9–15 chiffres)');
             ok = false; firstInvalid = firstInvalid || 'DF-nss';
         }
 
+        /* Téléphone */
         const phoneRaw = DF_phone.value.trim();
         const phone = phoneRaw.replace(/[\s\-().]/g, '');
         if (!phoneRaw) {
@@ -284,6 +351,7 @@
             ok = false; firstInvalid = firstInvalid || 'DF-phone';
         }
 
+        /* E-mail */
         const email = DF_email.value.trim();
         if (!email) {
             DF_setError('email', 'DF-err-email', 'Ce champ est obligatoire — هذا الحقل مطلوب');
@@ -472,29 +540,4 @@
     /* =====================================================================
        LIVE ERROR CLEARING
        ===================================================================== */
-    ['DF-nom', 'DF-prenom', 'DF-grade', 'DF-nin', 'DF-nss', 'DF-phone', 'DF-email']
-        .forEach(function(id) {
-            const el = document.getElementById(id);
-            if (!el) return;
-            const key = id.replace('DF-', '');
-            const clear = function() {
-                const fg = document.getElementById('DF-fg-' + key);
-                if (fg && fg.classList.contains('DF-has-error')) {
-                    DF_setError(key, 'DF-err-' + key, '');
-                }
-            };
-            el.addEventListener('input', clear);
-            el.addEventListener('change', clear);
-        });
-
-    /* =====================================================================
-       SOFT SERVER REACHABILITY CHECK
-       ===================================================================== */
-    fetch(WORKER_URL.replace('/api/doctors', '/api/setup-status'), { method: 'GET' })
-        .then(function(r) { if (!r.ok) throw new Error(); })
-        .catch(function() {
-            const banner = document.getElementById('DF-offline');
-            if (banner) banner.classList.remove('hidden');
-        });
-
-})();
+    ['DF
