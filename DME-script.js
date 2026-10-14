@@ -540,4 +540,29 @@
     /* =====================================================================
        LIVE ERROR CLEARING
        ===================================================================== */
-    ['DF
+    ['DF-nom', 'DF-prenom', 'DF-grade', 'DF-nin', 'DF-nss', 'DF-phone', 'DF-email']
+        .forEach(function(id) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            const key = id.replace('DF-', '');
+            const clear = function() {
+                const fg = document.getElementById('DF-fg-' + key);
+                if (fg && fg.classList.contains('DF-has-error')) {
+                    DF_setError(key, 'DF-err-' + key, '');
+                }
+            };
+            el.addEventListener('input', clear);
+            el.addEventListener('change', clear);
+        });
+
+    /* =====================================================================
+       SOFT SERVER REACHABILITY CHECK
+       ===================================================================== */
+    fetch(WORKER_URL.replace('/api/doctors', '/api/setup-status'), { method: 'GET' })
+        .then(function(r) { if (!r.ok) throw new Error(); })
+        .catch(function() {
+            const banner = document.getElementById('DF-offline');
+            if (banner) banner.classList.remove('hidden');
+        });
+
+})();
