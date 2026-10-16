@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مذكرة مصلحية - رمز الاستجابة السريعة | Service Memorandum - QR Codes</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Cairo', 'Inter', sans-serif;
+        }
+        .english-text {
+            font-family: 'Inter', sans-serif;
+            direction: ltr;
+            text-align: left;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .qr-placeholder {
+            background-image: repeating-linear-gradient(45deg, #f3f4f6 25%, transparent 25%, transparent 75%, #f3f4f6 75%, #f3f4f6), repeating-linear-gradient(45deg, #f3f4f6 25%, #ffffff 25%, #ffffff 75%, #f3f4f6 75%, #f3f4f6);
+            background-position: 0 0, 10px 10px;
+            background-size: 20px 20px;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-bl from-slate-50 to-blue-50 text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Header / Navbar -->
+    <header class="w-full bg-white shadow-sm py-4 px-6 md:px-12 flex justify-between items-center sticky top-0 z-50">
+        <div class="flex items-center gap-3">
+            <div class="bg-blue-600 text-white p-2 rounded-lg">
+                <i class="fa-solid fa-qrcode text-xl"></i>
+            </div>
+            <div>
+                <h1 class="text-xl md:text-2xl font-bold tracking-tight text-slate-800">
+                    مذكرة مصلحية <span class="text-sm font-normal text-slate-500 block english-text">Service Memorandum</span>
+                </h1>
+                <p class="text-xs text-blue-600 font-semibold mt-1">مشاركة آرائكم <span class="english-text text-slate-500 font-normal">(Share Your Voice)</span></p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow flex items-center justify-center p-4 md:p-12">
+        <div class="max-w-5xl w-full glass-card rounded-3xl shadow-2xl overflow-hidden border border-slate-200">
+            
+            <!-- Top Banner -->
+            <div class="bg-gradient-to-l from-blue-700 to-indigo-700 p-8 text-white text-center">
+                <h2 class="text-2xl md:text-3xl font-bold mb-3">رأيكم يهمنا!</h2>
+                <p class="text-blue-100 text-lg english-text font-medium">Your Feedback Matters!</p>
+                <p class="text-blue-200 text-sm mt-4 max-w-2xl mx-auto">
+                    يرجى مسح رمز الاستجابة السريعة (QR) باستخدام هاتفك المحمول للوصول إلى الخدمة المطلوبة.
+                    <span class="block english-text mt-1">Please scan the QR code using your mobile phone to access the required service.</span>
+                </p>
+            </div>
+
+            <div class="p-6 md:p-10">
+                
+                <!-- QR Codes Grid -->
+                <div class="grid md:grid-cols-2 gap-8">
+                    
+                    <!-- 1. Complaint Register -->
+                    <div class="bg-white rounded-2xl shadow-lg border border-rose-100 overflow-hidden transform transition hover:-translate-y-1 duration-300">
+                        <div class="bg-rose-500 p-4 text-center">
+                            <h3 class="text-xl font-bold text-white flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-bullhorn"></i>
+                                <span>سجل الشكاوى</span>
+                            </h3>
+                            <p class="text-rose-100 text-sm english-text mt-1">Complaint Register</p>
+                        </div>
+                        <div class="p-6 flex flex-col items-center">
+                            <p class="text-center text-slate-600 mb-6 text-sm font-semibold">
+                                هل لديك شكوى؟ نرجو إبلاغنا لنتمكن من تحسين خدماتنا.
+                                <span class="block english-text text-xs font-normal mt-1 text-slate-500">Have a complaint? Please let us know so we can improve our services.</span>
+                            </p>
+                            
+                            <!-- QR CODE PLACEHOLDER 1 -->
+                            <!-- Replace the div below with your actual QR code image tag. 
+                                 Example: <img src="your-complaint-qr.png" alt="Complaint QR" class="w-56 h-56 mx-auto rounded-xl border-4 border-rose-100"> -->
+                            <div class="w-56 h-56 qr-placeholder border-4 border-dashed border-rose-300 rounded-xl flex flex-col items-center justify-center text-rose-400 mx-auto mb-4">
+                                <i class="fa-solid fa-qrcode text-5xl mb-2 opacity-50"></i>
+                                <span class="text-xs font-bold text-center px-4">ضع صورة رمز الاستجابة السريعة هنا<br>(Place QR Code Here)</span>
+                            </div>
+
+                            <p class="text-xs text-slate-400 font-bold bg-slate-100 px-3 py-1 rounded-full">امسح الرمز لتقديم شكوى <span class="english-text">(Scan to Complain)</span></p>
+                        </div>
+                    </div>
+
+                    <!-- 2. Satisfaction Survey -->
+                    <div class="bg-white rounded-2xl shadow-lg border border-emerald-100 overflow-hidden transform transition hover:-translate-y-1 duration-300">
+                        <div class="bg-emerald-500 p-4 text-center">
+                            <h3 class="text-xl font-bold text-white flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-face-smile"></i>
+                                <span>استبيان الرضا</span>
+                            </h3>
+                            <p class="text-emerald-100 text-sm english-text mt-1">Satisfaction Survey</p>
+                        </div>
+                        <div class="p-6 flex flex-col items-center">
+                            <p class="text-center text-slate-600 mb-6 text-sm font-semibold">
+                                ساعدنا في تقييم جودة خدماتنا من خلال مشاركة رأيك.
+                                <span class="block english-text text-xs font-normal mt-1 text-slate-500">Help us evaluate the quality of our services by sharing your feedback.</span>
+                            </p>
+                            
+                            <!-- QR CODE PLACEHOLDER 2 -->
+                            <!-- Replace the div below with your actual QR code image tag. 
+                                 Example: <img src="your-survey-qr.png" alt="Survey QR" class="w-56 h-56 mx-auto rounded-xl border-4 border-emerald-100"> -->
+                            <div class="w-56 h-56 qr-placeholder border-4 border-dashed border-emerald-300 rounded-xl flex flex-col items-center justify-center text-emerald-500 mx-auto mb-4">
+                                <i class="fa-solid fa-qrcode text-5xl mb-2 opacity-50"></i>
+                                <span class="text-xs font-bold text-center px-4">ضع صورة رمز الاستجابة السريعة هنا<br>(Place QR Code Here)</span>
+                            </div>
+
+                            <p class="text-xs text-slate-400 font-bold bg-slate-100 px-3 py-1 rounded-full">امسح الرمز لمشاركة رأيك <span class="english-text">(Scan to Share Feedback)</span></p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Note Section -->
+                <div class="mt-10 bg-blue-50 border border-blue-200 p-4 rounded-xl text-center">
+                    <p class="text-blue-800 text-sm font-bold flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-mobile-screen-button"></i>
+                        ملاحظة: تأكد من وجود اتصال بالإنترنت وتطبيق قارئ رمز الاستجابة السريعة (QR) على هاتفك.
+                    </p>
+                    <p class="text-blue-600 text-xs english-text mt-1">Note: Ensure you have internet access and a QR code scanner app on your phone.</p>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-800 text-slate-400 py-6 text-center text-sm">
+        <p class="font-bold text-slate-300">إدارة المستشفى / العيادة</p>
+        <p class="english-text text-xs mt-1">Hospital / Clinic Administration</p>
+        <p class="mt-3 text-xs opacity-60">&copy; 2024 مذكرة مصلحية. جميع الحقوق محفوظة.</p>
+    </footer>
+
+</body>
+</html>
