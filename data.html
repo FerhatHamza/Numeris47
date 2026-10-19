@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fiches Médecins — DSP Ghardaia</title>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<style>
+  :root{
+    --bg:#f4f6f9;
+    --card:#ffffff;
+    --ink:#1b2430;
+    --muted:#6b7a8f;
+    --line:#e3e8ef;
+    --brand:#0f766e;
+    --brand-2:#0d9488;
+    --brand-soft:#e6f6f4;
+    --accent:#b45309;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family:'Segoe UI',system-ui,-apple-system,'Noto Sans Arabic',Tahoma,sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+  }
+  header{
+    background:linear-gradient(135deg,#0f766e 0%,#115e59 55%,#134e4a 100%);
+    color:#fff;
+    padding:26px 22px 30px;
+  }
+  .head-inner{max-width:1400px;margin:0 auto}
+  .head-top{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .logo{
+    width:52px;height:52px;border-radius:14px;
+    background:rgba(255,255,255,.16);
+    display:grid;place-items:center;font-size:26px;
+    border:1px solid rgba(255,255,255,.25);
+  }
+  h1{font-size:22px;margin:0;font-weight:700;letter-spacing:.2px}
+  .sub{font-size:13px;opacity:.85;margin-top:3px}
+  .badge{
+    margin-left:auto;background:rgba(255,255,255,.15);
+    border:1px solid rgba(255,255,255,.3);
+    padding:8px 14px;border-radius:999px;font-size:13px;font-weight:600;
+    white-space:nowrap;
+  }
+  .stats{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:12px;max-width:1400px;margin:-18px auto 0;padding:0 22px;
+    position:relative;z-index:2;
+  }
+  .stat{
+    background:var(--card);border-radius:14px;padding:14px 16px;
+    box-shadow:0 2px 10px rgba(16,32,48,.08);
+    border:1px solid var(--line);
+  }
+  .stat .k{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);font-weight:700}
+  .stat .v{font-size:24px;font-weight:800;margin-top:4px;color:var(--brand)}
+  main{max-width:1400px;margin:0 auto;padding:22px}
+
+  .toolbar{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;
+    box-shadow:0 2px 10px rgba(16,32,48,.05);
+  }
+  .search{position:relative;flex:1 1 280px;min-width:220px}
+  .search input{
+    width:100%;padding:11px 14px 11px 38px;border-radius:10px;
+    border:1px solid var(--line);font-size:14px;outline:none;background:#fbfcfe;
+    transition:.15s;
+  }
+  .search input:focus{border-color:var(--brand-2);background:#fff;box-shadow:0 0 0 3px rgba(13,148,136,.12)}
+  .search::before{
+    content:"🔍";position:absolute;left:12px;top:50%;transform:translateY(-50%);
+    font-size:14px;opacity:.55;
+  }
+  select{
+    padding:11px 14px;border-radius:10px;border:1px solid var(--line);
+    background:#fbfcfe;font-size:14px;outline:none;cursor:pointer;max-width:280px;
+  }
+  select:focus{border-color:var(--brand-2)}
+  button{
+    padding:11px 18px;border-radius:10px;border:none;cursor:pointer;
+    font-size:14px;font-weight:700;transition:.15s;white-space:nowrap;
+  }
+  .btn-primary{background:var(--brand);color:#fff;box-shadow:0 3px 10px rgba(15,118,110,.28)}
+  .btn-primary:hover{background:var(--brand-2);transform:translateY(-1px)}
+  .btn-ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
+  .btn-ghost:hover{background:#f1f5f9}
+
+  .tablewrap{
+    margin-top:16px;background:var(--card);border-radius:14px;border:1px solid var(--line);
+    overflow:auto;max-height:calc(100vh - 120px);
+    box-shadow:0 2px 10px rgba(16,32,48,.05);
+  }
+  table{border-collapse:separate;border-spacing:0;width:100%;font-size:13.5px}
+  thead th{
+    position:sticky;top:0;z-index:3;background:#eef4f8;color:#334155;
+    text-align:left;padding:11px 12px;font-size:11.5px;text-transform:uppercase;
+    letter-spacing:.6px;font-weight:800;border-bottom:2px solid #dbe4ec;
+    cursor:pointer;user-select:none;white-space:nowrap;
+  }
+  thead th:hover{background:#e3ecf3}
+  thead th .arrow{opacity:.35;font-size:10px;margin-left:4px}
+  thead th.sorted .arrow{opacity:1;color:var(--brand)}
+  tbody td{
+    padding:10px 12px;border-bottom:1px solid #eef2f6;vertical-align:top;
+  }
+  tbody tr:nth-child(even){background:#fafcfd}
+  tbody tr:hover{background:var(--brand-soft)}
+  .ref{font-family:ui-monospace,Consolas,monospace;font-size:12px;color:#0f766e;font-weight:700;white-space:nowrap}
+  .mono{font-family:ui-monospace,Consolas,monospace;font-size:12px;color:#475569;white-space:nowrap}
+  .grade-pill{
+    display:inline-block;padding:3px 9px;border-radius:999px;font-size:11.5px;
+    background:#eef2f7;color:#334155;font-weight:600;white-space:nowrap;
+  }
+  .grade-pill.med{background:#e0f2fe;color:#075985}
+  .grade-pill.inf{background:#dcfce7;color:#166534}
+  .grade-pill.bio{background:#f3e8ff;color:#6b21a8}
+  .grade-pill.psy{background:#fef3c7;color:#92400e}
+  .grade-pill.admin{background:#fee2e2;color:#991b1b}
+  .grade-pill.tech{background:#e2e8f0;color:#334155}
+  .email{color:#0f766e;text-decoration:none;font-size:12.5px}
+  .email:hover{text-decoration:underline}
+  .empty{text-align:center;padding:50px;color:var(--muted)}
+  .empty div:first-child{font-size:34px;margin-bottom:8px}
+  footer{text-align:center;padding:22px;color:var(--muted);font-size:12px}
+  .warn{
+    background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;
+    padding:10px 14px;border-radius:10px;font-size:13px;margin-top:12px;
+  }
+  .toast{
+    position:fixed;bottom:24px;right:24px;background:#0f766e;color:#fff;
+    padding:13px 20px;border-radius:12px;font-size:14px;font-weight:600;
+    box-shadow:0 10px 30px rgba(15,118,110,.35);
+    opacity:0;transform:translateY(12px);transition:.25s;pointer-events:none;z-index:99;
+  }
+  .toast.show{opacity:1;transform:translateY(0)}
+  @media(max-width:640px){
+    .head-top{gap:10px}
+    h1{font-size:17px}
+    .badge{margin-left:0;width:100%;text-align:center}
+    main{padding:14px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="head-inner">
+    <div class="head-top">
+      <div class="logo">🩺</div>
+      <div>
+        <h1>Fiches Médecins — DSP Ghardaia</h1>
+        <div class="sub">Registre des nouvelles fiches · Extraction &amp; export</div>
+      </div>
+      <div class="badge">Direction de la Santé Publique · Ghardaia</div>
+    </div>
+  </div>
+</header>
+
+<div class="stats" id="stats"></div>
+
+<main>
+  <div class="toolbar">
+    <div class="search">
+      <input id="q" type="text" placeholder="Rechercher nom, prénom, NIN, NSS, téléphone, e-mail, référence…" autocomplete="off">
+    </div>
+    <select id="gradeFilter"><option value="">Tous les grades</option></select>
+    <button class="btn-primary" onclick="exportExcel()">⬇ Exporter Excel (.xlsx)</button>
+    <button class="btn-ghost" onclick="exportCSV()">⬇ CSV</button>
+    <button class="btn-ghost" onclick="resetAll()">↺ Réinitialiser</button>
+  </div>
+
+  <div id="dupWarn"></div>
+
+  <div class="tablewrap">
+    <table id="tbl">
+      <thead>
+        <tr id="headRow"></tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+
+  <footer>Total <strong id="shown">0</strong> fiche(s) affichée(s) — données extraites des messages DMEFeedback</footer>
+</main>
+
+<div class="toast" id="toast">Export réussi ✓</div>
+
+<script>
+/* ============================================================
+   DONNÉES EXTRAITES
+   ============================================================ */
+const DATA = [
+  {ref:"DOC-MUX7J6CI-G1BO", nom:"Baslimane", prenom:"Manal", grade:"Médecin généraliste de santé publique", nin:"110001495005290000", nss:"", tel:"0667966282", email:"manelbaslimane16@gmai.com", date:"06/10/2026 21:45"},
+  {ref:"DOC-MUXNSIXV-4M05", nom:"SOUALMIA", prenom:"AYA", grade:"Médecin généraliste de santé publique", nin:"119950887003400007", nss:"95034000841", tel:"0553867412", email:"ayasoualmia95@gmail.com", date:"07/10/2026 05:20"},
+  {ref:"DOC-MUXZSUJV-KI69", nom:"Maachi", prenom:"Salah", grade:"Médecin généraliste de santé publique", nin:"100000138003440001", nss:"", tel:"0667993202", email:"maachislh@gmail.com", date:"07/10/2026 10:56"},
+  {ref:"DOC-MUY0CF87-0LSY", nom:"Berrahail", prenom:"Feriel", grade:"Médecin généraliste de santé publique", nin:"119960117045420005", nss:"964542000448", tel:"0659862292", email:"ferielberrahail@gmail.com", date:"07/10/2026 11:11"},
+  {ref:"DOC-MUY7AHPS-BAIE", nom:"Bendib", prenom:"Asma", grade:"Médecin généraliste de santé publique", nin:"119980230050130009", nss:"", tel:"0792324622", email:"asmabendib2@gmail.com", date:"07/10/2026 14:26"},
+  {ref:"DOC-MV7ZWLYV-4H91", nom:"لعساكر", prenom:"زكرياء", grade:"Médecin généraliste de santé publique", nin:"100992149500198009", nss:"920198020842", tel:"0699880625", email:"lassakeurz@gmail.com", date:"14/10/2026 10:57"},
+  {ref:"DOC-MV7ZWMG6-HG95", nom:"قسمية", prenom:"خلود", grade:"Médecin généraliste de santé publique", nin:"119971495001470009", nss:"970147020452", tel:"0697930096", email:"kokosafra1997@gmail.com", date:"14/10/2026 10:57"},
+  {ref:"DOC-MV7ZWUSG-IWX0", nom:"بكاير", prenom:"ياسين", grade:"Médecin généraliste de santé publique", nin:"109931495003730004", nss:"930379027636", tel:"0659095509", email:"yassinebekkair16@gmail.com", date:"14/10/2026 10:57"},
+  {ref:"DOC-MV8BL1XH-OEAT", nom:"zaoui", prenom:"khoukha", grade:"Médecin généraliste en chef de santé publique", nin:"119830947016810000", nss:"", tel:"0659737028", email:"mehidimehdi@gmail.com", date:"14/10/2026 16:24"},
+  {ref:"DOC-MV8H7YFI-UI8K", nom:"ابن عشار", prenom:"محمد", grade:"Infirmier de santé publique", nin:"109681495002790001", nss:"680279000747", tel:"0555976167", email:"benacharmohammed7@gmail.com", date:"14/10/2026 19:01"},
+  {ref:"DOC-MV8NJ8DT-XP3S", nom:"LAKHAL لكحل", prenom:"Mokhtaria مختارية", grade:"Biologiste Du 1er Degré De santé Publique", nin:"119970449000340003", nss:"970034019441", tel:"0559714227", email:"lakhalmokhtariabio97@gmail.com", date:"14/10/2026 21:58"},
+  {ref:"DOC-MV97SQRE-ZIMO", nom:"Rahali", prenom:"Meriem", grade:"Administrateur", nin:"219860672011720007", nss:"", tel:"0659538884", email:"mariamfarah.123456789@gmail.com", date:"15/10/2026 07:25"},
+  {ref:"DOC-MV980KF5-CW59", nom:"Ben chekal ابن شكال", prenom:"Slimane سليمان", grade:"Aide-soignant principal de santé publique", nin:"109791495003800004", nss:"790380012745", tel:"0663754214", email:"slimaneberrian551@gmail.com", date:"15/10/2026 07:32"},
+  {ref:"DOC-MV9982LC-X4B6", nom:"شتوح", prenom:"خلود", grade:"Infirmier de santé publique", nin:"119981495006140001", nss:"980614007641", tel:"0667875373", email:"gasmrafif@gmail.com", date:"15/10/2026 08:05"},
+  {ref:"DOC-MV99ILGY-JBYL", nom:"Bedjeloud بجلود", prenom:"Nacer الناصر", grade:"Infirmier spécialise de santé publique", nin:"109671495004840004", nss:"67048400250", tel:"0662823930", email:"nacerbajloud@gmil.com", date:"15/10/2026 08:14"},
+  {ref:"DOC-MV99L4UH-SSA8", nom:"Brahim", prenom:"zemmit", grade:"Aide-soignant principal de santé publique", nin:"109951495001900000", nss:"950190019038", tel:"0674120163", email:"brahimzemmit49@gmail.com", date:"15/10/2026 08:16"},
+  {ref:"DOC-MV99W2OB-FRJ4", nom:"بوكراع", prenom:"أيوب", grade:"Aide-soignant principal de santé publique", nin:"109821495003080007", nss:"820308009547", tel:"0541442993", email:"boukyoub7@gmail.com", date:"15/10/2026 08:24"},
+  {ref:"DOC-MV9A5TP5-QB9U", nom:"قرين", prenom:"دليلة", grade:"Sage-femme de santé publique", nin:"119720611014840004", nss:"721484000651", tel:"0697265032", email:"ramydoha999@gmail.com", date:"15/10/2026 08:32"},
+  {ref:"DOC-MV9A7G12-1QVN", nom:"محمدي", prenom:"فاطنة", grade:"Aide-soignant principal de santé publique", nin:"119821495002200001", nss:"", tel:"0662917162", email:"mouhamdifatna@gmail..com", date:"15/10/2026 08:33"},
+  {ref:"DOC-MV9ADE44-BGLY", nom:"بوزيد", prenom:"لطيفة", grade:"Laborantin spécialise de santé publique", nin:"119911496006650002", nss:"", tel:"0662057661", email:"hamidabibaassil@gmail.com", date:"15/10/2026 08:37"},
+  {ref:"DOC-MV9AHHVY-1WCO", nom:"بوتسونة", prenom:"مباركةمساعد", grade:"Aide-soignant principal de santé publique", nin:"119751495000270000", nss:"750027038446", tel:"0696402445", email:"mebarkabouta10@gmail.com", date:"15/10/2026 08:41"},
+  {ref:"DOC-MV9AMHCQ-LXHZ", nom:"قرمولة", prenom:"حليمة", grade:"Sage-femme de santé publique", nin:"119790084004450009", nss:"790445009536", tel:"0671314072", email:"zitoutlakhdar15@gmail.com", date:"15/10/2026 08:45"},
+  {ref:"DOC-MV9ATEDR-L5IP", nom:"Nadja", prenom:"Zineb", grade:"Biologiste Du 2ème Degré De santé Publique", nin:"119811495004830005", nss:"810483012252", tel:"0674518861", email:"zinebnadja13@gmail.com", date:"15/10/2026 08:50"},
+  {ref:"DOC-MV9B6DYT-GFUZ", nom:"رغيس", prenom:"وهيبه", grade:"Psychologue clinicien principal de santé publique", nin:"119861495000380004", nss:"", tel:"066535499667", email:"adamhmido47@gmail.com", date:"15/10/2026 09:00"},
+  {ref:"DOC-MV9B711Y-HUG6", nom:"بن تركية", prenom:"خيرة", grade:"Biologiste Du 2ème Degré De santé Publique", nin:"119830064015230006", nss:"671446002551", tel:"0672364801", email:"hafnaouiaissa13@gmail.com", date:"15/10/2026 09:01"},
+  {ref:"DOC-MV9BBE0S-DIBR", nom:"شويرب", prenom:"زينب", grade:"Aide-soignant de santé publique", nin:"119961495006640004", nss:"960664006635", tel:"0669146327", email:"chzineb327@gmail.com", date:"15/10/2026 09:04"},
+  {ref:"DOC-MV9BD5G6-B0FC", nom:"BEKIRI بكيري", prenom:"FATIMA فطيمة", grade:"Ouvrier Professionnel de 1ère Catégorie", nin:"119741495005440007", nss:"740544003553", tel:"0675591264", email:"bekirifatima9@gmail.com", date:"15/10/2026 09:05"},
+  {ref:"DOC-MV9BMO2J-JA04", nom:"سقلاب", prenom:"سارة", grade:"Manipulateur en imagerie médicale de santé publique", nin:"119981495000280001", nss:"", tel:"0559202528", email:"saraseglab@gmail.com", date:"15/10/2026 09:13"},
+  {ref:"DOC-MV9DBATI-6U2X", nom:"aziez", prenom:"ahmed", grade:"Manipulateur en imagerie médicale de santé publique", nin:"109931495000660006", nss:"", tel:"0658062322", email:"aziezahmed16@gmail.com", date:"15/10/2026 10:00"},
+  {ref:"DOC-MV9DZOFS-JSGI", nom:"أولادعلي", prenom:"منة", grade:"Infirmier major de santé publique", nin:"119831495005740001", nss:"", tel:"0792586519", email:"ouladalimenna@gmail.com", date:"15/10/2026 10:19"},
+  {ref:"DOC-MV9E1LPV-3BQ2", nom:"Mouloud", prenom:"Yacine", grade:"Assistant en fauteuil dentaire de santé publique", nin:"109901495002760008", nss:"900276027142", tel:"0668210673", email:"mouloud1647@gmail.com", date:"15/10/2026 10:20"},
+  {ref:"DOC-MV9EBPOY-XP0G", nom:"Mousselmal", prenom:"Naima", grade:"Psychologue clinicien de santé publique", nin:"119901495001780006", nss:"900178006343", tel:"0672882633", email:"mousselmalnaimapsy@gmail.com", date:"15/10/2026 10:28"},
+  {ref:"DOC-MV9F7BA4-EY48", nom:"بعوشي", prenom:"باية", grade:"Aide-soignant principal de santé publique", nin:"119821495006470006", nss:"820647016641", tel:"0559398523", email:"baouchi1982@gmail.com", date:"15/10/2026 10:53"},
+  {ref:"DOC-MV9F8KST-K3WZ", nom:"Ben toumi", prenom:"Nafissa", grade:"Hygiéniste de santé publique", nin:"110011495000740007", nss:"010074018855", tel:"0665595893", email:"nafissabentoumi25@gmail.com", date:"15/10/2026 10:54"},
+  {ref:"DOC-MV9GD59Y-URSE", nom:"عزيز", prenom:"حنان", grade:"Aide-soignant de santé publique", nin:"119941495004990000", nss:"", tel:"0676581491", email:"hananaziez94@gmail.com", date:"15/10/2026 11:25"},
+  {ref:"DOC-MV9GDMCN-6K5R", nom:"مريم", prenom:"باسليمان", grade:"Biologiste Du 2ème Degré De santé Publique", nin:"119881495002980005", nss:"", tel:"0792006602", email:"meriemimrane47@gmail.com", date:"15/10/2026 11:26"},
+  {ref:"DOC-MV9H6IU8-A222", nom:"BOUTOULA", prenom:"Sara", grade:"Biologiste principal de santé publique", nin:"119871495006470005", nss:"870647012248", tel:"0798446188", email:"sarabiologiste@hotmail.fr", date:"15/10/2026 11:48"},
+  {ref:"DOC-MV9YJB4M-EABK", nom:"Lakhneche", prenom:"اسمهان Asmahane", grade:"Aide-soignant de santé publique", nin:"119961495000780004", nss:"", tel:"0540552096", email:"taline96dz@gmail.com", date:"15/10/2026 19:54"},
+  {ref:"DOC-MVA27HBR-CJYS", nom:"Lamine", prenom:"Hadj", grade:"Manipulateur en imagerie médicale major de santé publique", nin:"109851500000540003", nss:"850054054645", tel:"0549188136", email:"laminemohamedha@gmail.com", date:"15/10/2026 21:37"},
+  {ref:"DOC-MVC7KE9E-IIWB", nom:"Kerrouchi كروشي", prenom:"El hadj الحاج", grade:"Aide-soignant principal de santé publique", nin:"109811495001380005", nss:"810138035747", tel:"0665272397", email:"elhadjkerrouchi25@gmail.com", date:"17/10/2026 09:42"},
+  {ref:"DOC-MVCH1U4X-78AB", nom:"Boutoula", prenom:"Bassaid", grade:"Aide-soignant de santé publique", nin:"109951495000820001", nss:"950082017934", tel:"0656156641", email:"saidssaid149@gmail.com", date:"17/10/2026 14:08"},
+  {ref:"DOC-MVCOBV41-MK6O", nom:"BABAOUMOUSSA", prenom:"Salah", grade:"Manipulateur en imagerie médicale de santé publique", nin:"109971491017620001", nss:"", tel:"+213664396466", email:"salahbm1997@gmail.com", date:"17/10/2026 17:32"},
+  {ref:"DOC-MVCVFK6D-EPW1", nom:"سبع", prenom:"منير", grade:"Infirmier de santé publique", nin:"109961495004270003", nss:"960427020949", tel:"0674717616", email:"sebaam624@gmail.com", date:"17/10/2026 20:50"},
+  {ref:"DOC-MVD1T1F8-MYLL", nom:"Moured مورد", prenom:"Smahiسماحي", grade:"Infirmier major de santé publique", nin:"109821495007230004", nss:"820723004455", tel:"0655799024", email:"sahimoured01@gmail.com", date:"17/10/2026 23:49"},
+  {ref:"DOC-MVD2JEMA-83GX", nom:"Moured", prenom:"Ahmed", grade:"Infirmier de santé publique", nin:"109801495005640000", nss:"", tel:"0561071658", email:"lazahmed764@gmail.com", date:"18/10/2026 00:09"},
+  {ref:"DOC-MVDJ20IO-I2U3", nom:"Kasmi قاسمي", prenom:"Abderrahmane عبدالرحمن", grade:"Aide-soignant de santé publique", nin:"109971495002800007", nss:"", tel:"0559075106", email:"kasmiabdo486@gmail.com", date:"18/10/2026 07:52"},
+  {ref:"DOC-MVDJ6PY5-GE46", nom:"مشاط", prenom:"سيدعلي", grade:"Attaché d'administration", nin:"109800559019240007", nss:"", tel:"0674629211", email:"dezirisidali@gmail.com", date:"18/10/2026 07:55"},
+  {ref:"DOC-MVDK5U10-RNDK", nom:"محرزي", prenom:"مالك", grade:"Ouvrier Professionnel Niveau 1 à Plein Temps", nin:"109711495002630003", nss:"", tel:"0790429630", email:"mhrateb9@gmail.com", date:"18/10/2026 08:23"},
+  {ref:"DOC-MVDL2WRY-ATNE", nom:"قرقر", prenom:"صالح", grade:"Ouvrier Professionnel de 1ère Catégorie", nin:"109701495002430000", nss:"", tel:"0772697225", email:"guerguersalah@gmail.com", date:"18/10/2026 08:48"},
+  {ref:"DOC-MVDMWZAU-7V39", nom:"Zitout", prenom:"LAKhDAR", grade:"Médecin généraliste de santé publique", nin:"109741495003340002", nss:"740334013556", tel:"0675129169", email:"zitoutlakher15@gmail.com", date:"18/10/2026 09:40"},
+  {ref:"DOC-MVDSD21C-3ZLB", nom:"Latreche", prenom:"Fayssal", grade:"Manipulateur en imagerie médicale spécialise de santé publique", nin:"109911495005940001", nss:"910594005340", tel:"0777244637", email:"latrechefayssal91@gmail.com", date:"18/10/2026 12:12"},
+  {ref:"DOC-MVEYW2BQ-G6SS", nom:"Bekiri بكيري", prenom:"Abderraouf naili عبد الرؤوف النايلي", grade:"Aide-soignant de santé publique", nin:"109961495005680002", nss:"", tel:"0663053441", email:"nailibekiri96@gmail.com", date:"19/10/2026 08:03"},
+  {ref:"DOC-MVF04RWZ-1R8R", nom:"شويرب", prenom:"نورالدين", grade:"Infirmier de santé publique", nin:"109781495006360000", nss:"780636005742", tel:"0699274748", email:"chnono218@gmail.com", date:"19/10/2026 08:37"},
+  {ref:"DOC-MVF420K1-EYR6", nom:"Smania", prenom:"Fatna", grade:"Biologiste Du 2ème Degré De santé Publique", nin:"119831495007780005", nss:"830778010248", tel:"0666867857", email:"biofati9@gmail.com", date:"19/10/2026 10:27"},
+  {ref:"DOC-MVF42LZP-FW9V", nom:"Smania", prenom:"Fatna", grade:"Biologiste Du 2ème Degré De santé Publique", nin:"119831495007780005", nss:"830778010248", tel:"0666867857", email:"biofati9@gmail.com", date:"19/10/2026 10:28"}
+];
+
+/* ============================================================
+   CONFIG COLONNES
+   ============================================================ */
+const COLS = [
+  {key:"ref",   label:"Référence", w:22, cls:"ref"},
+  {key:"nom",   label:"Nom",       w:20},
+  {key:"prenom",label:"Prénom",    w:20},
+  {key:"grade", label:"Grade",     w:42},
+  {key:"nin",   label:"NIN",       w:22, cls:"mono"},
+  {key:"nss",   label:"NSS",       w:16, cls:"mono"},
+  {key:"tel",   label:"Téléphone", w:15, cls:"mono"},
+  {key:"email", label:"E-mail",    w:32},
+  {key:"date",  label:"Date soumission", w:18, cls:"mono"}
+];
+
+let state = { q:"", grade:"", sortKey:"date", sortDir:"asc" };
+let view = [];
+
+/* ============================================================
+   UTILITAIRES
+   ============================================================ */
+function pillClass(grade){
+  const g = (grade||"").toLowerCase();
+  if(g.includes("médecin")) return "med";
+  if(g.includes("infirmier")||g.includes("sage-femme")||g.includes("aide-soignant")) return "inf";
+  if(g.includes("biologiste")||g.includes("laborantin")) return "bio";
+  if(g.includes("psychologue")) return "psy";
+  if(g.includes("administrateur")||g.includes("attaché")) return "admin";
+  return "tech";
+}
+function esc(s){
+  return String(s==null?"":s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function dateKey(d){ // "06/10/2026 21:45" -> "20261006 21:45"
+  const m = /^(\d{2})\/(\d{2})\/(\d{4})\s+(\d{2}):(\d{2})$/.exec(d||"");
+  return m ? `${m[3]}${m[2]}${m[1]}${m[4]}${m[5]}` : "";
+}
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2200);
+}
+
+/* ============================================================
+   STATISTIQUES
+   ============================================================ */
+function buildStats(){
+  const total = DATA.length;
+  const med = DATA.filter(d=>/médecin/i.test(d.grade)).length;
+  const param = DATA.filter(d=>/infirmier|sage-femme|aide-soignant|manipulateur|laborantin|hygiéniste|assistant en fauteuil/i.test(d.grade)).length;
+  const bio = DATA.filter(d=>/biologiste|laborantin/i.test(d.grade)).length;
+  const admin = DATA.filter(d=>/administrateur|attaché|ouvrier/i.test(d.grade)).length;
+  const cards = [
+    ["Total fiches", total],
+    ["Médecins", med],
+    ["Paramédicaux", param],
+    ["Biologistes", bio],
+    ["Admin / Ouvriers", admin]
+  ];
+  document.getElementById('stats').innerHTML = cards.map(([k,v])=>
+    `<div class="stat"><div class="k">${k}</div><div class="v">${v}</div></div>`
+  ).join('');
+}
+
+/* ============================================================
+   FILTRE PAR GRADE
+   ============================================================ */
+function buildGradeFilter(){
+  const sel = document.getElementById('gradeFilter');
+  const grades = [...new Set(DATA.map(d=>d.grade))].sort((a,b)=>a.localeCompare(b,'fr'));
+  sel.innerHTML = '<option value="">Tous les grades</option>' +
+    grades.map(g=>`<option value="${esc(g)}">${esc(g)}</option>`).join('');
+}
+
+/* ============================================================
+   EN-TÊTES
+   ============================================================ */
+function buildHead(){
+  document.getElementById('headRow').innerHTML = COLS.map(c=>{
+    const sorted = state.sortKey === c.key;
+    const arrow = sorted ? (state.sortDir === 'asc' ? '▲' : '▼') : '↕';
+    return `<th data-key="${c.key}" class="${sorted?'sorted':''}">${esc(c.label)}<span class="arrow">${arrow}</span></th>`;
+  }).join('');
+  document.querySelectorAll('#headRow th').forEach(th=>{
+    th.onclick = ()=>{
+      const k = th.dataset.key;
+      if(state.sortKey === k) state.sortDir = state.sortDir === 'asc' ? 'desc' : 'asc';
+      else { state.sortKey = k; state.sortDir = 'asc'; }
+      render();
+    };
+  });
+}
+
+/* ============================================================
+   RENDU
+   ============================================================ */
+function render(){
+  const q = state.q.trim().toLowerCase();
+
+  view = DATA.filter(d=>{
+    if(state.grade && d.grade !== state.grade) return false;
+    if(!q) return true;
+    return [d.ref,d.nom,d.prenom,d.grade,d.nin,d.nss,d.tel,d.email,d.date]
+      .join(' ').toLowerCase().includes(q);
+  });
+
+  const k = state.sortKey, dir = state.sortDir === 'asc' ? 1 : -1;
+  view.sort((a,b)=>{
+    let va = a[k]||"", vb = b[k]||"";
+    if(k === 'date'){ va = dateKey(va); vb = dateKey(vb); }
+    return va.localeCompare(vb, 'fr', {numeric:true}) * dir;
+  });
+
+  buildHead();
+
+  const tbody = document.getElementById('tbody');
+  if(view.length === 0){
+    tbody.innerHTML = `<tr><td colspan="${COLS.length}" class="empty">
+      <div>🔎</div><div>Aucun résultat pour cette recherche</div></td></tr>`;
+  } else {
+    tbody.innerHTML = view.map((d,i)=>{
+      return `<tr>
+        <td class="ref">${esc(d.ref)}</td>
+        <td dir="auto"><strong>${esc(d.nom)}</strong></td>
+        <td dir="auto">${esc(d.prenom)}</td>
+        <td><span class="grade-pill ${pillClass(d.grade)}">${esc(d.grade)}</span></td>
+        <td class="mono">${esc(d.nin)||'—'}</td>
+        <td class="mono">${esc(d.nss)||'—'}</td>
+        <td class="mono">${esc(d.tel)||'—'}</td>
+        <td><a class="email" href="mailto:${esc(d.email)}">${esc(d.email)||'—'}</a></td>
+        <td class="mono">${esc(d.date)}</td>
+      </tr>`;
+    }).join('');
+  }
+
+  document.getElementById('shown').textContent = view.length;
+  checkDuplicates();
+}
+
+/* ============================================================
+   DOUBLONS
+   ============================================================ */
+function checkDuplicates(){
+  const map = {};
+  DATA.forEach(d=>{
+    const key = (d.nin||'').trim();
+    if(!key) return;
+    map[key] = map[key] || [];
+    map[key].push(d);
+  });
+  const dups = Object.values(map).filter(a=>a.length>1);
+  const box = document.getElementById('dupWarn');
+  if(dups.length === 0){ box.innerHTML = ''; return; }
+  const lines = dups.map(a=>{
+    const d = a[0];
+    return `• <strong>${esc(d.nom)} ${esc(d.prenom)}</strong> — NIN ${esc(d.nin)} — ${a.length} fiches (${a.map(x=>esc(x.ref)).join(', ')})`;
+  }).join('<br>');
+  box.innerHTML = `<div class="warn">⚠️ <strong>Doublons détectés (${dups.length})</strong><br>${lines}</div>`;
+}
+
+/* ============================================================
+   EXPORT EXCEL
+   ============================================================ */
+function rowsForExport(){
+  const src = view.length ? view : DATA;
+  const header = ["N°", ...COLS.map(c=>c.label)];
+  const rows = src.map((d,i)=>{
+    return [i+1, d.ref, d.nom, d.prenom, d.grade, d.nin, d.nss, d.tel, d.email, d.date];
+  });
+  return { header, rows, src };
+}
+
+function exportExcel(){
+  if(typeof XLSX === 'undefined'){
+    toast("Bibliothèque Excel indisponible → export CSV");
+    return exportCSV();
+  }
+  const { header, rows } = rowsForExport();
+
+  // AOA : on force tout en texte pour préserver NIN/NSS/téléphones
+  const aoa = [header, ...rows.map(r => r.map(v => (v==null||v==='') ? '' : String(v)))];
+  const ws = XLSX.utils.aoa_to_sheet(aoa);
+
+  // Toutes les cellules en type texte
+  const range = XLSX.utils.decode_range(ws['!ref']);
+  for(let R = range.s.r; R <= range.e.r; ++R){
+    for(let C = range.s.c; C <= range.e.c; ++C){
+      const addr = XLSX.utils.encode_cell({r:R, c:C});
+      const cell = ws[addr];
+      if(!cell) continue;
+      cell.t = 's';
+      if(R === 0){
+        cell.s = { font:{bold:true, color:{rgb:"FFFFFF"}}, fill:{fgColor:{rgb:"0F766E"}},
+                   alignment:{horizontal:"center", vertical:"center"} };
+      }
+    }
+  }
+
+  ws['!cols'] = [
+    {wch:5},  {wch:22}, {wch:20}, {wch:20}, {wch:42},
+    {wch:22}, {wch:16}, {wch:15}, {wch:32}, {wch:18}
+  ];
+  ws['!freeze'] = { xSplit:"0", ySplit:"1" };
+
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Fiches Médecins");
+
+  const stamp = new Date().toISOString().slice(0,10);
+  XLSX.writeFile(wb, `Fiches_Medecins_DSP_Ghardaia_${stamp}.xlsx`);
+  toast(`Export Excel : ${rows.length} fiche(s) ✓`);
+}
+
+/* ============================================================
+   EXPORT CSV
+   ============================================================ */
+function exportCSV(){
+  const { header, rows } = rowsForExport();
+  const sep = ';'; // Excel FR
+  const q = v => `"${String(v==null?'':v).replace(/"/g,'""')}"`;
+  const csv = [header, ...rows].map(r=>r.map(q).join(sep)).join('\r\n');
+  const blob = new Blob(['\uFEFF' + csv], {type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `Fiches_Medecins_DSP_Ghardaia_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast(`Export CSV : ${rows.length} fiche(s) ✓`);
+}
+
+/* ============================================================
+   RESET
+   ============================================================ */
+function resetAll(){
+  state = { q:"", grade:"", sortKey:"date", sortDir:"asc" };
+  document.getElementById('q').value = '';
+  document.getElementById('gradeFilter').value = '';
+  render();
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+document.getElementById('q').addEventListener('input', e=>{
+  state.q = e.target.value;
+  render();
+});
+document.getElementById('gradeFilter').addEventListener('change', e=>{
+  state.grade = e.target.value;
+  render();
+});
+
+buildStats();
+buildGradeFilter();
+render();
+</script>
+</body>
+</html>
