@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حساب الأقدمية - Calcul d'Ancienneté</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+        body { font-family: 'Cairo', sans-serif; background-color: #f3f4f6; }
+        
+        /* Print Settings */
+        @media print {
+            .no-print { display: none !important; }
+            body { background-color: white; padding: 0; margin: 0; }
+            .print-container { width: 100%; max-width: 100%; margin: 0; padding: 0; box-shadow: none; border: none; }
+            table { font-size: 12px; }
+            th, td { padding: 4px !important; }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-6xl mx-auto bg-white p-6 rounded-lg shadow-lg print-container">
+        
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-6 border-b pb-4">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">كشف حساب الأقدمية</h1>
+                <p class="text-gray-500">Calcul d'Ancienneté</p>
+            </div>
+            <button onclick="window.print()" class="no-print bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition">
+                🖨️ طباعة / Imprimer
+            </button>
+        </div>
+
+        <!-- Input Form -->
+        <div class="no-print bg-gray-50 p-4 rounded-md mb-6 border border-gray-200">
+            <h2 class="text-lg font-bold mb-4 text-gray-700">إضافة فترة / Ajouter une période</h2>
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">بداية الأجر (Début)</label>
+                    <input type="date" id="startDate" class="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">نهاية الأجر (Fin)</label>
+                    <input type="date" id="endDate" class="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">المؤسسة (Établissement)</label>
+                    <input type="text" id="company" placeholder="اسم المؤسسة" class="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">نوع الفترة (Type)</label>
+                    <select id="type" class="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-blue-500 outline-none">
+                        <option value="service">فترة عمل (Service)</option>
+                        <option value="arret">توقف عن العمل (Arrêt)</option>
+                    </select>
+                </div>
+                <div>
+                    <button onclick="addRecord()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition">
+                        إضافة (+)
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="overflow-x-auto">
+            <table class="w-full border-collapse border border-gray-400 text-sm text-center">
+                <thead class="bg-gray-100">
+                    <tr>
+                        <th class="border border-gray-400 p-2">بداية الأجر<br>Début</th>
+                        <th class="border border-gray-400 p-2">نهاية الأجر<br>Fin</th>
+                        <th class="border border-gray-400 p-2">المؤسسة<br>Établissement</th>
+                        <th class="border border-gray-400 p-2">المدة<br>Durée (Y/M/D)</th>
+                        <th class="border border-gray-400 p-2">عدد الأيام<br>Jours</th>
+                        <th class="border border-gray-400 p-2 no-print">حذف</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody" class="bg-white">
+                    <!-- Records will be injected here -->
+                </tbody>
+                <tfoot id="tableFoot" class="bg-gray-200 font-bold">
+                    <!-- Totals will be injected here -->
+                </tfoot>
+            </table>
+        </div>
+        
+        <!-- Summary Box -->
+        <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-blue-50 border border-blue-200 p-4 rounded text-center">
+                <h3 class="text-lg font-bold text-blue-800 mb-2">مجموع العمل الفعلي (Total Service)</h3>
+                <div id="totalServiceYMD" class="text-2xl font-bold text-blue-900">0 سنة، 0 شهر، 0 يوم</div>
+                <div id="totalServiceDays" class="text-gray-600 mt-1">0 يوم إجمالي</div>
+            </div>
+            <div class="bg-red-50 border border-red-200 p-4 rounded text-center">
+                <h3 class="text-lg font-bold text-red-800 mb-2">مجموع التوقفات (Total Arrêt)</h3>
+                <div id="totalArretYMD" class="text-2xl font-bold text-red-900">0 سنة، 0 شهر، 0 يوم</div>
+                <div id="totalArretDays" class="text-gray-600 mt-1">0 يوم إجمالي</div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Array to store our data
+        let records = JSON.parse(localStorage.getItem('anciennete_records')) || [];
+
+        // Calculate exact Y/M/D and total days
+        function calculateDuration(startStr, endStr) {
+            const start = new Date(startStr);
+            const end = new Date(endStr);
+            
+            if (isNaN(start) || isNaN(end) || start > end) return null;
+
+            // Exact Y/M/D calculation
+            let years = end.getFullYear() - start.getFullYear();
+            let months = end.getMonth() - start.getMonth();
+            let days = end.getDate() - start.getDate();
+
+            if (days < 0) {
+                months--;
+                const prevMonth = new Date(end.getFullYear(), end.getMonth(), 0);
+                days += prevMonth.getDate();
+            }
+            if (months < 0) {
+                years--;
+                months += 12;
+            }
+
+            // Total Days calculation (+1 to include the start day as is standard in Algeria)
+            const diffTime = Math.abs(end - start);
+            const totalDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+
+            return { years, months, days, totalDays, startStr, endStr };
+        }
+
+        // Add a new record
+        function addRecord() {
+            const start = document.getElementById('startDate').value;
+            const end = document.getElementById('endDate').value;
+            const company = document.getElementById('company').value || '-';
+            const type = document.getElementById('type').value;
+
+            if (!start || !end) {
+                alert('يرجى ملء تاريخ البداية والنهاية / Veuillez remplir les dates.');
+                return;
+            }
+
+            const duration = calculateDuration(start, end);
+            if (!duration) {
+                alert('تاريخ النهاية يجب أن يكون بعد تاريخ البداية / La date de fin doit être après le début.');
+                return;
+            }
+
+            const newRecord = {
+                id: Date.now(),
+                company,
+                type,
+                ...duration
+            };
+
+            records.push(newRecord);
+            saveAndRender();
+
+            // Clear inputs
+            document.getElementById('startDate').value = '';
+            document.getElementById('endDate').value = '';
+            document.getElementById('company').value = '';
+        }
+
+        // Delete a record
+        function deleteRecord(id) {
+            if(confirm('هل أنت متأكد من الحذف؟ / Êtes-vous sûr ?')) {
+                records = records.filter(r => r.id !== id);
+                saveAndRender();
+            }
+        }
+
+        // Save to LocalStorage and Render
+        function saveAndRender() {
+            localStorage.setItem('anciennete_records', JSON.stringify(records));
+            renderTable();
+        }
+
+        // Render Table
+        function renderTable() {
+            const tbody = document.getElementById('tableBody');
+            const tfoot = document.getElementById('tableFoot');
+            tbody.innerHTML = '';
+            tfoot.innerHTML = '';
+
+            if (records.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="border border-gray-400 p-4 text-gray-500">لا توجد بيانات. أضف فترة للبدء.<br>Aucune donnée.</td></tr>`;
+                updateSummaries(0,0,0,0,0,0,0,0);
+                return;
+            }
+
+            // Separate totals
+            let serviceY = 0, serviceM = 0, serviceD = 0, serviceTotalDays = 0;
+            let arretY = 0, arretM = 0, arretD = 0, arretTotalDays = 0;
+
+            records.forEach((r, index) => {
+                // Add to totals based on type
+                if (r.type === 'service') {
+                    serviceY += r.years;
+                    serviceM += r.months;
+                    serviceD += r.days;
+                    serviceTotalDays += r.totalDays;
+                } else {
+                    arretY += r.years;
+                    arretM += r.months;
+                    arretD += r.days;
+                    arretTotalDays += r.totalDays;
+                }
+
+                // Create Table Row
+                const tr = document.createElement('tr');
+                tr.className = r.type === 'arret' ? 'bg-red-50 hover:bg-red-100' : 'hover:bg-gray-50';
+                tr.innerHTML = `
+                    <td class="border border-gray-400 p-2">${r.startStr}</td>
+                    <td class="border border-gray-400 p-2">${r.endStr}</td>
+                    <td class="border border-gray-400 p-2 text-right">${r.company}</td>
+                    <td class="border border-gray-400 p-2 font-bold ${r.type === 'arret' ? 'text-red-600' : 'text-blue-600'}">
+                        ${r.years} سنة، ${r.months} شهر، ${r.days} يوم
+                    </td>
+                    <td class="border border-gray-400 p-2">${r.totalDays}</td>
+                    <td class="border border-gray-400 p-2 no-print">
+                        <button onclick="deleteRecord(${r.id})" class="text-red-500 hover:text-red-700 font-bold">✖</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            // Calculate and normalize grand totals
+            serviceM += Math.floor(serviceD / 30);
+            serviceD = serviceD % 30;
+            serviceY += Math.floor(serviceM / 12);
+            serviceM = serviceM % 12;
+
+            arretM += Math.floor(arretD / 30);
+            arretD = arretD % 30;
+            arretY += Math.floor(arretM / 12);
+            arretM = arretM % 12;
+
+            updateSummaries(serviceY, serviceM, serviceD, serviceTotalDays, arretY, arretM, arretD, arretTotalDays);
+        }
+
+        // Update the summary boxes
+        function updateSummaries(sY, sM, sD, sTD, aY, aM, aD, aTD) {
+            document.getElementById('totalServiceYMD').innerText = `${sY} سنة، ${sM} شهر، ${sD} يوم`;
+            document.getElementById('totalServiceDays').innerText = `${sTD} يوم إجمالي`;
+            
+            document.getElementById('totalArretYMD').innerText = `${aY} سنة، ${aM} شهر، ${aD} يوم`;
+            document.getElementById('totalArretDays').innerText = `${aTD} يوم إجمالي`;
+        }
+
+        // Initialize on load
+        renderTable();
+    </script>
+</body>
+</html>
