@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مخطط التكوينات - Planning de Formation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+        body { font-family: 'Cairo', sans-serif; background-color: #f3f4f6; }
+        
+        /* Print Settings */
+        @media print {
+            .no-print { display: none !important; }
+            body { background-color: white; padding: 0; margin: 0; }
+            .print-container { width: 100%; max-width: 100%; margin: 0; padding: 0; box-shadow: none; border: none; }
+            table { font-size: 12px; }
+            th, td { padding: 6px !important; border-color: #000 !important; }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-6xl mx-auto bg-white p-6 rounded-lg shadow-lg print-container">
+        
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-6 border-b-2 border-gray-800 pb-4">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">برنامج التكوين (Planning)</h1>
+                <p class="text-gray-500">جدول توزيع الحصص للأسبوع القادم</p>
+            </div>
+            <div class="flex gap-2 no-print">
+                <button onclick="resetData()" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition text-sm">
+                    🗑️ مسح الجدول
+                </button>
+                <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition text-sm">
+                    🖨️ طباعة الجدول
+                </button>
+            </div>
+        </div>
+
+        <!-- Input Form -->
+        <div class="no-print bg-blue-50 p-4 rounded-md mb-6 border border-blue-200">
+            <h2 class="text-lg font-bold mb-4 text-blue-800">إضافة حصة تكوين جديدة</h2>
+            <div class="grid grid-cols-1 md:grid-cols-6 gap-4 items-end">
+                <div class="col-span-1">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">التاريخ (Date)</label>
+                    <input type="date" id="date" class="w-full border border-gray-300 p-2 rounded outline-none">
+                </div>
+                <div class="col-span-1">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">التوقيت (Heure)</label>
+                    <input type="time" id="time" class="w-full border border-gray-300 p-2 rounded outline-none">
+                </div>
+                <div class="col-span-1">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">الفئة (Catégorie)</label>
+                    <input type="text" id="category" placeholder="مثال: أطباء، شبه طبي..." class="w-full border border-gray-300 p-2 rounded outline-none">
+                </div>
+                <div class="col-span-1">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">عدد المكونين</label>
+                    <input type="number" id="count" min="0" placeholder="0" class="w-full border border-gray-300 p-2 rounded outline-none">
+                </div>
+                <div class="col-span-1">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">المدة (Duration)</label>
+                    <input type="text" id="duration" placeholder="مثال: يوم واحد" class="w-full border border-gray-300 p-2 rounded outline-none">
+                </div>
+                <div class="col-span-1">
+                    <button onclick="addRecord()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition">
+                        إضافة (+)
+                    </button>
+                </div>
+            </div>
+            <div class="mt-3">
+                <label class="block text-sm font-medium text-gray-700 mb-1">ملاحظات (Notes)</label>
+                <input type="text" id="notes" placeholder="مثال: استدراك للغائبين، في انتظار البرمجة..." class="w-full border border-gray-300 p-2 rounded outline-none">
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="overflow-x-auto">
+            <table class="w-full border-collapse border border-gray-400 text-sm text-center">
+                <thead class="bg-gray-100">
+                    <tr>
+                        <th class="border border-gray-400 p-2">التاريخ والتوقيت</th>
+                        <th class="border border-gray-400 p-2">الفئة</th>
+                        <th class="border border-gray-400 p-2">عدد المكونين</th>
+                        <th class="border border-gray-400 p-2">المدة</th>
+                        <th class="border border-gray-400 p-2 w-1/3">ملاحظات</th>
+                        <th class="border border-gray-400 p-2 no-print">حذف</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody" class="bg-white">
+                    <!-- Records will be injected here -->
+                </tbody>
+                <tfoot id="tableFoot" class="bg-gray-200 font-bold">
+                    <!-- Totals will be injected here -->
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Load data from local storage
+        let records = JSON.parse(localStorage.getItem('planning_records')) || [];
+
+        // Format date
+        function formatDate(dateStr) {
+            if (!dateStr) return '';
+            const d = new Date(dateStr);
+            const options = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
+            return d.toLocaleDateString('ar-DZ', options); 
+        }
+
+        function addRecord() {
+            const date = document.getElementById('date').value;
+            const time = document.getElementById('time').value;
+            const category = document.getElementById('category').value;
+            const count = parseInt(document.getElementById('count').value) || 0;
+            const duration = document.getElementById('duration').value;
+            const notes = document.getElementById('notes').value;
+
+            if (!date || !category) {
+                alert('يرجى إدخال التاريخ والفئة على الأقل.');
+                return;
+            }
+
+            const newRecord = {
+                id: Date.now(),
+                date,
+                time,
+                category,
+                count,
+                duration,
+                notes
+            };
+
+            records.push(newRecord);
+            // Sort by date
+            records.sort((a, b) => new Date(a.date) - new Date(b.date));
+            
+            saveData();
+            renderTable();
+
+            // Clear inputs
+            document.getElementById('date').value = '';
+            document.getElementById('time').value = '';
+            document.getElementById('category').value = '';
+            document.getElementById('count').value = '';
+            document.getElementById('duration').value = '';
+            document.getElementById('notes').value = '';
+        }
+
+        function deleteRecord(id) {
+            if(confirm('هل أنت متأكد من حذف هذه الحصة؟')) {
+                records = records.filter(r => r.id !== id);
+                saveData();
+                renderTable();
+            }
+        }
+
+        function resetData() {
+            if(confirm('هل تريد مسح الجدول بالكامل للبدء من جديد؟')) {
+                records = [];
+                saveData();
+                renderTable();
+            }
+        }
+
+        function saveData() {
+            localStorage.setItem('planning_records', JSON.stringify(records));
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('tableBody');
+            const tfoot = document.getElementById('tableFoot');
+            tbody.innerHTML = '';
+            
+            if (records.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="border border-gray-400 p-6 text-gray-500">لا توجد حصص مبرمجة. أضف حصة للبدء.</td></tr>`;
+                tfoot.innerHTML = '';
+                return;
+            }
+
+            let totalCount = 0;
+
+            records.forEach((r) => {
+                totalCount += r.count;
+
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-gray-50';
+                tr.innerHTML = `
+                    <td class="border border-gray-400 p-2 font-bold text-blue-700">
+                        ${formatDate(r.date)} <br>
+                        <span class="text-xs text-gray-500">${r.time || ''}</span>
+                    </td>
+                    <td class="border border-gray-400 p-2">${r.category}</td>
+                    <td class="border border-gray-400 p-2 font-bold text-lg">${r.count}</td>
+                    <td class="border border-gray-400 p-2">${r.duration || '-'}</td>
+                    <td class="border border-gray-400 p-2 text-right text-sm">${r.notes || '-'}</td>
+                    <td class="border border-gray-400 p-2 no-print">
+                        <button onclick="deleteRecord(${r.id})" class="text-red-500 hover:text-red-700 font-bold px-2 py-1">✖</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            tfoot.innerHTML = `
+                <tr>
+                    <td colspan="2" class="border border-gray-400 p-3 text-lg">المجموع الكلي</td>
+                    <td class="border border-gray-400 p-3 text-xl text-blue-800">${totalCount} مكون</td>
+                    <td colspan="3" class="border border-gray-400 p-3"></td>
+                </tr>
+            `;
+        }
+
+        // Initialize
+        renderTable();
+    </script>
+</body>
+</html>
