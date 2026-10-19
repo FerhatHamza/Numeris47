@@ -3,345 +3,628 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>حساب الأقدمية - Calcul d'Ancienneté</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Document Replication</title>
+    <!-- Importing fonts to mimic print and handwriting -->
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
-        body { font-family: 'Cairo', sans-serif; background-color: #f3f4f6; }
-        
-        /* Print Settings */
-        @media print {
-            .no-print { display: none !important; }
-            body { background-color: white; padding: 0; margin: 0; }
-            .print-container { width: 100%; max-width: 100%; margin: 0; padding: 0; box-shadow: none; border: none; }
-            table { font-size: 11px; }
-            th, td { padding: 4px !important; }
+        body {
+            background-color: #f4f4f4;
+            font-family: 'Tajawal', Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
+
+        .toolbar {
+            margin-bottom: 20px;
+            background: #fff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .document-container {
+            background-color: #fff;
+            padding: 40px 20px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            position: relative;
+            width: 900px;
+            /* Slight rotation to mimic the photo's perspective */
+            transform: rotate(-1deg);
+        }
+
+        /* Handwritten Font Class */
+        .handwriting {
+            font-family: 'Caveat', cursive;
+            color: #1a3b8c; /* Blue ink color */
+            position: absolute;
+            z-index: 10;
+            font-weight: 700;
+        }
+
+        /* Specific Handwriting Positions */
+        .hw-top {
+            top: 10px;
+            right: 150px;
+            font-size: 24px;
+            transform: rotate(2deg);
+        }
+
+        .hw-bottom-left {
+            bottom: 30px;
+            left: 40px;
+            font-size: 24px;
+        }
+
+        .hw-bottom-right {
+            bottom: 30px;
+            right: 40px;
+            font-size: 22px;
+            line-height: 1;
+            text-align: left;
+        }
+        
+        .hw-mid-left {
+            top: 530px;
+            left: 20px;
+            font-size: 22px;
+            transform: rotate(-5deg);
+            text-align: left;
+        }
+
+        .hw-custom-arrow {
+            position: absolute;
+            font-size: 20px;
+            color: #1a3b8c;
+            font-family: 'Caveat', cursive;
+        }
+
+        /* Table Styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            direction: ltr; /* Keep table LTR as dates/durations are mostly LTR */
+            table-layout: fixed;
+        }
+
+        th, td {
+            border: 1.5px solid #000;
+            padding: 4px 6px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        th {
+            background-color: #e6e6e6;
+            font-weight: bold;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 13px;
+        }
+
+        /* Specific column widths */
+        col:nth-child(1) { width: 18%; } /* Stop Days */
+        col:nth-child(2) { width: 22%; } /* Start Date */
+        col:nth-child(3) { width: 22%; } /* End Date */
+        col:nth-child(4) { width: 25%; } /* Duration */
+        col:nth-child(5) { width: 13%; } /* Total Days */
+
+        .subtotal-row td {
+            font-weight: bold;
+            background-color: #f9f9f9;
+        }
+        
+        .no-border-bottom td {
+            border-bottom: none;
+        }
+        
+        .no-border-top td {
+            border-top: none;
+        }
+
+        .footer-table {
+            margin-top: 10px;
+        }
+        
+        .footer-table th {
+            background-color: #d9d9d9;
+        }
+
+        /* Styling for inline handwritten overrides */
+        .inline-hw {
+            font-family: 'Caveat', cursive;
+            color: #1a3b8c;
+            font-size: 18px;
+            position: relative;
+            top: -5px;
+            margin-left: 5px;
+        }
+
     </style>
 </head>
-<body class="p-2 md:p-8">
+<body>
 
-    <div class="max-w-6xl mx-auto bg-white p-4 md:p-6 rounded-lg shadow-lg print-container">
+    <div class="toolbar">
+        <button onclick="exportTableToExcel('document-table', 'Service_History')">Export to Excel</button>
+    </div>
+
+    <div class="document-container">
+        <!-- Handwritten Top Note -->
+        <div class="handwriting hw-top">موظف بلدية الرقم التسلسلي 3246575</div>
+
+        <table id="document-table">
+            <colgroup>
+                <col><col><col><col><col>
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>أيام توقف</th>
+                    <th>بداية العقد</th>
+                    <th>نهاية العقد</th>
+                    <th>مدة العقد</th>
+                    <th>عدد الأيام</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Section 1 -->
+                <tr>
+                    <td>-</td>
+                    <td>14 November 1993</td>
+                    <td>25 May 1999</td>
+                    <td>5 an,6 mois,11 jours</td>
+                    <td>2019</td>
+                </tr>
+                <tr>
+                    <td>0 mois,9 jours</td>
+                    <td>03 June 1999</td>
+                    <td>01 December 1999</td>
+                    <td>0 an,5 mois,28 jours</td>
+                    <td>182</td>
+                </tr>
+                <tr>
+                    <td>0 mois,9 jours</td>
+                    <td>10 December 1999</td>
+                    <td>09 April 2000</td>
+                    <td>0 an,3 mois,30 jours</td>
+                    <td>122</td>
+                </tr>
+                <tr>
+                    <td>1 mois,13 jours</td>
+                    <td>22 May 2000</td>
+                    <td>21 August 2000</td>
+                    <td>0 an,2 mois,30 jours</td>
+                    <td>92</td>
+                </tr>
+                <tr>
+                    <td>0 mois,9 jours</td>
+                    <td>30 August 2000</td>
+                    <td>29 November 2000</td>
+                    <td>0 an,2 mois,30 jours</td>
+                    <td>92</td>
+                </tr>
+                <tr>
+                    <td>0 mois,9 jours</td>
+                    <td>08 December 2000</td>
+                    <td>07 March 2001</td>
+                    <td>0 an,2 mois,27 jours</td>
+                    <td>90</td>
+                </tr>
+                <tr>
+                    <td>0 mois,9 jours</td>
+                    <td>16 March 2001</td>
+                    <td>15 June 2001</td>
+                    <td>0 an,2 mois,30 jours</td>
+                    <td>92</td>
+                </tr>
+                <tr>
+                    <td>0 mois,2 jours</td>
+                    <td>17 June 2001</td>
+                    <td>16 September 2001</td>
+                    <td>0 an,2 mois,30 jours</td>
+                    <td>92</td>
+                </tr>
+                <tr>
+                    <td>0 mois,2 jours</td>
+                    <td>18 September 2001</td>
+                    <td>17 January 2002</td>
+                    <td>0 an,3 mois,30 jours</td>
+                    <td>122</td>
+                </tr>
+                <tr>
+                    <td>0 mois,3 jours</td>
+                    <td>20 January 2002</td>
+                    <td>19 April 2002</td>
+                    <td>0 an,2 mois,30 jours</td>
+                    <td>90</td>
+                </tr>
+                <tr>
+                    <td>0 mois,12 jours</td>
+                    <td>01 May 2002</td>
+                    <td>30 August 2002</td>
+                    <td>0 an,3 mois,29 jours</td>
+                    <td>122</td>
+                </tr>
+                <tr>
+                    <td>0 mois,12 jours</td>
+                    <td>11 September 2002</td>
+                    <td>10 January 2003</td>
+                    <td>0 an,3 mois,30 jours</td>
+                    <td>122</td>
+                </tr>
+                <tr>
+                    <td>0 mois,9 jours</td>
+                    <td>19 January 2003</td>
+                    <td>18 May 2003</td>
+                    <td>0 an,3 mois,29 jours</td>
+                    <td>120</td>
+                </tr>
+                <tr>
+                    <td>0 mois,14 jours</td>
+                    <td>01 June 2003</td>
+                    <td>30 September 2003</td>
+                    <td>0 an,3 mois,29 jours</td>
+                    <td>122</td>
+                </tr>
+                <tr>
+                    <td>0 mois,9 jours</td>
+                    <td>09 October 2003</td>
+                    <td>08 December 2003</td>
+                    <td>0 an,1 mois,29 jours</td>
+                    <td>61</td>
+                </tr>
+                <tr>
+                    <td>0 mois,9 jours</td>
+                    <td>17 December 2003</td>
+                    <td>16 February 2004</td>
+                    <td>0 an,1 mois,30 jours</td>
+                    <td>62</td>
+                </tr>
+                <tr>
+                    <td>0 mois,1 jours</td>
+                    <td>17 February 2004</td>
+                    <td>16 April 2004</td>
+                    <td>0 an,1 mois,30 jours</td>
+                    <td>60</td>
+                </tr>
+                
+                <!-- Subtotal Row 1 -->
+                <tr class="subtotal-row">
+                    <td>161 Jours</td>
+                    <td></td>
+                    <td></td>
+                    <td>10 an, 0 mois, 12 jours</td>
+                    <td>3662 Jours</td>
+                </tr>
+            </tbody>
+
+            <tbody>
+                <!-- Section 2 -->
+                <tr>
+                    <td>0 mois,10 jours</td>
+                    <td>26 April 2004</td>
+                    <td>25 July 2004</td>
+                    <td>0 an,2 mois,29 jours</td>
+                    <td>91,00</td>
+                </tr>
+                <tr>
+                    <td>0 mois,10 jours</td>
+                    <td>04 August 2004</td>
+                    <td>03 November 2004</td>
+                    <td>0 an,2 mois,30 jours</td>
+                    <td>92,00</td>
+                </tr>
+                <tr>
+                    <td>0 mois,15 jours</td>
+                    <td>18 November 2004</td>
+                    <td>17 February 2005</td>
+                    <td>0 an,2 mois,30 jours</td>
+                    <td>92,00</td>
+                </tr>
+                <tr>
+                    <td>0 mois,12 jours</td>
+                    <td>01 March 2005</td>
+                    <td>30 June 2005</td>
+                    <td>0 an,3 mois,29 jours</td>
+                    <td>122,00</td>
+                </tr>
+                <tr>
+                    <td>0 mois,12 jours</td>
+                    <td>12 July 2005</td>
+                    <td>11 December 2005</td>
+                    <td>0 an,4 mois,29 jours</td>
+                    <td>153,00</td>
+                </tr>
+                <tr>
+                    <td>0 mois,10 jours</td>
+                    <td>21 December 2005</td>
+                    <td>20 January 2006</td>
+                    <td>0 an,0 mois,30 jours</td>
+                    <td>31,00</td>
+                </tr>
+                <tr>
+                    <td>0 mois,13 jours</td>
+                    <td>02 February 2006</td>
+                    <td>01 May 2006</td>
+                    <td>0 an,2 mois,29 jours</td>
+                    <td>89,00</td>
+                </tr>
+                <tr>
+                    <td>0 mois,9 jours</td>
+                    <td>10 May 2006</td>
+                    <td>09 November 2006</td>
+                    <td>0 an,5 mois,30 jours</td>
+                    <td>184,00</td>
+                </tr>
+                <tr>
+                    <td>0 mois,12 jours</td>
+                    <td>21 November 2006</td>
+                    <td>20 March 2007</td>
+                    <td>0 an,3 mois,27 jours</td>
+                    <td>120,00</td>
+                </tr>
+                <tr>
+                    <td>0 mois,15 jours</td>
+                    <td>04 April 2007</td>
+                    <td>03 September 2007</td>
+                    <td>0 an,4 mois,30 jours</td>
+                    <td>153,00</td>
+                </tr>
+                <tr>
+                    <td>0 mois,10 jours</td>
+                    <td>13 September 2007</td>
+                    <td>12 March 2008</td>
+                    <td>0 an,5 mois,28 jours</td>
+                    <td>182,00</td>
+                </tr>
+                <tr>
+                    <td>0 mois,25 jours</td>
+                    <td>06 April 2008</td>
+                    <td>05 August 2008</td>
+                    <td>0 an,3 mois,30 jours</td>
+                    <td>122,00</td>
+                </tr>
+                <tr>
+                    <td>0 mois,29 jours</td>
+                    <td>03 September 2008</td>
+                    <td>02 January 2009</td>
+                    <td>0 an,3 mois,30 jours</td>
+                    <td>122,00</td>
+                </tr>
+                <tr>
+                    <td>0 mois,10 jours</td>
+                    <td>12 January 2009</td>
+                    <td>11 May 2009</td>
+                    <td>0 an,3 mois,29 jours</td>
+                    <td>120,00</td>
+                </tr>
+                <tr>
+                    <td>0 mois,9 jours</td>
+                    <td>20 May 2009</td>
+                    <td>19 July 2009</td>
+                    <td>0 an,1 mois,29 jours</td>
+                    <td>61,00</td>
+                </tr>
+
+                <!-- Subtotal Row 2 -->
+                <tr class="subtotal-row">
+                    <td>201 Jours</td>
+                    <td></td>
+                    <td></td>
+                    <td>4 an, 9 mois, 4 jours</td>
+                    <td>1734 Jours</td>
+                </tr>
+            </tbody>
+
+            <tbody>
+                <!-- Section 3 -->
+                <tr>
+                    <td>0 mois,18 jours</td>
+                    <td>06 August 2009</td>
+                    <td>05 October 2009</td>
+                    <td>0 an,1 mois,29 jours</td>
+                    <td>61,00</td>
+                </tr>
+                <tr>
+                    <td>0 mois,11 jours</td>
+                    <td>16 October 2009</td>
+                    <td>15 January 2010</td>
+                    <td>0 an,2 mois,30 jours</td>
+                    <td>92,00</td>
+                </tr>
+                <tr>
+                    <td>0 mois,18 jours</td>
+                    <td>02 February 2010</td>
+                    <td>01 May 2010</td>
+                    <td>0 an,2 mois,29 jours</td>
+                    <td>89,00</td>
+                </tr>
+                <tr>
+                    <td>0 mois,16 jours</td>
+                    <td>17 May 2010</td>
+                    <td>16 September 2010</td>
+                    <td>0 an,3 mois,30 jours</td>
+                    <td>123,00</td>
+                </tr>
+                <tr>
+                    <td>0 mois,18 jours</td>
+                    <td>04 October 2010</td>
+                    <td>03 January 2011</td>
+                    <td>0 an,2 mois,30 jours</td>
+                    <td>92,00</td>
+                </tr>
+                <tr>
+                    <td>0 mois,17 jours</td>
+                    <td>20 January 2011</td>
+                    <td>19 March 2011</td>
+                    <td>0 an,1 mois,27 jours</td>
+                    <td>59,00</td>
+                </tr>
+                <tr>
+                    <td>0 mois,16 jours</td>
+                    <td>04 April 2011</td>
+                    <td>03 August 2011</td>
+                    <td>0 an,3 mois,30 jours</td>
+                    <td>122,00</td>
+                </tr>
+
+                <!-- Subtotal Row 3 -->
+                <tr class="subtotal-row">
+                    <td>114 Jours</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="subtotal-row">
+                    <td>0 mois,19 jours</td>
+                    <td>22 August 2011</td>
+                    <td>30 December 2023</td>
+                    <td>1 an, 9 mois, 3 jours</td>
+                    <td>638 Jours</td>
+                </tr>
+                <tr class="subtotal-row">
+                    <td>19 Jours</td>
+                    <td></td>
+                    <td></td>
+                    <td>12 an, 4 mois, 8 jours</td>
+                    <td>4514</td>
+                </tr>
+            </tbody>
+
+            <!-- Final Totals Section -->
+            <tbody>
+                <tr>
+                    <td colspan="3" style="text-align: right; padding-right: 10px; font-weight: bold;">Nbr Total de A,M,J de Service</td>
+                    <td style="background-color: #d9d9d9; font-weight: bold;">28 an, 10 mois, 28 jours</td>
+                    <td style="background-color: #d9d9d9; font-weight: bold;">10548 Jours</td>
+                </tr>
+                <tr>
+                    <td colspan="3" style="text-align: right; padding-right: 10px; font-weight: bold;">Nbr Total de Mois de Service</td>
+                    <td style="background-color: #d9d9d9; font-weight: bold;">351 mois, 18 jours</td>
+                    <td style="background-color: #d9d9d9; font-weight: bold;">10914</td>
+                </tr>
+                <tr>
+                    <td colspan="3" style="text-align: right; padding-right: 10px; font-weight: bold;">Nbr Total de Jours d'arrêt de Service</td>
+                    <td style="background-color: #d9d9d9; font-weight: bold;">16 mois, 15 jours</td>
+                    <td>01 an, 4 mois, 15jc</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Footer Table -->
+        <table class="footer-table">
+            <colgroup>
+                <col style="width: 33%;">
+                <col style="width: 34%;">
+                <col style="width: 33%;">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>بداية العقد</th>
+                    <th>نهاية العقد</th>
+                    <th>مدة العقد</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="font-weight: bold; font-size: 14px;">14 November 1993</td>
+                    <td style="font-weight: bold; font-size: 14px;">30 December 2023</td>
+                    <td style="font-weight: bold; font-size: 14px;">30 an, 1 mois, 16 jours</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Handwritten Overrides & Notes -->
+        <div class="handwriting hw-mid-left">
+            363 mois 24 jours<br>
+            16 mois 15 jours
+        </div>
+
+        <div class="handwriting" style="top: 600px; right: 350px; font-size: 18px; transform: rotate(-15deg);">
+            2024 إلى
+        </div>
+
+        <div class="handwriting" style="top: 670px; left: 250px; font-size: 18px;">
+            1344 4 mois 8 jour<br>
+            3941 0 mois 29 jour
+        </div>
         
-        <!-- Header -->
-        <div class="flex justify-between items-center mb-6 border-b pb-4">
-            <div>
-                <h1 class="text-2xl font-bold text-gray-800">كشف حساب الأقدمية</h1>
-                <p class="text-gray-500">Calcul d'Ancienneté</p>
-            </div>
-            <div class="space-x-2 space-x-reverse flex">
-                <button onclick="resetData()" class="no-print bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition text-sm">
-                    🗑️ مسح البيانات / Effacer
-                </button>
-                <button onclick="window.print()" class="no-print bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition text-sm">
-                    🖨️ طباعة / Imprimer
-                </button>
-            </div>
-        </div>
-
-        <!-- Input Form -->
-        <div class="no-print bg-gray-50 p-4 rounded-md mb-6 border border-gray-200">
-            <h2 class="text-lg font-bold mb-4 text-gray-700">إضافة فترة جديدة / Ajouter une période</h2>
-            <div class="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">بداية الأجر (Début)</label>
-                    <input type="date" id="startDate" class="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-blue-500 outline-none">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">نهاية الأجر (Fin)</label>
-                    <input type="date" id="endDate" class="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-blue-500 outline-none">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">المؤسسة (Établissement)</label>
-                    <input type="text" id="company" placeholder="اسم المؤسسة" class="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-blue-500 outline-none">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">نوع الفترة (Type)</label>
-                    <select id="type" class="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-blue-500 outline-none">
-                        <option value="service">فترة عمل (Service)</option>
-                        <option value="arret">توقف عن العمل (Arrêt)</option>
-                    </select>
-                </div>
-                <div>
-                    <button onclick="addRecord()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition">
-                        إضافة (+)
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Table -->
-        <div class="overflow-x-auto">
-            <table class="w-full border-collapse border border-gray-400 text-sm text-center">
-                <thead class="bg-gray-100">
-                    <tr>
-                        <th class="border border-gray-400 p-2 w-1/5">بداية الأجر<br>Début</th>
-                        <th class="border border-gray-400 p-2 w-1/5">نهاية الأجر<br>Fin</th>
-                        <th class="border border-gray-400 p-2 w-1/5">المؤسسة<br>Établissement</th>
-                        <th class="border border-gray-400 p-2 w-1/4">المدة<br>Durée (Y/M/D)</th>
-                        <th class="border border-gray-400 p-2 w-1/10">الأيام<br>Jours</th>
-                        <th class="border border-gray-400 p-2 no-print w-1/10">حذف</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody" class="bg-white">
-                    <!-- Records will be injected here -->
-                </tbody>
-                <tfoot id="tableFoot" class="bg-gray-200 font-bold text-lg">
-                    <!-- Totals will be injected here -->
-                </tfoot>
-            </table>
+        <div class="handwriting" style="top: 670px; right: 50px; font-size: 22px;">
+            4888
         </div>
         
-        <!-- Summary Box -->
-        <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="bg-blue-50 border border-blue-200 p-4 rounded text-center">
-                <h3 class="text-lg font-bold text-blue-800 mb-2">مجموع العمل الفعلي (Total Service)</h3>
-                <div id="totalServiceYMD" class="text-2xl font-bold text-blue-900">0 سنة، 0 شهر، 0 يوم</div>
-                <div id="totalServiceDays" class="text-gray-600 mt-1">0 يوم إجمالي</div>
-            </div>
-            <div class="bg-red-50 border border-red-200 p-4 rounded text-center">
-                <h3 class="text-lg font-bold text-red-800 mb-2">مجموع التوقفات (Total Arrêt)</h3>
-                <div id="totalArretYMD" class="text-2xl font-bold text-red-900">0 سنة، 0 شهر، 0 يوم</div>
-                <div id="totalArretDays" class="text-gray-600 mt-1">0 يوم إجمالي</div>
-            </div>
+        <div class="handwriting" style="top: 750px; right: 50px; font-size: 22px;">
+            31 an 1 mois 16 jours.
+        </div>
+
+
+        <div class="handwriting hw-bottom-left">
+            630006002965
+        </div>
+
+        <!-- Small handwritten correction on the subtotal row -->
+        <div class="handwriting" style="top: 500px; left: 280px; font-size: 16px;">
+            (correction mark)
         </div>
 
     </div>
 
+    <!-- JavaScript for Excel Export -->
     <script>
-        // Data extracted from your image
-        const preloadedData = [
-            { start: '1993-11-14', end: '1999-06-03', years: 5, months: 6, days: 20, totalDays: 2019, type: 'service', company: '' },
-            { start: '1999-05-22', end: '1999-12-10', years: 0, months: 6, days: 19, totalDays: 182, type: 'service', company: '' },
-            { start: '2000-04-01', end: '2000-05-22', years: 0, months: 1, days: 22, totalDays: 52, type: 'service', company: '' },
-            { start: '2000-08-21', end: '2000-11-29', years: 0, months: 3, days: 9, totalDays: 101, type: 'service', company: '' },
-            { start: '2000-11-29', end: '2000-11-29', years: 0, months: 0, days: 0, totalDays: 1, type: 'service', company: '' },
-            { start: '2001-06-15', end: '2001-11-29', years: 0, months: 5, days: 15, totalDays: 167, type: 'service', company: '' },
-            { start: '2002-01-17', end: '2002-06-17', years: 0, months: 5, days: 1, totalDays: 151, type: 'service', company: '' },
-            { start: '2002-03-11', end: '2002-04-30', years: 0, months: 1, days: 20, totalDays: 51, type: 'service', company: '' },
-            { start: '2002-04-30', end: '2002-07-19', years: 0, months: 2, days: 20, totalDays: 80, type: 'service', company: '' },
-            { start: '2002-07-19', end: '2002-09-18', years: 0, months: 1, days: 30, totalDays: 60, type: 'service', company: '' },
-            { start: '2002-09-18', end: '2002-12-30', years: 0, months: 3, days: 13, totalDays: 103, type: 'service', company: '' },
-            { start: '2002-12-30', end: '2003-01-19', years: 0, months: 0, days: 20, totalDays: 20, type: 'service', company: '' },
-            { start: '2003-01-19', end: '2003-09-11', years: 0, months: 7, days: 23, totalDays: 235, type: 'service', company: '' },
-            { start: '2003-09-11', end: '2003-10-09', years: 0, months: 0, days: 28, totalDays: 28, type: 'service', company: '' },
-            { start: '2003-10-09', end: '2003-12-17', years: 0, months: 2, days: 8, totalDays: 69, type: 'service', company: '' },
-            { start: '2003-12-17', end: '2004-04-16', years: 0, months: 3, days: 30, totalDays: 120, type: 'service', company: '' },
-            { start: '2004-04-26', end: '2004-11-18', years: 0, months: 6, days: 10, totalDays: 161, type: 'service', company: '' },
-            { start: '2004-11-18', end: '2005-03-01', years: 0, months: 3, days: 12, totalDays: 92, type: 'service', company: '' },
-            { start: '2005-03-01', end: '2005-07-12', years: 0, months: 4, days: 12, totalDays: 122, type: 'service', company: '' },
-            { start: '2005-07-12', end: '2005-12-21', years: 0, months: 5, days: 10, totalDays: 153, type: 'service', company: '' },
-            { start: '2005-12-21', end: '2006-02-02', years: 0, months: 1, days: 13, totalDays: 31, type: 'service', company: '' },
-            { start: '2006-02-02', end: '2006-05-10', years: 0, months: 3, days: 9, totalDays: 89, type: 'service', company: '' },
-            { start: '2006-05-10', end: '2006-11-21', years: 0, months: 6, days: 12, totalDays: 184, type: 'service', company: '' },
-            { start: '2006-11-21', end: '2007-04-04', years: 0, months: 4, days: 15, totalDays: 120, type: 'service', company: '' },
-            { start: '2007-04-04', end: '2007-09-13', years: 0, months: 5, days: 10, totalDays: 153, type: 'service', company: '' },
-            { start: '2007-09-13', end: '2008-04-06', years: 0, months: 6, days: 24, totalDays: 182, type: 'service', company: '' },
-            { start: '2008-04-06', end: '2008-09-03', years: 0, months: 4, days: 28, totalDays: 133, type: 'service', company: '' },
-            { start: '2008-09-03', end: '2009-01-12', years: 0, months: 4, days: 10, totalDays: 122, type: 'service', company: '' },
-            { start: '2009-01-12', end: '2009-05-20', years: 0, months: 4, days: 9, totalDays: 120, type: 'service', company: '' },
-            { start: '2009-08-06', end: '2009-10-16', years: 0, months: 2, days: 11, totalDays: 61, type: 'service', company: '' },
-            { start: '2009-10-16', end: '2010-01-15', years: 0, months: 3, days: 0, totalDays: 92, type: 'service', company: '' },
-            { start: '2010-01-15', end: '2010-02-02', years: 0, months: 0, days: 18, totalDays: 18, type: 'service', company: '' },
-            { start: '2010-02-02', end: '2010-05-17', years: 0, months: 3, days: 16, totalDays: 89, type: 'service', company: '' },
-            { start: '2010-05-17', end: '2010-10-04', years: 0, months: 4, days: 18, totalDays: 123, type: 'service', company: '' },
-            { start: '2010-10-04', end: '2011-01-20', years: 0, months: 3, days: 17, totalDays: 92, type: 'service', company: '' },
-            { start: '2011-01-20', end: '2011-04-04', years: 0, months: 2, days: 16, totalDays: 59, type: 'service', company: '' },
-            { start: '2011-04-04', end: '2011-08-03', years: 0, months: 4, days: 0, totalDays: 122, type: 'service', company: '' },
-            { start: '2004-07-25', end: '2004-11-03', years: 0, months: 3, days: 10, totalDays: 92, type: 'service', company: '' },
-            { start: '2004-11-03', end: '2005-02-17', years: 0, months: 3, days: 15, totalDays: 107, type: 'service', company: '' },
-            { start: '2005-02-17', end: '2005-06-30', years: 0, months: 4, days: 14, totalDays: 134, type: 'service', company: '' },
-            { start: '2005-06-30', end: '2005-12-11', years: 0, months: 5, days: 12, totalDays: 153, type: 'service', company: '' },
-            { start: '2005-12-11', end: '2006-01-20', years: 0, months: 1, days: 10, totalDays: 31, type: 'service', company: '' },
-            { start: '2006-01-20', end: '2006-11-09', years: 0, months: 9, days: 20, totalDays: 184, type: 'service', company: '' },
-            { start: '1999-05-25', end: '1999-12-01', years: 0, months: 6, days: 7, totalDays: 182, type: 'service', company: '' },
-            { start: '1999-12-01', end: '2000-04-09', years: 0, months: 4, days: 9, totalDays: 120, type: 'service', company: '' },
-            { start: '2000-04-09', end: '2000-08-21', years: 0, months: 4, days: 12, totalDays: 122, type: 'service', company: '' }
-        ];
-
-        // Load data from local storage, or use preloaded data
-        let records = JSON.parse(localStorage.getItem('anciennete_records'));
-        if (!records) {
-            records = preloadedData;
-            saveData(); // Save the preloaded data on first run
-        }
-
-        // Calculate exact Y/M/D for NEW manual entries
-        function calculateDuration(startStr, endStr) {
-            const start = new Date(startStr);
-            const end = new Date(endStr);
+        function exportTableToExcel(tableID, filename = ''){
+            var downloadLink;
+            var dataType = 'application/vnd.ms-excel';
+            // Select both tables to export everything
+            var table1 = document.getElementById(tableID);
+            var table2 = document.querySelector('.footer-table');
             
-            if (isNaN(start) || isNaN(end) || start > end) return null;
-
-            let years = end.getFullYear() - start.getFullYear();
-            let months = end.getMonth() - start.getMonth();
-            let days = end.getDate() - start.getDate();
-
-            if (days < 0) {
-                months--;
-                const prevMonth = new Date(end.getFullYear(), end.getMonth(), 0);
-                days += prevMonth.getDate();
-            }
-            if (months < 0) {
-                years--;
-                months += 12;
-            }
-
-            const diffTime = Math.abs(end - start);
-            const totalDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
-
-            return { years, months, days, totalDays };
-        }
-
-        // Add a new record
-        function addRecord() {
-            const start = document.getElementById('startDate').value;
-            const end = document.getElementById('endDate').value;
-            const company = document.getElementById('company').value || '-';
-            const type = document.getElementById('type').value;
-
-            if (!start || !end) {
-                alert('يرجى ملء تاريخ البداية والنهاية / Veuillez remplir les dates.');
-                return;
-            }
-
-            const duration = calculateDuration(start, end);
-            if (!duration) {
-                alert('تاريخ النهاية يجب أن يكون بعد تاريخ البداية / La date de fin doit être après le début.');
-                return;
-            }
-
-            const newRecord = {
-                id: Date.now(),
-                start,
-                end,
-                company,
-                type,
-                ...duration
-            };
-
-            records.unshift(newRecord); // Add to top
-            saveData();
-            renderTable();
-
-            // Clear inputs
-            document.getElementById('startDate').value = '';
-            document.getElementById('endDate').value = '';
-            document.getElementById('company').value = '';
-        }
-
-        // Delete a record
-        function deleteRecord(id) {
-            if(confirm('هل أنت متأكد من الحذف؟ / Êtes-vous sûr ?')) {
-                records = records.filter(r => r.id !== id);
-                saveData();
-                renderTable();
-            }
-        }
-
-        // Reset Data to Empty
-        function resetData() {
-            if(confirm('هل أنت متأكد من مسح جميع البيانات؟ / Voulez-vous vraiment tout effacer ?')) {
-                records = [];
-                saveData();
-                renderTable();
-            }
-        }
-
-        // Save to LocalStorage
-        function saveData() {
-            localStorage.setItem('anciennete_records', JSON.stringify(records));
-        }
-
-        // Format Date for Display (DD Month YYYY)
-        function formatDate(dateStr) {
-            if (!dateStr) return '';
-            const d = new Date(dateStr);
-            if (isNaN(d)) return dateStr;
+            // Create a temporary table combining both for export
+            var fullTable = document.createElement('table');
+            fullTable.innerHTML = table1.innerHTML + "<br>" + table2.outerHTML;
             
-            // Format like the image: "14 November 1993"
-            const options = { day: '2-digit', month: 'long', year: 'numeric' };
-            return d.toLocaleDateString('en-GB', options); 
-        }
-
-        // Render Table
-        function renderTable() {
-            const tbody = document.getElementById('tableBody');
-            const tfoot = document.getElementById('tableFoot');
-            tbody.innerHTML = '';
-            tfoot.innerHTML = '';
-
-            if (records.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="border border-gray-400 p-6 text-gray-500">لا توجد بيانات. أضف فترة للبدء.<br>Aucune donnée. Ajoutez une période pour commencer.</td></tr>`;
-                updateSummaries(0,0,0,0,0,0,0,0);
-                return;
-            }
-
-            let serviceY = 0, serviceM = 0, serviceD = 0, serviceTotalDays = 0;
-            let arretY = 0, arretM = 0, arretD = 0, arretTotalDays = 0;
-
-            records.forEach((r) => {
-                // If the record has pre-calculated values (from image), use them. 
-                // Otherwise, use the values calculated when added manually.
-                const rYears = r.years || 0;
-                const rMonths = r.months || 0;
-                const rDays = r.days || 0;
-                const rTotalDays = r.totalDays || 0;
-
-                if (r.type === 'service') {
-                    serviceY += rYears;
-                    serviceM += rMonths;
-                    serviceD += rDays;
-                    serviceTotalDays += rTotalDays;
-                } else {
-                    arretY += rYears;
-                    arretM += rMonths;
-                    arretD += rDays;
-                    arretTotalDays += rTotalDays;
-                }
-
-                const tr = document.createElement('tr');
-                tr.className = r.type === 'arret' ? 'bg-red-50 hover:bg-red-100' : 'hover:bg-gray-50';
-                tr.innerHTML = `
-                    <td class="border border-gray-400 p-2 text-xs md:text-sm">${formatDate(r.start)}</td>
-                    <td class="border border-gray-400 p-2 text-xs md:text-sm">${formatDate(r.end)}</td>
-                    <td class="border border-gray-400 p-2 text-right text-xs md:text-sm">${r.company || '-'}</td>
-                    <td class="border border-gray-400 p-2 font-bold ${r.type === 'arret' ? 'text-red-600' : 'text-blue-600'} text-xs md:text-sm">
-                        ${rYears} سنة، ${rMonths} شهر، ${rDays} يوم
-                    </td>
-                    <td class="border border-gray-400 p-2 text-xs md:text-sm">${rTotalDays}</td>
-                    <td class="border border-gray-400 p-2 no-print">
-                        <button onclick="deleteRecord(${r.id})" class="text-red-500 hover:text-red-700 font-bold px-2 py-1">✖</button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-
-            // Calculate and normalize grand totals (30 days = 1 month, 12 months = 1 year)
-            serviceM += Math.floor(serviceD / 30);
-            serviceD = serviceD % 30;
-            serviceY += Math.floor(serviceM / 12);
-            serviceM = serviceM % 12;
-
-            arretM += Math.floor(arretD / 30);
-            arretD = arretD % 30;
-            arretY += Math.floor(arretM / 12);
-            arretM = arretM % 12;
-
-            updateSummaries(serviceY, serviceM, serviceD, serviceTotalDays, arretY, arretM, arretD, arretTotalDays);
-        }
-
-        // Update the summary boxes
-        function updateSummaries(sY, sM, sD, sTD, aY, aM, aD, aTD) {
-            document.getElementById('totalServiceYMD').innerText = `${sY} سنة، ${sM} شهر، ${sD} يوم`;
-            document.getElementById('totalServiceDays').innerText = `${sTD} يوم إجمالي`;
+            // Add basic styling for the excel file
+            var style = "<style>table {border-collapse: collapse;} th, td {border: 1px solid black; padding: 5px; text-align: center;}</style>";
             
-            document.getElementById('totalArretYMD').innerText = `${aY} سنة، ${aM} شهر، ${aD} يوم`;
-            document.getElementById('totalArretDays').innerText = `${aTD} يوم إجمالي`;
-        }
+            var tableHTML = style + fullTable.outerHTML;
 
-        // Initialize on load
-        renderTable();
+            // Specify file name
+            filename = filename?filename+'.xls':'excel_data.xls';
+
+            // Create download link element
+            downloadLink = document.createElement("a");
+            document.body.appendChild(downloadLink);
+
+            if(navigator.msSaveOrOpenBlob){
+                var blob = new Blob(['\ufeff', tableHTML], {
+                    type: dataType
+                });
+                navigator.msSaveOrOpenBlob( blob, filename);
+            }else{
+                // Create a link to the file
+                downloadLink.href = 'data:' + dataType + ', ' + encodeURIComponent(tableHTML);
+                // Setting the file name
+                downloadLink.download = filename;
+                //triggering the function
+                downloadLink.click();
+            }
+        }
     </script>
 </body>
 </html>
