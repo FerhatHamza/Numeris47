@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مخطط التكوينات - Planning de Formation</title>
+    <title>برمجة التكوين والإعلان - Planning & Announcement</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap');
         body { font-family: 'Cairo', sans-serif; background-color: #f3f4f6; }
         
         /* Print Settings */
@@ -14,99 +14,184 @@
             .no-print { display: none !important; }
             body { background-color: white; padding: 0; margin: 0; }
             .print-container { width: 100%; max-width: 100%; margin: 0; padding: 0; box-shadow: none; border: none; }
+            .page-break { page-break-before: always; }
             table { font-size: 12px; }
-            th, td { padding: 6px !important; border-color: #000 !important; }
+            th, td { padding: 8px !important; border-color: #000 !important; }
+            .announcement-box { border: none !important; box-shadow: none !important; padding: 0 !important; }
         }
+        
+        /* Editable text focus */
+        [contenteditable]:focus { outline: 2px dashed #3b82f6; background-color: #eff6ff; }
     </style>
 </head>
 <body class="p-4 md:p-8">
 
-    <div class="max-w-6xl mx-auto bg-white p-6 rounded-lg shadow-lg print-container">
+    <div class="max-w-5xl mx-auto space-y-8 print-container">
         
-        <!-- Header -->
-        <div class="flex justify-between items-center mb-6 border-b-2 border-gray-800 pb-4">
-            <div>
-                <h1 class="text-2xl font-bold text-gray-800">برنامج التكوين (Planning)</h1>
-                <p class="text-gray-500">جدول توزيع الحصص للأسبوع القادم</p>
-            </div>
-            <div class="flex gap-2 no-print">
+        <!-- Action Buttons -->
+        <div class="no-print flex justify-between items-center bg-white p-4 rounded-lg shadow">
+            <h1 class="text-xl font-bold text-gray-800">لوحة التحكم بالتكوين</h1>
+            <div class="flex gap-2">
                 <button onclick="resetData()" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition text-sm">
                     🗑️ مسح الجدول
                 </button>
                 <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition text-sm">
-                    🖨️ طباعة الجدول
+                    🖨️ طباعة الكل (الجدول + الإعلان)
                 </button>
             </div>
         </div>
 
-        <!-- Input Form -->
-        <div class="no-print bg-blue-50 p-4 rounded-md mb-6 border border-blue-200">
-            <h2 class="text-lg font-bold mb-4 text-blue-800">إضافة حصة تكوين جديدة</h2>
-            <div class="grid grid-cols-1 md:grid-cols-6 gap-4 items-end">
-                <div class="col-span-1">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">التاريخ (Date)</label>
-                    <input type="date" id="date" class="w-full border border-gray-300 p-2 rounded outline-none">
+        <!-- ========================================== -->
+        <!-- SECTION 1: PLANNING TABLE -->
+        <!-- ========================================== -->
+        <div class="bg-white p-6 rounded-lg shadow-lg">
+            <div class="border-b-2 border-gray-800 pb-4 mb-6">
+                <h2 class="text-2xl font-bold text-center text-gray-800">برنامج حصص الاستدراك (Planning de Rattrapage)</h2>
+                <p class="text-center text-gray-500 mt-2">الأسبوع القادم</p>
+            </div>
+
+            <!-- Input Form (Hidden on Print) -->
+            <div class="no-print bg-blue-50 p-4 rounded-md mb-6 border border-blue-200">
+                <h3 class="text-md font-bold mb-4 text-blue-800">إضافة حصة جديدة (للتعديل على الجدول)</h3>
+                <div class="grid grid-cols-1 md:grid-cols-6 gap-3 items-end">
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1">التاريخ</label>
+                        <input type="date" id="date" class="w-full border border-gray-300 p-2 rounded outline-none text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1">التوقيت</label>
+                        <input type="time" id="time" class="w-full border border-gray-300 p-2 rounded outline-none text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1">الفئة</label>
+                        <input type="text" id="category" placeholder="مثال: أطباء" class="w-full border border-gray-300 p-2 rounded outline-none text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1">عدد المكونين</label>
+                        <input type="number" id="count" min="0" placeholder="0" class="w-full border border-gray-300 p-2 rounded outline-none text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1">المدة</label>
+                        <input type="text" id="duration" placeholder="يوم واحد" class="w-full border border-gray-300 p-2 rounded outline-none text-sm">
+                    </div>
+                    <div>
+                        <button onclick="addRecord()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition text-sm">
+                            إضافة (+)
+                        </button>
+                    </div>
                 </div>
-                <div class="col-span-1">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">التوقيت (Heure)</label>
-                    <input type="time" id="time" class="w-full border border-gray-300 p-2 rounded outline-none">
-                </div>
-                <div class="col-span-1">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">الفئة (Catégorie)</label>
-                    <input type="text" id="category" placeholder="مثال: أطباء، شبه طبي..." class="w-full border border-gray-300 p-2 rounded outline-none">
-                </div>
-                <div class="col-span-1">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">عدد المكونين</label>
-                    <input type="number" id="count" min="0" placeholder="0" class="w-full border border-gray-300 p-2 rounded outline-none">
-                </div>
-                <div class="col-span-1">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">المدة (Duration)</label>
-                    <input type="text" id="duration" placeholder="مثال: يوم واحد" class="w-full border border-gray-300 p-2 rounded outline-none">
-                </div>
-                <div class="col-span-1">
-                    <button onclick="addRecord()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition">
-                        إضافة (+)
-                    </button>
+                <div class="mt-2">
+                    <label class="block text-xs font-medium text-gray-700 mb-1">ملاحظات</label>
+                    <input type="text" id="notes" placeholder="ملاحظات إضافية..." class="w-full border border-gray-300 p-2 rounded outline-none text-sm">
                 </div>
             </div>
-            <div class="mt-3">
-                <label class="block text-sm font-medium text-gray-700 mb-1">ملاحظات (Notes)</label>
-                <input type="text" id="notes" placeholder="مثال: استدراك للغائبين، في انتظار البرمجة..." class="w-full border border-gray-300 p-2 rounded outline-none">
+
+            <!-- Table -->
+            <div class="overflow-x-auto">
+                <table class="w-full border-collapse border border-gray-400 text-sm text-center">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="border border-gray-400 p-2 w-1/5">اليوم والتاريخ</th>
+                            <th class="border border-gray-400 p-2 w-1/6">التوقيت</th>
+                            <th class="border border-gray-400 p-2 w-1/5">الفئة المستهدفة</th>
+                            <th class="border border-gray-400 p-2 w-1/12">العدد</th>
+                            <th class="border border-gray-400 p-2 w-1/8">المدة</th>
+                            <th class="border border-gray-400 p-2 w-1/4">ملاحظات</th>
+                            <th class="border border-gray-400 p-2 no-print">حذف</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody" class="bg-white">
+                        <!-- Data injected via JS -->
+                    </tbody>
+                    <tfoot id="tableFoot" class="bg-gray-200 font-bold">
+                        <!-- Totals injected via JS -->
+                    </tfoot>
+                </table>
             </div>
         </div>
 
-        <!-- Table -->
-        <div class="overflow-x-auto">
-            <table class="w-full border-collapse border border-gray-400 text-sm text-center">
-                <thead class="bg-gray-100">
-                    <tr>
-                        <th class="border border-gray-400 p-2">التاريخ والتوقيت</th>
-                        <th class="border border-gray-400 p-2">الفئة</th>
-                        <th class="border border-gray-400 p-2">عدد المكونين</th>
-                        <th class="border border-gray-400 p-2">المدة</th>
-                        <th class="border border-gray-400 p-2 w-1/3">ملاحظات</th>
-                        <th class="border border-gray-400 p-2 no-print">حذف</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody" class="bg-white">
-                    <!-- Records will be injected here -->
-                </tbody>
-                <tfoot id="tableFoot" class="bg-gray-200 font-bold">
-                    <!-- Totals will be injected here -->
-                </tfoot>
-            </table>
+        <!-- ========================================== -->
+        <!-- SECTION 2: ANNOUNCEMENT (Starts on new page for print) -->
+        <!-- ========================================== -->
+        <div class="page-break bg-white p-8 md:p-12 rounded-lg shadow-lg border border-gray-200 announcement-box">
+            
+            <!-- Editable Header -->
+            <div class="text-center mb-8 border-b-2 border-black pb-4">
+                <h2 class="text-xl font-bold" contenteditable="true" title="يمكنك النقر لتعديل اسم المؤسسة">[اسم المؤسسة الصحية - المستشفى / العيادة]</h2>
+                <h3 class="text-lg font-bold mt-2" contenteditable="true">مصلحة التكوين والتحسين المستمر</h3>
+            </div>
+
+            <!-- Editable Title -->
+            <div class="text-center mb-6">
+                <h1 class="text-3xl font-black underline decoration-2 underline-offset-8">إعـــلان هام</h1>
+                <p class="mt-4 text-lg font-bold" contenteditable="true">إلى كافة مستخدمي المؤسسة المعنيين بالدورة التكوينية (الإعلام الآلي / البرمجة)</p>
+            </div>
+
+            <!-- Editable Body Text -->
+            <div class="text-lg leading-loose text-justify space-y-4" contenteditable="true" title="يمكنك النقر لتعديل النص">
+                <p>
+                    نظراً لتسجيل عدة غيابات بدون عذر في الحصص السابقة، وحرصاً منا على ضمان استفادة الجميع، نلفت عنايتكم إلى أنه تم <strong>برمجة حصص استدراكية (Rattrapage)</strong> خاصة بالفئات التي لم تتمكن من إتمام التكوين، وذلك وفق البرنامج التالي:
+                </p>
+                
+                <ul class="list-disc list-inside space-y-2 pr-4 font-bold">
+                    <li><strong>الأحد [التاريخ]:</strong> حصة استدراكية لفئة <strong>الأطباء</strong> (الدفعة الأولى والثانية).</li>
+                    <li><strong>الإثنين [التاريخ]:</strong> حصة استدراكية لفئة <strong>شبه الطبي (العام)</strong>.</li>
+                    <li><strong>الثلاثاء [التاريخ]:</strong> حصة استدراكية لفئة <strong>شبه الطبي (تصفية الدم)</strong>.</li>
+                    <li><strong>الأربعاء [التاريخ]:</strong> حصة استدراكية لفئة <strong>الإداريين</strong>.</li>
+                </ul>
+
+                <div class="bg-gray-50 p-4 border-r-4 border-blue-600 my-4">
+                    <p class="font-bold">📍 المكان: <span class="font-normal" contenteditable="true">[قاعة الإعلام الآلي / قاعة التكوين]</span></p>
+                    <p class="font-bold">⏰ التوقيت: <span class="font-normal" contenteditable="true">الساعة 09:00 صباحاً</span></p>
+                </div>
+
+                <p class="font-bold text-red-700">
+                    ملاحظة هامة: الحضور إلزامي، ونعتذر عن قبول أي أعذار جديدة في هذه الحصص الاستدراكية. نرجو من السادة المعنيين الالتزام بالمواعيد المحددة لضمان نجاح التكوين.
+                </p>
+            </div>
+
+            <!-- Editable Footer -->
+            <div class="mt-16 text-left font-bold">
+                <p contenteditable="true">عن إدارة المؤسسة / رئيس مصلحة التكوين</p>
+                <p class="mt-8 text-gray-400 text-sm no-print">(انقر هنا لكتابة الاسم أو التوقيع)</p>
+            </div>
+            
         </div>
+
     </div>
 
     <script>
-        // Load data from local storage
-        let records = JSON.parse(localStorage.getItem('planning_records')) || [];
+        // Get next Sunday's date dynamically for defaults
+        function getNextDayOfWeek(dayOfWeek) {
+            const resultDate = new Date();
+            resultDate.setDate(resultDate.getDate() + (7 + dayOfWeek - resultDate.getDay()) % 7);
+            return resultDate.toISOString().split('T')[0];
+        }
 
-        // Format date
-        function formatDate(dateStr) {
+        const nextSunday = getNextDayOfWeek(0); // 0 is Sunday
+        const nextMonday = getNextDayOfWeek(1);
+        const nextTuesday = getNextDayOfWeek(2);
+        const nextWednesday = getNextDayOfWeek(3);
+
+        // Default pre-filled data based on the user's analysis request
+        const defaultData = [
+            { id: 1, date: nextSunday, time: '09:00', category: 'الأطباء (الدفعة 1 و 2)', count: 4, duration: 'يوم واحد', notes: 'استدراك للغائبين بدون عذر + إعادة البرمجة' },
+            { id: 2, date: nextMonday, time: '09:00', category: 'شبه الطبي (العام)', count: 5, duration: 'يوم واحد', notes: 'استدراك للغائبين بدون عذر' },
+            { id: 3, date: nextTuesday, time: '09:00', category: 'شبه الطبي (تصفية الدم)', count: 6, duration: 'يوم واحد', notes: 'استدراك للغائبين بدون عذر' },
+            { id: 4, date: nextWednesday, time: '09:00', category: 'الإداريين', count: 1, duration: 'يوم واحد', notes: 'استدراك للموظف الذي تأخر' }
+        ];
+
+        // Load data from local storage, or use default data
+        let records = JSON.parse(localStorage.getItem('planning_records_v2'));
+        if (!records) {
+            records = defaultData;
+            saveData();
+        }
+
+        function formatDateArabic(dateStr) {
             if (!dateStr) return '';
             const d = new Date(dateStr);
-            const options = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             return d.toLocaleDateString('ar-DZ', options); 
         }
 
@@ -134,7 +219,6 @@
             };
 
             records.push(newRecord);
-            // Sort by date
             records.sort((a, b) => new Date(a.date) - new Date(b.date));
             
             saveData();
@@ -158,7 +242,7 @@
         }
 
         function resetData() {
-            if(confirm('هل تريد مسح الجدول بالكامل للبدء من جديد؟')) {
+            if(confirm('هل تريد مسح الجدول للبدء من جديد؟')) {
                 records = [];
                 saveData();
                 renderTable();
@@ -166,7 +250,7 @@
         }
 
         function saveData() {
-            localStorage.setItem('planning_records', JSON.stringify(records));
+            localStorage.setItem('planning_records_v2', JSON.stringify(records));
         }
 
         function renderTable() {
@@ -175,7 +259,7 @@
             tbody.innerHTML = '';
             
             if (records.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="border border-gray-400 p-6 text-gray-500">لا توجد حصص مبرمجة. أضف حصة للبدء.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="7" class="border border-gray-400 p-6 text-gray-500">لا توجد حصص مبرمجة. أضف حصة للبدء.</td></tr>`;
                 tfoot.innerHTML = '';
                 return;
             }
@@ -188,14 +272,12 @@
                 const tr = document.createElement('tr');
                 tr.className = 'hover:bg-gray-50';
                 tr.innerHTML = `
-                    <td class="border border-gray-400 p-2 font-bold text-blue-700">
-                        ${formatDate(r.date)} <br>
-                        <span class="text-xs text-gray-500">${r.time || ''}</span>
-                    </td>
-                    <td class="border border-gray-400 p-2">${r.category}</td>
+                    <td class="border border-gray-400 p-2 font-bold text-blue-700 text-sm">${formatDateArabic(r.date)}</td>
+                    <td class="border border-gray-400 p-2 text-sm">${r.time || '-'}</td>
+                    <td class="border border-gray-400 p-2 text-sm">${r.category}</td>
                     <td class="border border-gray-400 p-2 font-bold text-lg">${r.count}</td>
-                    <td class="border border-gray-400 p-2">${r.duration || '-'}</td>
-                    <td class="border border-gray-400 p-2 text-right text-sm">${r.notes || '-'}</td>
+                    <td class="border border-gray-400 p-2 text-sm">${r.duration || '-'}</td>
+                    <td class="border border-gray-400 p-2 text-right text-xs">${r.notes || '-'}</td>
                     <td class="border border-gray-400 p-2 no-print">
                         <button onclick="deleteRecord(${r.id})" class="text-red-500 hover:text-red-700 font-bold px-2 py-1">✖</button>
                     </td>
@@ -205,8 +287,8 @@
 
             tfoot.innerHTML = `
                 <tr>
-                    <td colspan="2" class="border border-gray-400 p-3 text-lg">المجموع الكلي</td>
-                    <td class="border border-gray-400 p-3 text-xl text-blue-800">${totalCount} مكون</td>
+                    <td colspan="3" class="border border-gray-400 p-3 text-lg">المجموع الكلي</td>
+                    <td class="border border-gray-400 p-3 text-xl text-blue-800">${totalCount}</td>
                     <td colspan="3" class="border border-gray-400 p-3"></td>
                 </tr>
             `;
