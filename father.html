@@ -14,14 +14,14 @@
             .no-print { display: none !important; }
             body { background-color: white; padding: 0; margin: 0; }
             .print-container { width: 100%; max-width: 100%; margin: 0; padding: 0; box-shadow: none; border: none; }
-            table { font-size: 12px; }
+            table { font-size: 11px; }
             th, td { padding: 4px !important; }
         }
     </style>
 </head>
-<body class="p-4 md:p-8">
+<body class="p-2 md:p-8">
 
-    <div class="max-w-6xl mx-auto bg-white p-6 rounded-lg shadow-lg print-container">
+    <div class="max-w-6xl mx-auto bg-white p-4 md:p-6 rounded-lg shadow-lg print-container">
         
         <!-- Header -->
         <div class="flex justify-between items-center mb-6 border-b pb-4">
@@ -29,14 +29,19 @@
                 <h1 class="text-2xl font-bold text-gray-800">كشف حساب الأقدمية</h1>
                 <p class="text-gray-500">Calcul d'Ancienneté</p>
             </div>
-            <button onclick="window.print()" class="no-print bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition">
-                🖨️ طباعة / Imprimer
-            </button>
+            <div class="space-x-2 space-x-reverse flex">
+                <button onclick="resetData()" class="no-print bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition text-sm">
+                    🗑️ مسح البيانات / Effacer
+                </button>
+                <button onclick="window.print()" class="no-print bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition text-sm">
+                    🖨️ طباعة / Imprimer
+                </button>
+            </div>
         </div>
 
         <!-- Input Form -->
         <div class="no-print bg-gray-50 p-4 rounded-md mb-6 border border-gray-200">
-            <h2 class="text-lg font-bold mb-4 text-gray-700">إضافة فترة / Ajouter une période</h2>
+            <h2 class="text-lg font-bold mb-4 text-gray-700">إضافة فترة جديدة / Ajouter une période</h2>
             <div class="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">بداية الأجر (Début)</label>
@@ -70,18 +75,18 @@
             <table class="w-full border-collapse border border-gray-400 text-sm text-center">
                 <thead class="bg-gray-100">
                     <tr>
-                        <th class="border border-gray-400 p-2">بداية الأجر<br>Début</th>
-                        <th class="border border-gray-400 p-2">نهاية الأجر<br>Fin</th>
-                        <th class="border border-gray-400 p-2">المؤسسة<br>Établissement</th>
-                        <th class="border border-gray-400 p-2">المدة<br>Durée (Y/M/D)</th>
-                        <th class="border border-gray-400 p-2">عدد الأيام<br>Jours</th>
-                        <th class="border border-gray-400 p-2 no-print">حذف</th>
+                        <th class="border border-gray-400 p-2 w-1/5">بداية الأجر<br>Début</th>
+                        <th class="border border-gray-400 p-2 w-1/5">نهاية الأجر<br>Fin</th>
+                        <th class="border border-gray-400 p-2 w-1/5">المؤسسة<br>Établissement</th>
+                        <th class="border border-gray-400 p-2 w-1/4">المدة<br>Durée (Y/M/D)</th>
+                        <th class="border border-gray-400 p-2 w-1/10">الأيام<br>Jours</th>
+                        <th class="border border-gray-400 p-2 no-print w-1/10">حذف</th>
                     </tr>
                 </thead>
                 <tbody id="tableBody" class="bg-white">
                     <!-- Records will be injected here -->
                 </tbody>
-                <tfoot id="tableFoot" class="bg-gray-200 font-bold">
+                <tfoot id="tableFoot" class="bg-gray-200 font-bold text-lg">
                     <!-- Totals will be injected here -->
                 </tfoot>
             </table>
@@ -104,17 +109,70 @@
     </div>
 
     <script>
-        // Array to store our data
-        let records = JSON.parse(localStorage.getItem('anciennete_records')) || [];
+        // Data extracted from your image
+        const preloadedData = [
+            { start: '1993-11-14', end: '1999-06-03', years: 5, months: 6, days: 20, totalDays: 2019, type: 'service', company: '' },
+            { start: '1999-05-22', end: '1999-12-10', years: 0, months: 6, days: 19, totalDays: 182, type: 'service', company: '' },
+            { start: '2000-04-01', end: '2000-05-22', years: 0, months: 1, days: 22, totalDays: 52, type: 'service', company: '' },
+            { start: '2000-08-21', end: '2000-11-29', years: 0, months: 3, days: 9, totalDays: 101, type: 'service', company: '' },
+            { start: '2000-11-29', end: '2000-11-29', years: 0, months: 0, days: 0, totalDays: 1, type: 'service', company: '' },
+            { start: '2001-06-15', end: '2001-11-29', years: 0, months: 5, days: 15, totalDays: 167, type: 'service', company: '' },
+            { start: '2002-01-17', end: '2002-06-17', years: 0, months: 5, days: 1, totalDays: 151, type: 'service', company: '' },
+            { start: '2002-03-11', end: '2002-04-30', years: 0, months: 1, days: 20, totalDays: 51, type: 'service', company: '' },
+            { start: '2002-04-30', end: '2002-07-19', years: 0, months: 2, days: 20, totalDays: 80, type: 'service', company: '' },
+            { start: '2002-07-19', end: '2002-09-18', years: 0, months: 1, days: 30, totalDays: 60, type: 'service', company: '' },
+            { start: '2002-09-18', end: '2002-12-30', years: 0, months: 3, days: 13, totalDays: 103, type: 'service', company: '' },
+            { start: '2002-12-30', end: '2003-01-19', years: 0, months: 0, days: 20, totalDays: 20, type: 'service', company: '' },
+            { start: '2003-01-19', end: '2003-09-11', years: 0, months: 7, days: 23, totalDays: 235, type: 'service', company: '' },
+            { start: '2003-09-11', end: '2003-10-09', years: 0, months: 0, days: 28, totalDays: 28, type: 'service', company: '' },
+            { start: '2003-10-09', end: '2003-12-17', years: 0, months: 2, days: 8, totalDays: 69, type: 'service', company: '' },
+            { start: '2003-12-17', end: '2004-04-16', years: 0, months: 3, days: 30, totalDays: 120, type: 'service', company: '' },
+            { start: '2004-04-26', end: '2004-11-18', years: 0, months: 6, days: 10, totalDays: 161, type: 'service', company: '' },
+            { start: '2004-11-18', end: '2005-03-01', years: 0, months: 3, days: 12, totalDays: 92, type: 'service', company: '' },
+            { start: '2005-03-01', end: '2005-07-12', years: 0, months: 4, days: 12, totalDays: 122, type: 'service', company: '' },
+            { start: '2005-07-12', end: '2005-12-21', years: 0, months: 5, days: 10, totalDays: 153, type: 'service', company: '' },
+            { start: '2005-12-21', end: '2006-02-02', years: 0, months: 1, days: 13, totalDays: 31, type: 'service', company: '' },
+            { start: '2006-02-02', end: '2006-05-10', years: 0, months: 3, days: 9, totalDays: 89, type: 'service', company: '' },
+            { start: '2006-05-10', end: '2006-11-21', years: 0, months: 6, days: 12, totalDays: 184, type: 'service', company: '' },
+            { start: '2006-11-21', end: '2007-04-04', years: 0, months: 4, days: 15, totalDays: 120, type: 'service', company: '' },
+            { start: '2007-04-04', end: '2007-09-13', years: 0, months: 5, days: 10, totalDays: 153, type: 'service', company: '' },
+            { start: '2007-09-13', end: '2008-04-06', years: 0, months: 6, days: 24, totalDays: 182, type: 'service', company: '' },
+            { start: '2008-04-06', end: '2008-09-03', years: 0, months: 4, days: 28, totalDays: 133, type: 'service', company: '' },
+            { start: '2008-09-03', end: '2009-01-12', years: 0, months: 4, days: 10, totalDays: 122, type: 'service', company: '' },
+            { start: '2009-01-12', end: '2009-05-20', years: 0, months: 4, days: 9, totalDays: 120, type: 'service', company: '' },
+            { start: '2009-08-06', end: '2009-10-16', years: 0, months: 2, days: 11, totalDays: 61, type: 'service', company: '' },
+            { start: '2009-10-16', end: '2010-01-15', years: 0, months: 3, days: 0, totalDays: 92, type: 'service', company: '' },
+            { start: '2010-01-15', end: '2010-02-02', years: 0, months: 0, days: 18, totalDays: 18, type: 'service', company: '' },
+            { start: '2010-02-02', end: '2010-05-17', years: 0, months: 3, days: 16, totalDays: 89, type: 'service', company: '' },
+            { start: '2010-05-17', end: '2010-10-04', years: 0, months: 4, days: 18, totalDays: 123, type: 'service', company: '' },
+            { start: '2010-10-04', end: '2011-01-20', years: 0, months: 3, days: 17, totalDays: 92, type: 'service', company: '' },
+            { start: '2011-01-20', end: '2011-04-04', years: 0, months: 2, days: 16, totalDays: 59, type: 'service', company: '' },
+            { start: '2011-04-04', end: '2011-08-03', years: 0, months: 4, days: 0, totalDays: 122, type: 'service', company: '' },
+            { start: '2004-07-25', end: '2004-11-03', years: 0, months: 3, days: 10, totalDays: 92, type: 'service', company: '' },
+            { start: '2004-11-03', end: '2005-02-17', years: 0, months: 3, days: 15, totalDays: 107, type: 'service', company: '' },
+            { start: '2005-02-17', end: '2005-06-30', years: 0, months: 4, days: 14, totalDays: 134, type: 'service', company: '' },
+            { start: '2005-06-30', end: '2005-12-11', years: 0, months: 5, days: 12, totalDays: 153, type: 'service', company: '' },
+            { start: '2005-12-11', end: '2006-01-20', years: 0, months: 1, days: 10, totalDays: 31, type: 'service', company: '' },
+            { start: '2006-01-20', end: '2006-11-09', years: 0, months: 9, days: 20, totalDays: 184, type: 'service', company: '' },
+            { start: '1999-05-25', end: '1999-12-01', years: 0, months: 6, days: 7, totalDays: 182, type: 'service', company: '' },
+            { start: '1999-12-01', end: '2000-04-09', years: 0, months: 4, days: 9, totalDays: 120, type: 'service', company: '' },
+            { start: '2000-04-09', end: '2000-08-21', years: 0, months: 4, days: 12, totalDays: 122, type: 'service', company: '' }
+        ];
 
-        // Calculate exact Y/M/D and total days
+        // Load data from local storage, or use preloaded data
+        let records = JSON.parse(localStorage.getItem('anciennete_records'));
+        if (!records) {
+            records = preloadedData;
+            saveData(); // Save the preloaded data on first run
+        }
+
+        // Calculate exact Y/M/D for NEW manual entries
         function calculateDuration(startStr, endStr) {
             const start = new Date(startStr);
             const end = new Date(endStr);
             
             if (isNaN(start) || isNaN(end) || start > end) return null;
 
-            // Exact Y/M/D calculation
             let years = end.getFullYear() - start.getFullYear();
             let months = end.getMonth() - start.getMonth();
             let days = end.getDate() - start.getDate();
@@ -129,11 +187,10 @@
                 months += 12;
             }
 
-            // Total Days calculation (+1 to include the start day as is standard in Algeria)
             const diffTime = Math.abs(end - start);
             const totalDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
 
-            return { years, months, days, totalDays, startStr, endStr };
+            return { years, months, days, totalDays };
         }
 
         // Add a new record
@@ -156,13 +213,16 @@
 
             const newRecord = {
                 id: Date.now(),
+                start,
+                end,
                 company,
                 type,
                 ...duration
             };
 
-            records.push(newRecord);
-            saveAndRender();
+            records.unshift(newRecord); // Add to top
+            saveData();
+            renderTable();
 
             // Clear inputs
             document.getElementById('startDate').value = '';
@@ -174,14 +234,34 @@
         function deleteRecord(id) {
             if(confirm('هل أنت متأكد من الحذف؟ / Êtes-vous sûr ?')) {
                 records = records.filter(r => r.id !== id);
-                saveAndRender();
+                saveData();
+                renderTable();
             }
         }
 
-        // Save to LocalStorage and Render
-        function saveAndRender() {
+        // Reset Data to Empty
+        function resetData() {
+            if(confirm('هل أنت متأكد من مسح جميع البيانات؟ / Voulez-vous vraiment tout effacer ?')) {
+                records = [];
+                saveData();
+                renderTable();
+            }
+        }
+
+        // Save to LocalStorage
+        function saveData() {
             localStorage.setItem('anciennete_records', JSON.stringify(records));
-            renderTable();
+        }
+
+        // Format Date for Display (DD Month YYYY)
+        function formatDate(dateStr) {
+            if (!dateStr) return '';
+            const d = new Date(dateStr);
+            if (isNaN(d)) return dateStr;
+            
+            // Format like the image: "14 November 1993"
+            const options = { day: '2-digit', month: 'long', year: 'numeric' };
+            return d.toLocaleDateString('en-GB', options); 
         }
 
         // Render Table
@@ -192,48 +272,52 @@
             tfoot.innerHTML = '';
 
             if (records.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="border border-gray-400 p-4 text-gray-500">لا توجد بيانات. أضف فترة للبدء.<br>Aucune donnée.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="6" class="border border-gray-400 p-6 text-gray-500">لا توجد بيانات. أضف فترة للبدء.<br>Aucune donnée. Ajoutez une période pour commencer.</td></tr>`;
                 updateSummaries(0,0,0,0,0,0,0,0);
                 return;
             }
 
-            // Separate totals
             let serviceY = 0, serviceM = 0, serviceD = 0, serviceTotalDays = 0;
             let arretY = 0, arretM = 0, arretD = 0, arretTotalDays = 0;
 
-            records.forEach((r, index) => {
-                // Add to totals based on type
+            records.forEach((r) => {
+                // If the record has pre-calculated values (from image), use them. 
+                // Otherwise, use the values calculated when added manually.
+                const rYears = r.years || 0;
+                const rMonths = r.months || 0;
+                const rDays = r.days || 0;
+                const rTotalDays = r.totalDays || 0;
+
                 if (r.type === 'service') {
-                    serviceY += r.years;
-                    serviceM += r.months;
-                    serviceD += r.days;
-                    serviceTotalDays += r.totalDays;
+                    serviceY += rYears;
+                    serviceM += rMonths;
+                    serviceD += rDays;
+                    serviceTotalDays += rTotalDays;
                 } else {
-                    arretY += r.years;
-                    arretM += r.months;
-                    arretD += r.days;
-                    arretTotalDays += r.totalDays;
+                    arretY += rYears;
+                    arretM += rMonths;
+                    arretD += rDays;
+                    arretTotalDays += rTotalDays;
                 }
 
-                // Create Table Row
                 const tr = document.createElement('tr');
                 tr.className = r.type === 'arret' ? 'bg-red-50 hover:bg-red-100' : 'hover:bg-gray-50';
                 tr.innerHTML = `
-                    <td class="border border-gray-400 p-2">${r.startStr}</td>
-                    <td class="border border-gray-400 p-2">${r.endStr}</td>
-                    <td class="border border-gray-400 p-2 text-right">${r.company}</td>
-                    <td class="border border-gray-400 p-2 font-bold ${r.type === 'arret' ? 'text-red-600' : 'text-blue-600'}">
-                        ${r.years} سنة، ${r.months} شهر، ${r.days} يوم
+                    <td class="border border-gray-400 p-2 text-xs md:text-sm">${formatDate(r.start)}</td>
+                    <td class="border border-gray-400 p-2 text-xs md:text-sm">${formatDate(r.end)}</td>
+                    <td class="border border-gray-400 p-2 text-right text-xs md:text-sm">${r.company || '-'}</td>
+                    <td class="border border-gray-400 p-2 font-bold ${r.type === 'arret' ? 'text-red-600' : 'text-blue-600'} text-xs md:text-sm">
+                        ${rYears} سنة، ${rMonths} شهر، ${rDays} يوم
                     </td>
-                    <td class="border border-gray-400 p-2">${r.totalDays}</td>
+                    <td class="border border-gray-400 p-2 text-xs md:text-sm">${rTotalDays}</td>
                     <td class="border border-gray-400 p-2 no-print">
-                        <button onclick="deleteRecord(${r.id})" class="text-red-500 hover:text-red-700 font-bold">✖</button>
+                        <button onclick="deleteRecord(${r.id})" class="text-red-500 hover:text-red-700 font-bold px-2 py-1">✖</button>
                     </td>
                 `;
                 tbody.appendChild(tr);
             });
 
-            // Calculate and normalize grand totals
+            // Calculate and normalize grand totals (30 days = 1 month, 12 months = 1 year)
             serviceM += Math.floor(serviceD / 30);
             serviceD = serviceD % 30;
             serviceY += Math.floor(serviceM / 12);
