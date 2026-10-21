@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#06352b">
+<title>إعلان رسمي وهام — نظام الملف الطبي الإلكتروني DME | المؤسسة العمومية للصحة الجوارية بريان</title>
+<meta name="description" content="دعوة رسمية لكافة الأطباء العامين وأعوان شبه الطبي ومخبري الصحة العمومية ومشغّلي أجهزة التصوير الطبي للالتحاق الفوري بالمديرية الفرعية للمصالح الصحية لاستلام كلمات المرور الخاصة بنظام الملف الطبي الإلكتروني.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;800;900&family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+/* ============ Tokens ============ */
+*,*::before,*::after{box-sizing:border-box}
+:root{
+  --green-900:#06352b;
+  --green-800:#084a3b;
+  --green-700:#0a5c4a;
+  --green-600:#0e7a61;
+  --green-500:#12a37f;
+  --gold:#d4a72c;
+  --gold-soft:#f7e7b4;
+  --red:#c8102e;
+  --ink:#0f231e;
+  --muted:#5d7169;
+  --line:#dbe8e2;
+  --paper:#ffffff;
+  --bg:#eef4f1;
+  --shadow-lg:0 30px 60px -32px rgba(6,53,43,.5);
+  --radius:24px;
+}
+
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+
+body{
+  margin:0;
+  font-family:'Tajawal',system-ui,-apple-system,'Segoe UI',Tahoma,sans-serif;
+  font-size:17px;
+  line-height:1.95;
+  color:var(--ink);
+  background:
+    radial-gradient(1100px 520px at 92% -8%, rgba(18,163,127,.20), transparent 62%),
+    radial-gradient(900px 480px at -8% 4%, rgba(212,167,44,.18), transparent 60%),
+    var(--bg);
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:radial-gradient(rgba(10,92,74,.085) 1px, transparent 1px);
+  background-size:22px 22px;
+  -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,.85), transparent 68%);
+  mask-image:linear-gradient(to bottom, rgba(0,0,0,.85), transparent 68%);
+}
+
+.wrap{position:relative;z-index:1;max-width:980px;margin:0 auto;padding:0 16px 64px}
+
+/* ============ Government strip ============ */
+.gov{
+  display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:.65rem;
+  background:linear-gradient(90deg,var(--green-900),var(--green-700),var(--green-900));
+  color:#dff3ea;font-size:.78rem;font-weight:600;letter-spacing:.02em;
+  padding:.5rem 1rem;text-align:center;
+}
+.gov .sep{width:5px;height:5px;border-radius:50%;background:var(--gold)}
+
+/* ============ Header ============ */
+.site-header{
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  padding:22px 4px 18px;flex-wrap:wrap;
+}
+.brand{display:flex;align-items:center;gap:.85rem}
+.logo{
+  width:54px;height:54px;flex:0 0 auto;border-radius:16px;
+  box-shadow:0 14px 26px -14px rgba(6,53,43,.9);
+  display:block;
+}
+.brand-name{
+  font-family:'Cairo',sans-serif;font-weight:800;font-size:1.02rem;
+  color:var(--green-900);line-height:1.5;
+}
+.brand-sub{font-size:.8rem;color:var(--muted);font-weight:600;letter-spacing:.03em}
+.dme-pill{
+  font-family:'Cairo',sans-serif;font-weight:900;font-size:.95rem;letter-spacing:.12em;
+  color:var(--green-800);background:rgba(255,255,255,.85);
+  border:1.5px solid var(--line);border-radius:999px;padding:.35rem 1.05rem;
+  box-shadow:0 10px 22px -18px rgba(6,53,43,.9);
+}
+
+/* ============ Card ============ */
+.card{
+  position:relative;background:var(--paper);
+  border:1px solid rgba(219,232,226,.95);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow-lg);
+  overflow:hidden;
+}
+.card::before{
+  content:"";display:block;height:8px;
+  background:linear-gradient(90deg,var(--green-700),var(--green-500),var(--gold),var(--red),var(--green-700));
+  background-size:250% 100%;
+  animation:stripe 9s linear infinite;
+}
+@keyframes stripe{to{background-position:-250% 0}}
+
+.card-body{padding:clamp(22px,4.2vw,50px)}
+
+/* ============ Hero ============ */
+.hero{text-align:center}
+.badge{
+  display:inline-flex;align-items:center;gap:.6rem;
+  background:linear-gradient(135deg,var(--green-800),var(--green-600));
+  color:#fff;font-weight:800;font-size:.95rem;
+  padding:.5rem 1.2rem;border-radius:999px;
+  box-shadow:0 14px 26px -16px rgba(6,53,43,.95);
+}
+.badge .dot{position:relative;width:9px;height:9px;border-radius:50%;background:var(--gold)}
+.badge .dot::after{
+  content:"";position:absolute;inset:-4px;border-radius:50%;
+  border:2px solid var(--gold);animation:ping 1.9s ease-out infinite;
+}
+@keyframes ping{0%{transform:scale(.55);opacity:.95}100%{transform:scale(1.9);opacity:0}}
+
+h1{
+  font-family:'Cairo',sans-serif;font-weight:900;
+  font-size:clamp(1.5rem,4.6vw,2.55rem);
+  line-height:1.45;color:var(--green-900);
+  margin:1.1rem 0 .3rem;
+}
+h1 .accent{
+  background:linear-gradient(90deg,var(--green-600),var(--green-900) 70%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.sub{
+  display:flex;align-items:center;justify-content:center;gap:.9rem;
+  color:var(--muted);font-weight:700;font-size:.98rem;letter-spacing:.04em;
+  margin:0;
+}
+.sub::before,.sub::after{
+  content:"";height:1.5px;width:clamp(24px,8vw,70px);
+  background:linear-gradient(90deg,transparent,var(--line),transparent);
+}
+
+hr.div{
+  border:0;height:1px;margin:clamp(22px,3.5vw,34px) 0;
+  background:linear-gradient(90deg,transparent,var(--line),transparent);
+}
+
+/* ============ Text ============ */
+p{margin:0 0 1rem}
+.lead{font-size:1.06rem;text-align:justify;text-align-last:center}
+.lead:last-child{margin-bottom:0}
+mark.hl{
+  background:linear-gradient(180deg,transparent 56%,rgba(212,167,44,.5) 56%);
+  color:inherit;font-weight:900;padding:0 .12em;border-radius:2px;
+}
+.strong-red{color:var(--red);font-weight:900}
+
+/* ============ Alert ============ */
+.alert{
+  position:relative;
+  background:linear-gradient(180deg,#fff6f6,#ffecee);
+  border:1px solid #f2c3c8;
+  border-inline-start:6px solid var(--red);
+  border-radius:16px;
+  padding:1.05rem 1.25rem;
+  margin:1.4rem 0;
+  box-shadow:0 16px 34px -26px rgba(200,16,46,.95);
+}
+.alert p{margin:0;font-weight:700}
+.alert .pulse{
+  position:absolute;top:14px;inset-inline-start:-11px;
+  width:16px;height:16px;border-radius:50%;
+  background:var(--red);border:3px solid #fff;
+  box-shadow:0 0 0 0 rgba(200,16,46,.55);
+  animation:radar 2s ease-out infinite;
+}
+@keyframes radar{
+  0%{box-shadow:0 0 0 0 rgba(200,16,46,.5)}
+  70%{box-shadow:0 0 0 16px rgba(200,16,46,0)}
+  100%{box-shadow:0 0 0 0 rgba(200,16,46,0)}
+}
+
+/* ============ Section titles ============ */
+.sec-title{
+  display:flex;align-items:center;gap:.6rem;
+  font-family:'Cairo',sans-serif;font-weight:800;font-size:1.08rem;
+  color:var(--green-800);margin:0 0 1rem;
+}
+.sec-title::before{
+  content:"";width:6px;height:22px;border-radius:99px;
+  background:linear-gradient(180deg,var(--green-500),var(--gold));
+  flex:0 0 auto;
+}
+
+/* ============ Chips ============ */
+.chips{display:flex;flex-wrap:wrap;gap:.6rem}
+.chip{
+  display:inline-flex;align-items:center;gap:.5rem;
+  background:#fff;border:1px solid var(--line);border-radius:999px;
+  padding:.45rem 1rem;font-weight:700;font-size:.94rem;color:var(--green-700);
+  box-shadow:0 8px 18px -16px rgba(6,53,43,.9);
+  transition:transform .25s, border-color .25s, background .25s;
+}
+.chip:hover{transform:translateY(-2px);border-color:var(--green-500);background:#f6fbf9}
+.chip .ic{
+  width:26px;height:26px;border-radius:50%;display:grid;place-items:center;
+  background:linear-gradient(135deg,#e6f5f0,#d3ece3);font-size:.85rem;flex:0 0 auto;
+}
+
+/* ============ Steps ============ */
+.steps{counter-reset:s;list-style:none;margin:0;padding:0;display:grid;gap:.7rem}
+.steps li{
+  counter-increment:s;position:relative;
+  padding:.85rem 3.3rem .85rem 1.1rem;
+  background:#f8fbfa;border:1px solid var(--line);border-radius:16px;
+  transition:border-color .25s, background .25s, transform .25s;
+}
+.steps li:hover{border-color:var(--green-500);background:#f2faf7;transform:translateX(-3px)}
+.steps li::before{
+  content:counter(s);
+  position:absolute;inset-inline-start:1rem;top:50%;transform:translateY(-50%);
+  width:2rem;height:2rem;border-radius:50%;
+  display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--green-600),var(--green-800));
+  color:#fff;font-family:'Cairo',sans-serif;font-weight:900;font-size:.95rem;
+  box-shadow:0 8px 16px -10px rgba(6,53,43,.95);
+}
+.steps li strong{display:block;color:var(--green-900);font-weight:800;font-size:1rem}
+.steps li span{display:block;color:var(--muted);font-size:.92rem;line-height:1.7}
+
+/* ============ Warning ============ */
+.warn{
+  display:flex;gap:.9rem;align-items:flex-start;
+  background:linear-gradient(180deg,#fffaf0,#fdf3dd);
+  border:1px solid #efdcae;border-radius:16px;
+  padding:1.05rem 1.2rem;margin:1.5rem 0;
+}
+.warn .em{font-size:1.35rem;line-height:1.4;flex:0 0 auto}
+.warn p{margin:0;font-weight:700;color:#5c4708}
+
+/* ============ CTA ============ */
+.cta{
+  margin-top:1.9rem;text-align:center;
+  background:linear-gradient(160deg,#f2faf7,#e8f5ef);
+  border:1px solid #cfe8de;border-radius:20px;
+  padding:clamp(20px,3.4vw,34px);
+}
+.cta .kicker{
+  display:inline-block;font-weight:800;font-size:.82rem;letter-spacing:.08em;
+  color:var(--green-700);background:#fff;border:1px solid var(--line);
+  border-radius:999px;padding:.28rem .95rem;margin-bottom:.9rem;
+}
+.cta .big{
+  font-family:'Cairo',sans-serif;font-weight:900;
+  font-size:clamp(1.15rem,3.4vw,1.6rem);line-height:1.6;
+  color:var(--green-900);margin:0 0 .35rem;
+}
+.cta .big em{font-style:normal;color:var(--red)}
+.cta .small{color:var(--muted);font-weight:700;margin:0 0 1.4rem}
+
+.actions{display:flex;flex-wrap:wrap;gap:.65rem;justify-content:center}
+.btn{
+  font-family:inherit;font-size:.98rem;font-weight:800;
+  border-radius:999px;padding:.8rem 1.55rem;cursor:pointer;
+  border:1.5px solid transparent;text-decoration:none;
+  display:inline-flex;align-items:center;gap:.55rem;
+  transition:transform .22s, box-shadow .22s, background .22s, color .22s;
+  position:relative;overflow:hidden;
+}
+.btn:active{transform:scale(.97)}
+
+.btn-primary{
+  color:#fff;background:linear-gradient(135deg,var(--green-600),var(--green-900));
+  box-shadow:0 18px 30px -18px rgba(6,53,43,.95);
+}
+.btn-primary::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(115deg,transparent 32%,rgba(255,255,255,.4) 50%,transparent 68%);
+  transform:translateX(-130%);
+  animation:shine 3.6s ease-in-out infinite;
+}
+@keyframes shine{0%,58%{transform:translateX(-130%)}100%{transform:translateX(130%)}}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 24px 42px -20px rgba(6,53,43,.95)}
+
+.btn-ghost{color:var(--green-800);background:#fff;border-color:var(--line)}
+.btn-ghost:hover{transform:translateY(-3px);border-color:var(--green-500);background:#f6fbf9}
+
+/* ============ Share ============ */
+.share{
+  margin-top:1.8rem;padding-top:1.5rem;
+  border-top:1px dashed var(--line);text-align:center;
+}
+.share-label{
+  display:block;font-size:.82rem;font-weight:800;letter-spacing:.08em;
+  color:var(--muted);margin-bottom:.8rem;
+}
+.share-row{display:flex;flex-wrap:wrap;gap:.55rem;justify-content:center}
+.sbtn{
+  font-family:inherit;font-size:.9rem;font-weight:800;cursor:pointer;
+  border-radius:999px;padding:.5rem 1.15rem;border:1.5px solid var(--line);
+  background:#fff;color:var(--ink);
+  transition:transform .2s, box-shadow .2s, opacity .2s;
+  display:inline-flex;align-items:center;gap:.4rem;
+}
+.sbtn:hover{transform:translateY(-2px);box-shadow:0 12px 22px -16px rgba(0,0,0,.5)}
+.sbtn.wa{background:#25D366;border-color:#25D366;color:#06352b}
+.sbtn.fb{background:#1877F2;border-color:#1877F2;color:#fff}
+.sbtn.tg{background:#229ED9;border-color:#229ED9;color:#fff}
+
+/* ============ Hashtags ============ */
+.hashtags{
+  display:flex;flex-wrap:wrap;gap:.45rem;justify-content:center;
+  margin-top:1.6rem;
+}
+.hashtags span{
+  font-size:.8rem;font-weight:700;color:var(--green-700);
+  background:#f2f9f6;border:1px solid #dcece5;border-radius:8px;
+  padding:.25rem .6rem;overflow-wrap:anywhere;max-width:100%;
+}
+
+/* ============ Footer ============ */
+.site-footer{
+  margin-top:22px;border-radius:20px;
+  background:linear-gradient(135deg,var(--green-900),var(--green-700));
+  color:#d9f0e8;text-align:center;
+  padding:1.5rem 1.2rem;
+  box-shadow:0 24px 46px -30px rgba(6,53,43,.95);
+}
+.site-footer .name{
+  font-family:'Cairo',sans-serif;font-weight:900;font-size:1.02rem;
+  color:#fff;margin:0 0 .35rem;
+}
+.site-footer .sub2{font-size:.86rem;color:#a9d6c8;font-weight:600;margin:0}
+.site-footer .bar{
+  width:64px;height:3px;border-radius:99px;margin:.9rem auto 0;
+  background:linear-gradient(90deg,var(--gold),transparent);
+}
+
+/* ============ Toast ============ */
+.toast{
+  position:fixed;inset-inline:0;bottom:26px;margin:auto;width:max-content;max-width:90vw;
+  background:var(--green-900);color:#fff;font-weight:800;font-size:.95rem;
+  padding:.75rem 1.4rem;border-radius:999px;
+  box-shadow:0 20px 40px -18px rgba(0,0,0,.6);
+  opacity:0;transform:translateY(18px) scale(.96);pointer-events:none;
+  transition:opacity .3s, transform .3s;z-index:99;
+}
+.toast.show{opacity:1;transform:translateY(0) scale(1)}
+
+/* ============ Reveal ============ */
+.reveal.pre{opacity:0;transform:translateY(22px)}
+.reveal.in{
+  opacity:1;transform:none;
+  transition:opacity .7s ease var(--d,0s), transform .7s cubic-bezier(.2,.8,.2,1) var(--d,0s);
+}
+
+/* ============ Responsive ============ */
+@media (max-width:640px){
+  body{font-size:16px}
+  .brand-name{font-size:.92rem}
+  .brand-sub{font-size:.74rem}
+  .logo{width:46px;height:46px}
+  .steps li{padding-inline-end:1rem}
+  .lead{text-align:start;text-align-last:auto}
+  .btn{flex:1 1 auto;justify-content:center}
+}
+
+/* ============ Motion / Print ============ */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .reveal.pre{opacity:1;transform:none}
+}
+
+@media print{
+  body{background:#fff;font-size:12pt}
+  body::before{display:none}
+  .gov,.share,.actions,.toast,.dme-pill{display:none!important}
+  .card{box-shadow:none;border:1px solid #ccc;border-radius:0}
+  .card::before{display:none}
+  .site-footer{background:#fff;color:#000;box-shadow:none}
+  .site-footer .name{color:#000}
+  .site-footer .sub2{color:#444}
+  .reveal.pre{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<!-- الشريط الحكومي -->
+<div class="gov">
+  <span>الجمهورية الجزائرية الديمقراطية الشعبية</span>
+  <span class="sep"></span>
+  <span>وزارة الصحة</span>
+</div>
+
+<div class="wrap">
+
+  <!-- الترويسة -->
+  <header class="site-header reveal">
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 48 48" role="img" aria-label="شعار المؤسسة">
+        <defs>
+          <linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#12a37f"/>
+            <stop offset="1" stop-color="#06352b"/>
+          </linearGradient>
+        </defs>
+        <rect width="48" height="48" rx="14" fill="url(#lg)"/>
+        <path d="M24 13v22M13 24h22" stroke="#ffffff" stroke-width="5.2" stroke-linecap="round"/>
+        <circle cx="37" cy="11" r="3.4" fill="#d4a72c"/>
+      </svg>
+      <div>
+        <div class="brand-name">المؤسسة العمومية للصحة الجوارية بريان</div>
+        <div class="brand-sub">خلية النشر والتكوين</div>
+      </div>
+    </div>
+    <div class="dme-pill">DME</div>
+  </header>
+
+  <!-- البطاقة -->
+  <main class="card">
+    <div class="card-body">
+
+      <!-- العنوان -->
+      <div class="hero reveal" style="--d:.05s">
+        <div class="badge"><span class="dot"></span> إعلان رسمي وهام</div>
+        <h1>الإستراتيجية الوطنية<br><span class="accent">لرقمنة المؤسسات الصحية</span></h1>
+        <p class="sub">نظام الملف الطبي الإلكتروني — DME</p>
+      </div>
+
+      <hr class="div">
+
+      <!-- المقدمة -->
+      <section class="reveal" style="--d:.1s">
+        <p class="lead">
+          في إطار وضع نظام الملف الطبي الإلكتروني حيز الخدمة، تُعلم <strong>المؤسسة العمومية للصحة الجوارية بريان</strong>
+          كافة الأطباء العامين، وأعوان شبه الطبي، ومخبري الصحة العمومية، ومشغّلي أجهزة التصوير الطبي، العاملين على مستوى
+          المؤسسة، بضرورة الالتحاق <mark class="hl">الفوري</mark> بالمديرية الفرعية للمصالح الصحية، قصد استلام
+          «<mark class="hl">كلمات المرور</mark>» الخاصة بهم، اللازمة للشروع في استخدام النظام الجديد.
+        </p>
+
+        <div class="alert">
+          <span class="pulse" aria-hidden="true"></span>
+          <p>
+            🔴 <span class="strong-red">الالتحاق الفوري</span> بالمديرية الفرعية للمصالح الصحية
+            لاستلام كلمات المرور — <span class="strong-red">بدون تأخير</span>.
+          </p>
+        </div>
+      </section>
+
+      <!-- المعنيون -->
+      <section class="reveal" style="--d:.15s">
+        <h2 class="sec-title">المعنيون بهذا الإعلان</h2>
+        <div class="chips">
+          <span class="chip"><span class="ic">🩺</span> الأطباء العامون</span>
+          <span class="chip"><span class="ic">👨‍⚕️</span> أعوان شبه الطبي</span>
+          <span class="chip"><span class="ic">🧪</span> مخابر الصحة العمومية</span>
+          <span class="chip"><span class="ic">🩻</span> مشغّلو أجهزة التصوير الطبي</span>
+        </div>
+      </section>
+
+      <hr class="div">
+
+      <!-- الخطوات -->
+      <section class="reveal" style="--d:.2s">
+        <h2 class="sec-title">ما المطلوب عمليًا؟</h2>
+        <ol class="steps">
+          <li>
+            <strong>التوجّه إلى المديرية الفرعية للمصالح الصحية</strong>
+            <span>على مستوى المؤسسة العمومية للصحة الجوارية بريان.</span>
+          </li>
+          <li>
+            <strong>استلام كلمات المرور الخاصة بكل معني</strong>
+            <span>اللازمة للشروع في استخدام نظام الملف الطبي الإلكتروني.</span>
+          </li>
+          <li>
+            <strong>الانخراط الفعلي في تفعيل النظام</strong>
+            <span>وفق التوجهات الوطنية الرامية إلى رقمنة المؤسسات الصحية.</span>
+          </li>
+        </ol>
+      </section>
+
+      <!-- الملاحظة -->
+      <section class="reveal" style="--d:.25s; margin-top:1.6rem">
+        <p class="lead">
+          ويُعدّ هذا الإعلان دعوة رسمية وأكيدة لجميع المعنيين، لاستكمال الإجراءات الضرورية والانخراط الفعلي في تفعيل
+          نظام الملف الطبي الإلكتروني على مستوى المؤسسة، بما يضمن الشروع في العمل به وفق التوجهات الوطنية الرامية إلى
+          رقمنة المؤسسات الصحية وتحديث أساليب التسيير والتكفل بالمرضى.
+        </p>
+      </section>
+
+      <!-- التحذير -->
+      <div class="warn reveal" style="--d:.3s">
+        <span class="em" aria-hidden="true">⚠️</span>
+        <p>
+          وعليه، يُطلب من جميع المعنيين الالتزام بمضمون هذا الإعلان والالتحاق الفوري بالمديرية الفرعية للمصالح الصحية،
+          ضمانًا لحسن تنفيذ هذا الإجراء.
+        </p>
+      </div>
+
+      <!-- الدعوة للعمل -->
+      <div class="cta reveal" style="--d:.35s">
+        <span class="kicker">📌 المطلوب الآن</span>
+        <p class="big">الالتحاق <em>الفوري</em> بالمديرية الفرعية للمصالح الصحية</p>
+        <p class="small">لاستلام كلمات المرور الخاصة والبدء في استخدام نظام DME</p>
+
+        <div class="actions">
+          <button class="btn btn-primary" type="button" id="copyBtn">📋 نسخ نص الإعلان</button>
+          <button class="btn btn-ghost" type="button" id="printBtn">🖨️ طباعة الإعلان</button>
+          <button class="btn btn-ghost" type="button" id="nativeShare" hidden>↗️ مشاركة</button>
+        </div>
+      </div>
+
+      <!-- المشاركة -->
+      <div class="share reveal" style="--d:.4s">
+        <span class="share-label">ساهم في تعميم الإعلان</span>
+        <div class="share-row">
+          <button class="sbtn wa" type="button" data-share="wa">واتساب</button>
+          <button class="sbtn fb" type="button" data-share="fb">فيسبوك</button>
+          <button class="sbtn tg" type="button" data-share="tg">تيليغرام</button>
+          <button class="sbtn" type="button" data-share="copy">نسخ الرابط</button>
+        </div>
+
+        <div class="hashtags">
+          <span>#الإستراتيجية_الوطنية_لرقمنة_المؤسسات_الصحية</span>
+          <span>#نظام_الملف_الطبي_الإلكتروني</span>
+          <span>#DME</span>
+          <span>#المؤسسة_العمومية_للصحة_الجوارية_بريان</span>
+          <span>#خليّـة_النشر_والتكوين</span>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- التذييل -->
+  <footer class="site-footer reveal" style="--d:.45s">
+    <p class="name">المؤسسة العمومية للصحة الجوارية بريان</p>
+    <p class="sub2">خليّـة النشر والتكوين</p>
+    <div class="bar"></div>
+  </footer>
+
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite">تم النسخ ✓</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- نص الإعلان للمشاركة ---------- */
+  var SHARE_TEXT =
+    "📢 إعلان رسمي وهام\n\n" +
+    "#الإستراتيجية_الوطنية_لرقمنة_المؤسسات_الصحية\n" +
+    "#نظام_الملف_الطبي_الإلكتروني #DME\n\n" +
+    "تُعلم المؤسسة العمومية للصحة الجوارية بريان كافة الأطباء العامين، وأعوان شبه الطبي، ومخبري الصحة العمومية، " +
+    "ومشغّلي أجهزة التصوير الطبي، بضرورة الالتحاق الفوري بالمديرية الفرعية للمصالح الصحية، " +
+    "قصد استلام «كلمات المرور» الخاصة بهم اللازمة للشروع في استخدام نظام الملف الطبي الإلكتروني.\n\n" +
+    "#المؤسسة_العمومية_للصحة_الجوارية_بريان\n" +
+    "#خليّـة_النشر_والتكوين";
+
+  var pageUrl = window.location.href;
+
+  /* ---------- Toast ---------- */
+  var toastEl = document.getElementById("toast");
+  var toastTimer = null;
+  function toast(msg){
+    toastEl.textContent = msg;
+    toastEl.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toastEl.classList.remove("show"); }, 2200);
+  }
+
+  /* ---------- نسخ ---------- */
+  function copyText(text){
+    if (navigator.clipboard && window.isSecureContext){
+      return navigator.clipboard.writeText(text);
+    }
+    return new Promise(function(resolve, reject){
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly","");
+      ta.style.position = "fixed";
+      ta.style.top = "0";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      ta.setSelectionRange(0, ta.value.length);
+      try { document.execCommand("copy") ? resolve() : reject(new Error("copy failed")); }
+      catch(e){ reject(e); }
+      finally { document.body.removeChild(ta); }
+    });
+  }
+
+  function handleCopy(text, okMsg){
+    copyText(text)
+      .then(function(){ toast(okMsg); })
+      .catch(function(){ toast("تعذّر النسخ، يرجى المحاولة يدويًا"); });
+  }
+
+  /* ---------- أزرار النسخ/الطباعة ---------- */
+  var copyBtn = document.getElementById("copyBtn");
+  if (copyBtn){
+    copyBtn.addEventListener("click", function(){
+      handleCopy(SHARE_TEXT, "تم نسخ نص الإعلان ✓");
+    });
+  }
+
+  var printBtn = document.getElementById("printBtn");
+  if (printBtn){
+    printBtn.addEventListener("click", function(){ window.print(); });
+  }
+
+  /* ---------- المشاركة ---------- */
+  var enc = encodeURIComponent;
+  var links = {
+    wa: "https://wa.me/?text=" + enc(SHARE_TEXT + "\n\n" + pageUrl),
+    fb: "https://www.facebook.com/sharer/sharer.php?u=" + enc(pageUrl) + "&quote=" + enc(SHARE_TEXT),
+    tg: "https://t.me/share/url?url=" + enc(pageUrl) + "&text=" + enc(SHARE_TEXT)
+  };
+
+  document.querySelectorAll("[data-share]").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      var type = btn.getAttribute("data-share");
+      if (type === "copy"){
+        handleCopy(pageUrl, "تم نسخ رابط الإعلان ✓");
+        return;
+      }
+      if (links[type]){
+        window.open(links[type], "_blank", "noopener,noreferrer");
+      }
+    });
+  });
+
+  /* ---------- مشاركة أصلية (الهاتف) ---------- */
+  var nativeBtn = document.getElementById("nativeShare");
+  if (navigator.share){
+    nativeBtn.hidden = false;
+    nativeBtn.addEventListener("click", function(){
+      navigator.share({
+        title: "إعلان رسمي وهام — نظام الملف الطبي الإلكتروني DME",
+        text: SHARE_TEXT,
+        url: pageUrl
+      }).catch(function(){ /* تم الإلغاء */ });
+    });
+  }
+
+  /* ---------- ظهور تدريجي ---------- */
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var items = document.querySelectorAll(".reveal");
+
+  if (reduce || !("IntersectionObserver" in window)){
+    items.forEach(function(el){ el.classList.add("in"); });
+  } else {
+    items.forEach(function(el){ el.classList.add("pre"); });
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting){
+          entry.target.classList.add("in");
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+
+    items.forEach(function(el){ io.observe(el); });
+  }
+})();
+</script>
+</body>
+</html>
