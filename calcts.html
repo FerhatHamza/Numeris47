@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculateur de Note — QCM Informatique</title>
+<style>
+  :root {
+    --sante: #005a8c;
+    --sante-light: #e6f1f8;
+    --success: #0a8754;
+    --warning: #d97706;
+    --danger: #c0392b;
+    --gray: #6b7280;
+    --bg: #f4f7fa;
+    --card: #ffffff;
+    --border: #d1dbe5;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+    background: var(--bg);
+    color: #1f2937;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+  .container {
+    background: var(--card);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 90, 140, 0.15);
+    max-width: 560px;
+    width: 100%;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  /* ---------- En-tête arabe ---------- */
+  .entete {
+    background: var(--sante);
+    color: white;
+    padding: 16px 20px;
+    text-align: center;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .entete .gauche {
+    text-align: center;
+    font-weight: bold;
+  }
+  .entete .droite {
+    text-align: right;
+    margin-top: 6px;
+    font-weight: bold;
+    opacity: 0.95;
+  }
+  /* ---------- Corps ---------- */
+  .content { padding: 28px 24px 32px; }
+  h1 {
+    font-size: 20px;
+    color: var(--sante);
+    text-align: center;
+    margin-bottom: 6px;
+  }
+  .subtitle {
+    text-align: center;
+    color: var(--gray);
+    font-size: 13px;
+    margin-bottom: 22px;
+  }
+  .subtitle-ar {
+    text-align: center;
+    color: var(--gray);
+    font-size: 14px;
+    margin-bottom: 22px;
+    direction: rtl;
+  }
+  /* ---------- Formulaire ---------- */
+  label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #374151;
+    font-size: 14px;
+  }
+  .input-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+  input[type="number"] {
+    flex: 1;
+    padding: 14px 16px;
+    font-size: 20px;
+    font-weight: bold;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    text-align: center;
+    color: var(--sante);
+    transition: border-color 0.2s;
+    -moz-appearance: textfield;
+  }
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type="number"]:focus {
+    outline: none;
+    border-color: var(--sante);
+    box-shadow: 0 0 0 4px var(--sante-light);
+  }
+  input[type="range"] {
+    width: 100%;
+    margin: 10px 0 22px;
+    accent-color: var(--sante);
+  }
+  .hint {
+    text-align: center;
+    font-size: 12px;
+    color: var(--gray);
+    margin-bottom: 20px;
+  }
+  /* ---------- Résultat ---------- */
+  .result {
+    background: var(--sante-light);
+    border-radius: 12px;
+    padding: 22px;
+    text-align: center;
+    transition: all 0.3s;
+    border: 2px solid transparent;
+  }
+  .result.success { background: #e7f7ee; border-color: var(--success); }
+  .result.warning { background: #fef3c7; border-color: var(--warning); }
+  .result.danger  { background: #fdeaea; border-color: var(--danger); }
+  .result-label {
+    font-size: 13px;
+    color: var(--gray);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+  }
+  .note {
+    font-size: 56px;
+    font-weight: 900;
+    color: var(--sante);
+    line-height: 1.1;
+    margin: 6px 0;
+  }
+  .result.success .note { color: var(--success); }
+  .result.warning .note { color: var(--warning); }
+  .result.danger  .note { color: var(--danger); }
+  .note small { font-size: 22px; font-weight: 600; opacity: 0.7; }
+  .percentage {
+    font-size: 15px;
+    color: var(--gray);
+    margin-top: 4px;
+  }
+  .appreciation {
+    margin-top: 12px;
+    font-size: 15px;
+    font-weight: 700;
+  }
+  .appreciation-ar {
+    direction: rtl;
+    font-size: 15px;
+    font-weight: 700;
+    margin-top: 4px;
+  }
+  /* ---------- Détail ---------- */
+  .detail {
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px dashed var(--border);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    font-size: 13px;
+  }
+  .detail-item {
+    background: #f9fafb;
+    padding: 10px 12px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .detail-item span:first-child { color: var(--gray); }
+  .detail-item span:last-child { font-weight: 700; color: var(--sante); }
+  /* ---------- Footer ---------- */
+  .footer {
+    text-align: center;
+    font-size: 11px;
+    color: var(--gray);
+    padding: 14px;
+    border-top: 1px solid var(--border);
+    background: #f9fafb;
+  }
+  /* ---------- Boutons rapides ---------- */
+  .quick-btns {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+    margin-bottom: 20px;
+  }
+  .quick-btns button {
+    padding: 8px 0;
+    border: 1px solid var(--border);
+    background: white;
+    border-radius: 8px;
+    font-weight: 600;
+    color: var(--sante);
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.15s;
+  }
+  .quick-btns button:hover {
+    background: var(--sante);
+    color: white;
+    border-color: var(--sante);
+  }
+  .quick-btns button:active { transform: scale(0.95); }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- En-tête -->
+  <div class="entete">
+    <div class="gauche">
+      الجمهورية الجزائرية الديمقراطية الشعبية<br>
+      وزارة الصحة
+    </div>
+    <div class="droite">
+      مديرية الصحة والسكان لولاية غرداية<br>
+      المؤسسة العمومية للصحة الجوارية - بريان<br>
+      مكتب المنظومات الإعلامية والإعلام الآلي
+    </div>
+  </div>
+
+  <div class="content">
+    <h1>Calculateur de Note — QCM</h1>
+    <div class="subtitle">Technicien Spécialisé en Informatique</div>
+    <div class="subtitle-ar">حاسبة النقاط — اختبار تقني سامي في الإعلام الآلي</div>
+
+    <label for="correct">Nombre de bonnes réponses (sur 12) :</label>
+    <div class="input-row">
+      <input type="number" id="correct" min="0" max="12" value="0" placeholder="0–12">
+    </div>
+    <input type="range" id="slider" min="0" max="12" value="0">
+
+    <div class="quick-btns">
+      <button data-val="0">0</button>
+      <button data-val="2">2</button>
+      <button data-val="4">4</button>
+      <button data-val="6">6</button>
+      <button data-val="8">8</button>
+      <button data-val="10">10</button>
+      <button data-val="12">12</button>
+    </div>
+
+    <div class="hint">Barème : 1,5 point par bonne réponse — Total : 18 points<br>
+    <span style="direction:rtl; display:inline-block;">سلم التنقيط: 1.5 نقطة لكل إجابة صحيحة — المجموع: 18 نقطة</span></div>
+
+    <!-- Résultat -->
+    <div class="result" id="result">
+      <div class="result-label">Note obtenue / النقطة المحصَّلة</div>
+      <div class="note" id="note">0,0 <small>/ 18</small></div>
+      <div class="percentage" id="percentage">0 %</div>
+      <div class="appreciation" id="appreciation">—</div>
+      <div class="appreciation-ar" id="appreciation-ar">—</div>
+
+      <div class="detail">
+        <div class="detail-item">
+          <span>Réponses correctes</span>
+          <span id="detail-correct">0 / 12</span>
+        </div>
+        <div class="detail-item">
+          <span>Réponses fausses</span>
+          <span id="detail-wrong">12 / 12</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    Points par question : 1,5 — Barème total : 18 points
+  </div>
+</div>
+
+<script>
+  const input   = document.getElementById('correct');
+  const slider  = document.getElementById('slider');
+  const noteEl  = document.getElementById('note');
+  const pctEl   = document.getElementById('percentage');
+  const appEl   = document.getElementById('appreciation');
+  const appArEl = document.getElementById('appreciation-ar');
+  const resEl   = document.getElementById('result');
+  const dCorr   = document.getElementById('detail-correct');
+  const dWrong  = document.getElementById('detail-wrong');
+
+  const TOTAL_Q     = 12;
+  const PT_PER_Q    = 1.5;
+  const TOTAL_PTS   = TOTAL_Q * PT_PER_Q;  // 18
+
+  // Appréciations FR / AR
+  function appreciation(pct) {
+    if (pct >= 90) return { fr: "Excellent — Admis",            ar: "ممتاز — ناجح" };
+    if (pct >= 80) return { fr: "Très bien — Admis",            ar: "جيد جداً — ناجح" };
+    if (pct >= 70) return { fr: "Bien — Admis",                 ar: "جيد — ناجح" };
+    if (pct >= 60) return { fr: "Assez bien — Admis",           ar: "حسن — ناجح" };
+    if (pct >= 50) return { fr: "Passable — Admis (limite)",    ar: "مقبول — ناجح (بحدّ)" };
+    if (pct >= 40) return { fr: "Insuffisant — Ajourné",        ar: "ضعيف — راسب" };
+    return            { fr: "Très insuffisant — Ajourné",       ar: "ضعيف جداً — راسب" };
+  }
+
+  function compute() {
+    let val = parseInt(input.value, 10);
+    if (isNaN(val)) val = 0;
+    val = Math.max(0, Math.min(TOTAL_Q, val));
+
+    // Synchronisation
+    input.value  = val;
+    slider.value = val;
+
+    const score    = val * PT_PER_Q;
+    const pct      = (val / TOTAL_Q) * 100;
+    const wrong    = TOTAL_Q - val;
+    const app      = appreciation(pct);
+
+    // Affichage note (virgule française)
+    const noteStr = score.toFixed(1).replace('.', ',');
+    noteEl.innerHTML = `${noteStr} <small>/ 18</small>`;
+
+    // Pourcentage
+    pctEl.textContent = `${Math.round(pct)} %`;
+
+    // Appréciation
+    appEl.textContent   = app.fr;
+    appArEl.textContent = app.ar;
+
+    // Détail
+    dCorr.textContent  = `${val} / ${TOTAL_Q}`;
+    dWrong.textContent = `${wrong} / ${TOTAL_Q}`;
+
+    // Couleur selon résultat
+    resEl.classList.remove('success', 'warning', 'danger');
+    if (pct >= 60)      resEl.classList.add('success');
+    else if (pct >= 40) resEl.classList.add('warning');
+    else                resEl.classList.add('danger');
+  }
+
+  // Événements
+  input.addEventListener('input', compute);
+  slider.addEventListener('input', () => {
+    input.value = slider.value;
+    compute();
+  });
+
+  // Boutons rapides
+  document.querySelectorAll('.quick-btns button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      input.value = btn.dataset.val;
+      compute();
+    });
+  });
+
+  // Initialisation
+  compute();
+</script>
+</body>
+</html>
