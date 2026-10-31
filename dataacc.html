@@ -46,14 +46,12 @@
     }
     .DME-logo-container:hover { transform: scale(1.05) rotate(2deg); }
 
-    /* Animated attention dot */
     @keyframes DME-blink {
         0%, 100% { opacity: 1; transform: scale(1); }
         50%      { opacity: 0.5; transform: scale(0.85); }
     }
     .DME-blink { animation: DME-blink 1.4s ease-in-out infinite; }
 
-    /* Soft glowing halo on the warning box */
     @keyframes DME-glow {
         0%, 100% { box-shadow: 0 20px 60px -12px rgba(220, 38, 38, 0.55),
                                0 8px 24px -8px rgba(220, 38, 38, 0.35); }
@@ -62,7 +60,6 @@
     }
     .DME-warning-glow { animation: DME-glow 3s ease-in-out infinite; }
 
-    /* Cards stagger-in */
     @keyframes DME-cardIn {
         from { opacity: 0; transform: translateY(24px) scale(0.96); }
         to   { opacity: 1; transform: translateY(0) scale(1); }
@@ -73,6 +70,7 @@
     .DME-doc-card:nth-child(3) { animation-delay: 0.19s; }
     .DME-doc-card:nth-child(4) { animation-delay: 0.26s; }
     .DME-doc-card:nth-child(5) { animation-delay: 0.33s; }
+    .DME-doc-card:nth-child(6) { animation-delay: 0.40s; }
 
     @media (max-width: 640px) {
         .DME-card { border-radius: 16px; margin: 16px 12px 28px; }
@@ -188,8 +186,8 @@ document.addEventListener('keydown', e => {
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6 mb-14 max-w-6xl mx-auto">
 
                 <!-- Card 1 — Carte nationale -->
-                <div class="DME-doc-card group relative bg-white border-2 border-gray-200 rounded-2xl p-6 hover:border-red-400 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
-                    <div class="relative inline-block mb-5">
+                <div class="DME-doc-card group relative bg-white border-2 border-gray-200 rounded-2xl p-5 md:p-6 hover:border-red-400 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
+                    <div class="relative inline-block mb-5 hidden sm:inline-block">
                         <div class="w-16 h-16 bg-gradient-to-br from-red-500 to-rose-600 rounded-2xl flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform duration-300">
                             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.294 6.336a6.721 6.721 0 01-3.17.789 6.721 6.721 0 01-3.168-.789 3.376 3.376 0 016.338 0z" />
@@ -197,17 +195,20 @@ document.addEventListener('keydown', e => {
                         </div>
                         <span class="absolute -top-2 -left-2 w-7 h-7 bg-white border-2 border-red-500 text-red-600 rounded-full flex items-center justify-center text-sm font-black shadow">1</span>
                     </div>
-                    <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-2 leading-tight">
-                        نسخة من بطاقة التعريف الوطنية
-                    </h3>
-                    <p class="text-sm md:text-base font-semibold text-gray-500 leading-snug" dir="ltr">
+                    <div class="flex items-start gap-3 mb-1 sm:mb-2">
+                        <span class="sm:hidden flex-shrink-0 inline-flex items-center justify-center w-8 h-8 bg-gradient-to-br from-red-500 to-rose-600 text-white rounded-full text-sm font-black shadow">1</span>
+                        <h3 class="text-lg md:text-xl font-bold text-gray-900 leading-tight">
+                            نسخة من بطاقة التعريف الوطنية
+                        </h3>
+                    </div>
+                    <p class="text-sm md:text-base font-semibold text-gray-500 leading-snug sm:mr-0 mr-11" dir="ltr">
                         Copie de la carte nationale d'identité
                     </p>
                 </div>
 
                 <!-- Card 2 — NIN -->
-                <div class="DME-doc-card group relative bg-white border-2 border-gray-200 rounded-2xl p-6 hover:border-red-400 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
-                    <div class="relative inline-block mb-5">
+                <div class="DME-doc-card group relative bg-white border-2 border-gray-200 rounded-2xl p-5 md:p-6 hover:border-red-400 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
+                    <div class="relative inline-block mb-5 hidden sm:inline-block">
                         <div class="w-16 h-16 bg-gradient-to-br from-red-500 to-rose-600 rounded-2xl flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform duration-300">
                             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 8.25h13.5m-13.5 7.5h13.5m-1.5-12L15.75 21m-9-18L8.25 21" />
@@ -215,17 +216,20 @@ document.addEventListener('keydown', e => {
                         </div>
                         <span class="absolute -top-2 -left-2 w-7 h-7 bg-white border-2 border-red-500 text-red-600 rounded-full flex items-center justify-center text-sm font-black shadow">2</span>
                     </div>
-                    <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-2 leading-tight">
-                        الرقم التعريفي الوطني (NIN)
-                    </h3>
-                    <p class="text-sm md:text-base font-semibold text-gray-500 leading-snug" dir="ltr">
+                    <div class="flex items-start gap-3 mb-1 sm:mb-2">
+                        <span class="sm:hidden flex-shrink-0 inline-flex items-center justify-center w-8 h-8 bg-gradient-to-br from-red-500 to-rose-600 text-white rounded-full text-sm font-black shadow">2</span>
+                        <h3 class="text-lg md:text-xl font-bold text-gray-900 leading-tight">
+                            الرقم التعريفي الوطني (NIN)
+                        </h3>
+                    </div>
+                    <p class="text-sm md:text-base font-semibold text-gray-500 leading-snug sm:mr-0 mr-11" dir="ltr">
                         NIN — Numéro d'Identification National
                     </p>
                 </div>
 
                 <!-- Card 3 — Email -->
-                <div class="DME-doc-card group relative bg-white border-2 border-gray-200 rounded-2xl p-6 hover:border-red-400 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
-                    <div class="relative inline-block mb-5">
+                <div class="DME-doc-card group relative bg-white border-2 border-gray-200 rounded-2xl p-5 md:p-6 hover:border-red-400 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
+                    <div class="relative inline-block mb-5 hidden sm:inline-block">
                         <div class="w-16 h-16 bg-gradient-to-br from-red-500 to-rose-600 rounded-2xl flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform duration-300">
                             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
@@ -233,17 +237,20 @@ document.addEventListener('keydown', e => {
                         </div>
                         <span class="absolute -top-2 -left-2 w-7 h-7 bg-white border-2 border-red-500 text-red-600 rounded-full flex items-center justify-center text-sm font-black shadow">3</span>
                     </div>
-                    <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-2 leading-tight">
-                        البريد الإلكتروني
-                    </h3>
-                    <p class="text-sm md:text-base font-semibold text-gray-500 leading-snug" dir="ltr">
+                    <div class="flex items-start gap-3 mb-1 sm:mb-2">
+                        <span class="sm:hidden flex-shrink-0 inline-flex items-center justify-center w-8 h-8 bg-gradient-to-br from-red-500 to-rose-600 text-white rounded-full text-sm font-black shadow">3</span>
+                        <h3 class="text-lg md:text-xl font-bold text-gray-900 leading-tight">
+                            البريد الإلكتروني
+                        </h3>
+                    </div>
+                    <p class="text-sm md:text-base font-semibold text-gray-500 leading-snug sm:mr-0 mr-11" dir="ltr">
                         Adresse e-mail
                     </p>
                 </div>
 
                 <!-- Card 4 — Phone -->
-                <div class="DME-doc-card group relative bg-white border-2 border-gray-200 rounded-2xl p-6 hover:border-red-400 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
-                    <div class="relative inline-block mb-5">
+                <div class="DME-doc-card group relative bg-white border-2 border-gray-200 rounded-2xl p-5 md:p-6 hover:border-red-400 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
+                    <div class="relative inline-block mb-5 hidden sm:inline-block">
                         <div class="w-16 h-16 bg-gradient-to-br from-red-500 to-rose-600 rounded-2xl flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform duration-300">
                             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
@@ -251,17 +258,20 @@ document.addEventListener('keydown', e => {
                         </div>
                         <span class="absolute -top-2 -left-2 w-7 h-7 bg-white border-2 border-red-500 text-red-600 rounded-full flex items-center justify-center text-sm font-black shadow">4</span>
                     </div>
-                    <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-2 leading-tight">
-                        رقم الهاتف
-                    </h3>
-                    <p class="text-sm md:text-base font-semibold text-gray-500 leading-snug" dir="ltr">
+                    <div class="flex items-start gap-3 mb-1 sm:mb-2">
+                        <span class="sm:hidden flex-shrink-0 inline-flex items-center justify-center w-8 h-8 bg-gradient-to-br from-red-500 to-rose-600 text-white rounded-full text-sm font-black shadow">4</span>
+                        <h3 class="text-lg md:text-xl font-bold text-gray-900 leading-tight">
+                            رقم الهاتف
+                        </h3>
+                    </div>
+                    <p class="text-sm md:text-base font-semibold text-gray-500 leading-snug sm:mr-0 mr-11" dir="ltr">
                         Numéro de téléphone
                     </p>
                 </div>
 
                 <!-- Card 5 — NSS -->
-                <div class="DME-doc-card group relative bg-white border-2 border-gray-200 rounded-2xl p-6 hover:border-red-400 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
-                    <div class="relative inline-block mb-5">
+                <div class="DME-doc-card group relative bg-white border-2 border-gray-200 rounded-2xl p-5 md:p-6 hover:border-red-400 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
+                    <div class="relative inline-block mb-5 hidden sm:inline-block">
                         <div class="w-16 h-16 bg-gradient-to-br from-red-500 to-rose-600 rounded-2xl flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform duration-300">
                             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
@@ -269,11 +279,36 @@ document.addEventListener('keydown', e => {
                         </div>
                         <span class="absolute -top-2 -left-2 w-7 h-7 bg-white border-2 border-red-500 text-red-600 rounded-full flex items-center justify-center text-sm font-black shadow">5</span>
                     </div>
-                    <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-2 leading-tight">
-                        رقم الضمان الاجتماعي (NSS)
-                    </h3>
-                    <p class="text-sm md:text-base font-semibold text-gray-500 leading-snug" dir="ltr">
+                    <div class="flex items-start gap-3 mb-1 sm:mb-2">
+                        <span class="sm:hidden flex-shrink-0 inline-flex items-center justify-center w-8 h-8 bg-gradient-to-br from-red-500 to-rose-600 text-white rounded-full text-sm font-black shadow">5</span>
+                        <h3 class="text-lg md:text-xl font-bold text-gray-900 leading-tight">
+                            رقم الضمان الاجتماعي (NSS)
+                        </h3>
+                    </div>
+                    <p class="text-sm md:text-base font-semibold text-gray-500 leading-snug sm:mr-0 mr-11" dir="ltr">
                         NSS — Numéro de Sécurité Sociale
+                    </p>
+                </div>
+
+                <!-- Card 6 — NEW : Photo d'identité récente -->
+                <div class="DME-doc-card group relative bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-amber-300 rounded-2xl p-5 md:p-6 hover:border-amber-500 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
+                    <div class="relative inline-block mb-5 hidden sm:inline-block">
+                        <div class="w-16 h-16 bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform duration-300">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z" />
+                            </svg>
+                        </div>
+                        <span class="absolute -top-2 -left-2 w-7 h-7 bg-white border-2 border-amber-500 text-amber-600 rounded-full flex items-center justify-center text-sm font-black shadow">6</span>
+                    </div>
+                    <div class="flex items-start gap-3 mb-1 sm:mb-2">
+                        <span class="sm:hidden flex-shrink-0 inline-flex items-center justify-center w-8 h-8 bg-gradient-to-br from-amber-500 to-orange-600 text-white rounded-full text-sm font-black shadow">6</span>
+                        <h3 class="text-lg md:text-xl font-bold text-amber-900 leading-tight">
+                            صورة شمسية حديثة (أقل من 6 أشهر)
+                        </h3>
+                    </div>
+                    <p class="text-sm md:text-base font-semibold text-amber-700 leading-snug sm:mr-0 mr-11" dir="ltr">
+                        Photo d'identité récente (moins de 6 mois)
                     </p>
                 </div>
 
