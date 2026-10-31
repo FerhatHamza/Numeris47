@@ -72,6 +72,29 @@
     .DME-doc-card:nth-child(5) { animation-delay: 0.33s; }
     .DME-doc-card:nth-child(6) { animation-delay: 0.40s; }
 
+    /* Countdown */
+    .DME-cd-box {
+        background: rgba(255,255,255,0.05);
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 20px;
+        transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+    .DME-cd-box:hover {
+        transform: translateY(-3px);
+        border-color: rgba(248, 113, 113, 0.5);
+    }
+    .DME-cd-num {
+        font-variant-numeric: tabular-nums;
+        text-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        line-height: 1;
+    }
+    @keyframes DME-tick {
+        from { transform: scale(1.15); color: #fbbf24; }
+        to   { transform: scale(1); }
+    }
+    .DME-tick-anim { animation: DME-tick 0.4s ease-out; }
+
     @media (max-width: 640px) {
         .DME-card { border-radius: 16px; margin: 16px 12px 28px; }
     }
@@ -181,6 +204,66 @@ document.addEventListener('keydown', e => {
                 <p class="text-xl md:text-3xl font-bold text-gray-700 leading-tight" dir="ltr">
                     Documents à déposer au <span class="text-red-600">DRH</span>
                 </p>
+            </div>
+
+            <!-- ========== COUNTDOWN 7 DAYS ========== -->
+            <div class="max-w-4xl mx-auto mb-14">
+                <div class="relative overflow-hidden bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900 rounded-3xl p-6 md:p-10 border-4 border-red-800 shadow-2xl">
+
+                    <!-- Halos -->
+                    <div class="absolute -top-20 -right-20 w-56 h-56 bg-red-600/25 rounded-full blur-3xl"></div>
+                    <div class="absolute -bottom-20 -left-20 w-56 h-56 bg-amber-500/20 rounded-full blur-3xl"></div>
+
+                    <div class="relative">
+                        <!-- Title -->
+                        <div class="text-center mb-6 md:mb-8">
+                            <div class="inline-flex items-center gap-2 bg-red-500/20 border border-red-400/40 text-red-300 px-4 py-1.5 rounded-full text-[11px] md:text-xs font-bold tracking-widest mb-3">
+                                <span class="w-2 h-2 bg-red-400 rounded-full DME-blink"></span>
+                                الوقت المتبقي · Temps restant
+                            </div>
+                            <p class="text-lg md:text-2xl font-black text-white">
+                                المهلة المتبقية لإيداع الوثائق
+                            </p>
+                            <p class="text-sm md:text-base text-gray-400 mt-1 font-medium" dir="ltr">
+                                Délai restant pour le dépôt des documents
+                            </p>
+                        </div>
+
+                        <!-- Countdown boxes -->
+                        <div id="DME-countdown" class="grid grid-cols-4 gap-2 md:gap-4">
+                            <!-- Days -->
+                            <div class="DME-cd-box p-3 md:p-5 text-center">
+                                <div id="DME-cd-days" class="DME-cd-num text-3xl md:text-6xl font-black text-white">07</div>
+                                <div class="text-xs md:text-sm font-bold text-red-300 mt-2">أيام</div>
+                                <div class="text-[10px] md:text-xs text-gray-400 font-medium" dir="ltr">Jours</div>
+                            </div>
+                            <!-- Hours -->
+                            <div class="DME-cd-box p-3 md:p-5 text-center">
+                                <div id="DME-cd-hours" class="DME-cd-num text-3xl md:text-6xl font-black text-white">00</div>
+                                <div class="text-xs md:text-sm font-bold text-red-300 mt-2">ساعات</div>
+                                <div class="text-[10px] md:text-xs text-gray-400 font-medium" dir="ltr">Heures</div>
+                            </div>
+                            <!-- Minutes -->
+                            <div class="DME-cd-box p-3 md:p-5 text-center">
+                                <div id="DME-cd-minutes" class="DME-cd-num text-3xl md:text-6xl font-black text-white">00</div>
+                                <div class="text-xs md:text-sm font-bold text-red-300 mt-2">دقائق</div>
+                                <div class="text-[10px] md:text-xs text-gray-400 font-medium" dir="ltr">Minutes</div>
+                            </div>
+                            <!-- Seconds -->
+                            <div class="DME-cd-box p-3 md:p-5 text-center">
+                                <div id="DME-cd-seconds" class="DME-cd-num text-3xl md:text-6xl font-black text-amber-300">00</div>
+                                <div class="text-xs md:text-sm font-bold text-red-300 mt-2">ثواني</div>
+                                <div class="text-[10px] md:text-xs text-gray-400 font-medium" dir="ltr">Secondes</div>
+                            </div>
+                        </div>
+
+                        <!-- Expired message -->
+                        <div id="DME-cd-expired" class="hidden mt-6 bg-red-600 text-white rounded-xl p-4 md:p-5 text-center">
+                            <p class="text-lg md:text-2xl font-black">انتهت المهلة المحددة</p>
+                            <p class="text-sm md:text-base font-bold opacity-90 mt-1" dir="ltr">Le délai est expiré</p>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Documents grid -->
@@ -339,6 +422,60 @@ document.addEventListener('keydown', e => {
         </div>
     </div>
 </div>
+
+<!-- ========== COUNTDOWN SCRIPT ========== -->
+<script>
+(function () {
+    // ⚙️ CONFIGUREZ ICI LA DATE LIMITE (7 jours)
+    // Format : 'YYYY-MM-DDTHH:mm:ss'
+    // Exemple actuel : 7 novembre 2026 à 23:59:59
+    const DEADLINE_STR = '2026-11-07T23:59:59';
+    const DEADLINE = new Date(DEADLINE_STR).getTime();
+
+    const pad = n => String(Math.max(0, n)).padStart(2, '0');
+    const $ = id => document.getElementById(id);
+
+    const daysEl   = $('DME-cd-days');
+    const hoursEl  = $('DME-cd-hours');
+    const minEl    = $('DME-cd-minutes');
+    const secEl    = $('DME-cd-seconds');
+    const expired  = $('DME-cd-expired');
+    const grid     = $('DME-countdown');
+
+    let lastSec = -1;
+
+    function tick() {
+        const diff = DEADLINE - Date.now();
+
+        if (diff <= 0) {
+            if (grid) grid.classList.add('hidden');
+            if (expired) expired.classList.remove('hidden');
+            return;
+        }
+
+        const days    = Math.floor(diff / 86400000);
+        const hours   = Math.floor((diff % 86400000) / 3600000);
+        const minutes = Math.floor((diff % 3600000) / 60000);
+        const seconds = Math.floor((diff % 60000) / 1000);
+
+        if (daysEl)  daysEl.textContent  = pad(days);
+        if (hoursEl) hoursEl.textContent = pad(hours);
+        if (minEl)   minEl.textContent   = pad(minutes);
+
+        if (secEl && seconds !== lastSec) {
+            secEl.textContent = pad(seconds);
+            secEl.classList.remove('DME-tick-anim');
+            // force reflow so the animation restarts each second
+            void secEl.offsetWidth;
+            secEl.classList.add('DME-tick-anim');
+            lastSec = seconds;
+        }
+    }
+
+    tick();
+    setInterval(tick, 250);
+})();
+</script>
 
 </body>
 </html>
