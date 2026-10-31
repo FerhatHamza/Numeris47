@@ -3,283 +3,461 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#12304a">
 <title>Référentiel des analyses de laboratoire</title>
+
 <style>
-:root{--navy:#12304a;--blue:#176b87;--bg:#f3f6f9;--line:#dce4eb;--ink:#1e293b;--muted:#64748b}
-*{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
-body{margin:0;min-width:320px;font-family:Arial,sans-serif;background:var(--bg);color:var(--ink)}
-header{background:linear-gradient(120deg,#12304a,#176b87);color:white;padding:24px max(16px,calc((100% - 1300px)/2))}
-header h1{font-size:clamp(22px,4vw,32px);margin:0 0 8px}
-header p{margin:0;line-height:1.5;color:#e3f1f5}
-main{max-width:1400px;margin:auto;padding:20px 16px 40px}
-.notice{background:#fff8e6;border:1px solid #f2d99b;padding:12px;border-radius:10px;font-size:13px;line-height:1.5;margin-bottom:16px}
-.toolbar{display:grid;grid-template-columns:minmax(180px,1fr) minmax(160px,230px) auto auto;gap:8px}
-input,select,textarea,button{font:inherit}
-input,select,textarea{width:100%;min-width:0;padding:12px;border:1px solid #cbd5e1;border-radius:9px;background:white;color:var(--ink)}
-button{cursor:pointer;touch-action:manipulation}
-.btn{border:0;border-radius:9px;padding:12px 15px;min-height:44px;font-weight:700;background:var(--blue);color:white}
-.btn.secondary{background:white;color:var(--navy);border:1px solid #cbd5e1}
-.btn.danger{background:#b42318}
-.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:16px 0}
-.stat{background:white;border:1px solid var(--line);border-radius:10px;padding:13px}
-.stat b{display:block;font-size:23px;color:var(--blue)}
-.stat span{font-size:12px;color:var(--muted)}
-.tablebox{background:white;border:1px solid var(--line);border-radius:12px;overflow:hidden}
-table{width:100%;border-collapse:collapse}
-th,td{text-align:left;vertical-align:top;padding:12px;border-bottom:1px solid var(--line);font-size:13px;line-height:1.5;overflow-wrap:anywhere}
-th{background:#eaf2f6;color:var(--navy)}
-.tag{display:inline-block;background:#e7f3f7;color:#15556b;padding:5px 8px;border-radius:20px;font-size:11px;font-weight:bold}
-.smallbtn{padding:8px 10px;border-radius:7px;border:1px solid #cbd5e1;background:white;margin:2px;min-height:38px}
-.empty{text-align:center;color:var(--muted);padding:30px}
-.foot{color:var(--muted);font-size:12px;line-height:1.5;margin-top:15px}
-.modal{display:none;position:fixed;inset:0;background:#102a4388;z-index:10;padding:12px;overflow:auto}
-.modal.open{display:flex;align-items:flex-start;justify-content:center}
-.dialog{width:100%;max-width:850px;margin:auto;background:white;border-radius:15px;padding:20px}
-.dialoghead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:18px}
-.dialoghead h2{font-size:21px;margin:0}
-.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
-.field label{display:block;font-size:13px;font-weight:bold;margin-bottom:6px;color:#475569}
-.field.full{grid-column:1/-1}
-textarea{min-height:85px;resize:vertical}
-.actions{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;margin-top:16px}
-@media(max-width:800px){
- main{padding:14px 10px 30px}
- header{padding:20px 14px}
- .toolbar{grid-template-columns:1fr 1fr}
- .toolbar .search,.toolbar select{grid-column:1/-1}
- .toolbar .btn{width:100%;padding:11px 7px;font-size:13px}
- .tablebox{background:transparent;border:0;overflow:visible}
- table,tbody{display:block;width:100%}
- thead{display:none}
- tbody{display:grid;gap:12px}
- tbody tr{display:block;background:white;border:1px solid var(--line);border-radius:12px;padding:12px;box-shadow:0 2px 5px #12304a0b}
- td{display:grid;grid-template-columns:minmax(90px,34%) minmax(0,1fr);gap:10px;padding:9px 0;font-size:13px}
- td:before{content:attr(data-label);font-size:11px;font-weight:bold;color:#475569;text-transform:uppercase}
- td:first-child{display:block;font-size:16px;padding:0 0 12px;border-bottom:1px solid var(--line)}
- td:first-child:before{content:none}
- td:last-child{display:block;border:0;padding-top:10px}
- td:last-child:before{content:none}
- .smallbtn{min-height:42px}
- .modal{padding:0;align-items:flex-end}
- .modal.open{align-items:flex-end}
- .dialog{max-width:none;margin:auto 0 0;border-radius:18px 18px 0 0;padding:18px 14px calc(18px + env(safe-area-inset-bottom));max-height:95dvh;overflow:auto}
- .formgrid{grid-template-columns:1fr}
- .field.full{grid-column:auto}
- input,select,textarea{font-size:16px;min-height:44px}
- .actions{display:grid;grid-template-columns:1fr 1fr;position:sticky;bottom:0;background:white;padding:12px 0 0}
- .actions .btn{width:100%}
+:root {
+  --navy:#12304a;
+  --blue:#176b87;
+  --bg:#f3f6f9;
+  --line:#dce4eb;
+  --ink:#1e293b;
+  --muted:#64748b;
 }
-@media(max-width:380px){
- .toolbar{grid-template-columns:1fr}
- .toolbar .search,.toolbar select{grid-column:auto}
- .stats{gap:6px}
- .stat{padding:10px 7px}
- .stat b{font-size:20px}
- td{grid-template-columns:1fr;gap:4px}
- .actions{grid-template-columns:1fr}
+* { box-sizing:border-box; }
+html { -webkit-text-size-adjust:100%; scroll-behavior:smooth; }
+body {
+  margin:0;
+  min-width:320px;
+  font-family:Arial,sans-serif;
+  background:var(--bg);
+  color:var(--ink);
 }
-@media print{
- @page{size:A4 landscape;margin:8mm}
- body{background:white}
- header{background:white;color:var(--navy);padding:8px 0;border-bottom:2px solid var(--navy)}
- header p{color:#334155}
- main{padding:8px 0}
- .notice,.toolbar,.stats,.foot,.no-print{display:none!important}
- .tablebox{overflow:visible;border:0}
- table{display:table;width:100%;table-layout:fixed}
- thead{display:table-header-group}
- tbody{display:table-row-group}
- tr{display:table-row;break-inside:avoid}
- th,td{display:table-cell!important;font-size:7pt;padding:4px;overflow-wrap:anywhere}
- td:before{display:none!important}
- th:last-child,td:last-child{display:none!important}
+header {
+  background:linear-gradient(120deg,#12304a,#176b87);
+  color:white;
+  padding:24px max(16px,calc((100% - 1300px)/2));
+}
+header h1 { font-size:clamp(22px,4vw,32px); margin:0 0 8px; }
+header p { margin:0; line-height:1.5; color:#e3f1f5; }
+main { max-width:1400px; margin:auto; padding:20px 16px 40px; }
+.notice {
+  background:#fff8e6;
+  border:1px solid #f2d99b;
+  padding:12px;
+  border-radius:10px;
+  font-size:13px;
+  line-height:1.5;
+  margin-bottom:16px;
+}
+.toolbar {
+  display:grid;
+  grid-template-columns:minmax(180px,1fr) minmax(160px,230px) auto auto;
+  gap:8px;
+}
+input,select,textarea,button { font:inherit; }
+input,select,textarea {
+  width:100%;
+  min-width:0;
+  padding:12px;
+  border:1px solid #cbd5e1;
+  border-radius:9px;
+  background:white;
+  color:var(--ink);
+}
+button { cursor:pointer; touch-action:manipulation; }
+.btn {
+  border:0;
+  border-radius:9px;
+  padding:12px 15px;
+  min-height:44px;
+  font-weight:700;
+  background:var(--blue);
+  color:white;
+}
+.btn.secondary { background:white; color:var(--navy); border:1px solid #cbd5e1; }
+.btn.danger { background:#b42318; }
+.stats { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin:16px 0; }
+.stat { background:white; border:1px solid var(--line); border-radius:10px; padding:13px; }
+.stat b { display:block; font-size:23px; color:var(--blue); }
+.stat span { font-size:12px; color:var(--muted); }
+.tablebox { background:white; border:1px solid var(--line); border-radius:12px; overflow:hidden; }
+table { width:100%; border-collapse:collapse; }
+th,td {
+  text-align:left;
+  vertical-align:top;
+  padding:12px;
+  border-bottom:1px solid var(--line);
+  font-size:13px;
+  line-height:1.5;
+  overflow-wrap:anywhere;
+}
+th { background:#eaf2f6; color:var(--navy); }
+.tag {
+  display:inline-block;
+  background:#e7f3f7;
+  color:#15556b;
+  padding:5px 8px;
+  border-radius:20px;
+  font-size:11px;
+  font-weight:bold;
+}
+.full-name { margin-top:5px; font-size:12px; color:var(--muted); line-height:1.5; }
+.smallbtn {
+  padding:8px 10px;
+  border-radius:7px;
+  border:1px solid #cbd5e1;
+  background:white;
+  margin:2px;
+  min-height:38px;
+}
+.empty { text-align:center; color:var(--muted); padding:30px; }
+.foot { color:var(--muted); font-size:12px; line-height:1.5; margin-top:15px; }
+.modal {
+  display:none;
+  position:fixed;
+  inset:0;
+  background:#102a4388;
+  z-index:10;
+  padding:12px;
+  overflow:auto;
+}
+.modal.open { display:flex; align-items:flex-start; justify-content:center; }
+.dialog { width:100%; max-width:850px; margin:auto; background:white; border-radius:15px; padding:20px; }
+.dialoghead { display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:18px; }
+.dialoghead h2 { font-size:21px; margin:0; }
+.formgrid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:13px; }
+.field label { display:block; font-size:13px; font-weight:bold; margin-bottom:6px; color:#475569; }
+.field.full { grid-column:1/-1; }
+textarea { min-height:85px; resize:vertical; }
+.actions { display:flex; justify-content:flex-end; gap:8px; flex-wrap:wrap; margin-top:16px; }
+
+@media(max-width:800px) {
+  main { padding:14px 10px 30px; }
+  header { padding:20px 14px; }
+  .toolbar { grid-template-columns:1fr 1fr; }
+  .toolbar .search,.toolbar select { grid-column:1/-1; }
+  .toolbar .btn { width:100%; padding:11px 7px; font-size:13px; }
+  .tablebox { background:transparent; border:0; overflow:visible; }
+  table,tbody { display:block; width:100%; }
+  thead { display:none; }
+  tbody { display:grid; gap:12px; }
+  tbody tr {
+    display:block;
+    background:white;
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:12px;
+    box-shadow:0 2px 5px #12304a0b;
+  }
+  td { display:grid; grid-template-columns:minmax(90px,34%) minmax(0,1fr); gap:10px; padding:9px 0; font-size:13px; }
+  td:before { content:attr(data-label); font-size:11px; font-weight:bold; color:#475569; text-transform:uppercase; }
+  td:first-child { display:block; font-size:16px; padding:0 0 12px; border-bottom:1px solid var(--line); }
+  td:first-child:before { content:none; }
+  td:last-child { display:block; border:0; padding-top:10px; }
+  td:last-child:before { content:none; }
+  .smallbtn { min-height:42px; }
+  .modal { padding:0; align-items:flex-end; }
+  .modal.open { align-items:flex-end; }
+  .dialog {
+    max-width:none;
+    margin:auto 0 0;
+    border-radius:18px 18px 0 0;
+    padding:18px 14px calc(18px + env(safe-area-inset-bottom));
+    max-height:95dvh;
+    overflow:auto;
+  }
+  .formgrid { grid-template-columns:1fr; }
+  .field.full { grid-column:auto; }
+  input,select,textarea { font-size:16px; min-height:44px; }
+  .actions {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    position:sticky;
+    bottom:0;
+    background:white;
+    padding:12px 0 0;
+  }
+  .actions .btn { width:100%; }
+}
+@media(max-width:380px) {
+  .toolbar { grid-template-columns:1fr; }
+  .toolbar .search,.toolbar select { grid-column:auto; }
+  .stats { gap:6px; }
+  .stat { padding:10px 7px; }
+  .stat b { font-size:20px; }
+  td { grid-template-columns:1fr; gap:4px; }
+  .actions { grid-template-columns:1fr; }
+}
+@media print {
+  @page { size:A4 landscape; margin:8mm; }
+  body { background:white; }
+  header { background:white; color:var(--navy); padding:8px 0; border-bottom:2px solid var(--navy); }
+  header p { color:#334155; }
+  main { padding:8px 0; }
+  .notice,.toolbar,.stats,.foot,.no-print { display:none!important; }
+  .tablebox { overflow:visible; border:0; }
+  table { display:table; width:100%; table-layout:fixed; }
+  thead { display:table-header-group; }
+  tbody { display:table-row-group; }
+  tr { display:table-row; break-inside:avoid; }
+  th,td { display:table-cell!important; font-size:7pt; padding:4px; overflow-wrap:anywhere; }
+  td:before { display:none!important; }
+  th:last-child,td:last-child { display:none!important; }
 }
 </style>
 </head>
+
 <body>
 <header>
-<h1>Référentiel des analyses de laboratoire</h1>
-<p>Utilité clinique · Catégories · Prélèvements · Tubes · Réactifs · Méthodes</p>
+  <h1>Référentiel des analyses de laboratoire</h1>
+  <p>Noms complets · Utilité clinique · Catégories · Prélèvements · Tubes · Réactifs</p>
 </header>
 
 <main>
 <div class="notice">
-Référentiel indicatif. Vérifier les tubes, réactifs, notices et méthodes validées par le laboratoire. Les références commerciales dépendent des automates et des fabricants.
+Référentiel indicatif. Les abréviations et leurs noms complets sont renseignés pour faciliter l’identification des examens. Vérifier les tubes, les réactifs, les notices et les méthodes validées par le laboratoire.
 </div>
 
 <div class="toolbar">
-<input id="search" class="search" placeholder="Rechercher une analyse, un tube, un réactif…" aria-label="Rechercher">
-<select id="cat" aria-label="Filtrer par catégorie"><option value="">Toutes les catégories</option></select>
-<button class="btn" id="add">+ Ajouter</button>
-<button class="btn secondary" id="pdf">Exporter PDF</button>
-<button class="btn secondary" id="csv">Exporter CSV</button>
-<button class="btn secondary" id="json">Sauvegarde JSON</button>
-<button class="btn secondary" id="import">Importer JSON</button>
-<input type="file" id="file" accept=".json,application/json" hidden>
+  <input id="search" class="search" placeholder="Rechercher une analyse, une abréviation, un tube…" aria-label="Rechercher">
+  <select id="cat" aria-label="Filtrer par catégorie"><option value="">Toutes les catégories</option></select>
+  <button class="btn" id="add">+ Ajouter</button>
+  <button class="btn secondary" id="pdf">Exporter PDF</button>
+  <button class="btn secondary" id="csv">Exporter CSV</button>
+  <button class="btn secondary" id="json">Sauvegarde JSON</button>
+  <button class="btn secondary" id="import">Importer JSON</button>
+  <input type="file" id="file" accept=".json,application/json" hidden>
 </div>
 
 <div class="stats">
-<div class="stat"><b id="total">0</b><span>Analyses au catalogue</span></div>
-<div class="stat"><b id="count">0</b><span>Résultats affichés</span></div>
-<div class="stat"><b id="cats">0</b><span>Catégories</span></div>
+  <div class="stat"><b id="total">0</b><span>Analyses au catalogue</span></div>
+  <div class="stat"><b id="count">0</b><span>Résultats affichés</span></div>
+  <div class="stat"><b id="cats">0</b><span>Catégories</span></div>
 </div>
 
 <div class="tablebox">
 <table>
-<thead><tr>
-<th>Analyse</th><th>Catégorie</th><th>Utilité</th><th>Prélèvement</th>
-<th>Tube</th><th>Réactifs</th><th>Méthode / remarques</th><th class="no-print">Actions</th>
-</tr></thead>
+<thead>
+<tr>
+  <th>Analyse / abréviation</th><th>Catégorie</th><th>Utilité clinique</th>
+  <th>Prélèvement</th><th>Tube</th><th>Réactifs</th><th>Méthode / remarques</th><th class="no-print">Actions</th>
+</tr>
+</thead>
 <tbody id="rows"></tbody>
 </table>
 <div id="empty" class="empty" hidden>Aucune analyse trouvée.</div>
 </div>
-<div class="foot">EPSP Berriane — Référentiel indicatif. Les données modifiées sont conservées dans le navigateur de cet appareil. Exportez régulièrement une sauvegarde JSON.</div>
+<div class="foot">EPSP Berriane — Référentiel indicatif. Les modifications sont conservées dans le navigateur de cet appareil. Exportez régulièrement une sauvegarde JSON.</div>
 </main>
 
 <div class="modal" id="modal">
 <div class="dialog">
-<div class="dialoghead">
-<h2 id="formTitle">Ajouter une analyse</h2>
-<button class="btn secondary" id="close" type="button">Fermer</button>
-</div>
-<form id="form">
-<div class="formgrid">
-<div class="field"><label>Nom de l’analyse *</label><input name="name" required></div>
-<div class="field"><label>Catégorie *</label><input name="category" list="categories" required><datalist id="categories"></datalist></div>
-<div class="field full"><label>À quoi sert cette analyse ?</label><textarea name="purpose"></textarea></div>
-<div class="field"><label>Prélèvement</label><input name="sample" placeholder="Sérum, plasma, sang total…"></div>
-<div class="field"><label>Couleur du tube</label><input name="tube" placeholder="Violet, bleu clair…"></div>
-<div class="field"><label>Nom / additif du tube</label><input name="tubeName" placeholder="EDTA, citrate, tube sec…"></div>
-<div class="field"><label>Réactifs utilisés</label><textarea name="reagents"></textarea></div>
-<div class="field full"><label>Méthode et remarques</label><textarea name="method"></textarea></div>
-</div>
-<div class="actions">
-<button class="btn secondary" type="button" id="cancel">Annuler</button>
-<button class="btn" type="submit">Enregistrer</button>
-</div>
-</form>
+  <div class="dialoghead">
+    <h2 id="formTitle">Ajouter une analyse</h2>
+    <button class="btn secondary" id="close" type="button">Fermer</button>
+  </div>
+  <form id="form">
+    <div class="formgrid">
+      <div class="field"><label>Nom de l’analyse / abréviation *</label><input name="name" required placeholder="Ex. NFS"></div>
+      <div class="field"><label>Nom complet en français *</label><input name="fullName" required placeholder="Ex. Numération-formule sanguine"></div>
+      <div class="field"><label>Catégorie *</label><input name="category" list="categories" required><datalist id="categories"></datalist></div>
+      <div class="field full"><label>À quoi sert cette analyse ?</label><textarea name="purpose"></textarea></div>
+      <div class="field"><label>Prélèvement</label><input name="sample" placeholder="Sérum, plasma, sang total…"></div>
+      <div class="field"><label>Couleur du tube</label><input name="tube" placeholder="Violet, bleu clair…"></div>
+      <div class="field"><label>Nom / additif du tube</label><input name="tubeName" placeholder="EDTA, citrate, tube sec…"></div>
+      <div class="field"><label>Réactifs utilisés</label><textarea name="reagents"></textarea></div>
+      <div class="field full"><label>Méthode et remarques</label><textarea name="method"></textarea></div>
+    </div>
+    <div class="actions">
+      <button class="btn secondary" type="button" id="cancel">Annuler</button>
+      <button class="btn" type="submit">Enregistrer</button>
+    </div>
+  </form>
 </div>
 </div>
 
 <script>
 const initial = [
-["NFS — Numération formule sanguine","Hématologie","Évaluer globules rouges, globules blancs, hémoglobine et plaquettes.","Sang total","Violet","EDTA-K2/K3","Réactifs de dilution, lyse et rinçage propres à l’automate.","Analyse automatisée ; contrôles qualité requis."],
-["Groupe sanguin ABO/Rhésus","Immunohématologie","Déterminer le groupe ABO et l’antigène Rhésus D.","Sang total","Violet, selon procédure","EDTA ; parfois prélèvement complémentaire","Anti-A, anti-B, anti-AB, anti-D et témoins selon procédure.","Méthode et validation selon les règles d’immunohématologie."],
-["VS — Vitesse de sédimentation","Hématologie","Marqueur non spécifique d’inflammation.","Sang total","Noir ou tube dédié","Citrate ou système dédié selon méthode","Consommables et diluant prescrits par le système.","Respecter le système Westergren ou la méthode validée."],
-["Glycémie à jeun","Biochimie","Mesurer le glucose sanguin à jeun.","Sérum ou plasma","Jaune/or, rouge ou gris","Tube sec/gel ; tube fluorure selon délai et procédure","Glucose oxydase ou hexokinase.","Respecter les exigences préanalytiques du laboratoire."],
-["Glycémie post-prandiale (PP)","Biochimie","Mesurer le glucose après un repas selon le délai prescrit.","Sérum ou plasma","Jaune/or, rouge ou gris","Tube sec/gel ou tube adapté au glucose","Glucose oxydase ou hexokinase.","Noter l’heure du repas et du prélèvement."],
-["Urée","Biochimie — fonction rénale","Aider à évaluer la fonction rénale et le métabolisme azoté.","Sérum ou plasma","Jaune/or, rouge ou vert","Tube sec/gel ou héparine de lithium","Uréase, méthode UV ou colorimétrique.","Réactifs spécifiques à l’automate."],
-["Créatinine","Biochimie — fonction rénale","Évaluer la fonction rénale et contribuer au calcul du DFG.","Sérum ou plasma","Jaune/or, rouge ou vert","Tube sec/gel ou héparine de lithium","Méthode de Jaffé ou méthode enzymatique.","Interpréter avec le contexte clinique et le DFG."],
-["Calcémie","Biochimie minérale","Mesurer le calcium sanguin.","Sérum ou plasma autorisé","Jaune/or, rouge ou vert","Tube sec/gel ou héparine de lithium","Arsenazo III ou o-crésolphtaléine complexone, selon kit.","Éviter l’EDTA pour le dosage du calcium."],
-["Fer sérique","Bilan martial","Évaluer le fer circulant dans le cadre du bilan martial.","Sérum","Jaune/or ou rouge","Tube sec/gel","Réactif de libération du fer et réaction colorimétrique, souvent ferrozine.","Interpréter avec ferritine et autres paramètres si prescrits."],
-["Magnésium","Biochimie minérale","Mesurer le magnésium sanguin.","Sérum ou plasma validé","Jaune/or, rouge ou vert","Tube sec/gel ou héparine de lithium","Xylidyl blue ou méthode spécifique du kit.","Éviter toute contamination par des additifs incompatibles."],
-["Cholestérol total","Bilan lipidique","Évaluer le cholestérol sanguin et le risque cardiovasculaire avec les autres facteurs.","Sérum ou plasma","Jaune/or, rouge ou vert","Tube sec/gel ou héparine de lithium","Cholestérol-estérase, cholestérol-oxydase, peroxydase.","Conditions de jeûne selon prescription et protocole."],
-["Triglycérides","Bilan lipidique","Mesurer les triglycérides circulants.","Sérum ou plasma","Jaune/or, rouge ou vert","Tube sec/gel ou héparine de lithium","Lipase, glycérol-kinase et réactions enzymatiques.","Suivre les consignes de préparation du patient."],
-["Acide urique","Biochimie — purines","Aider à évaluer l’uricémie, notamment en contexte de goutte.","Sérum ou plasma","Jaune/or, rouge ou vert","Tube sec/gel ou héparine de lithium","Uricase, méthode enzymatique.","Interprétation selon contexte clinique."],
-["Phosphore / phosphates","Biochimie minérale","Évaluer le métabolisme phosphocalcique.","Sérum ou plasma validé","Jaune/or, rouge ou vert","Tube sec/gel ou héparine de lithium","Réaction au molybdate, méthode UV/colorimétrique.","Éviter une hémolyse importante."],
-["TGO / ASAT","Bilan hépatique","Évaluer une activité enzymatique pouvant augmenter en cas d’atteinte hépatique ou musculaire.","Sérum ou plasma validé","Jaune/or, rouge ou vert","Tube sec/gel ou héparine de lithium","Réactifs enzymatiques IFCC, souvent avec NADH.","Résultat à interpréter avec les autres paramètres."],
-["TGP / ALAT","Bilan hépatique","Évaluer une enzyme principalement utilisée dans l’exploration hépatique.","Sérum ou plasma validé","Jaune/or, rouge ou vert","Tube sec/gel ou héparine de lithium","Réactifs enzymatiques IFCC, souvent avec NADH.","Méthode selon automate."],
-["Bilirubine totale (BT)","Bilan hépatique","Évaluer la bilirubine totale.","Sérum","Jaune/or ou rouge","Tube sec/gel","Réaction diazo ou méthode équivalente.","Protéger de la lumière selon la procédure."],
-["Bilirubine directe (BD)","Bilan hépatique","Mesurer la fraction directe de la bilirubine.","Sérum","Jaune/or ou rouge","Tube sec/gel","Réaction diazo ou méthode équivalente.","Protéger de la lumière selon la procédure."],
-["PAL — Phosphatases alcalines","Bilan hépatique / enzymologie","Aider à explorer les voies biliaires et le métabolisme osseux.","Sérum ou plasma validé","Jaune/or, rouge ou vert","Tube sec/gel ou héparine de lithium","Substrat p-nitrophénylphosphate (pNPP).","Interprétation selon l’âge et le contexte clinique."],
-["ASLO","Sérologie infectieuse","Rechercher des anticorps anti-streptolysine O.","Sérum","Jaune/or ou rouge","Tube sec/gel","Latex sensibilisé à la streptolysine O ou kit quantitatif.","Vérifier les unités et seuils du fabricant."],
-["CRP — Protéine C-réactive","Inflammation","Marqueur biologique d’inflammation.","Sérum ou plasma autorisé","Jaune/or, rouge ou vert selon kit","Tube sec/gel ou tube accepté par la méthode","Latex anti-CRP ou réactifs immunoturbidimétriques.","Une CRP élevée n’indique pas à elle seule la cause."],
-["Rose Bengale","Sérologie — brucellose","Test de dépistage sérologique de la brucellose.","Sérum","Jaune/or ou rouge","Tube sec/gel","Suspension antigénique de Brucella colorée au Rose Bengale.","Interpréter et confirmer selon les recommandations en vigueur."],
-["Ag HBs (libellé HBS à confirmer)","Sérologie — hépatite B","Rechercher l’antigène de surface du virus de l’hépatite B.","Sérum ou plasma autorisé par kit","Jaune/or ou rouge selon kit","Tube sec/gel ou tube accepté par la notice","Kit spécifique Ag HBs, rapide ou immunoessai.","Vérifier la cible exacte indiquée sur le kit."],
-["HCV — dépistage anti-VHC à confirmer","Sérologie — hépatite C","Rechercher habituellement des anticorps anti-VHC.","Sérum ou plasma autorisé par kit","Jaune/or ou rouge selon kit","Tube sec/gel ou tube accepté par la notice","Kit immunochromatographique ou immunoessai anti-VHC.","Confirmer les résultats réactifs selon l’algorithme applicable."],
-["VIH — dépistage HIV","Sérologie virale","Dépistage du VIH selon l’algorithme national.","Sérum ou plasma autorisé par kit","Jaune/or ou rouge selon kit","Tube sec/gel ou tube accepté par la notice","Test rapide ou immunoessai VIH-1/2, parfois Ag/Ac combiné.","Un test réactif ne constitue pas seul un diagnostic final."],
-["TPHA","Sérologie — syphilis","Rechercher des anticorps tréponémiques.","Sérum","Jaune/or ou rouge","Tube sec/gel","Particules sensibilisées ou réactifs d’hémagglutination selon kit.","Interpréter avec les autres tests recommandés."],
-["TQ — Temps de Quick","Hémostase / coagulation","Évaluer la voie extrinsèque et commune de coagulation.","Plasma citraté pauvre en plaquettes","Bleu clair","Citrate de sodium 3,2 %, rempli au trait","Thromboplastine (facteur tissulaire) et calcium.","Respecter le rapport sang/citrate et le délai d’analyse."],
-["TP — Taux de prothrombine","Hémostase / coagulation","Exprimer le résultat du temps de Quick en pourcentage selon la méthode.","Plasma citraté pauvre en plaquettes","Bleu clair","Citrate de sodium 3,2 %, rempli au trait","Même réactif thromboplastine-calcium que TQ.","Rapport calculé/rapporté selon la méthode locale."],
-["INR","Hémostase / coagulation","Standardiser le temps de Quick, notamment pour le suivi de certains traitements.","Plasma citraté pauvre en plaquettes","Bleu clair","Citrate de sodium 3,2 %, rempli au trait","Pas de réactif distinct : calcul avec TQ et ISI.","Vérifier l’ISI validé du réactif et de l’instrument."],
-["Glucose urinaire","Chimie des urines","Détecter une glycosurie.","Urines fraîches","Pas de tube sanguin","Flacon à urines propre","Bandelette glucose oxydase/peroxydase ou méthode dédiée.","Analyser selon le délai indiqué par la notice."],
-["Albumine urinaire (bandelette)","Chimie des urines","Dépister une protéinurie/albuminurie.","Urines fraîches","Pas de tube sanguin","Flacon à urines propre","Bandelette réactive ; dosage spécifique si prescrit.","La bandelette ne remplace pas toujours un dosage quantitatif."],
-["Acétone / corps cétoniques urinaires","Chimie des urines","Détecter les corps cétoniques urinaires.","Urines fraîches","Pas de tube sanguin","Flacon à urines propre","Bandelette au nitroprussiate selon la marque.","Lire au délai indiqué sur la notice."],
-["Densité urinaire (SG)","Chimie des urines","Donner une indication sur la concentration urinaire.","Urines fraîches","Pas de tube sanguin","Flacon à urines propre","Bandelette avec indicateur ionique ou réfractomètre.","Méthode selon l’équipement disponible."],
-["pH urinaire","Chimie des urines","Mesurer l’acidité ou l’alcalinité des urines.","Urines fraîches","Pas de tube sanguin","Flacon à urines propre","Indicateurs colorés sur bandelette ou électrode pH.","Analyser rapidement selon la procédure locale."]
-].map(a=>({name:a[0],category:a[1],purpose:a[2],sample:a[3],tube:a[4],tubeName:a[5],reagents:a[6],method:a[7]}));
+["NFS","Numération-formule sanguine","Hématologie","Évaluer les globules rouges, les globules blancs, l’hémoglobine et les plaquettes.","Sang total","Violet","EDTA-K2/K3","Réactifs de dilution, lyse et rinçage propres à l’automate.","Analyse automatisée ; contrôles qualité requis."],
+["ABO / Rh","Système de groupes sanguins ABO et Rhésus D","Immunohématologie","Déterminer le groupe sanguin ABO et le statut Rhésus D.","Sang total","Violet selon procédure","EDTA ; prélèvement complémentaire si requis","Anti-A, anti-B, anti-AB, anti-D et témoins selon la procédure.","Suivre la procédure validée d’immunohématologie."],
+["VS","Vitesse de sédimentation des érythrocytes","Hématologie","Marqueur non spécifique pouvant contribuer à l’évaluation d’une inflammation.","Sang total","Noir ou tube dédié","Citrate ou système dédié selon méthode","Consommables et diluant prescrits par le système.","Respecter le système Westergren ou la méthode validée."],
+["Glycémie à jeun","Dosage du glucose sanguin à jeun","Biochimie","Mesurer le glucose sanguin après la période de jeûne prescrite.","Sérum ou plasma","Jaune/or, rouge ou gris selon procédure","Tube sec/gel ou tube adapté à la stabilisation du glucose","Glucose oxydase ou hexokinase.","Respecter les exigences préanalytiques du laboratoire."],
+["PP","Glycémie post-prandiale","Biochimie","Mesurer le glucose sanguin après un repas selon le délai prescrit.","Sérum ou plasma","Jaune/or, rouge ou gris selon procédure","Tube sec/gel ou tube adapté au glucose","Glucose oxydase ou hexokinase.","Noter l’heure du repas et du prélèvement."],
+["Urée","Dosage de l’urée sanguine","Biochimie — fonction rénale","Aider à évaluer la fonction rénale et le métabolisme azoté.","Sérum ou plasma","Jaune/or, rouge ou vert","Tube sec/gel ou héparine de lithium","Uréase, méthode UV ou colorimétrique.","Réactifs spécifiques à l’automate."],
+["Créatinine","Dosage de la créatinine sanguine","Biochimie — fonction rénale","Évaluer la fonction rénale et contribuer au calcul du débit de filtration glomérulaire.","Sérum ou plasma","Jaune/or, rouge ou vert","Tube sec/gel ou héparine de lithium","Méthode de Jaffé ou méthode enzymatique.","Interpréter avec le contexte clinique et le DFG."],
+["Ca","Calcémie — dosage du calcium sanguin","Biochimie minérale","Mesurer le calcium sanguin.","Sérum ou plasma validé","Jaune/or, rouge ou vert","Tube sec/gel ou héparine de lithium","Arsenazo III ou o-crésolphtaléine complexone, selon le kit.","Éviter l’EDTA pour le dosage du calcium."],
+["Fe","Dosage du fer sérique","Bilan martial","Évaluer le fer circulant dans le cadre du bilan martial.","Sérum","Jaune/or ou rouge","Tube sec/gel","Réactif de libération du fer et réaction colorimétrique, souvent ferrozine.","Interpréter avec les autres paramètres martiaux si prescrits."],
+["Mg","Magnésémie — dosage du magnésium sanguin","Biochimie minérale","Mesurer le magnésium sanguin.","Sérum ou plasma validé","Jaune/or, rouge ou vert","Tube sec/gel ou héparine de lithium","Xylidyl blue ou méthode spécifique du kit.","Respecter les consignes de prélèvement du laboratoire."],
+["Chol.","Cholestérol total","Bilan lipidique","Évaluer le cholestérol sanguin avec les autres facteurs cardiovasculaires.","Sérum ou plasma","Jaune/or, rouge ou vert","Tube sec/gel ou héparine de lithium","Cholestérol-estérase, cholestérol-oxydase et peroxydase.","Conditions de jeûne selon prescription et protocole."],
+["TG","Dosage des triglycérides","Bilan lipidique","Mesurer les triglycérides circulants.","Sérum ou plasma","Jaune/or, rouge ou vert","Tube sec/gel ou héparine de lithium","Lipase, glycérol-kinase et réactions enzymatiques.","Suivre les consignes de préparation du patient."],
+["A. urique","Dosage de l’acide urique sanguin","Biochimie — métabolisme des purines","Aider à évaluer l’uricémie, notamment dans la goutte.","Sérum ou plasma","Jaune/or, rouge ou vert","Tube sec/gel ou héparine de lithium","Uricase, méthode enzymatique.","Interprétation selon le contexte clinique."],
+["Phosphore","Dosage des phosphates sanguins","Biochimie minérale","Évaluer le métabolisme phosphocalcique.","Sérum ou plasma validé","Jaune/or, rouge ou vert","Tube sec/gel ou héparine de lithium","Réaction au molybdate, méthode UV ou colorimétrique.","Éviter une hémolyse importante."],
+["TGO / ASAT","Transaminase glutamo-oxaloacétique / Aspartate aminotransférase","Bilan hépatique / enzymologie","Évaluer une enzyme pouvant augmenter en cas d’atteinte hépatique, musculaire ou autre.","Sérum ou plasma validé","Jaune/or, rouge ou vert","Tube sec/gel ou héparine de lithium","Réactifs enzymatiques IFCC, souvent avec NADH.","Interpréter avec les autres paramètres cliniques et biologiques."],
+["TGP / ALAT","Transaminase glutamo-pyruvique / Alanine aminotransférase","Bilan hépatique / enzymologie","Évaluer une enzyme utilisée dans l’exploration hépatique.","Sérum ou plasma validé","Jaune/or, rouge ou vert","Tube sec/gel ou héparine de lithium","Réactifs enzymatiques IFCC, souvent avec NADH.","Méthode selon automate."],
+["BT","Bilirubine totale","Bilan hépatique","Mesurer la bilirubine totale.","Sérum","Jaune/or ou rouge","Tube sec/gel","Réaction diazo ou méthode équivalente.","Protéger de la lumière selon la procédure."],
+["BD","Bilirubine directe","Bilan hépatique","Mesurer la fraction directe de la bilirubine.","Sérum","Jaune/or ou rouge","Tube sec/gel","Réaction diazo ou méthode équivalente.","Protéger de la lumière selon la procédure."],
+["PAL","Phosphatases alcalines","Bilan hépatique / enzymologie","Aider à explorer les voies biliaires et le métabolisme osseux.","Sérum ou plasma validé","Jaune/or, rouge ou vert","Tube sec/gel ou héparine de lithium","Substrat p-nitrophénylphosphate (pNPP).","Interprétation selon l’âge et le contexte clinique."],
+["ASLO","Antistreptolysines O","Sérologie infectieuse","Rechercher des anticorps dirigés contre la streptolysine O.","Sérum","Jaune/or ou rouge","Tube sec/gel","Latex sensibilisé à la streptolysine O ou kit quantitatif.","Vérifier les unités et seuils du fabricant."],
+["CRP","Protéine C-réactive","Inflammation","Marqueur biologique d’inflammation.","Sérum ou plasma autorisé","Jaune/or, rouge ou vert selon le kit","Tube accepté par la méthode","Latex anti-CRP ou réactifs immunoturbidimétriques.","Une CRP élevée ne précise pas à elle seule la cause."],
+["Rose Bengale","Test au Rose Bengale","Sérologie — brucellose","Test sérologique de dépistage de la brucellose.","Sérum","Jaune/or ou rouge","Tube sec/gel","Suspension antigénique de Brucella colorée au Rose Bengale.","Interpréter et confirmer selon les recommandations applicables."],
+["Ag HBs","Antigène de surface du virus de l’hépatite B","Sérologie — hépatite B","Rechercher l’antigène de surface du virus de l’hépatite B.","Sérum ou plasma autorisé par le kit","Jaune/or ou rouge selon kit","Tube sec/gel ou tube accepté par la notice","Kit spécifique Ag HBs, test rapide ou immunoessai.","Vérifier que l’analyse demandée est bien l’Ag HBs."],
+["HCV / VHC","Virus de l’hépatite C ; dépistage généralement par anticorps anti-VHC","Sérologie — hépatite C","Dépister une infection par le virus de l’hépatite C.","Sérum ou plasma autorisé par le kit","Jaune/or ou rouge selon kit","Tube accepté par la notice","Kit immunochromatographique ou immunoessai anti-VHC.","Vérifier si le test porte sur les anticorps ou l’ARN viral."],
+["HIV / VIH","Virus de l’immunodéficience humaine","Sérologie virale","Dépister l’infection par le VIH selon l’algorithme national.","Sérum ou plasma autorisé par le kit","Jaune/or ou rouge selon kit","Tube accepté par la notice","Test rapide ou immunoessai VIH-1/2, parfois combiné Ag/Ac.","Un test réactif doit être traité selon l’algorithme de confirmation."],
+["TPHA","Treponema pallidum Hemagglutination Assay — test d’hémagglutination de Treponema pallidum","Sérologie — syphilis","Rechercher des anticorps tréponémiques.","Sérum","Jaune/or ou rouge","Tube sec/gel","Réactifs d’hémagglutination ou particules sensibilisées selon le kit.","Interpréter avec les autres tests recommandés."],
+["TQ","Temps de Quick","Hémostase / coagulation","Évaluer la voie extrinsèque et la voie commune de coagulation.","Plasma citraté pauvre en plaquettes","Bleu clair","Citrate de sodium 3,2 %, tube rempli au trait","Thromboplastine (facteur tissulaire) et calcium.","Respecter le rapport sang/citrate et le délai d’analyse."],
+["TP","Taux de prothrombine","Hémostase / coagulation","Exprimer le résultat du temps de Quick en pourcentage selon la méthode.","Plasma citraté pauvre en plaquettes","Bleu clair","Citrate de sodium 3,2 %, tube rempli au trait","Même réactif thromboplastine-calcium que le TQ.","Le TP en pourcentage est distinct de l’INR."],
+["INR","International Normalized Ratio — rapport normalisé international","Hémostase / coagulation","Standardiser le temps de Quick, notamment pour le suivi de certains traitements.","Plasma citraté pauvre en plaquettes","Bleu clair","Citrate de sodium 3,2 %, tube rempli au trait","Pas de réactif distinct : calcul à partir du TQ et de l’ISI.","Utiliser l’ISI validé pour le réactif et l’instrument."],
+["Gluc. urinaire","Glucose urinaire","Chimie des urines","Détecter la présence de glucose dans les urines.","Urines fraîches","Pas de tube sanguin","Flacon à urines propre","Bandelette glucose oxydase/peroxydase ou méthode dédiée.","Analyser selon le délai indiqué dans la notice."],
+["Alb. urinaire","Albumine urinaire","Chimie des urines","Dépister une protéinurie ou albuminurie.","Urines fraîches","Pas de tube sanguin","Flacon à urines propre","Bandelette réactive ; dosage spécifique si prescrit.","La bandelette ne remplace pas toujours un dosage quantitatif."],
+["Acét. urinaire","Acétone / corps cétoniques urinaires","Chimie des urines","Détecter les corps cétoniques urinaires.","Urines fraîches","Pas de tube sanguin","Flacon à urines propre","Bandelette au nitroprussiate selon la marque.","Lire au délai indiqué sur la notice."],
+["SG","Specific Gravity — densité urinaire","Chimie des urines","Donner une indication sur la concentration des urines.","Urines fraîches","Pas de tube sanguin","Flacon à urines propre","Bandelette avec indicateur ionique ou réfractomètre.","Méthode selon l’équipement disponible."],
+["pH","Potentiel hydrogène","Chimie des urines","Mesurer l’acidité ou l’alcalinité des urines.","Urines fraîches","Pas de tube sanguin","Flacon à urines propre","Indicateurs colorés sur bandelette ou électrode pH.","Analyser selon la procédure locale."],
+["WBC","White Blood Cell Count — numération des leucocytes","Hématologie — paramètres NFS","Quantifier les globules blancs.","Sang total","Violet","EDTA-K2/K3","Réactifs propres à l’automate d’hématologie.","L’abréviation peut varier selon l’appareil."],
+["LYM","Lymphocytes","Hématologie — formule leucocytaire","Quantifier ou estimer la population lymphocytaire.","Sang total","Violet","EDTA-K2/K3","Réactifs et méthode de différenciation de l’automate.","Vérifier si le résultat est absolu ou en pourcentage."],
+["MID","Population intermédiaire de leucocytes","Hématologie — formule leucocytaire","Regrouper certaines populations de leucocytes selon l’automate.","Sang total","Violet","EDTA-K2/K3","Différenciation propre à l’automate.","Définition exacte dépendante du fabricant."],
+["GRA / GRAN","Granulocytes","Hématologie — formule leucocytaire","Quantifier la population de granulocytes selon l’automate.","Sang total","Violet","EDTA-K2/K3","Réactifs et méthode de différenciation de l’automate.","Vérifier les populations incluses dans le résultat."],
+["RBC","Red Blood Cell Count — numération des érythrocytes","Hématologie — paramètres NFS","Quantifier les globules rouges.","Sang total","Violet","EDTA-K2/K3","Réactifs propres à l’automate.","À interpréter avec l’hémoglobine et les indices érythrocytaires."],
+["HGB","Hémoglobine","Hématologie — paramètres NFS","Mesurer la concentration d’hémoglobine.","Sang total","Violet","EDTA-K2/K3","Réactif de lyse et méthode photométrique selon l’automate.","Paramètre utilisé dans l’évaluation de l’anémie."],
+["HCT","Hématocrite","Hématologie — paramètres NFS","Estimer la proportion volumique des globules rouges.","Sang total","Violet","EDTA-K2/K3","Calcul ou mesure selon l’automate.","Interpréter avec les autres paramètres de la NFS."],
+["MCV / VGM","Mean Corpuscular Volume / Volume globulaire moyen","Hématologie — indices érythrocytaires","Mesurer le volume moyen des globules rouges.","Sang total","Violet","EDTA-K2/K3","Calcul ou mesure par l’automate.","Aide à caractériser les anémies."],
+["MCH / TCMH","Mean Corpuscular Hemoglobin / Teneur corpusculaire moyenne en hémoglobine","Hématologie — indices érythrocytaires","Évaluer la quantité moyenne d’hémoglobine par globule rouge.","Sang total","Violet","EDTA-K2/K3","Calcul automatique à partir des paramètres érythrocytaires.","Dépend des mesures de l’automate."],
+["MCHC / CCMH","Mean Corpuscular Hemoglobin Concentration / Concentration corpusculaire moyenne en hémoglobine","Hématologie — indices érythrocytaires","Évaluer la concentration moyenne d’hémoglobine dans les globules rouges.","Sang total","Violet","EDTA-K2/K3","Calcul automatique.","À interpréter avec les autres indices."],
+["RDW","Red Cell Distribution Width — indice de distribution des volumes érythrocytaires","Hématologie — indices érythrocytaires","Évaluer la variabilité de taille des globules rouges.","Sang total","Violet","EDTA-K2/K3","Analyse de distribution par l’automate.","Les notations RDW-CV et RDW-SD diffèrent."],
+["PLT","Platelet Count — numération des plaquettes","Hématologie — paramètres NFS","Quantifier les plaquettes sanguines.","Sang total","Violet","EDTA-K2/K3","Réactifs propres à l’automate.","Vérifier les agrégats plaquettaires si résultat inattendu."],
+["MPV / VPM","Mean Platelet Volume / Volume plaquettaire moyen","Hématologie — indices plaquettaires","Mesurer le volume moyen des plaquettes.","Sang total","Violet","EDTA-K2/K3","Calcul ou mesure par l’automate.","Dépend de l’instrument et des conditions préanalytiques."],
+["PDW","Platelet Distribution Width — indice de distribution des volumes plaquettaires","Hématologie — indices plaquettaires","Décrire la variabilité de taille des plaquettes.","Sang total","Violet","EDTA-K2/K3","Analyse de distribution par l’automate.","Définition et unités selon le fabricant."],
+["PCT","Plaquettocrite","Hématologie — indices plaquettaires","Estimer la fraction volumique occupée par les plaquettes.","Sang total","Violet","EDTA-K2/K3","Calcul automatique selon l’automate.","Ne pas confondre avec la procalcitonine dans d’autres contextes."],
+["P-LCR","Platelet Large Cell Ratio — proportion de grandes plaquettes","Hématologie — indices plaquettaires","Estimer la proportion de grandes plaquettes.","Sang total","Violet","EDTA-K2/K3","Analyse de distribution par l’automate.","Définition et seuils selon le fabricant."]
+];
 
-const KEY="epsp_lab_reference_v1";
-let data=initial;
-try{const s=localStorage.getItem(KEY);if(s)data=JSON.parse(s)}catch(e){}
+const initialData=initial.map(a=>({
+  name:a[0],fullName:a[1],category:a[2],purpose:a[3],
+  sample:a[4],tube:a[5],tubeName:a[6],reagents:a[7],method:a[8]
+}));
+
+const KEY="epsp_lab_reference_v2";
+let data=initialData;
+try {
+  const saved=localStorage.getItem(KEY);
+  if(saved) data=JSON.parse(saved);
+  else {
+    const old=localStorage.getItem("epsp_lab_reference_v1");
+    if(old) {
+      const oldData=JSON.parse(old);
+      data=oldData.map(x=>{
+        const match=initialData.find(y=>y.name.toLowerCase()===String(x.name||"").toLowerCase());
+        return {...(match||{}),...x,fullName:x.fullName||(match&&match.fullName)||x.name||""};
+      });
+    }
+  }
+} catch(e) {}
+
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const fields=["name","category","purpose","sample","tube","tubeName","reagents","method"];
-function save(){try{localStorage.setItem(KEY,JSON.stringify(data))}catch(e){alert("Stockage indisponible. Exportez une sauvegarde JSON.")}render()}
-function categories(){return [...new Set(data.map(x=>x.category).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"fr"))}
-function fillCategories(){
- const old=$("#cat").value;
- $("#cat").innerHTML='<option value="">Toutes les catégories</option>'+categories().map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join("");
- $("#cat").value=old;
- $("#categories").innerHTML=categories().map(c=>`<option value="${esc(c)}"></option>`).join("");
+const fields=["name","fullName","category","purpose","sample","tube","tubeName","reagents","method"];
+
+function save() {
+  try { localStorage.setItem(KEY,JSON.stringify(data)); }
+  catch(e) { alert("Stockage indisponible. Exportez une sauvegarde JSON."); }
+  render();
 }
-function render(){
- fillCategories();
- const q=$("#search").value.toLocaleLowerCase("fr"),cat=$("#cat").value;
- const items=data.map((x,i)=>({...x,_i:i})).filter(x=>(!cat||x.category===cat)&&fields.map(f=>x[f]||"").join(" ").toLocaleLowerCase("fr").includes(q));
- $("#total").textContent=data.length;$("#count").textContent=items.length;$("#cats").textContent=categories().length;
- $("#rows").innerHTML=items.map(x=>`<tr>
- <td data-label="Analyse"><b>${esc(x.name)}</b></td>
- <td data-label="Catégorie"><span class="tag">${esc(x.category)}</span></td>
- <td data-label="Utilité">${esc(x.purpose)}</td>
- <td data-label="Prélèvement">${esc(x.sample)}</td>
- <td data-label="Tube"><b>${esc(x.tube)}</b><br>${esc(x.tubeName)}</td>
- <td data-label="Réactifs">${esc(x.reagents)}</td>
- <td data-label="Méthode">${esc(x.method)}</td>
- <td data-label="Actions" class="no-print"><button class="smallbtn" onclick="editItem(${x._i})">Modifier</button><button class="smallbtn" onclick="deleteItem(${x._i})">Supprimer</button></td>
- </tr>`).join("");
- $("#empty").hidden=items.length>0;
+function categories() {
+  return [...new Set(data.map(x=>x.category).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"fr"));
+}
+function fillCategories() {
+  const old=$("#cat").value;
+  $("#cat").innerHTML='<option value="">Toutes les catégories</option>'+
+    categories().map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join("");
+  $("#cat").value=old;
+  $("#categories").innerHTML=categories().map(c=>`<option value="${esc(c)}"></option>`).join("");
+}
+function render() {
+  fillCategories();
+  const q=$("#search").value.toLocaleLowerCase("fr"),cat=$("#cat").value;
+  const items=data.map((x,i)=>({...x,_i:i})).filter(x=>
+    (!cat||x.category===cat) &&
+    fields.map(f=>x[f]||"").join(" ").toLocaleLowerCase("fr").includes(q)
+  );
+  $("#total").textContent=data.length;
+  $("#count").textContent=items.length;
+  $("#cats").textContent=categories().length;
+  $("#rows").innerHTML=items.map(x=>`<tr>
+    <td data-label="Analyse">
+      <b>${esc(x.name)}</b>
+      <div class="full-name">${esc(x.fullName||x.name)}</div>
+    </td>
+    <td data-label="Catégorie"><span class="tag">${esc(x.category)}</span></td>
+    <td data-label="Utilité clinique">${esc(x.purpose)}</td>
+    <td data-label="Prélèvement">${esc(x.sample)}</td>
+    <td data-label="Tube"><b>${esc(x.tube)}</b><br>${esc(x.tubeName)}</td>
+    <td data-label="Réactifs">${esc(x.reagents)}</td>
+    <td data-label="Méthode / remarques">${esc(x.method)}</td>
+    <td data-label="Actions" class="no-print">
+      <button class="smallbtn" onclick="editItem(${x._i})">Modifier</button>
+      <button class="smallbtn" onclick="deleteItem(${x._i})">Supprimer</button>
+    </td>
+  </tr>`).join("");
+  $("#empty").hidden=items.length>0;
 }
 let editIndex=-1;
-function openForm(item={},index=-1){
- editIndex=index;$("#formTitle").textContent=index<0?"Ajouter une analyse":"Modifier une analyse";
- $("#form").reset();
- fields.forEach(f=>$("#form").elements[f].value=item[f]||"");
- $("#modal").classList.add("open");document.body.style.overflow="hidden";
- setTimeout(()=>$("#form").elements.name.focus(),100);
+function openForm(item={},index=-1) {
+  editIndex=index;
+  $("#formTitle").textContent=index<0?"Ajouter une analyse":"Modifier une analyse";
+  $("#form").reset();
+  fields.forEach(f=>$("#form").elements[f].value=item[f]||"");
+  $("#modal").classList.add("open");
+  document.body.style.overflow="hidden";
+  setTimeout(()=>$("#form").elements.name.focus(),100);
 }
-function closeForm(){$("#modal").classList.remove("open");document.body.style.overflow=""}
+function closeForm() {
+  $("#modal").classList.remove("open");
+  document.body.style.overflow="";
+}
 window.editItem=i=>openForm(data[i],i);
-window.deleteItem=i=>{if(confirm("Supprimer « "+data[i].name+" » ?")){data.splice(i,1);save()}};
+window.deleteItem=i=>{
+  if(confirm("Supprimer « "+data[i].name+" » ?")) {
+    data.splice(i,1);save();
+  }
+};
 $("#add").onclick=()=>openForm();
 $("#close").onclick=$("#cancel").onclick=closeForm;
-$("#modal").addEventListener("click",e=>{if(e.target===$("#modal"))closeForm()});
-document.addEventListener("keydown",e=>{if(e.key==="Escape")closeForm()});
+$("#modal").addEventListener("click",e=>{if(e.target===$("#modal"))closeForm();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeForm();});
 $("#form").onsubmit=e=>{
- e.preventDefault();const item={};
- fields.forEach(f=>item[f]=$("#form").elements[f].value.trim());
- if(editIndex<0)data.push(item);else data[editIndex]=item;
- save();closeForm();
+  e.preventDefault();
+  const item={};
+  fields.forEach(f=>item[f]=$("#form").elements[f].value.trim());
+  if(editIndex<0)data.push(item);else data[editIndex]=item;
+  save();closeForm();
 };
-$("#search").oninput=render;$("#cat").onchange=render;
+$("#search").oninput=render;
+$("#cat").onchange=render;
 $("#pdf").onclick=()=>window.print();
-function download(name,content,type){
- const blob=new Blob([content],{type}),url=URL.createObjectURL(blob),a=document.createElement("a");
- a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();
- setTimeout(()=>URL.revokeObjectURL(url),1000);
+
+function download(name,content,type) {
+  const blob=new Blob([content],{type});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
-$("#json").onclick=()=>download("referentiel_analyses_laboratoire.json",JSON.stringify(data,null,2),"application/json;charset=utf-8");
+$("#json").onclick=()=>download(
+  "referentiel_analyses_laboratoire.json",
+  JSON.stringify(data,null,2),
+  "application/json;charset=utf-8"
+);
 $("#csv").onclick=()=>{
- const rows=[fields,...data.map(x=>fields.map(f=>x[f]||""))];
- const csv=rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(";")).join("\r\n");
- download("referentiel_analyses_laboratoire.csv","\ufeff"+csv,"text/csv;charset=utf-8");
+  const rows=[fields,...data.map(x=>fields.map(f=>x[f]||""))];
+  const csv=rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(";")).join("\r\n");
+  download("referentiel_analyses_laboratoire.csv","\ufeff"+csv,"text/csv;charset=utf-8");
 };
 $("#import").onclick=()=>$("#file").click();
 $("#file").onchange=async e=>{
- const f=e.target.files[0];if(!f)return;
- try{
-  const parsed=JSON.parse(await f.text());
-  if(!Array.isArray(parsed)||!parsed.every(x=>x.name&&x.category))throw Error();
-  if(confirm("Remplacer le catalogue actuel par "+parsed.length+" analyses ?")){
-   data=parsed.map(x=>Object.fromEntries(fields.map(k=>[k,String(x[k]||"")])));
-   save();
+  const f=e.target.files[0];if(!f)return;
+  try {
+    const parsed=JSON.parse(await f.text());
+    if(!Array.isArray(parsed)||!parsed.every(x=>x.name&&x.category))throw Error();
+    if(confirm("Remplacer le catalogue actuel par "+parsed.length+" analyses ?")) {
+      data=parsed.map(x=>Object.fromEntries(fields.map(k=>[k,String(x[k]||"")])));
+      save();
+    }
+  } catch(err) {
+    alert("Fichier JSON invalide. Choisissez une sauvegarde créée par cette plateforme.");
   }
- }catch(err){alert("Fichier JSON invalide. Choisissez une sauvegarde créée par cette plateforme.")}
- e.target.value="";
+  e.target.value="";
 };
 render();
 </script>
