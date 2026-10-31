@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الوثائق المطلوبة</title>
+    <!-- استدعاء خط Cairo للغة العربية -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- استدعاء مكتبة FontAwesome للأيقونات -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-red: #dc2626;
+            --primary-red-hover: #b91c1c;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-dark: #1e293b;
+            --text-gray: #64748b;
+            --border-color: #e2e8f0;
+            
+            --highlight-bg: #fffbeb;
+            --highlight-border: #fcd34d;
+            --highlight-icon: #ea580c;
+            --highlight-badge: #f59e0b;
+            --highlight-text-dark: #92400e;
+            --highlight-text-light: #b45309;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* تنسيق العنوان العلوي */
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            line-height: 1.8;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* تنسيق شبكة البطاقات */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            direction: ltr; /* لضمان ترتيب البطاقات من اليسار لليمين كما في الصورة */
+        }
+
+        /* تنسيق البطاقة */
+        .card {
+            direction: rtl; /* إعادة اتجاه النص للعربية */
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            position: relative;
+            min-height: 220px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        /* حاوية الأيقونة */
+        .icon-container {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+        }
+
+        .icon {
+            width: 64px;
+            height: 64px;
+            background-color: var(--primary-red);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: white;
+        }
+
+        /* الدائرة التي تحتوي على الرقم */
+        .badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 26px;
+            height: 26px;
+            background-color: var(--primary-red);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+            border: 2px solid white;
+            z-index: 10;
+        }
+
+        /* تنسيق النصوص داخل البطاقة */
+        .text-content {
+            text-align: right;
+        }
+
+        .text-content h2 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .text-content p {
+            font-size: 0.95rem;
+            color: var(--text-gray);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-weight: 600;
+        }
+
+        /* تنسيق البطاقة المميزة (البطاقة رقم 6) */
+        .card.highlight {
+            background-color: var(--highlight-bg);
+            border: 2px solid var(--highlight-border);
+        }
+
+        .card.highlight .icon {
+            background-color: var(--highlight-icon);
+        }
+
+        .card.highlight .badge {
+            background-color: var(--highlight-badge);
+        }
+
+        .card.highlight .text-content h2 {
+            color: var(--highlight-text-dark);
+            line-height: 1.4;
+        }
+
+        .card.highlight .text-content p {
+            color: var(--highlight-text-light);
+        }
+
+        /* تنسيق التذييل */
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        /* التجاوب مع الشاشات الصغيرة */
+        @media (max-width: 992px) {
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            header h1 {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- النص العلوي -->
+        <header>
+            <h1>نطلب من جميع الموضفين بالمؤسسة العمومية للصحة الجوارية ببريان تزيدنا بالوثائق التالية في اجل لاتتعدى 7 ايام</h1>
+        </header>
+
+        <!-- شبكة البطاقات -->
+        <div class="grid">
+            
+            <!-- بطاقة 1 -->
+            <div class="card">
+                <div class="icon-container">
+                    <div class="badge">1</div>
+                    <div class="icon"><i class="fa-solid fa-id-card"></i></div>
+                </div>
+                <div class="text-content">
+                    <h2>نسخة من بطاقة التعريف الوطنية</h2>
+                    <p>Copie de la carte nationale d'identité</p>
+                </div>
+            </div>
+
+            <!-- بطاقة 2 -->
+            <div class="card">
+                <div class="icon-container">
+                    <div class="badge">2</div>
+                    <div class="icon"><i class="fa-solid fa-hashtag"></i></div>
+                </div>
+                <div class="text-content">
+                    <h2>الرقم التعريفي الوطني (NIN)</h2>
+                    <p>NIN — Numéro d'Identification National</p>
+                </div>
+            </div>
+
+            <!-- بطاقة 3 -->
+            <div class="card">
+                <div class="icon-container">
+                    <div class="badge">3</div>
+                    <div class="icon"><i class="fa-solid fa-envelope"></i></div>
+                </div>
+                <div class="text-content">
+                    <h2>البريد الإلكتروني</h2>
+                    <p>Adresse e-mail</p>
+                </div>
+            </div>
+
+            <!-- بطاقة 4 -->
+            <div class="card">
+                <div class="icon-container">
+                    <div class="badge">4</div>
+                    <div class="icon"><i class="fa-solid fa-phone"></i></div>
+                </div>
+                <div class="text-content">
+                    <h2>رقم الهاتف</h2>
+                    <p>Numéro de téléphone</p>
+                </div>
+            </div>
+
+            <!-- بطاقة 5 -->
+            <div class="card">
+                <div class="icon-container">
+                    <div class="badge">5</div>
+                    <div class="icon"><i class="fa-solid fa-shield-halved"></i></div>
+                </div>
+                <div class="text-content">
+                    <h2>رقم الضمان الاجتماعي (NSS)</h2>
+                    <p>NSS — Numéro de Sécurité Sociale</p>
+                </div>
+            </div>
+
+            <!-- بطاقة 6 (المميزة باللون البرتقالي) -->
+            <div class="card highlight">
+                <div class="icon-container">
+                    <div class="badge">6</div>
+                    <div class="icon"><i class="fa-solid fa-camera"></i></div>
+                </div>
+                <div class="text-content">
+                    <h2>صورة شمسية حديثة (أقل من 6 أشهر)</h2>
+                    <p>Photo d'identité récente (moins de 6 mois)</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- النص السفلي -->
+        <footer>
+            <p>الوثائق توضع لدى الامانة</p>
+        </footer>
+    </div>
+
+</body>
+</html>
